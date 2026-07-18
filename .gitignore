@@ -1,0 +1,23 @@
+# Virtual environments
+venv/
+.venv/
+env/
+.env
+
+# Datasets
+dataset/
+celeba_hq_256/
+
+# Outputs
+outputs/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDEs / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
