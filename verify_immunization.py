@@ -184,7 +184,7 @@ def create_comparison_figure(clean_img, immunized_img,
     print(f"Comparison figure saved: {save_path}")
 
 
-def immunize_image(image_path, device='cpu'):
+def immunize_image(image_path, device='cpu', args=None):
     """Run the DiffShield PGD optimization on a single image."""
     from src.optimizer import PGDOptimizer
     import torchvision.transforms as T
@@ -200,16 +200,24 @@ def immunize_image(image_path, device='cpu'):
     ])
     img_tensor = transform(img).unsqueeze(0).to(device)
     
+    eps = args.epsilon if args else 16.0
+    alpha = args.alpha if args else 1.5
+    iters = args.iters if args else 100
+    w_vis = args.w_vis if args else 1.0
+    w_sem = args.w_sem if args else 1.5
+    w_str = args.w_str if args else 2.5
+    concept = args.concept if args else "a potted plant"
+
     # Initialize optimizer
-    optimizer = PGDOptimizer(epsilon=8/255, alpha=2/255, iters=40, device=device)
+    optimizer = PGDOptimizer(epsilon=eps/255, alpha=alpha/255, iters=iters, device=device)
     
     # Get target concept embedding
-    target_embed = optimizer.loss_fn.encode_target_text(["a potted plant"])
+    target_embed = optimizer.loss_fn.encode_target_text([concept])
     
     # Run PGD
     immunized_tensor = optimizer.optimize(
         img_tensor, target_embed,
-        w_alpha=1.0, w_beta=1.0, w_gamma=1.0
+        w_alpha=w_vis, w_beta=w_sem, w_gamma=w_str
     )
     
     # Convert back to PIL
@@ -236,6 +244,13 @@ def main():
                         help='Number of inference steps')
     parser.add_argument('--output-dir', type=str, default='outputs',
                         help='Directory to save results')
+    parser.add_argument('--epsilon', type=float, default=16.0, help='Max perturbation (out of 255)')
+    parser.add_argument('--iters', type=int, default=100, help='Number of PGD iterations')
+    parser.add_argument('--alpha', type=float, default=1.5, help='PGD step size (out of 255)')
+    parser.add_argument('--w-vis', type=float, default=1.0, help='Visual loss weight')
+    parser.add_argument('--w-sem', type=float, default=1.5, help='Semantic loss weight')
+    parser.add_argument('--w-str', type=float, default=2.5, help='Structural loss weight')
+    parser.add_argument('--concept', type=str, default="a potted plant", help='Target semantic concept')
     args = parser.parse_args()
     
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -251,7 +266,7 @@ def main():
             print(f"ERROR: No images found in {args.source}")
             return
         source_path = os.path.join(args.source, source_images[0])
-        clean_pil, immunized_pil = immunize_image(source_path, device)
+        clean_pil, immunized_pil = immunize_image(source_path, device, args)
         
         # Save them
         img_name = os.path.splitext(source_images[0])[0]

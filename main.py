@@ -3,6 +3,7 @@ import torchvision.transforms as T
 import numpy as np
 import os
 import math
+import argparse
 from PIL import Image
 
 from src.data import get_dataloader
@@ -33,7 +34,17 @@ def calculate_ssim(img1, img2, window_size=11):
 
 
 def main():
-    device = 'cpu'
+    parser = argparse.ArgumentParser(description="Run DiffShield Benchmark")
+    parser.add_argument('--epsilon', type=float, default=16.0, help='Max perturbation (out of 255)')
+    parser.add_argument('--iters', type=int, default=100, help='Number of PGD iterations')
+    parser.add_argument('--alpha', type=float, default=1.5, help='PGD step size (out of 255)')
+    parser.add_argument('--w-vis', type=float, default=1.0, help='Visual loss weight (w_alpha)')
+    parser.add_argument('--w-sem', type=float, default=1.5, help='Semantic loss weight (w_beta)')
+    parser.add_argument('--w-str', type=float, default=2.5, help='Structural loss weight (w_gamma)')
+    parser.add_argument('--concept', type=str, default="a potted plant", help='Target semantic concept to shift towards')
+    args = parser.parse_args()
+
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Running DiffShield on device: {device}")
     
     # Create output directory
@@ -43,12 +54,13 @@ def main():
     dataloader = get_dataloader(root_dir='celeba_hq_256', batch_size=1)
     
     # Initialize optimizer (PGD) and evaluator
-    optimizer = PGDOptimizer(epsilon=8/255, alpha=2/255, iters=40, device=device)
+    print(f"Hyperparameters: eps={args.epsilon}/255, iters={args.iters}, alpha={args.alpha}/255")
+    print(f"Loss weights: visual={args.w_vis}, semantic={args.w_sem}, structural={args.w_str}")
+    optimizer = PGDOptimizer(epsilon=args.epsilon/255, alpha=args.alpha/255, iters=args.iters, device=device)
     evaluator = Evaluator(device=device)
     
     # Generate proper target concept embedding using CLIP Text Encoder
-    # "a potted plant" is the orthogonal concept for semantic erasure
-    target_text = ["a potted plant"]
+    target_text = [args.concept]
     print(f"Encoding target concept: {target_text}")
     target_concept_embedding = optimizer.loss_fn.encode_target_text(target_text)
     print(f"Target embedding shape: {target_concept_embedding.shape}")
@@ -75,9 +87,9 @@ def main():
         immunized_image_tensor = optimizer.optimize(
             clean_image_tensor, 
             target_concept_embedding,
-            w_alpha=1.0, 
-            w_beta=1.0, 
-            w_gamma=1.0
+            w_alpha=args.w_vis, 
+            w_beta=args.w_sem, 
+            w_gamma=args.w_str
         )
         print("Optimization complete.")
         
@@ -133,7 +145,7 @@ def main():
         first_clean = next(iter(dataloader))[0].to(device)
         first_immunized = optimizer.optimize(
             first_clean, target_concept_embedding,
-            w_alpha=1.0, w_beta=1.0, w_gamma=1.0
+            w_alpha=args.w_vis, w_beta=args.w_sem, w_gamma=args.w_str
         )
         
         gradcam.visualize_comparison(
