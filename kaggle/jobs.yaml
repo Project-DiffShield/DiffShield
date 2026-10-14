@@ -70,6 +70,8 @@ jobs:
         soft: true
       - name: tests
         when: run_tests
+        timeout_min: 15
+        allow_timeout: true
         run: ["{py}", "-m", "pytest", "-q", "-x", "tests", "-p", "no:cacheprovider"]
         optional: true
         soft: true

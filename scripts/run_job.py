@@ -224,8 +224,9 @@ def b_resolve_splits(st, vars_, params, log):
         vars_["splits_dir"] = str(real)
         log(f"splits: using frozen splits in the bundle ({real})")
         return 0
-    if params.get("require_real_splits"):
-        log("splits: frozen splits (data/splits/test.txt ...) are missing from the bundle")
+    if not params.get("smoke") and not params.get("allow_smoke_splits"):
+        log("splits: the frozen splits (data/splits/test.txt, val.txt, ...) are missing from this bundle. Run S03 and put "
+            "its splits_out/*.txt into data/splits/ (bundle B2), or use PARAMS {'smoke': true} for a throw-away smoke run.")
         return 1
     d = Path(vars_["out"]) / "splits"
     rc = subprocess.call([sys.executable, "scripts/make_smoke_splits.py", "--out_dir", str(d)], cwd=code)
@@ -489,6 +490,8 @@ def run_job(jid, jobs, a, session_log):
     (out / "kaggle_session.json").write_text(json.dumps(sess, indent=2, default=str))
     results.mkdir(exist_ok=True)
     shutil.copy2(out / "kaggle_session.json", results / "kaggle_session.json")
+    if (results / run_id).is_dir():  # J01-style jobs: session time next to the run's gpu_time.json (GPU ledger)
+        shutil.copy2(out / "kaggle_session.json", results / run_id / "kaggle_session.json")
     if rc_job == 0:
         (out / "DONE").write_text("ok\n")
     zip_dir(out, work / f"{tag}_outputs.zip")
