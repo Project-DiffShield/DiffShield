@@ -29,7 +29,7 @@ Smoke runs use throw-away smoke splits if the bundle has no frozen `data/splits/
 | S03 | 2 (CPU) | `["S03"]`, accelerator None | code, celebamaskhq | B0+ | 0 | `splits_out/{test,messy,train,val,ae_pool}.txt`, `splits_meta.json` -> **commit into `data/splits/` for B2** |
 | S04 | 1 | `["S04"]` | code, celebamaskhq | B1 | 0.3 | `prot_<method>_test/` for 14 methods, `smoke_report.md` (s/image, peak memory) |
 | S05 | 1 | `["S05"]` | code, celebamaskhq | B1 | 0.4 | `smoke_*` edit runs for all editors/purifiers, GrIDPure attempt, LPIPS and threshold stages, `smoke_report.md` |
-| S06 | 1 | `["S06"]` | code, celebamaskhq | B2 | 13 | `optuna/` (trials.csv, `v2_final/final_candidate.yaml`), `prot_v2_final_{test,messy}/`, `eval_v2_final_H/` |
+| S06 | 1 | `["S06"]` | code, celebamaskhq | B2 | 13 | `optuna/` (trials.csv, `v2_final/final_candidate.yaml`), `prot_v2_final_{test,messy}/` (the Tier H edits moved to S16) |
 | S07 | 1 | `["S07"]` | code, celebamaskhq | B2 | 12 | `eval_ap_*_val` (antipure single-term ablation), `e0_clean_{H,M,P}/`, `S07/cache/clean_edits` (needed for the LPIPS pass), `thresholds/psr_thresholds.json` |
 | S08 | 2 | `["S08"]` | code, celebamaskhq | B2 | 10 | `prot_v1_{test,messy}/`, `eval_v1_{H,M,P}/` |
 | S09 | 2 | `["S09"]` | code, celebamaskhq | B2 | 11 | `prot_v2_main_*/`, `eval_v2_main_{H,M,P}/` |
@@ -39,7 +39,7 @@ Smoke runs use throw-away smoke splits if the bundle has no frozen `data/splits/
 | S13 | 5 | `["S13"]` | code, celebamaskhq | B2 | 12 | `prot_{photoguard,mist}_{test,messy}/`, `eval_pg_mist_{H,M,P}/` |
 | S14 | 5 | `["S14"]` | code, celebamaskhq | B2 | 14 | `prot_abl_{no_sem,no_pur}_test/`, `eval_abl_nosem_nopur_A/`, `prot_noise_*`, `eval_noise_{H,M}/` |
 | S15 | 1 | `["S15"]`, `PARAMS={"prev_root": "/kaggle/input/<S06 output>"}` | code, celebamaskhq, **S06 output** | B2 | 7 | `adaptive_ae/ae_final.pt`, `prot_v2_final_ae_pool/`, `prot_v1_test/`, `eval_ae_{clean,v1,v2_final}/` |
-| S16 | 1 | `["S16"]`, `PARAMS={"prev_root": "/kaggle/input/<S06 output>"}` | code, celebamaskhq, **S06 output** | B2 | 7 | `eval_v2_final_{P,M,H_sdxl}/` (reads the S06 protected images; protects nothing) |
+| S16 | 1 | `["S16"]`, `PARAMS={"prev_root": "/kaggle/input/<S06 output>"}` | code, celebamaskhq, **S06 output** | B2 | 7 | `eval_v2_final_{H,P,M,H_sdxl}/` (reads the S06 protected images; protects nothing) |
 | S17 | 4 | `["S17"]` | code, celebamaskhq | **B3** (has tuned `config/parts/final.yaml`) | 13 | `prot_eps{2,6}_test/`, `eval_eps{2,6}_E9/` |
 | S18 | 2 | `["S18"]` | code, celebamaskhq | **B3** | 6 | `prot_eps8_test/`, `eval_eps8_E9/` |
 
@@ -51,3 +51,9 @@ Notes
 - Several sessions can be chained in one run: `JOB_IDS = ["S10", "S12"]` (outputs in separate folders; a failure in one does not stop the next).
 - A session that failed a step is not marked DONE; rerun the same cell (or with `RESUME_FROM`) and only unfinished work repeats.
 - After downloads: edit LPIPS is computed on the edits that were saved as JPEG q90 (`python scripts/evaluate.py --stage lpips --out <eval dir> --clean_edits_dir <S07>/results/.../cache/clean_edits`), PSR thresholds come from S07 `thresholds/psr_thresholds.json`.
+
+## Changes after the S04t/S04u/S05 smoke tests (2026-10-15)
+- Measured v2 protection cost is 2-3x the plan (`docs/COST_MEASURED.md`); the VAE now runs under fp16 autocast by default (`runtime.vae_dtype_protect: autocast`, ~2x faster).
+- Pre-agreed fallback cut: the four ablations (S11, S14) and the epsilon sweep (S17, S18) are protected and edited on the **first 50 test images** (`--limit 50`) instead of 100, with the same K=4. Compare them with v2_main / v2_final restricted to the same 50 images (paired). Limitation to report: n = 50 for E7 and E9.
+- S06 no longer runs the Tier H edits of v2_final (S16 does), so S06 stays under the 11 h wall guard.
+- Quota is billed by wall-clock time (acct1: 1h43m used while about 1.6-1.7 h of 2-GPU sessions had run).

@@ -30,7 +30,9 @@ class EnsembleVis:
     def _enc(self, name: str, x: torch.Tensor) -> torch.Tensor:
         if name == "sd15":
             return self.m.encode_mean(x, scaled=False)
-        return self.extra[name].encode(x.float()).latent_dist.mean
+        with self.m._vae_ctx():  # same fp16 autocast as the SD1.5 VAE (runtime.vae_dtype_protect)
+            z = self.extra[name].encode(x.float()).latent_dist.mean
+        return z.float()
 
     def prepare(self, x: torch.Tensor):
         with torch.no_grad():

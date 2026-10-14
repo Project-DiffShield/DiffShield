@@ -249,7 +249,7 @@ jobs:
 
   # ---------------------------------------------------------------------------------------------- S06
   S06:
-    title: S06 Optuna on val (cap 3 h) -> tuned v2_final -> protect v2_final test+messy -> Tier H edits (no SDXL)
+    title: S06 Optuna on val (cap 3 h) -> tuned v2_final -> protect v2_final test+messy (edits are in S16)
     accelerator: gpu_t4x2
     params: {smoke: false, optuna_trials: 16, optuna_images: 10, optuna_iters: 20, confirm_images: 20, final_yaml: ""}
     smoke_params: {optuna_trials: 2, optuna_images: 2, optuna_iters: 3, confirm_images: 2}
@@ -278,12 +278,7 @@ jobs:
         optional: true
       - {macro: protect, with: {method: v2_final, split: test}}
       - {macro: protect, with: {method: v2_final, split: messy}}
-      - macro: evaluate
-        with:
-          name: eval_h
-          jobs:
-            - {name: eval_v2_final_H, tier: H, method: v2_final, split: test,
-               editor: "sd15_img2img,ip2p,sd_inpaint,ipadapter_faceid"}
+      # Tier H edits of v2_final moved to S16 (S04t/S04u: v2_final costs ~2x the plan, so S06 would pass the 11 h wall guard)
 
   # ---------------------------------------------------------------------------------------------- S07
   S07:
@@ -385,13 +380,13 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test]}}
-      - {macro: protect, with: {method: abl_vis_only, split: test}}
-      - {macro: protect, with: {method: abl_den_only, split: test}}
+      - {macro: protect, with: {method: abl_vis_only, split: test, extra: ["--limit", "50"]}}
+      - {macro: protect, with: {method: abl_den_only, split: test, extra: ["--limit", "50"]}}
       - macro: evaluate
         with:
           name: e7a
           jobs:
-            - {name: eval_abl_vis_den_A, tier: A, method: "abl_vis_only,abl_den_only", split: test}
+            - {name: eval_abl_vis_den_A, tier: A, method: "abl_vis_only,abl_den_only", split: test, limit: 50}
 
   # ---------------------------------------------------------------------------------------------- S12
   S12:
@@ -441,13 +436,13 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test, messy]}}
-      - {macro: protect, with: {method: abl_no_sem, split: test}}
-      - {macro: protect, with: {method: abl_no_pur, split: test}}
+      - {macro: protect, with: {method: abl_no_sem, split: test, extra: ["--limit", "50"]}}
+      - {macro: protect, with: {method: abl_no_pur, split: test, extra: ["--limit", "50"]}}
       - macro: evaluate
         with:
           name: e7b
           jobs:
-            - {name: eval_abl_nosem_nopur_A, tier: A, method: "abl_no_sem,abl_no_pur", split: test}
+            - {name: eval_abl_nosem_nopur_A, tier: A, method: "abl_no_sem,abl_no_pur", split: test, limit: 50}
       - {macro: protect, with: {method: noise_uniform, split: test}}
       - {macro: protect, with: {method: noise_uniform, split: messy}}
       - macro: protect
@@ -501,7 +496,7 @@ jobs:
 
   # ---------------------------------------------------------------------------------------------- S16
   S16:
-    title: S16 v2_final remainder from the S06 protected images - SDXL (H), Tier P, FaceID-P, IP2P-P, messy (M)
+    title: S16 v2_final edits from the S06 protected images - Tier H (no SDXL), SDXL (H), Tier P, FaceID-P, IP2P-P, messy (M)
     accelerator: gpu_t4x2
     params: {smoke: false, prev_root: "", final_yaml: ""}
     steps:
@@ -519,6 +514,9 @@ jobs:
         with:
           name: v2_final_rest
           jobs:
+            - {name: eval_v2_final_H, tier: H, method: v2_final, split: test,
+               editor: "sd15_img2img,ip2p,sd_inpaint,ipadapter_faceid",
+               protected_dir: "{v2final_results}/prot_v2_final_test/images"}
             - {name: eval_v2_final_P, tier: P, method: v2_final, split: test,
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
             - {name: eval_v2_final_M, tier: M, method: v2_final, split: messy,
@@ -534,18 +532,18 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test]}}
-      - {macro: protect, with: {method: eps2, split: test}}
+      - {macro: protect, with: {method: eps2, split: test, extra: ["--limit", "50"]}}
       - macro: evaluate
         with:
           name: e9_eps2
           jobs:
-            - {name: eval_eps2_E9, tier: E9, method: eps2, split: test}
-      - {macro: protect, with: {method: eps6, split: test}}
+            - {name: eval_eps2_E9, tier: E9, method: eps2, split: test, limit: 50}
+      - {macro: protect, with: {method: eps6, split: test, extra: ["--limit", "50"]}}
       - macro: evaluate
         with:
           name: e9_eps6
           jobs:
-            - {name: eval_eps6_E9, tier: E9, method: eps6, split: test}
+            - {name: eval_eps6_E9, tier: E9, method: eps6, split: test, limit: 50}
 
   S18:
     title: S18 E9 eps=8 (protect + edits); needs config/parts/final.yaml in the bundle (B3) or final_yaml
@@ -554,9 +552,9 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test]}}
-      - {macro: protect, with: {method: eps8, split: test}}
+      - {macro: protect, with: {method: eps8, split: test, extra: ["--limit", "50"]}}
       - macro: evaluate
         with:
           name: e9_eps8
           jobs:
-            - {name: eval_eps8_E9, tier: E9, method: eps8, split: test}
+            - {name: eval_eps8_E9, tier: E9, method: eps8, split: test, limit: 50}
