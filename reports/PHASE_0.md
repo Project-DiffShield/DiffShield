@@ -8,7 +8,7 @@ STATUS: **done. The GPU reproduction J01 ran on 70 images and passes the propose
 
 - The three runtime patches from the v1 notebook are now ordinary commits, and v1 runs through one command (`scripts/run_protect.py --method v1`). Nothing changes v1's algorithm.
 - **Budget confirmed: v1's "8/255" is 4/255 on the standard 0-255 scale.** In the reproduced protected PNGs the largest change of any pixel value is exactly 4 gray levels, in all 70 images. `budget.eps_255 = 4`, `budget.eps_confirmed: true`.
-- **v1's invisibility numbers reproduce.** PSNR 41.99 dB (v1: 41.91), SSIM 0.9754 (v1: 0.9750), LPIPS 0.2314 (v1: 0.2316), n = 70; every paired difference is far inside the proposed tolerance. 0 of 70 images break PSNR >= 38 or SSIM >= 0.95.
+- **v1's invisibility numbers reproduce.** PSNR 41.99 dB (v1: 41.91), SSIM 0.9754 (v1: 0.9750), LPIPS 0.2314 (v1: 0.2316), n = 70; every paired difference is far inside the accepted tolerance. 0 of 70 images break PSNR >= 38 or SSIM >= 0.95.
 - Cost: 45.6 GPU-s per image on a T4 (40 iterations), about 1.8x the planner's estimate of 25 s; 29 min wall for 70 images on 2 GPUs.
 
 ## Budget finding
@@ -46,7 +46,7 @@ Paired comparison with v1's per-image CSV (pairing by original file name, `compa
 
 The PSNR difference is statistically above zero but tiny (0.075 dB, 15% of the tolerance); the likely cause is the different random draws (per-image seeds instead of v1's global seed 42, see below), not a change in the method (unverified).
 Second-person run agreement (`compare_runs.py --a J01 --b J01b`): not run. J01b is optional (only needed for a "reproduced by a second person" claim); without it the report must not make that claim.
-Gate with the proposed tolerance (mean PSNR within ±0.5 dB, SSIM ±0.005, LPIPS ±0.03; Linf exactly 8/255; PNG max |diff| = 4): **PASS** on every item. The tolerance is a proposal awaiting the user's acceptance (open question 1).
+Gate with the accepted tolerance (mean PSNR within ±0.5 dB, SSIM ±0.005, LPIPS ±0.03; Linf exactly 8/255; PNG max |diff| = 4): **PASS** on every item. The user accepted this tolerance on 2026-10-14.
 
 ## Differences from the original v1 run (and their expected effect)
 
@@ -88,11 +88,11 @@ Gate with the proposed tolerance (mean PSNR within ±0.5 dB, SSIM ±0.005, LPIPS
 
 ## Open questions for the user
 
-1. Accept the proposed reproduction tolerance (±0.5 dB PSNR, ±0.005 SSIM, ±0.03 LPIPS)?
+1. ~~Accept the proposed reproduction tolerance?~~ Accepted by the user on 2026-10-14 (±0.5 dB PSNR, ±0.005 SSIM, ±0.03 LPIPS).
 2. Enable "Pin to original environment" in the Kaggle notebooks so the image cannot drift during the 48 h? (`requirements.txt` is pinned; `check_env.py` flags drift but only stops the job for torch/torchvision/diffusers/transformers/kornia.)
 
 ## Artifacts
 
 `results/<run_id>/{config.json, git_hash.txt, versions.json, env.json, seed.txt, command*.txt, metrics.csv, summary.json, gpu_time.json, budget_check.json, compare_v1.json, tables/}`. Images stay on Kaggle / local disk, never in git.
 
-Checkpoint: **Phase 0 STOP gate passed** (budget 4/255 confirmed; v1 invisibility reproduced within the proposed tolerance, n = 70). Waiting only for the user to accept the tolerance.
+Checkpoint: **Phase 0 STOP gate passed** (budget 4/255 confirmed; v1 invisibility reproduced within the accepted tolerance, n = 70). Phase 0 is closed.
