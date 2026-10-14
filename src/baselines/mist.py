@@ -1,30 +1,30 @@
 """Mist (Liang & Wu 2023, "Mist: Towards Improved Adversarial Examples for Diffusion Models").
 
-THIS IS A REIMPLEMENTATION from the published method description and from memory of the public code
-(psyker-team/mist); the official repo was NOT available in this workspace (no network access from the coding
-agent) and has NOT been run. Report it as "Mist (reimplementation)", never as the official tool.
+THIS IS A REIMPLEMENTATION (label kept; never call it the official tool) checked against the public code.
+source_verified: https://github.com/psyker-team/mist @ 99f5f3c455022bef77ef25ba440a4289ea472d25 (mist_v3.py,
+mist_utils.py, Masked_PGD.py). Official (mode 2 = fused) as read from that commit:
+    minimize  sum||E(x') - E(T)||^2  -  rate * L_sem(x')            (mist_v3.py L129-149; advertorch targeted PGD = descent)
+  * L_tex = nn.MSELoss(reduction="sum") between get_first_stage_encoding(E(x)) and that of the target T, i.e. SCALED
+    (x0.18215) posterior SAMPLES, summed (mist_v3.py L102, L137-138, L147).
+  * L_sem = LatentDiffusion.forward(z, c)[0] on a fresh encoding of a random crop of x (no-op at full size): mean
+    eps-prediction MSE at t ~ U[0,1000), one noise draw, cond = "a painting" (style default; "a photo" if --object)
+    (mist_v3.py L119, L122-127, L140, L177-178, L193).
+  * fused weight rate = 10**(args.rate+3); CLI default --rate 1 -> 1e4; init() default rate=10000 (mist_utils.py L79-86,
+    mist_v3.py L152-154, L280). mode default 2 (mist_utils.py L71-77).
+  * steps 100, alpha 1/255 (x2 for the [-1,1] scale), epsilon 16 (strength; "final budget (epsilon+1)/255"), input 512,
+    seed 23, random start uniform in the eps ball, no step decay (mist_utils.py L35-50, mist_v3.py L152, L198-205;
+    Masked_PGD.py L175-192).
+  * target image: repo-root MIST.png, bicubic-resized to the input size (mist_v3.py L284, mist_utils.py L141-156).
 
-Method as implemented (fused loss, gradient steps on the image under an L_inf budget):
-    maximize   w_sem * L_sem(x')  -  w_tex * L_tex(x')
-  * L_sem  (semantic loss)  = E_{t,eps} || eps_theta( sqrt(abar_t) * s*E(x') + sqrt(1-abar_t) * eps, t, c ) - eps ||^2
-            i.e. the SD UNet denoising error on the protected image (AdvDM-style), MAXIMIZED, with s the VAE
-            scaling factor and c the text conditioning (default: empty prompt).
-  * L_tex  (textural loss)  = || E(x') - E(T) ||^2 over VAE-encoder latent means, MINIMIZED, where T is a
-            high-contrast target pattern image. Pulls the encoder output toward a texture so edits inherit
-            visible patterns.
-  PGD: random start, sign step, projection onto the eps ball and [-1,1]; quantized to the uint8 grid at the end.
-
-UNVERIFIED / deviations (must be stated wherever results are reported):
-  * Loss weights (w_sem=1, w_tex=1), iteration count (100), step size (1/255), timestep range ([1,1000)),
-    number of noise draws per step, and the sign conventions are my reading of the paper, NOT checked against
-    the official code (whose default weighting / "rate" and mode flag I could not verify).
-  * Target pattern: the official repo ships its own target image (a blue/white textured pattern, "MIST.png").
-    That asset is not vendored here; ``make_texture_target`` builds a deterministic procedural high-contrast
-    pattern instead, or pass ``target_image`` / config ``baselines.mist.target_image`` (path) to use the
-    official asset when you have it. This changes the visual signature of the perturbed edits.
-  * Official Mist v2 uses a larger budget by default (UNVERIFIED, ~16/255); here the budget is OURS (4/255
-    standard scale) for a same-budget comparison.
-  * No Mist-specific preprocessing (e.g. fixed 512 resize, their pipeline wrappers) is reproduced.
+Ours now: w_sem=1e4, w_tex=1 with a SUM of squared SCALED-latent differences, t ~ U[0,1000), prompt "a painting",
+steps 100, step 1/255 (standard). eps is OUR budget (4/255), not 16.
+Remaining deviations (state wherever results are reported):
+  * L_tex uses the posterior MEAN, not a posterior sample (our encode_fn is deterministic); L_sem reuses the same
+    latent instead of a second, separate encode of a random crop.
+  * Target pattern: MIST.png is in a GPL-3.0 repo; NOT vendored. Fetch it yourself (see config/parts/baselines.yaml
+    ``mist.target_image`` and ``mist.target_image_url``) and set the path; otherwise ``make_texture_target`` (procedural
+    stand-in) is used and this must be reported.
+  * Final image is quantized to the uint8 grid inside the eps ball; no 512 resize / block splitting / mask support.
 """
 from __future__ import annotations
 
@@ -35,6 +35,8 @@ import torch
 
 from .noise_control import from_u8, int_budget, linf_u8, psnr_tensors, quantize_to_budget, to_model_scale, to_u8
 from .photoguard import make_generator, project, step_size_at
+
+SOURCE_VERIFIED = "https://github.com/psyker-team/mist@99f5f3c455022bef77ef25ba440a4289ea472d25 mist_v3.py"
 
 EncodeFn = Callable[[torch.Tensor], torch.Tensor]
 # unet_fn(z_t [B,4,h,w], t [B] long, cond) -> eps_pred [B,4,h,w]
@@ -66,8 +68,8 @@ class MistProtector:
     name = "mist"
 
     def __init__(self, encode_fn: EncodeFn, unet_fn: UNetFn, alphas_cumprod: torch.Tensor, cond: torch.Tensor,
-                 eps_255: float = 4.0, step_255: float = 1.0, iters: int = 100, w_sem: float = 1.0, w_tex: float = 1.0,
-                 t_min: int = 1, t_max: Optional[int] = None, n_noise: int = 1, scaling_factor: float = 0.18215,
+                 eps_255: float = 4.0, step_255: float = 1.0, iters: int = 100, w_sem: float = 1e4, w_tex: float = 1.0,
+                 t_min: int = 0, t_max: Optional[int] = None, n_noise: int = 1, scaling_factor: float = 0.18215,
                  target_image: Optional[torch.Tensor] = None, step_decay: bool = False, random_start: bool = True,
                  loss_scale: float = 1.0):
         self.encode_fn = encode_fn
@@ -99,7 +101,8 @@ class MistProtector:
         return total / self.n_noise
 
     def textural_loss(self, z_mean: torch.Tensor, z_target: torch.Tensor) -> torch.Tensor:
-        return (z_mean - z_target).pow(2).mean()
+        # official: MSELoss(reduction="sum") on scaled latents
+        return ((z_mean - z_target) * self.sf).pow(2).sum()
 
     def _target_latent(self, x: torch.Tensor) -> torch.Tensor:
         h, w = x.shape[-2:]
@@ -140,7 +143,8 @@ class MistProtector:
             s = step_size_at(step_m, i, self.iters, self.step_decay)
             x_adv = project(x_adv.detach() + s * grad.sign(), x_ref, eps_m)
         x_pub = quantize_to_budget(x_ref, x_adv.detach(), self.eps_255).to(x.dtype)
-        info = {"method": self.name, "implementation": "reimplementation (unverified vs official)",
+        info = {"method": self.name, "implementation": "reimplementation", "source_verified": SOURCE_VERIFIED,
+                "target": "custom" if self.target_image is not None else "procedural_standin",
                 "eps_255": self.eps_255, "step_255": self.step_255, "iters": self.iters, "seed": int(seed),
                 "w_sem": self.w_sem, "w_tex": self.w_tex,
                 "obj_first": first[0] if first else float("nan"), "obj_last": last[0] if last else float("nan"),
