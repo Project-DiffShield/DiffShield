@@ -99,17 +99,22 @@ def expand(argv, vars_):
     return out
 
 
-def pip_install(code: Path, log):
+def pip_install(code: Path, log, extras=()):
     if not (os.path.exists("/kaggle") or os.environ.get("DIFFSHIELD_FORCE_INSTALL")):
         log("pip_install: not on Kaggle, skipping (set DIFFSHIELD_FORCE_INSTALL=1 to force)")
         return 0
-    lines, on = [], False
+    want = {""} | {f"[{e}]" for e in extras}  # sections: "# === INSTALL (core)" and "# === INSTALL[eval]"
+    lines, section = [], None
     for l in (code / "requirements.txt").read_text(encoding="utf-8").splitlines():
         if l.startswith(MARKER):
-            on = True
+            rest = l[len(MARKER):]
+            section = rest[: rest.index("]") + 1] if rest.startswith("[") else ""
+            continue
+        if l.startswith("# === OPTIONAL"):
+            section = None
             continue
         s = l.split("#")[0].strip()
-        if on and s:
+        if section is not None and section in want and s:
             lines.append(s)
     cmd = [sys.executable, "-m", "pip", "install", "-q"] + lines
     log("pip_install: " + " ".join(cmd))
@@ -119,7 +124,7 @@ def pip_install(code: Path, log):
 def run_step(step, vars_, env_base, logdir: Path, log):
     name = step["name"]
     if step.get("builtin") == "pip_install":
-        return pip_install(Path(vars_["code"]), log)
+        return pip_install(Path(vars_["code"]), log, step.get("extras", []))
     argv = expand(step["run"], vars_)
     n_gpus = vars_["n_gpus"]
     js = vars_["job_shard_t"]

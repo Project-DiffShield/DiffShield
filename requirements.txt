@@ -6,7 +6,7 @@
 # --- provided by the Kaggle image (verified, NOT reinstalled by the job runner) ---
 # torch, torchvision, numpy, pillow, pandas, pyyaml, scikit-learn, scikit-image
 #
-# === INSTALL (job runner pip-installs everything below this line) ===
+# === INSTALL (core: job runner pip-installs everything below this line, up to the next section) ===
 diffusers>=0.28
 transformers>=4.40
 accelerate
@@ -15,7 +15,14 @@ kornia>=0.7.0
 lpips==0.1.4
 kneed>=0.8
 scikit-image
-scikit-learn
+scikit-learn>=1.3
 pandas
 pyyaml
 tqdm
+optuna>=3.5
+# === INSTALL[eval] (only for jobs that set extras: [eval]; face scoring) ===
+insightface==0.7.3          # compiles Cython at install time; buffalo_l pack downloads on first use (unverified on Kaggle)
+onnxruntime-gpu             # pin to the Kaggle CUDA/cuDNN after J00; falls back to CPU if mismatched (logged)
+opencv-python-headless
+# === OPTIONAL (never auto-installed) ===
+# facenet-pytorch (L_id / second recogniser): pip install --no-deps facenet-pytorch ; onnx2torch (optional L_id backend)
