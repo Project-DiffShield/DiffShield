@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S05/eval_jobs.smoke_tiers.g1.yaml --shard 1/2

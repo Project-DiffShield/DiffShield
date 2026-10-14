@@ -1,0 +1,48 @@
+[20:07:20] S05: start: S05 edit/purifier smoke - all editors, purifiers, GrIDPure attempt, LPIPS and threshold stages (5 images, 1 seed) | gpus=2 smoke=True n_images=5 iters=5 resume=None
+[20:07:20] S05: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[20:07:54] S05: step install: rc=0 (33s)
+[20:07:54] S05: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[20:07:59] S05: step check_env: rc=0 (6s)
+[20:07:59] S05: splits: using frozen splits in the bundle (/kaggle/working/DiffShield/data/splits)
+[20:07:59] S05: step resolve_splits: rc=0 (0s)
+[20:07:59] S05: config: no tuned final.yaml; v2_final = hand-set v2_final_default
+[20:07:59] S05: step make_config: rc=0 (0s)
+[20:07:59] S05: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/working/DiffShield/data/splits --out_dir /kaggle/working/S05/data --splits test val messy --no_cache
+[20:08:16] S05: step prepare_data: rc=0 (17s)
+[20:08:16] S05: [protect_prot_noise_uniform_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S05/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S05/data/test --list /kaggle/working/DiffShield/data/splits/test.txt --limit 5 --run_id prot_noise_uniform_test --output_root /kaggle/working/S05/results --checkpoint_every 5 --split test --set budget.iters=5 --set baselines.photoguard.iters=5 --set baselines.mist.iters=5 --shard 0/2
+[20:08:16] S05: [protect_prot_noise_uniform_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S05/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S05/data/test --list /kaggle/working/DiffShield/data/splits/test.txt --limit 5 --run_id prot_noise_uniform_test --output_root /kaggle/working/S05/results --checkpoint_every 5 --split test --set budget.iters=5 --set baselines.photoguard.iters=5 --set baselines.mist.iters=5 --shard 1/2
+[20:08:41] S05: [protect_prot_noise_uniform_test] protect_prot_noise_uniform_test.gpu0.log exited 0; tail: ['Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth', '[20:08:38] [3/3] 10573 psnr=40.72 ssim=0.9493 gpu_s=0.0', '[20:08:39] done']
+[20:08:41] S05: [protect_prot_noise_uniform_test] protect_prot_noise_uniform_test.gpu1.log exited 0; tail: ['Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth', '[20:08:38] [2/2] 10457 psnr=40.72 ssim=0.9425 gpu_s=0.0', '[20:08:38] done']
+[20:08:41] S05: step protect_prot_noise_uniform_test: rc=0 (25s)
+[20:08:41] S05: [merge_prot_noise_uniform_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S05/results/prot_noise_uniform_test
+[20:08:42] S05: step merge_prot_noise_uniform_test: rc=0 (1s)
+[20:08:42] S05: [protect_prot_noise_uniform_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S05/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S05/data/val --list /kaggle/working/DiffShield/data/splits/val.txt --limit 5 --run_id prot_noise_uniform_val --output_root /kaggle/working/S05/results --checkpoint_every 5 --split val --set budget.iters=5 --set baselines.photoguard.iters=5 --set baselines.mist.iters=5 --shard 0/2
+[20:08:42] S05: [protect_prot_noise_uniform_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S05/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S05/data/val --list /kaggle/working/DiffShield/data/splits/val.txt --limit 5 --run_id prot_noise_uniform_val --output_root /kaggle/working/S05/results --checkpoint_every 5 --split val --set budget.iters=5 --set baselines.photoguard.iters=5 --set baselines.mist.iters=5 --shard 1/2
+[20:08:52] S05: [protect_prot_noise_uniform_val] protect_prot_noise_uniform_val.gpu0.log exited 0; tail: ['Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth', '[20:08:50] [3/3] 13030 psnr=41.01 ssim=0.9555 gpu_s=0.0', '[20:08:50] done']
+[20:08:52] S05: [protect_prot_noise_uniform_val] protect_prot_noise_uniform_val.gpu1.log exited 0; tail: ['Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth', '[20:08:49] [2/2] 11817 psnr=40.66 ssim=0.9403 gpu_s=0.0', '[20:08:49] done']
+[20:08:52] S05: step protect_prot_noise_uniform_val: rc=0 (10s)
+[20:08:52] S05: [merge_prot_noise_uniform_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S05/results/prot_noise_uniform_val
+[20:08:52] S05: step merge_prot_noise_uniform_val: rc=0 (1s)
+[20:08:52] S05: [protect_prot_noise_uniform_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S05/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S05/data/messy --list /kaggle/working/DiffShield/data/splits/messy.txt --limit 5 --run_id prot_noise_uniform_messy --output_root /kaggle/working/S05/results --checkpoint_every 5 --split messy --set budget.iters=5 --set baselines.photoguard.iters=5 --set baselines.mist.iters=5 --shard 0/2
+[20:08:52] S05: [protect_prot_noise_uniform_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S05/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S05/data/messy --list /kaggle/working/DiffShield/data/splits/messy.txt --limit 5 --run_id prot_noise_uniform_messy --output_root /kaggle/working/S05/results --checkpoint_every 5 --split messy --set budget.iters=5 --set baselines.photoguard.iters=5 --set baselines.mist.iters=5 --shard 1/2
+[20:09:02] S05: [protect_prot_noise_uniform_messy] protect_prot_noise_uniform_messy.gpu0.log exited 0; tail: ['Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth', '[20:09:00] [3/3] 19617 psnr=40.68 ssim=0.9607 gpu_s=0.0', '[20:09:00] done']
+[20:09:02] S05: [protect_prot_noise_uniform_messy] protect_prot_noise_uniform_messy.gpu1.log exited 0; tail: ['Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth', '[20:09:00] [2/2] 18692 psnr=40.80 ssim=0.9428 gpu_s=0.0', '[20:09:00] done']
+[20:09:02] S05: step protect_prot_noise_uniform_messy: rc=0 (10s)
+[20:09:02] S05: [merge_prot_noise_uniform_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S05/results/prot_noise_uniform_messy
+[20:09:03] S05: step merge_prot_noise_uniform_messy: rc=0 (1s)
+[20:09:03] S05: [smoke_tiers] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S05/eval_jobs.smoke_tiers.g0.yaml --shard 0/2
+[20:09:03] S05: [smoke_tiers] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S05/eval_jobs.smoke_tiers.g1.yaml --shard 1/2
+[20:11:58] S05: [smoke_tiers] smoke_tiers.gpu1.log exited 1; tail: ['  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 659, in protected_path', '    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")', 'FileNotFoundError: protected image for 22599 not found in /kaggle/working/S05/results/prot_noise_uniform_messy/images']
+[20:12:28] S05: [smoke_tiers] smoke_tiers.gpu0.log exited 1; tail: ['  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 659, in protected_path', '    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")', 'FileNotFoundError: protected image for 4334 not found in /kaggle/working/S05/results/prot_noise_uniform_messy/images']
+[20:12:28] S05: step smoke_tiers: rc=1 (205s)
+[20:12:28] S05: [smoke_all_purifiers] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S05/eval_jobs.smoke_all_purifiers.g0.yaml --shard 0/2
+[20:12:28] S05: [smoke_all_purifiers] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S05/eval_jobs.smoke_all_purifiers.g1.yaml --shard 1/2
+[20:13:38] S05: [smoke_all_purifiers] smoke_all_purifiers.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[20:13:38] S05: [smoke_all_purifiers] smoke_all_purifiers.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[20:13:38] S05: step smoke_all_purifiers: rc=0 (70s)
+[20:13:38] S05: [lpips_stage] /usr/bin/python3 scripts/evaluate.py --stage lpips --config /kaggle/working/S05/cfg/config.yaml --out /kaggle/working/S05/results/smoke_noise_uniform_test --split test --source_dir /kaggle/working/S05/data/test --cache_dir /kaggle/working/S05/cache --clean_edits_dir /kaggle/working/S05/cache/clean_edits
+[20:13:40] S05: step lpips_stage: rc=0 (2s)
+[20:13:40] S05: [thresholds_stage] /usr/bin/python3 scripts/evaluate.py --stage thresholds --config /kaggle/working/S05/cfg/config.yaml --split test --split_file /kaggle/working/DiffShield/data/splits/test.txt --source_dir /kaggle/working/S05/data/test --cache_dir /kaggle/working/S05/cache --out /kaggle/working/S05/results/thresholds --limit 5
+[20:13:47] S05: step thresholds_stage: rc=1 (6s)
+[20:13:47] S05: [smoke_report] /usr/bin/python3 scripts/smoke_report.py --root /kaggle/working/S05/results --out /kaggle/working/S05/results/smoke_report.md
+[20:13:47] S05: step smoke_report: rc=0 (1s)

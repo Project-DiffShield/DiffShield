@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S05/eval_jobs.smoke_all_purifiers.g0.yaml --shard 0/2

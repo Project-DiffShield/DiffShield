@@ -48,7 +48,7 @@ eval:
     swin2sr:        {id: "caidas/swin2SR-classical-sr-x2-64", revision: null}                 # unverified
     clip_eval:      {id: "openai/clip-vit-large-patch14", revision: null}                     # CLIP-I metric
     lpips_net: vgg
-    arcface: {pack: buffalo_l, det_size: [640, 640]}                                          # insightface; pack downloads on first use (unverified on Kaggle)
+    arcface: {pack: buffalo_l, det_size: [640, 640], pad_frac: 0.4}                                          # insightface; pack downloads on first use (unverified on Kaggle)
 
   editors:
     sd15_img2img:     {kind: sd15_img2img, model: sd15, prompts: img2img, default_strength: 0.55, max_batch: 3}

@@ -78,6 +78,7 @@ def read_split(args, cfg) -> list:
     sf = Path(args.split_file) if args.split_file else Path(cfg.get("paths", {}).get("splits_dir", "data/splits")) / f"{args.split}.txt"
     if sf.is_file():
         ids = [Path(l.strip()).stem for l in sf.read_text().splitlines() if l.strip() and not l.startswith("#")]
+        ids = sorted(ids)  # same order as src.utils.io.list_images (run_protect), so --limit N picks the same images (S05)
     else:
         src = Path(args.source_dir)
         ids = sorted({p.stem for p in src.iterdir() if p.suffix.lower() in er.IMG_EXTS})

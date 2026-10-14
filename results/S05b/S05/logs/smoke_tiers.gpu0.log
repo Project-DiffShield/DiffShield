@@ -1,0 +1,396 @@
+[jobs] smoke_clean_test: start
+[runner] 15 jobs, 15 to do (0 already complete)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  1%|          | 2075/281857 [00:00<00:13, 20352.51KB/s]  2%|▏         | 6270/281857 [00:00<00:08, 32948.75KB/s]  5%|▍         | 13771/281857 [00:00<00:05, 52068.03KB/s]  8%|▊         | 22852/281857 [00:00<00:03, 67319.80KB/s] 11%|█▏        | 32322/281857 [00:00<00:03, 77173.42KB/s] 14%|█▍        | 40050/281857 [00:00<00:03, 76256.95KB/s] 17%|█▋        | 47685/281857 [00:00<00:03, 76272.45KB/s] 20%|█▉        | 55318/281857 [00:00<00:02, 76196.03KB/s] 22%|██▏       | 62942/281857 [00:00<00:02, 74997.31KB/s] 26%|██▌       | 72162/281857 [00:01<00:02, 80224.04KB/s] 29%|██▉       | 81447/281857 [00:01<00:02, 84040.56KB/s] 32%|███▏      | 90715/281857 [00:01<00:02, 86649.15KB/s] 36%|███▌      | 100095/281857 [00:01<00:02, 88787.87KB/s] 39%|███▉      | 109326/281857 [00:01<00:01, 89847.27KB/s] 42%|████▏     | 118651/281857 [00:01<00:01, 90868.01KB/s] 45%|████▌     | 127854/281857 [00:01<00:01, 91216.38KB/s] 49%|████▊     | 137070/281857 [00:01<00:01, 91498.67KB/s] 52%|█████▏    | 146223/281857 [00:01<00:01, 91491.41KB/s] 55%|█████▌    | 155504/281857 [00:01<00:01, 91883.55KB/s] 58%|█████▊    | 164734/281857 [00:02<00:01, 92006.89KB/s] 62%|██████▏   | 173936/281857 [00:02<00:01, 90756.77KB/s] 65%|██████▍   | 183074/281857 [00:02<00:01, 90940.83KB/s] 68%|██████▊   | 192438/281857 [00:02<00:00, 91743.00KB/s] 72%|███████▏  | 201789/281857 [00:02<00:00, 92270.18KB/s] 75%|███████▍  | 211019/281857 [00:02<00:00, 89036.59KB/s] 78%|███████▊  | 219948/281857 [00:02<00:00, 87567.31KB/s] 81%|████████  | 228725/281857 [00:02<00:00, 86515.31KB/s] 84%|████████▍ | 237391/281857 [00:02<00:00, 85844.62KB/s] 87%|████████▋ | 246095/281857 [00:02<00:00, 86192.02KB/s] 90%|█████████ | 254722/281857 [00:03<00:00, 83364.49KB/s] 93%|█████████▎| 263080/281857 [00:03<00:00, 83232.12KB/s] 97%|█████████▋| 272261/281857 [00:03<00:00, 85732.32KB/s]100%|██████████| 281857/281857 [00:03<00:00, 84037.97KB/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:  15%|█▌        | 2/13 [00:00<00:00, 15.64it/s]Fetching 13 files:  54%|█████▍    | 7/13 [00:00<00:00, 32.71it/s]Fetching 13 files:  85%|████████▍ | 11/13 [00:03<00:00,  2.53it/s]Fetching 13 files: 100%|██████████| 13/13 [00:07<00:00,  1.16it/s]Fetching 13 files: 100%|██████████| 13/13 [00:07<00:00,  1.64it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:15<01:17, 15.43s/it]Loading pipeline components...:  33%|███▎      | 2/6 [00:15<00:26,  6.50s/it]Loading pipeline components...:  50%|█████     | 3/6 [00:15<00:10,  3.65s/it]Loading pipeline components...:  83%|████████▎ | 5/6 [00:17<00:02,  2.03s/it]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:12, 15.18it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1186.59it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:17<00:00,  1.53s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:17<00:00,  2.97s/it]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  33%|███▎      | 196/590 [00:00<00:00, 1876.70it/s]Loading weights:  65%|██████▌   | 384/590 [00:00<00:00, 1021.93it/s]Loading weights:  86%|████████▌ | 507/590 [00:00<00:00, 953.34it/s] Loading weights: 100%|██████████| 590/590 [00:00<00:00, 1057.19it/s]
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files:  92%|█████████▏| 12/13 [00:04<00:00,  2.88it/s]Fetching 13 files: 100%|██████████| 13/13 [00:07<00:00,  1.40it/s]Fetching 13 files: 100%|██████████| 13/13 [00:07<00:00,  1.63it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 19.33it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.13it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  86%|████████▌ | 169/196 [00:00<00:00, 1689.80it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1772.14it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.20it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.74it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+Loading faceid_0 was unsuccessful with the following error: 
+Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 710, in run
+    editor.load(self.b.device)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/editors.py", line 101, in load
+    self.pipe = self._build(device)
+                ~~~~~~~~~~~^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/editors.py", line 263, in _build
+    pipe.load_ip_adapter(self.model_id, subfolder=None, weight_name=self.weight_name, image_encoder_folder=None)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/ip_adapter.py", line 256, in load_ip_adapter
+    self.load_lora_weights(lora, adapter_name=f"faceid_{k}")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/utils/peft_utils.py", line 347, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/lora_pipeline.py", line 214, in load_lora_weights
+    self.load_lora_into_unet(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        state_dict,
+        ^^^^^^^^^^^
+    ...<6 lines>...
+        hotswap=hotswap,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/utils/peft_utils.py", line 347, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/lora_pipeline.py", line 392, in load_lora_into_unet
+    unet.load_lora_adapter(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        state_dict,
+        ^^^^^^^^^^^
+    ...<6 lines>...
+        hotswap=hotswap,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/peft.py", line 312, in load_lora_adapter
+    inject_adapter_in_model(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        lora_config, self, adapter_name=adapter_name, state_dict=state_dict, **peft_kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/mapping.py", line 88, in inject_adapter_in_model
+    peft_model = tuner_cls(
+        model, peft_config, adapter_name=adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict
+    )
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 318, in __init__
+    self.inject_adapter(self.model, adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 939, in inject_adapter
+    self._create_and_replace(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        peft_config, adapter_name, target, target_name, parent, current_key=key
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 281, in _create_and_replace
+    new_module = self._create_new_module(lora_config, adapter_name, target, device_map=device_map, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 430, in _create_new_module
+    new_module = dispatcher(target, adapter_name, config=lora_config, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/torchao.py", line 160, in dispatch_torchao
+    if not is_torchao_available():
+           ~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/import_utils.py", line 147, in is_torchao_available
+    raise ImportError(
+    ...<2 lines>...
+    )
+ImportError: Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported
+[jobs] smoke_clean_val: start
+[runner] 15 jobs, 15 to do (0 already complete)
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 13.05it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.81it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  29%|██▉       | 57/196 [00:00<00:00, 569.74it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1857.53it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.14it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.52it/s]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  31%|███▏      | 185/590 [00:00<00:00, 1845.65it/s]Loading weights:  63%|██████▎   | 370/590 [00:00<00:00, 1558.13it/s]Loading weights:  90%|████████▉ | 529/590 [00:00<00:00, 1286.35it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 1362.00it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 19.40it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.26it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  90%|████████▉ | 176/196 [00:00<00:00, 1759.19it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1826.84it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.34it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.89it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+Loading faceid_0 was unsuccessful with the following error: 
+Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 710, in run
+    editor.load(self.b.device)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/editors.py", line 101, in load
+    self.pipe = self._build(device)
+                ~~~~~~~~~~~^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/editors.py", line 263, in _build
+    pipe.load_ip_adapter(self.model_id, subfolder=None, weight_name=self.weight_name, image_encoder_folder=None)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/ip_adapter.py", line 256, in load_ip_adapter
+    self.load_lora_weights(lora, adapter_name=f"faceid_{k}")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/utils/peft_utils.py", line 347, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/lora_pipeline.py", line 214, in load_lora_weights
+    self.load_lora_into_unet(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        state_dict,
+        ^^^^^^^^^^^
+    ...<6 lines>...
+        hotswap=hotswap,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/utils/peft_utils.py", line 347, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/lora_pipeline.py", line 392, in load_lora_into_unet
+    unet.load_lora_adapter(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        state_dict,
+        ^^^^^^^^^^^
+    ...<6 lines>...
+        hotswap=hotswap,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/peft.py", line 312, in load_lora_adapter
+    inject_adapter_in_model(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        lora_config, self, adapter_name=adapter_name, state_dict=state_dict, **peft_kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/mapping.py", line 88, in inject_adapter_in_model
+    peft_model = tuner_cls(
+        model, peft_config, adapter_name=adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict
+    )
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 318, in __init__
+    self.inject_adapter(self.model, adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 939, in inject_adapter
+    self._create_and_replace(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        peft_config, adapter_name, target, target_name, parent, current_key=key
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 281, in _create_and_replace
+    new_module = self._create_new_module(lora_config, adapter_name, target, device_map=device_map, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 430, in _create_new_module
+    new_module = dispatcher(target, adapter_name, config=lora_config, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/torchao.py", line 160, in dispatch_torchao
+    if not is_torchao_available():
+           ~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/import_utils.py", line 147, in is_torchao_available
+    raise ImportError(
+    ...<2 lines>...
+    )
+ImportError: Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported
+[jobs] smoke_clean_messy: start
+[runner] 15 jobs, 15 to do (0 already complete)
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 13.70it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.37it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  79%|███████▊  | 154/196 [00:00<00:00, 1535.34it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1773.77it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.80it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.14it/s]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  32%|███▏      | 186/590 [00:00<00:00, 1808.01it/s]Loading weights:  62%|██████▏   | 367/590 [00:00<00:00, 1698.19it/s]Loading weights:  91%|█████████ | 538/590 [00:00<00:00, 1652.24it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 1617.19it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 20.48it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  97%|█████████▋| 190/196 [00:00<00:00, 1896.34it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1906.82it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  5.84it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.54it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+Loading faceid_0 was unsuccessful with the following error: 
+Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 710, in run
+    editor.load(self.b.device)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/editors.py", line 101, in load
+    self.pipe = self._build(device)
+                ~~~~~~~~~~~^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/editors.py", line 263, in _build
+    pipe.load_ip_adapter(self.model_id, subfolder=None, weight_name=self.weight_name, image_encoder_folder=None)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/ip_adapter.py", line 256, in load_ip_adapter
+    self.load_lora_weights(lora, adapter_name=f"faceid_{k}")
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/utils/peft_utils.py", line 347, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/lora_pipeline.py", line 214, in load_lora_weights
+    self.load_lora_into_unet(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        state_dict,
+        ^^^^^^^^^^^
+    ...<6 lines>...
+        hotswap=hotswap,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/utils/peft_utils.py", line 347, in wrapper
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/lora_pipeline.py", line 392, in load_lora_into_unet
+    unet.load_lora_adapter(
+    ~~~~~~~~~~~~~~~~~~~~~~^
+        state_dict,
+        ^^^^^^^^^^^
+    ...<6 lines>...
+        hotswap=hotswap,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/diffusers/loaders/peft.py", line 312, in load_lora_adapter
+    inject_adapter_in_model(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        lora_config, self, adapter_name=adapter_name, state_dict=state_dict, **peft_kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/mapping.py", line 88, in inject_adapter_in_model
+    peft_model = tuner_cls(
+        model, peft_config, adapter_name=adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict
+    )
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 318, in __init__
+    self.inject_adapter(self.model, adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 939, in inject_adapter
+    self._create_and_replace(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        peft_config, adapter_name, target, target_name, parent, current_key=key
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 281, in _create_and_replace
+    new_module = self._create_new_module(lora_config, adapter_name, target, device_map=device_map, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 430, in _create_new_module
+    new_module = dispatcher(target, adapter_name, config=lora_config, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/torchao.py", line 160, in dispatch_torchao
+    if not is_torchao_available():
+           ~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/import_utils.py", line 147, in is_torchao_available
+    raise ImportError(
+    ...<2 lines>...
+    )
+ImportError: Found an incompatible version of torchao. Found version 0.10.0, but only versions above 0.16.0 are supported
+[jobs] smoke_noise_uniform_test: start
+[runner] 15 jobs, 15 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 15.19it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  5.19it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1970.76it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.43it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.94it/s]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 713, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 801, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 13117 not found in /kaggle/working/S05/results/prot_noise_uniform_test/images
+[jobs] smoke_noise_uniform_val: start
+[runner] 15 jobs, 15 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 20.43it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  96%|█████████▌| 188/196 [00:00<00:00, 1875.01it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1903.15it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.09it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.80it/s]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 713, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 801, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 862 not found in /kaggle/working/S05/results/prot_noise_uniform_val/images
+[jobs] smoke_noise_uniform_messy: start
+[runner] 15 jobs, 15 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 20.16it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2250.03it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.26it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.98it/s]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 713, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 801, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 4334 not found in /kaggle/working/S05/results/prot_noise_uniform_messy/images

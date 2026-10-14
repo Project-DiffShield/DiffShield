@@ -380,3 +380,27 @@ def test_unavailable_purifier_is_skipped_not_fatal(tmp_path):
     rows = read(out)
     assert rows and {r["purifier"] for r in rows} == {"none"}
     assert runner.unavailable_purifiers == {"jpeg_q75"}
+
+
+def test_one_failing_editor_does_not_stop_the_others(tmp_path):
+    """S05: the FaceID editor failed to load and aborted every editor after it."""
+    cfg = make_cfg()
+    src, prot, ids = make_data(tmp_path)
+    out = tmp_path / "out"
+    be = er.fake_backends(cfg)
+    orig = be.editor_factory
+
+    def factory(name):
+        if name == "sd_inpaint":
+            raise RuntimeError("cannot load")
+        return orig(name)
+
+    be.editor_factory = factory
+    runner = er.EditRunner(cfg, be, out, src, "test", str(prot), "rid", "prid", tmp_path / "cache")
+    jobs = []
+    for m in ("clean", "v1"):
+        jobs += er.expand_tier(cfg["eval"], "T", m, "test", ids, ["all"], None, None)
+    with pytest.raises(RuntimeError, match="sd_inpaint"):
+        runner.run(jobs)
+    assert {r["editor"] for r in read(out)} == {"sd15_img2img"}
+    assert "sd_inpaint" in json.loads((out / "failed_editors.json").read_text())

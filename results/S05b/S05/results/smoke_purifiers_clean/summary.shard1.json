@@ -1,0 +1,98 @@
+[
+  {
+    "method": "clean",
+    "purifier": "diffpure_0.05",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.7632419466972351,
+    "mean_edit_lpips": 0.1011411249637603
+  },
+  {
+    "method": "clean",
+    "purifier": "diffpure_0.2",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.7871047258377075,
+    "mean_edit_lpips": 0.129887044429779
+  },
+  {
+    "method": "clean",
+    "purifier": "diffpure_0.3",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.735981822013855,
+    "mean_edit_lpips": 0.1564390361309051
+  },
+  {
+    "method": "clean",
+    "purifier": "downup_other",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.7838360667228699,
+    "mean_edit_lpips": 0.2171380370855331
+  },
+  {
+    "method": "clean",
+    "purifier": "jpeg_other",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.8015080094337463,
+    "mean_edit_lpips": 0.1240551546216011
+  },
+  {
+    "method": "clean",
+    "purifier": "jpeg_q50",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.8058223128318787,
+    "mean_edit_lpips": 0.2108175009489059
+  },
+  {
+    "method": "clean",
+    "purifier": "jpeg_q90",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.7971529960632324,
+    "mean_edit_lpips": 0.0773323774337768
+  },
+  {
+    "method": "clean",
+    "purifier": "restore_swin2sr",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 1,
+    "n_edits": 1,
+    "mean_arcface_sim": NaN,
+    "no_face_rate": 1.0,
+    "mean_clip_i": 0.8205448389053345,
+    "mean_edit_lpips": 0.1290955543518066
+  }
+]

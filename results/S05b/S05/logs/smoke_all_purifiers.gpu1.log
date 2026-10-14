@@ -1,0 +1,139 @@
+[jobs] smoke_purifiers_clean: start
+[runner] 9 jobs, 9 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  82%|████████▏ | 160/196 [00:00<00:00, 1553.82it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1606.71it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  3.03it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:02<00:02,  1.26it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:02<00:00,  2.32it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.47it/s]
+[purify] gridpure NOT AVAILABLE, its jobs are skipped: GrIDPure checkpoint missing: download 256x256_diffusion_uncond.pt (https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt) and set eval.purifiers.gridpure.checkpoint
+Loading weights:   0%|          | 0/724 [00:00<?, ?it/s]Loading weights:  28%|██▊       | 203/724 [00:00<00:00, 2029.18it/s]Loading weights:  58%|█████▊    | 419/724 [00:00<00:00, 2103.47it/s]Loading weights:  91%|█████████ | 660/724 [00:00<00:00, 2243.18it/s]Loading weights: 100%|██████████| 724/724 [00:00<00:00, 2389.14it/s]
+[runner] SKIPPING 1 jobs with unavailable purifiers: ['gridpure']
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  71%|███████   | 139/196 [00:00<00:00, 1388.56it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1445.90it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  4.89it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  1.96it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.30it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.62it/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  29%|██▉       | 170/590 [00:00<00:00, 1698.16it/s]Loading weights:  58%|█████▊    | 340/590 [00:00<00:00, 1322.70it/s]Loading weights:  81%|████████  | 478/590 [00:00<00:00, 1200.85it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 1273.17it/s]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+{
+  "run": {
+    "jobs": 9,
+    "executed": 8,
+    "rows": 8
+  },
+  "summary": [
+    {
+      "method": "clean",
+      "purifier": "diffpure_0.05",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.7632419466972351,
+      "mean_edit_lpips": 0.1011411249637603
+    },
+    {
+      "method": "clean",
+      "purifier": "diffpure_0.2",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.7871047258377075,
+      "mean_edit_lpips": 0.129887044429779
+    },
+    {
+      "method": "clean",
+      "purifier": "diffpure_0.3",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.735981822013855,
+      "mean_edit_lpips": 0.1564390361309051
+    },
+    {
+      "method": "clean",
+      "purifier": "downup_other",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.7838360667228699,
+      "mean_edit_lpips": 0.2171380370855331
+    },
+    {
+      "method": "clean",
+      "purifier": "jpeg_other",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.8015080094337463,
+      "mean_edit_lpips": 0.1240551546216011
+    },
+    {
+      "method": "clean",
+      "purifier": "jpeg_q50",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.8058223128318787,
+      "mean_edit_lpips": 0.2108175009489059
+    },
+    {
+      "method": "clean",
+      "purifier": "jpeg_q90",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.7971529960632324,
+      "mean_edit_lpips": 0.0773323774337768
+    },
+    {
+      "method": "clean",
+      "purifier": "restore_swin2sr",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 1,
+      "n_edits": 1,
+      "mean_arcface_sim": NaN,
+      "no_face_rate": 1.0,
+      "mean_clip_i": 0.8205448389053345,
+      "mean_edit_lpips": 0.1290955543518066
+    }
+  ]
+}

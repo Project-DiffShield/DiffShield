@@ -214,7 +214,11 @@ def pip_install(code: Path, log, extras=()):
             lines.append(s)
     cmd = [sys.executable, "-m", "pip", "install", "-q"] + lines
     log("pip_install: " + " ".join(cmd))
-    return subprocess.call(cmd)
+    rc = subprocess.call(cmd)
+    # S05: the Kaggle image ships torchao 0.10.0, which diffusers/peft reject (LoRA / IP-Adapter FaceID loading raises
+    # ImportError "incompatible version of torchao"). We never use torchao, so remove it.
+    subprocess.call([sys.executable, "-m", "pip", "uninstall", "-y", "-q", "torchao"])
+    return rc
 
 
 def b_resolve_splits(st, vars_, params, log):

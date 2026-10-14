@@ -1,0 +1,12 @@
+[20:08:19] run prot_noise_uniform_test method=noise_uniform device=cuda backend=real shard=(1, 2) git=7c55cb6 dirty=False
+[20:08:19] 2 images in this shard (5 total), 0 already done
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Downloading: "https://download.pytorch.org/models/vgg16-397923af.pth" to /root/.cache/torch/hub/checkpoints/vgg16-397923af.pth
+  0%|          | 0.00/528M [00:00<?, ?B/s]  2%|▏         | 10.2M/528M [00:00<00:05, 107MB/s]  6%|▌         | 31.1M/528M [00:00<00:03, 173MB/s] 10%|█         | 53.1M/528M [00:00<00:02, 199MB/s] 14%|█▍        | 73.8M/528M [00:00<00:02, 205MB/s] 18%|█▊        | 94.6M/528M [00:00<00:02, 210MB/s] 22%|██▏       | 116M/528M [00:00<00:02, 215MB/s]  26%|██▌       | 137M/528M [00:00<00:01, 217MB/s] 30%|███       | 159M/528M [00:00<00:01, 220MB/s] 34%|███▍      | 180M/528M [00:00<00:01, 222MB/s] 38%|███▊      | 202M/528M [00:01<00:01, 222MB/s] 42%|████▏     | 224M/528M [00:01<00:01, 224MB/s] 46%|████▋     | 245M/528M [00:01<00:01, 223MB/s] 50%|█████     | 266M/528M [00:01<00:01, 223MB/s] 55%|█████▍    | 288M/528M [00:01<00:01, 223MB/s] 59%|█████▊    | 310M/528M [00:01<00:01, 224MB/s] 63%|██████▎   | 331M/528M [00:01<00:00, 225MB/s] 67%|██████▋   | 353M/528M [00:01<00:00, 218MB/s] 71%|███████   | 374M/528M [00:01<00:00, 209MB/s] 75%|███████▍  | 394M/528M [00:01<00:00, 203MB/s] 78%|███████▊  | 413M/528M [00:02<00:00, 199MB/s] 82%|████████▏ | 432M/528M [00:02<00:00, 196MB/s] 85%|████████▌ | 451M/528M [00:02<00:00, 194MB/s] 89%|████████▉ | 470M/528M [00:02<00:00, 192MB/s] 92%|█████████▏| 488M/528M [00:02<00:00, 192MB/s] 96%|█████████▌| 506M/528M [00:02<00:00, 191MB/s] 99%|█████████▉| 525M/528M [00:02<00:00, 190MB/s]100%|██████████| 528M/528M [00:02<00:00, 206MB/s]
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[20:08:38] [2/2] 10457 psnr=40.72 ssim=0.9425 gpu_s=0.0
+[20:08:38] done

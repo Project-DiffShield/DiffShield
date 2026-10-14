@@ -704,16 +704,31 @@ class EditRunner:
         by_editor: Dict[str, List[Job]] = {}
         for j in todo:
             by_editor.setdefault(j.editor, []).append(j)
+        failed_editors: Dict[str, str] = {}
         for ed_name in sorted(by_editor):
             jl = sorted(by_editor[ed_name], key=lambda j: (j.strength, j.prompt_idx, j.purifier, j.method != "clean", j.method, j.image_index))
-            editor = self.b.editor_factory(ed_name)
-            editor.load(self.b.device)
+            # one broken editor must not take the other editors (and a night of GPU time) down with it (S05: FaceID load
+            # failure aborted every editor after it). Rows already written are kept; resume re-runs only what is missing.
+            editor = None
             try:
+                editor = self.b.editor_factory(ed_name)
+                editor.load(self.b.device)
                 for j in jl:
                     self._process(editor, j)
+            except Exception as e:  # noqa: BLE001
+                import traceback
+                self.log(f"[runner] EDITOR FAILED: {ed_name}: {type(e).__name__}: {e}" + chr(10) + traceback.format_exc())
+                failed_editors[ed_name] = f"{type(e).__name__}: {e}"
             finally:
-                editor.unload()
+                if editor is not None:
+                    try:
+                        editor.unload()
+                    except Exception:  # noqa: BLE001
+                        pass
         self.finish()
+        if failed_editors:
+            (Path(self.out_dir) / "failed_editors.json").write_text(json.dumps(failed_editors, indent=2), encoding="utf-8")
+            raise RuntimeError(f"editors failed (other editors completed): {sorted(failed_editors)}")
         return {"jobs": len(jobs), "executed": len(todo), "rows": self.rows_written}
 
     def _purify_stage(self, todo: Sequence[Job]):

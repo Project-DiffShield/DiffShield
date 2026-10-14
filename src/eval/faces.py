@@ -74,7 +74,11 @@ class FaceScorer:
     """
 
     def __init__(self, pack: str = "buffalo_l", det_size: Sequence[int] = (640, 640), prefer_gpu: bool = True,
-                 root: Optional[str] = None, log=print):
+                 root: Optional[str] = None, log=print, pad_frac: float = 0.4):
+        # pad_frac: border added on every side (fraction of the image size) before detection. S03/S05 found that the
+        # insightface detector misses 38 of 100 tightly cropped CelebA-HQ test photos (face fills the frame); the same
+        # happens on edits. Bbox / keypoints are shifted back, so callers see original-image coordinates.
+        self.pad_frac = float(pad_frac)
         self.pack = pack
         self.det_size = tuple(det_size)
         self.prefer_gpu = prefer_gpu
@@ -86,7 +90,8 @@ class FaceScorer:
     @classmethod
     def from_config(cls, cfg: dict, **kw) -> "FaceScorer":
         a = (cfg.get("eval", {}).get("models", {}) or {}).get("arcface", {}) or {}
-        return cls(pack=a.get("pack", "buffalo_l"), det_size=a.get("det_size", (640, 640)), **kw)
+        return cls(pack=a.get("pack", "buffalo_l"), det_size=a.get("det_size", (640, 640)),
+                   pad_frac=float(a.get("pad_frac", 0.4)), **kw)
 
     def load(self):
         if self._app is not None:
@@ -120,6 +125,9 @@ class FaceScorer:
     def analyze(self, img) -> FaceResult:
         self.load()
         arr = np.asarray(img.convert("RGB"))[:, :, ::-1].copy()   # RGB -> BGR for insightface/cv2
+        pad = int(round(self.pad_frac * max(arr.shape[:2])))
+        if pad > 0:
+            arr = np.pad(arr, ((pad, pad), (pad, pad), (0, 0)), mode="constant", constant_values=127)
         faces = self._app.get(arr)
         if not faces:
             return FaceResult(None, float("nan"), None, 0, None)
@@ -129,8 +137,8 @@ class FaceScorer:
         if emb is None:
             e = np.asarray(f.embedding, dtype=np.float64)
             emb = e / max(np.linalg.norm(e), 1e-12)
-        bbox = tuple(float(v) for v in f.bbox[:4])
-        kps = np.asarray(f.kps) if getattr(f, "kps", None) is not None else None
+        bbox = tuple(float(v) - pad for v in f.bbox[:4])
+        kps = (np.asarray(f.kps) - pad) if getattr(f, "kps", None) is not None else None
         return FaceResult(np.asarray(emb, dtype=np.float32), float(f.det_score), bbox, len(faces), kps)
 
     def embed(self, img):
