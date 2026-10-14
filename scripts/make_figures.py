@@ -16,7 +16,6 @@ from __future__ import annotations
 import argparse
 import json
 import math
-import sqlite3
 import sys
 from pathlib import Path
 
@@ -365,25 +364,7 @@ def fig_failure_gallery(ctx, out, loc: ImageLocator, man, method="v2_final", k=6
 
 
 # --------------------------------------------------------------------------------------------- optuna
-def read_optuna_sqlite(path: Path) -> pd.DataFrame:
-    """Trials of every study in an Optuna RDB (read with sqlite3, no optuna import): study, number, state, value, feasible."""
-    con = sqlite3.connect(f"file:{path}?mode=ro", uri=True)
-    try:
-        tr = pd.read_sql_query("select t.trial_id, t.number, t.state, s.study_name from trials t join studies s on s.study_id = t.study_id", con)
-        tv = pd.read_sql_query("select trial_id, value from trial_values where objective = 0", con)
-        try:
-            ua = pd.read_sql_query("select trial_id, key, value_json from trial_user_attributes where key = 'feasible'", con)
-        except Exception:
-            ua = pd.DataFrame(columns=["trial_id", "key", "value_json"])
-    finally:
-        con.close()
-    d = tr.merge(tv, on="trial_id", how="left")
-    if len(ua):
-        d = d.merge(ua[["trial_id", "value_json"]].rename(columns={"value_json": "feasible"}), on="trial_id", how="left")
-        d["feasible"] = d["feasible"].map(lambda v: None if v is None or (isinstance(v, float) and math.isnan(v)) else str(v).strip().lower() == "true")
-    else:
-        d["feasible"] = None
-    return d.sort_values(["study_name", "number"]).reset_index(drop=True)
+read_optuna_sqlite = A.read_optuna_sqlite
 
 
 def fig_optuna(ctx, out, db: Path | None, man):

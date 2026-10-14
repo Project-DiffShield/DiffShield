@@ -110,6 +110,7 @@ class Ctx:
         self.ref_n = self.an.reference_n()
         self.synthetic = bool(len(edits)) and bool(edits["run_id"].astype(str).str.startswith(A.SYNTH_PREFIX).all())
         self._gates = None
+        self.optuna_db = None
         self.used: list = []
 
     @property
@@ -596,6 +597,23 @@ def collect_numbers(ctx: Ctx) -> dict:
     for k, v in cl.items():
         n[f"claim.{k}"] = v
     n["n_images_reference"] = ctx.ref_n
+    gp = ctx.edits[ctx.edits["purifier"] == "gridpure"]
+    n["gridpure.status"] = (f"ran: {gp['image_id'].nunique()} images, {gp.groupby(['method', 'editor']).ngroups} method/editor cells"
+                            if len(gp) else "not run (no rows; documented limitation unless it ran in a later job)")
+    try:
+        import yaml
+        b = (yaml.safe_load((REPO / "config" / "config.yaml").read_text(encoding="utf-8")) or {}).get("budget", {})
+        n["budget.confirmed"] = ("confirmed on real pixels (budget.eps_confirmed=true in config/config.yaml)" if b.get("eps_confirmed")
+                                 else "not yet confirmed (budget.eps_confirmed=false in config/config.yaml)")
+    except Exception:
+        pass
+    if ctx.optuna_db and Path(ctx.optuna_db).is_file():
+        try:
+            od = A.read_optuna_sqlite(Path(ctx.optuna_db))
+            comp = od[od["state"].astype(str).isin(["COMPLETE", "1", "TrialState.COMPLETE"])]
+            n["optuna.trials"] = f"{len(comp)} completed ({int((comp['feasible'] == True).sum())} feasible)"  # noqa: E712
+        except Exception:
+            pass
     n["synthetic"] = "YES - SYNTHETIC DATA, NOT RESULTS" if ctx.synthetic else "no"
     if ctx.human:
         a = ctx.human.get("task_a") or {}
@@ -659,6 +677,7 @@ def parse_args(argv=None):
     ap.add_argument("--n_boot", type=int, default=10000)
     ap.add_argument("--gate_param", nargs="*", default=[], metavar="k=v")
     ap.add_argument("--human", default=None, help="results/human_study/summary.json")
+    ap.add_argument("--optuna_db", default=None, help="Optuna SQLite file (only used for the trial count in numbers.json)")
     ap.add_argument("--synthetic_demo", default=None, help="DIR: generate a SYNTHETIC tree, ingest it and build tables (software check)")
     ap.add_argument("--render", nargs="*", default=None, help="template files to fill from --tables_dir")
     ap.add_argument("--tables_dir", default=str(REPO / "results" / "tables"))
@@ -696,6 +715,7 @@ def main(argv=None) -> int:
         print(f"{combined / 'edits.csv'} not found: run scripts/ingest_results.py first", file=sys.stderr)
         return 2
     ctx = build_ctx(combined, a.thresholds, a.scope, a.n_boot, a.gate_param, a.human)
+    ctx.optuna_db = a.optuna_db
     which = list(TABLES) if a.table in ("all", "") else [t for t in a.table.split(",") if t]
     bad = [t for t in which if t not in TABLES]
     if bad:

@@ -200,3 +200,31 @@ def test_optuna_sqlite_reader(tmp_path):
     d = mf.read_optuna_sqlite(db)
     assert list(d["number"]) == [0, 1, 2] and d.loc[0, "feasible"] is True or d.loc[0, "feasible"] == True  # noqa: E712
     assert d.loc[1, "feasible"] == False  # noqa: E712
+
+
+# ---------------------------------------------------------------- templates in reports/
+def test_report_templates_reference_only_known_tables_gates_and_resolvable_numbers(built, tmp_path):
+    root, out = built
+    nums = json.loads((out / "numbers.json").read_text())
+    known_external = {"phase0.summary", "optuna.trials", "failures.summary", "human.task_a", "human.pilot", "human.n_raters"}
+    files = sorted((REPO / "reports").glob("PHASE_[1-8].md"))
+    assert len(files) == 8
+    for f in files:
+        text = f.read_text(encoding="utf-8")
+        for m in A._PH.finditer(text):
+            kind, key, default = m.group(1), m.group(2).strip(), m.group(3)
+            if kind == "table":
+                assert key in mt.TABLES, (f.name, key)
+            elif kind == "gate":
+                assert key in ("E3", "E4", "E5", "E6", "INV"), (f.name, key)
+                assert f"gate.{key}" in nums
+            else:
+                assert key in nums or key in known_external or default, (f.name, key)
+        rend, missing = A.render_template(text, out, nums)
+        assert "{{" not in rend
+    # every table a template includes was actually generated
+    d = REPO / "docs" / "REPORT_DRAFT.md"
+    if d.exists():
+        for m in A._PH.finditer(d.read_text(encoding="utf-8")):
+            if m.group(1) == "table":
+                assert (out / f"{m.group(2).strip()}.md").is_file()

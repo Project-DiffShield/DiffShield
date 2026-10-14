@@ -1080,6 +1080,30 @@ def lpips_chunk(chunk: Sequence[Tuple[int, str, str]]) -> List[Tuple[int, float]
     return out
 
 
+# ------------------------------------------------------------------------------------------------ optuna
+def read_optuna_sqlite(path: Path) -> pd.DataFrame:
+    """Trials of every study in an Optuna RDB (read with sqlite3, no optuna import): study_name, number, state, value,
+    feasible (user attribute set by scripts/tune_optuna.py; None if absent)."""
+    import sqlite3
+    con = sqlite3.connect(f"file:{Path(path).as_posix()}?mode=ro", uri=True)
+    try:
+        tr = pd.read_sql_query("select t.trial_id, t.number, t.state, s.study_name from trials t join studies s on s.study_id = t.study_id", con)
+        tv = pd.read_sql_query("select trial_id, value from trial_values where objective = 0", con)
+        try:
+            ua = pd.read_sql_query("select trial_id, key, value_json from trial_user_attributes where key = 'feasible'", con)
+        except Exception:
+            ua = pd.DataFrame(columns=["trial_id", "key", "value_json"])
+    finally:
+        con.close()
+    d = tr.merge(tv, on="trial_id", how="left")
+    if len(ua):
+        d = d.merge(ua[["trial_id", "value_json"]].rename(columns={"value_json": "feasible"}), on="trial_id", how="left")
+        d["feasible"] = d["feasible"].map(lambda v: None if v is None or (isinstance(v, float) and math.isnan(v)) else str(v).strip().lower() == "true")
+    else:
+        d["feasible"] = None
+    return d.sort_values(["study_name", "number"]).reset_index(drop=True)
+
+
 # --------------------------------------------------------------------------------------- synthetic data
 SYN_BASE = {("sd15_img2img", "0.3"): 0.72, ("sd15_img2img", "0.55"): 0.52, ("sd15_img2img", "0.75"): 0.36,
             ("sdxl_img2img", "0.55"): 0.47, ("ip2p", ""): 0.58, ("sd_inpaint", "1"): 0.66,
