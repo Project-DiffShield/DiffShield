@@ -1,3 +1,96 @@
+# DiffShield v2
+
+Defensive research project: **adversarial perturbations that protect face photos from diffusion-model editing.** A person posts a photo;
+anyone can feed it to an editor (Stable Diffusion img2img, inpainting, ...) to make a fake. DiffShield adds an invisible, L-infinity-bounded
+perturbation found by PGD so that edits made from the protected photo no longer look like the same person, while the protected photo looks
+identical to the original. v2 makes the protection survive "purification" (an attacker cleaning the noise off first), tests it fairly
+(random-noise control, identity metric, several editors and purifiers, confidence intervals, paired comparison with v1) and compares it with
+existing tools. It protects people's own photos; it is not for generating fakes of anyone.
+
+**Status.** Code and tests are complete on CPU; the GPU experiments run on Kaggle (see `kaggle/README.md`). **No v2 result is claimed in this
+README.** Every number appears only in generated tables (`results/tables/`, `reports/PHASE_*.md`) with its sample size, 95% bootstrap CI over
+images and number of seeds. Anything not yet measured shows `PENDING` or `not run`.
+
+Threat model in one paragraph (details: `docs/HANDOFF_v2.txt`, `docs/V2_PLAN_48H.md`): epsilon = 4/255 on the standard 0-255 scale (v1's "8/255" was on
+[-1, 1] tensors); white-box access of the *defender* to the SD VAE/UNet; attacker either non-adaptive (picks editor and purifier, does not know the
+method; the headline) or adaptive (knows the method, trains an autoencoder purifier; reported separately); editors: SD1.5 img2img, SDXL img2img,
+InstructPix2Pix, SD inpainting (keep-face mask), IP-Adapter FaceID; metric: ArcFace similarity and protection success rate (PSR). Known blind spot:
+if an attacker masks the face itself, the pixels are discarded before the model sees them. We do **not** claim survival of any scenario.
+
+## Repository layout
+
+```text
+config/config.yaml, config/parts/*.yaml   all hyper-parameters, seeds, paths (parts are deep-merged; one owner per part)
+src/utils/        config loading, run logging (config + git hash + versions + seed per run), seeding, budget conversions, io
+src/protect/      Half A: protectors (v1 adapter, v2 PGD with purifiers in the loop, L_den, anti-purification, ensemble, identity loss)
+src/eval/         Half B: editors, purifiers (eval), faces, metrics, edit runner, masks, stats, analysis.py (CIs, PSR, gates)
+src/baselines/    noise controls, PhotoGuard- and Mist-style baselines (our reimplementations), adaptive autoencoder
+src/{eot,optimizer,losses,data,gradcam}.py   v1 code (frozen), src/legacy_eval.py (old evaluator)
+scripts/          run_protect, evaluate, tune_optuna, ingest_results, compute_edit_lpips, make_tables, make_figures,
+                  make_human_study, analyze_human_study, demo, budget_check, compare_runs, gpu_ledger, ...
+kaggle/           job_runner.ipynb, jobs.yaml, build_bundle.py, README.md (runbook)
+data/splits/      fixed identity lists (train / val / test / messy, v1 lists); data/v1_ref/ v1's original stored metrics
+reports/          PHASE_0.md ... PHASE_8.md (templates fill from generated tables), reports/rendered/ (generated)
+docs/             HANDOFF_v2.txt (brief), V2_PLAN.md, V2_PLAN_48H.md
+tests/            CPU tests with fake/tiny models and synthetic CSVs (no weights downloaded)
+results/          run folders, results/combined (ingested CSVs), results/tables, results/figures   (never commit images)
+```
+
+## Setup
+
+Local CPU development (Windows, Python 3.13): `py -3.13 -m venv .venv`, then
+`.venv\Scripts\python -m pip install -r requirements-dev.txt matplotlib scipy`.
+GPU jobs run on Kaggle (T4 x2) from one code zip: see **`kaggle/README.md`** (runbook: upload the bundle, set `JOB_IDS`, Run All, download
+`<JOB>_outputs.zip`). Never enter credentials anywhere; Hugging Face downloads are anonymous.
+
+```bash
+python -m pytest -q tests                              # everything on CPU (a few minutes)
+python -m pytest -q tests/test_analysis_*.py           # only the analysis layer (synthetic data)
+```
+
+## Reproduce every table (one command per step)
+
+Run these after the Kaggle jobs finished and you unzipped each `<JOB>_outputs.zip` into its own folder under `results/`
+(or let step 1 do it with `--unzip`).
+
+| Step | Command | Produces |
+|---|---|---|
+| 0. Phase 0 table | `python scripts/make_tables.py --run_id <J01 run id> --table invisibility` | `results/<run>/tables/invisibility.{md,csv}`; budget check `scripts/budget_check.py`, run comparison `scripts/compare_runs.py` |
+| 1. Ingest | `python scripts/ingest_results.py --results results [--unzip]` | `results/combined/{edits,protect}.csv`, `coverage.md` (which method x purifier x editor cells exist, images, seeds), `coverage_vs_plan.csv`, `psr_thresholds.json`, `ingest_report.json`. Validates the schema, de-duplicates by row key, never deletes |
+| 2. Edit LPIPS | `python scripts/compute_edit_lpips.py --combined results/combined --workers 4` | fills `edit_lpips` (LPIPS-VGG of clean edit vs protected edit, both JPEG q90) on CPU; resumable; then re-run step 1 |
+| 3. Tables | `python scripts/make_tables.py --combined results/combined --out results/tables` | E0-E10, headline, per-editor, per-prompt, messy, invisibility, paired vs v1 / vs noise, claim numbers, gates (Markdown, CSV, `_long.csv`, LaTeX booktabs) and `numbers.json` |
+| 4. Figures | `python scripts/make_figures.py --combined results/combined --out results/figures` | PSR vs PSNR, bars by purifier / editor / ablation, ArcFace distributions, before/after panels, failure gallery, Optuna history (image figures need `--source_dir`, `--edits_root`) |
+| 5. Human study | `python scripts/make_human_study.py --source_dir ... --protected_dir ... --edits_root ... --clean_root ...` then `python scripts/analyze_human_study.py` | offline HTML forms + a separate answer key; analysis with binomial CI and a pilot flag |
+| 6. Reports | `python scripts/make_tables.py --render reports/PHASE_3.md --tables_dir results/tables --out reports/rendered` | templates with tables and numbers filled in; missing data stays `PENDING` |
+| 7. Demo | `python scripts/demo.py --image photo.jpg --out demo_out` (`--cpu-dry-run` checks the wiring without GPU) | protected image + before/after edit panel with ArcFace similarities |
+
+A single table: `python scripts/make_tables.py --combined results/combined --out results/tables --table e4`. Gate cut-offs can be changed with
+`--gate_param key=value` (see `GateParams` in `src/eval/analysis.py`); the E3 decision cut-offs are analyst proposals, the doubling and half-rule
+values are the handoff's. To exercise the whole pipeline without results: `python scripts/make_tables.py --synthetic_demo <dir>` writes a fake
+tree and tables marked **SYNTHETIC DATA** (software check only, never a result).
+
+Statistics used everywhere: image is the unit; edit seeds and prompts are averaged within an image; mean and 95% percentile bootstrap CI over
+images (10,000 resamples, seed 2026); paired differences are aligned by `image_id` with a Wilcoxon signed-rank p (uncorrected). PSR threshold =
+95th percentile of the ArcFace similarity between clean-image edits and other people's photos (per editor; pooled also reported); a face-less edit
+counts as protected and the no-face rate is reported separately.
+
+## Data and privacy
+
+CelebA-HQ images are for research use only. Protected, purified and edited images, human-study forms (they embed photos) and the answer key stay
+local and are git-ignored; only CSV/JSON/txt results and file-name lists are committed. No credentials or tokens anywhere.
+
+---
+
+# v1 (legacy)
+
+> **Stale numbers warning.** This section is the original v1 README, kept unchanged below for history. Its numbers do **not** match the
+> reproducible v1 results: v1's own stored metrics (`data/v1_ref/stage1_summary_metrics.csv`, 70 images) are PSNR 41.911 +- 0.440 dB, SSIM 0.97496
+> +- 0.00480, LPIPS(VGG) 0.23156 +- 0.06304; the table below (PSNR 38.64, SSIM 0.9989, LPIPS 0.3481) comes from older Canny-era trial notebooks
+> and is unverified (docs/V2_PLAN.md F11). The "epsilon <= 8/255" is on [-1, 1] tensors, i.e. **4/255 on the standard scale**; the step "1/255" is
+> 0.5/255 standard. The weights in the `main.py` example are not v1's final weights (exact v1 weights: alpha 0.2699, beta 0.9024, gamma 60.53 in
+> `data/v1_ref/optimal_hyperparameters.json`). v1's Phase 2 test used strength 0.55 (not 0.6), one prompt, one seed, 15 pairs. The v1 code is
+> frozen at its import paths (`src/losses.py`, `src/optimizer.py`, `src/eot.py`); run it through `scripts/run_protect.py --method v1`.
+
 # DiffShield: A Tri-Modal Adversarial Framework for Robust Immunization Against Deepfake Generation
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
