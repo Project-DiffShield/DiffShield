@@ -41,8 +41,19 @@ class V1Protector:
             from src.losses import DiffShieldLoss
 
             m = cfg["models"][cfg.get("model_key", "sd15_v1")]
-            loss_fn = DiffShieldLoss(device=device, sd_model_id=m["id"], revision=m.get("revision"),
-                                     clip_model_id=cfg["models"]["clip_sem"]["id"])
+            clip_id = cfg["models"]["clip_sem"]["id"]
+            try:
+                loss_fn = DiffShieldLoss(device=device, sd_model_id=m["id"], revision=m.get("revision"),
+                                         clip_model_id=clip_id)
+                self.model_id_used = m["id"]
+            except Exception as e:  # the runwayml/* repo was taken down in 2024 (docs/V2_PLAN.md F10)
+                alt = cfg["models"]["sd15"]
+                print(f"WARNING: could not load VAE from {m['id']} ({e!r}); falling back to {alt['id']}. "
+                      "Record this in the report (VAE weights are expected to be identical; J00 compares sha256).",
+                      flush=True)
+                loss_fn = DiffShieldLoss(device=device, sd_model_id=alt["id"], revision=alt.get("revision"),
+                                         clip_model_id=clip_id)
+                self.model_id_used = alt["id"]
             target = loss_fn.encode_target_text([cfg["loss"]["sem_target_text"]])
         self.loss_fn = loss_fn
         self.target = target
