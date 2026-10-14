@@ -4,14 +4,14 @@ from .eot import EoTLayer
 from .losses import DiffShieldLoss
 
 class PGDOptimizer:
-    def __init__(self, epsilon=8/255, alpha=2/255, iters=40, device='cpu'):
+    def __init__(self, epsilon=8/255, alpha=2/255, iters=40, device='cpu', loss_fn=None):
         self.epsilon = epsilon
         self.alpha = alpha
         self.iters = iters
         self.device = device
         
         self.eot = EoTLayer().to(self.device)
-        self.loss_fn = DiffShieldLoss(device=self.device)
+        self.loss_fn = loss_fn if loss_fn is not None else DiffShieldLoss(device=self.device)
 
     def optimize(self, clean_image, target_concept_embedding, 
                  w_alpha=1.0, w_beta=1.0, w_gamma=1.0):
