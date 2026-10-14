@@ -653,7 +653,7 @@ def gate_e3(an: Analysis, gp: GateParams) -> GateResult:
         g.notes.append("v1 without purifier (SD1.5 s0.55) not run or no PSR threshold available")
         return g
     drops = []
-    for pur in PURIFIER_ORDER[1:]:
+    for pur in PURIFIER_ORDER[1:-1]:      # adaptive_ae belongs to E8
         sp = Spec("v1", pur)
         s = _psr(an, sp)
         if s is None:
@@ -987,8 +987,8 @@ def gate_to_markdown(g: GateResult) -> str:
         out.append("| " + " | ".join(cols) + " |")
         out.append("|" + "|".join("---" for _ in cols) + "|")
         for r in g.rows:
-            out.append("| " + " | ".join(_md_escape(fmt_num(r.get(c)) if isinstance(r.get(c), float) else r.get(c, ""))
-                                         for c in cols) + " |")
+            out.append("| " + " | ".join(_md_escape((fmt_p(r.get(c)) if c in ("p", "p_wilcoxon") else fmt_num(r.get(c)))
+                                                     if isinstance(r.get(c), float) else r.get(c, "")) for c in cols) + " |")
         out.append("")
     for n in g.notes:
         out.append(f"- {n}")
