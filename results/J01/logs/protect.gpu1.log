@@ -1,0 +1,293 @@
+[14:27:42] run J01 method=v1 device=cuda backend=real shard=(1, 2) git=50dd3b4 dirty=False
+[14:27:42] 35 images in this shard (70 total), 0 already done
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 10695.94it/s]
+[transformers] [1mCLIPVisionModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████| 197/197 [00:00<00:00, 8916.44it/s]
+[transformers] [1mCLIPTextModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.pre_layrnorm.weight                               | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+vision_model.pre_layrnorm.bias                                 | UNEXPECTED |  | 
+vision_model.embeddings.class_embedding                        | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+visual_projection.weight                                       | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Iter   0: Total -1.0864 | L_vis 1.2246 | L_sem 0.7974 (cos_sim=0.2026) | L_str 0.0115
+Iter  10: Total -0.5403 | L_vis 3.5946 | L_sem 0.7785 (cos_sim=0.2215) | L_str 0.0134
+Iter  20: Total -0.8743 | L_vis 3.3285 | L_sem 0.7812 (cos_sim=0.2188) | L_str 0.0176
+Iter  30: Total -0.2019 | L_vis 4.9756 | L_sem 0.7873 (cos_sim=0.2127) | L_str 0.0138
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Downloading: "https://download.pytorch.org/models/vgg16-397923af.pth" to /root/.cache/torch/hub/checkpoints/vgg16-397923af.pth
+  0%|          | 0.00/528M [00:00<?, ?B/s]  4%|▍         | 20.6M/528M [00:00<00:02, 216MB/s]  8%|▊         | 44.4M/528M [00:00<00:02, 235MB/s] 13%|█▎        | 67.2M/528M [00:00<00:02, 237MB/s] 17%|█▋        | 90.5M/528M [00:00<00:01, 239MB/s] 21%|██▏       | 113M/528M [00:00<00:01, 239MB/s]  26%|██▌       | 137M/528M [00:00<00:01, 240MB/s] 30%|███       | 160M/528M [00:00<00:01, 242MB/s] 35%|███▍      | 183M/528M [00:00<00:01, 242MB/s] 39%|███▉      | 206M/528M [00:00<00:01, 242MB/s] 43%|████▎     | 230M/528M [00:01<00:01, 242MB/s] 48%|████▊     | 253M/528M [00:01<00:01, 241MB/s] 52%|█████▏    | 276M/528M [00:01<00:01, 242MB/s] 57%|█████▋    | 300M/528M [00:01<00:00, 244MB/s] 61%|██████    | 323M/528M [00:01<00:00, 242MB/s] 66%|██████▌   | 346M/528M [00:01<00:00, 242MB/s] 70%|███████   | 370M/528M [00:01<00:00, 243MB/s] 74%|███████▍  | 393M/528M [00:01<00:00, 243MB/s] 79%|███████▉  | 416M/528M [00:01<00:00, 243MB/s] 83%|████████▎ | 440M/528M [00:01<00:00, 243MB/s] 88%|████████▊ | 463M/528M [00:02<00:00, 243MB/s] 92%|█████████▏| 486M/528M [00:02<00:00, 241MB/s] 96%|█████████▋| 509M/528M [00:02<00:00, 242MB/s]100%|██████████| 528M/528M [00:02<00:00, 241MB/s]
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+Iter   0: Total -0.8639 | L_vis 1.8647 | L_sem 0.8093 (cos_sim=0.1907) | L_str 0.0105
+Iter  10: Total -0.4876 | L_vis 3.6394 | L_sem 0.8071 (cos_sim=0.1929) | L_str 0.0123
+Iter  20: Total +0.2844 | L_vis 6.7183 | L_sem 0.8095 (cos_sim=0.1905) | L_str 0.0132
+Iter  30: Total +0.3901 | L_vis 7.0529 | L_sem 0.7983 (cos_sim=0.2017) | L_str 0.0131
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -0.6373 | L_vis 1.0634 | L_sem 0.8198 (cos_sim=0.1802) | L_str 0.0030
+Iter  10: Total +0.9030 | L_vis 10.8844 | L_sem 0.7693 (cos_sim=0.2307) | L_str 0.0222
+Iter  20: Total +0.6769 | L_vis 8.1091 | L_sem 0.8010 (cos_sim=0.1990) | L_str 0.0130
+Iter  30: Total -0.9115 | L_vis 5.4588 | L_sem 0.8037 (cos_sim=0.1963) | L_str 0.0274
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.1529 | L_vis 3.6100 | L_sem 0.8046 (cos_sim=0.1954) | L_str 0.0397
+Iter  10: Total -0.0472 | L_vis 4.5055 | L_sem 0.8021 (cos_sim=0.1979) | L_str 0.0089
+Iter  20: Total -0.1416 | L_vis 5.5028 | L_sem 0.8065 (cos_sim=0.1935) | L_str 0.0149
+Iter  30: Total -0.8055 | L_vis 4.8029 | L_sem 0.8041 (cos_sim=0.1959) | L_str 0.0227
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.9360 | L_vis 3.5776 | L_sem 0.8084 (cos_sim=0.1916) | L_str 0.0524
+Iter  10: Total -0.2112 | L_vis 5.7293 | L_sem 0.8145 (cos_sim=0.1855) | L_str 0.0169
+Iter  20: Total +0.8775 | L_vis 9.5266 | L_sem 0.7949 (cos_sim=0.2051) | L_str 0.0161
+Iter  30: Total +0.9866 | L_vis 10.1664 | L_sem 0.7878 (cos_sim=0.2122) | L_str 0.0173
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:31:58] [5/35] 1172 psnr=42.49 ssim=0.9733 gpu_s=46.7
+Iter   0: Total -1.5364 | L_vis 1.4635 | L_sem 0.8091 (cos_sim=0.1909) | L_str 0.0198
+Iter  10: Total -0.0983 | L_vis 4.3690 | L_sem 0.7938 (cos_sim=0.2062) | L_str 0.0093
+Iter  20: Total +0.1465 | L_vis 6.1572 | L_sem 0.8050 (cos_sim=0.1950) | L_str 0.0130
+Iter  30: Total +0.3948 | L_vis 7.2752 | L_sem 0.7948 (cos_sim=0.2052) | L_str 0.0141
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.8829 | L_vis 2.6678 | L_sem 0.7889 (cos_sim=0.2111) | L_str 0.0478
+Iter  10: Total -0.0631 | L_vis 5.0933 | L_sem 0.7766 (cos_sim=0.2234) | L_str 0.0122
+Iter  20: Total +0.8257 | L_vis 8.6122 | L_sem 0.7719 (cos_sim=0.2281) | L_str 0.0133
+Iter  30: Total +1.2066 | L_vis 11.1124 | L_sem 0.7767 (cos_sim=0.2233) | L_str 0.0180
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.8283 | L_vis 1.9515 | L_sem 0.7918 (cos_sim=0.2082) | L_str 0.0436
+Iter  10: Total -0.9848 | L_vis 3.3330 | L_sem 0.7938 (cos_sim=0.2062) | L_str 0.0193
+Iter  20: Total -1.6153 | L_vis 10.1571 | L_sem 0.7839 (cos_sim=0.2161) | L_str 0.0603
+Iter  30: Total +3.1143 | L_vis 18.8811 | L_sem 0.7537 (cos_sim=0.2463) | L_str 0.0215
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.5584 | L_vis 0.6992 | L_sem 0.7960 (cos_sim=0.2040) | L_str 0.0170
+Iter  10: Total -0.8679 | L_vis 5.0159 | L_sem 0.7998 (cos_sim=0.2002) | L_str 0.0248
+Iter  20: Total +0.7254 | L_vis 7.7567 | L_sem 0.7859 (cos_sim=0.2141) | L_str 0.0109
+Iter  30: Total +0.5270 | L_vis 6.4510 | L_sem 0.7962 (cos_sim=0.2038) | L_str 0.0082
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -0.9037 | L_vis 1.9242 | L_sem 0.7939 (cos_sim=0.2061) | L_str 0.0117
+Iter  10: Total -0.1374 | L_vis 10.7639 | L_sem 0.7815 (cos_sim=0.2185) | L_str 0.0386
+Iter  20: Total +0.9235 | L_vis 14.4553 | L_sem 0.7447 (cos_sim=0.2553) | L_str 0.0381
+Iter  30: Total +3.0393 | L_vis 19.5639 | L_sem 0.7351 (cos_sim=0.2649) | L_str 0.0261
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:35:55] [10/35] 1600 psnr=42.65 ssim=0.9690 gpu_s=46.9
+Iter   0: Total -1.1251 | L_vis 1.3326 | L_sem 0.7950 (cos_sim=0.2050) | L_str 0.0127
+Iter  10: Total -0.7992 | L_vis 3.0770 | L_sem 0.7819 (cos_sim=0.2181) | L_str 0.0153
+Iter  20: Total +1.0185 | L_vis 11.4164 | L_sem 0.7557 (cos_sim=0.2443) | L_str 0.0228
+Iter  30: Total +0.2836 | L_vis 7.7426 | L_sem 0.7893 (cos_sim=0.2107) | L_str 0.0181
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.5456 | L_vis 1.7332 | L_sem 0.7906 (cos_sim=0.2094) | L_str 0.0215
+Iter  10: Total +1.3310 | L_vis 12.0716 | L_sem 0.7523 (cos_sim=0.2477) | L_str 0.0206
+Iter  20: Total -0.1945 | L_vis 9.1031 | L_sem 0.7875 (cos_sim=0.2125) | L_str 0.0321
+Iter  30: Total +2.1399 | L_vis 16.8886 | L_sem 0.7515 (cos_sim=0.2485) | L_str 0.0288
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.0855 | L_vis 0.7793 | L_sem 0.7891 (cos_sim=0.2109) | L_str 0.0096
+Iter  10: Total -0.9393 | L_vis 2.3402 | L_sem 0.7894 (cos_sim=0.2106) | L_str 0.0142
+Iter  20: Total +1.1226 | L_vis 10.7562 | L_sem 0.7615 (cos_sim=0.2385) | L_str 0.0181
+Iter  30: Total +1.5115 | L_vis 11.6299 | L_sem 0.7773 (cos_sim=0.2227) | L_str 0.0153
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.2739 | L_vis 1.6596 | L_sem 0.8090 (cos_sim=0.1910) | L_str 0.0164
+Iter  10: Total +0.6488 | L_vis 8.9384 | L_sem 0.7865 (cos_sim=0.2135) | L_str 0.0174
+Iter  20: Total +1.6217 | L_vis 12.4267 | L_sem 0.7870 (cos_sim=0.2130) | L_str 0.0169
+Iter  30: Total +1.0100 | L_vis 9.5497 | L_sem 0.8006 (cos_sim=0.1994) | L_str 0.0140
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.1126 | L_vis 1.6909 | L_sem 0.8385 (cos_sim=0.1615) | L_str 0.0134
+Iter  10: Total -0.1504 | L_vis 4.7049 | L_sem 0.8293 (cos_sim=0.1707) | L_str 0.0111
+Iter  20: Total +0.5047 | L_vis 8.9653 | L_sem 0.8086 (cos_sim=0.1914) | L_str 0.0196
+Iter  30: Total +0.8742 | L_vis 10.5025 | L_sem 0.7821 (cos_sim=0.2179) | L_str 0.0207
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:39:52] [15/35] 2459 psnr=42.37 ssim=0.9820 gpu_s=46.9
+Iter   0: Total -2.6082 | L_vis 2.9306 | L_sem 0.7965 (cos_sim=0.2035) | L_str 0.0443
+Iter  10: Total -0.4793 | L_vis 4.0109 | L_sem 0.7812 (cos_sim=0.2188) | L_str 0.0142
+Iter  20: Total +0.1410 | L_vis 6.0631 | L_sem 0.7899 (cos_sim=0.2101) | L_str 0.0129
+Iter  30: Total +0.0205 | L_vis 5.9599 | L_sem 0.7760 (cos_sim=0.2240) | L_str 0.0147
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.1086 | L_vis 1.4823 | L_sem 0.8264 (cos_sim=0.1736) | L_str 0.0126
+Iter  10: Total +0.7956 | L_vis 11.6186 | L_sem 0.8099 (cos_sim=0.1901) | L_str 0.0266
+Iter  20: Total +0.4476 | L_vis 7.5430 | L_sem 0.8124 (cos_sim=0.1876) | L_str 0.0141
+Iter  30: Total -0.5829 | L_vis 5.4532 | L_sem 0.8227 (cos_sim=0.1773) | L_str 0.0217
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -3.2441 | L_vis 3.8210 | L_sem 0.8052 (cos_sim=0.1948) | L_str 0.0586
+Iter  10: Total -0.9380 | L_vis 3.6904 | L_sem 0.8195 (cos_sim=0.1805) | L_str 0.0197
+Iter  20: Total +1.1738 | L_vis 13.7244 | L_sem 0.7484 (cos_sim=0.2516) | L_str 0.0307
+Iter  30: Total +1.7671 | L_vis 15.7087 | L_sem 0.7440 (cos_sim=0.2560) | L_str 0.0298
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.5925 | L_vis 5.1740 | L_sem 0.8084 (cos_sim=0.1916) | L_str 0.0539
+Iter  10: Total -0.4915 | L_vis 4.2392 | L_sem 0.7954 (cos_sim=0.2046) | L_str 0.0152
+Iter  20: Total +1.4291 | L_vis 13.4271 | L_sem 0.7738 (cos_sim=0.2262) | L_str 0.0247
+Iter  30: Total +0.5750 | L_vis 8.9084 | L_sem 0.7954 (cos_sim=0.2046) | L_str 0.0184
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.1730 | L_vis 1.5827 | L_sem 0.8222 (cos_sim=0.1778) | L_str 0.0142
+Iter  10: Total -0.3689 | L_vis 3.4269 | L_sem 0.7798 (cos_sim=0.2202) | L_str 0.0098
+Iter  20: Total +0.1073 | L_vis 7.6103 | L_sem 0.7985 (cos_sim=0.2015) | L_str 0.0203
+Iter  30: Total -0.4076 | L_vis 4.9303 | L_sem 0.8013 (cos_sim=0.1987) | L_str 0.0168
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:43:48] [20/35] 3272 psnr=42.02 ssim=0.9787 gpu_s=46.7
+Iter   0: Total -1.0591 | L_vis 1.2450 | L_sem 0.8135 (cos_sim=0.1865) | L_str 0.0109
+Iter  10: Total +0.5934 | L_vis 8.9767 | L_sem 0.7669 (cos_sim=0.2331) | L_str 0.0188
+Iter  20: Total -0.6178 | L_vis 4.6864 | L_sem 0.7997 (cos_sim=0.2003) | L_str 0.0192
+Iter  30: Total +1.8003 | L_vis 13.1788 | L_sem 0.7516 (cos_sim=0.2484) | L_str 0.0178
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.6490 | L_vis 0.7994 | L_sem 0.8121 (cos_sim=0.1879) | L_str 0.0187
+Iter  10: Total -0.2118 | L_vis 4.6046 | L_sem 0.7960 (cos_sim=0.2040) | L_str 0.0122
+Iter  20: Total -0.1615 | L_vis 4.3477 | L_sem 0.7778 (cos_sim=0.2222) | L_str 0.0105
+Iter  30: Total +1.7897 | L_vis 12.7623 | L_sem 0.7596 (cos_sim=0.2404) | L_str 0.0160
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.5842 | L_vis 1.6073 | L_sem 0.8013 (cos_sim=0.1987) | L_str 0.0214
+Iter  10: Total -0.1273 | L_vis 8.3678 | L_sem 0.7769 (cos_sim=0.2231) | L_str 0.0278
+Iter  20: Total +1.4980 | L_vis 13.0164 | L_sem 0.7653 (cos_sim=0.2347) | L_str 0.0219
+Iter  30: Total +1.4332 | L_vis 13.8781 | L_sem 0.7601 (cos_sim=0.2399) | L_str 0.0269
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.7054 | L_vis 1.1787 | L_sem 0.8133 (cos_sim=0.1867) | L_str 0.0213
+Iter  10: Total -1.3666 | L_vis 7.1130 | L_sem 0.7951 (cos_sim=0.2049) | L_str 0.0424
+Iter  20: Total +1.2263 | L_vis 10.8138 | L_sem 0.7758 (cos_sim=0.2242) | L_str 0.0164
+Iter  30: Total +0.3806 | L_vis 7.3966 | L_sem 0.7892 (cos_sim=0.2108) | L_str 0.0149
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.8183 | L_vis 2.4268 | L_sem 0.8114 (cos_sim=0.1886) | L_str 0.0453
+Iter  10: Total +1.1850 | L_vis 11.5746 | L_sem 0.7649 (cos_sim=0.2351) | L_str 0.0206
+Iter  20: Total -0.9530 | L_vis 4.4704 | L_sem 0.8130 (cos_sim=0.1870) | L_str 0.0236
+Iter  30: Total +0.6246 | L_vis 8.3221 | L_sem 0.7822 (cos_sim=0.2178) | L_str 0.0151
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:47:44] [25/35] 4875 psnr=41.71 ssim=0.9714 gpu_s=46.7
+Iter   0: Total -1.4825 | L_vis 2.6257 | L_sem 0.8264 (cos_sim=0.1736) | L_str 0.0239
+Iter  10: Total +0.1678 | L_vis 7.3621 | L_sem 0.8021 (cos_sim=0.1979) | L_str 0.0181
+Iter  20: Total +0.5974 | L_vis 7.9394 | L_sem 0.8079 (cos_sim=0.1921) | L_str 0.0135
+Iter  30: Total -0.4129 | L_vis 6.5616 | L_sem 0.8143 (cos_sim=0.1857) | L_str 0.0239
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.8622 | L_vis 3.3785 | L_sem 0.7990 (cos_sim=0.2010) | L_str 0.0504
+Iter  10: Total -0.4052 | L_vis 4.7649 | L_sem 0.8041 (cos_sim=0.1959) | L_str 0.0160
+Iter  20: Total +0.4505 | L_vis 8.1154 | L_sem 0.8011 (cos_sim=0.1989) | L_str 0.0168
+Iter  30: Total +0.1167 | L_vis 9.2343 | L_sem 0.7981 (cos_sim=0.2019) | L_str 0.0274
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.6543 | L_vis 2.8692 | L_sem 0.7915 (cos_sim=0.2085) | L_str 0.0449
+Iter  10: Total -0.4524 | L_vis 5.4037 | L_sem 0.8090 (cos_sim=0.1910) | L_str 0.0195
+Iter  20: Total +1.5275 | L_vis 13.2567 | L_sem 0.7566 (cos_sim=0.2434) | L_str 0.0226
+Iter  30: Total +2.5404 | L_vis 17.0032 | L_sem 0.7634 (cos_sim=0.2366) | L_str 0.0225
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -2.2569 | L_vis 0.8499 | L_sem 0.8276 (cos_sim=0.1724) | L_str 0.0287
+Iter  10: Total +0.0751 | L_vis 5.5374 | L_sem 0.8020 (cos_sim=0.1980) | L_str 0.0115
+Iter  20: Total +1.4614 | L_vis 10.6388 | L_sem 0.7386 (cos_sim=0.2614) | L_str 0.0123
+Iter  30: Total -0.4705 | L_vis 4.4847 | L_sem 0.8217 (cos_sim=0.1783) | L_str 0.0155
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.5154 | L_vis 0.8793 | L_sem 0.7809 (cos_sim=0.2191) | L_str 0.0173
+Iter  10: Total +1.4914 | L_vis 11.6574 | L_sem 0.7452 (cos_sim=0.2548) | L_str 0.0162
+Iter  20: Total +0.5238 | L_vis 7.6139 | L_sem 0.7875 (cos_sim=0.2125) | L_str 0.0136
+Iter  30: Total +1.4543 | L_vis 10.5968 | L_sem 0.7631 (cos_sim=0.2369) | L_str 0.0119
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:51:41] [30/35] 6736 psnr=41.27 ssim=0.9769 gpu_s=46.8
+Iter   0: Total -1.6622 | L_vis 0.6738 | L_sem 0.8001 (cos_sim=0.1999) | L_str 0.0185
+Iter  10: Total +0.2040 | L_vis 7.8659 | L_sem 0.7754 (cos_sim=0.2246) | L_str 0.0202
+Iter  20: Total +1.3411 | L_vis 11.4383 | L_sem 0.7597 (cos_sim=0.2403) | L_str 0.0175
+Iter  30: Total -1.2644 | L_vis 4.3764 | L_sem 0.8042 (cos_sim=0.1958) | L_str 0.0284
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.6553 | L_vis 1.7734 | L_sem 0.8061 (cos_sim=0.1939) | L_str 0.0232
+Iter  10: Total +1.1587 | L_vis 10.6446 | L_sem 0.7965 (cos_sim=0.2035) | L_str 0.0165
+Iter  20: Total +1.0236 | L_vis 12.8711 | L_sem 0.7163 (cos_sim=0.2837) | L_str 0.0298
+Iter  30: Total +0.2990 | L_vis 7.6273 | L_sem 0.8009 (cos_sim=0.1991) | L_str 0.0171
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.2521 | L_vis 1.0890 | L_sem 0.8239 (cos_sim=0.1761) | L_str 0.0133
+Iter  10: Total -1.1164 | L_vis 3.7106 | L_sem 0.8063 (cos_sim=0.1937) | L_str 0.0230
+Iter  20: Total +0.4172 | L_vis 7.6688 | L_sem 0.8069 (cos_sim=0.1931) | L_str 0.0153
+Iter  30: Total +0.4040 | L_vis 7.6710 | L_sem 0.8044 (cos_sim=0.1956) | L_str 0.0155
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -0.7462 | L_vis 1.1496 | L_sem 0.8046 (cos_sim=0.1954) | L_str 0.0055
+Iter  10: Total -0.8418 | L_vis 5.5494 | L_sem 0.8076 (cos_sim=0.1924) | L_str 0.0266
+Iter  20: Total -0.0803 | L_vis 5.1010 | L_sem 0.7736 (cos_sim=0.2264) | L_str 0.0125
+Iter  30: Total -0.6547 | L_vis 5.3158 | L_sem 0.7858 (cos_sim=0.2142) | L_str 0.0228
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.0335 | L_vis 1.9385 | L_sem 0.8242 (cos_sim=0.1758) | L_str 0.0134
+Iter  10: Total -1.5037 | L_vis 6.1351 | L_sem 0.8123 (cos_sim=0.1877) | L_str 0.0401
+Iter  20: Total -0.9231 | L_vis 5.1839 | L_sem 0.8125 (cos_sim=0.1875) | L_str 0.0263
+Iter  30: Total +0.6635 | L_vis 8.4059 | L_sem 0.8009 (cos_sim=0.1991) | L_str 0.0146
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:55:37] [35/35] 9954 psnr=42.40 ssim=0.9686 gpu_s=46.8
+[14:55:37] done

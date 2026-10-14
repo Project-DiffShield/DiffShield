@@ -1,0 +1,45 @@
+{
+  "n_paired": 70,
+  "n_a": 70,
+  "n_b": 70,
+  "metrics": {
+    "v1_psnr": {
+      "n": 70,
+      "mean_diff": 0.07515861402135247,
+      "ci_lo": 0.0020536687760492073,
+      "ci_hi": 0.1507350857753583,
+      "share_a_greater": 0.5571428571428572,
+      "mean_a": 41.98625532991343,
+      "mean_b": 41.911096715892086,
+      "tolerance": 0.5,
+      "within_tolerance": true
+    },
+    "v1_ssim": {
+      "n": 70,
+      "mean_diff": 0.00041136208297807284,
+      "ci_lo": -0.00015254732686948298,
+      "ci_hi": 0.0009817457827415025,
+      "share_a_greater": 0.5428571428571428,
+      "mean_a": 0.9753719891676903,
+      "mean_b": 0.9749606270847124,
+      "tolerance": 0.005,
+      "within_tolerance": true
+    },
+    "v1_lpips": {
+      "n": 70,
+      "mean_diff": -0.00016051041228430058,
+      "ci_lo": -0.00421255074973617,
+      "ci_hi": 0.00385374337966954,
+      "share_a_greater": 0.5714285714285714,
+      "mean_a": 0.2314013808965683,
+      "mean_b": 0.2315618913088526,
+      "tolerance": 0.03,
+      "within_tolerance": true
+    }
+  },
+  "linf_all_8_255": true,
+  "png_max_abs_diff": 4,
+  "png_max_is_4": true,
+  "gate_pass": true,
+  "gate_note": "Proposed tolerance, not yet accepted by the user. Note the paired set may be a subset of v1's 70 images; v1 per-image numbers use its own RNG/image order."
+}

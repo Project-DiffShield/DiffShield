@@ -1,0 +1,10 @@
+Collecting lpips==0.1.4
+  Downloading lpips-0.1.4-py3-none-any.whl.metadata (10 kB)
+Collecting kneed
+  Downloading kneed-0.8.6-py3-none-any.whl.metadata (6.4 kB)
+Requirement already satisfied: kornia in /usr/local/lib/python3.13/dist-packages (0.8.3)
+Downloading lpips-0.1.4-py3-none-any.whl (53 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 53.8/53.8 kB 3.4 MB/s eta 0:00:00
+Downloading kneed-0.8.6-py3-none-any.whl (10 kB)
+Would install kneed-0.8.6 lpips-0.1.4
+

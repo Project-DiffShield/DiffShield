@@ -1,0 +1,2 @@
+2026-W42: 1.77 GPU-hours (sum of per-image protect time; session time is in the csv)
+wrote /kaggle/working/J01/results/gpu_ledger.csv

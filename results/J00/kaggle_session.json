@@ -1,0 +1,14 @@
+{
+  "job_id": "J00",
+  "run_id": "J00",
+  "session_seconds": 10.26706337928772,
+  "n_gpus": 2,
+  "steps": {
+    "env_probe": {
+      "rc": 0,
+      "seconds": 10.3
+    }
+  },
+  "params": {},
+  "ok": true
+}

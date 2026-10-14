@@ -21,7 +21,9 @@ def main(argv=None) -> int:
     root = Path(a.results)
     rows = []
     for d in sorted(p for p in root.iterdir() if p.is_dir()) if root.exists() else []:
-        gpu = sum(json.loads(f.read_text()).get("total_gpu_seconds") or 0 for f in d.glob("gpu_time*.json"))
+        # merged gpu_time.json already sums the shard files; count shards only when no merged file exists
+        gfiles = [d / "gpu_time.json"] if (d / "gpu_time.json").exists() else list(d.glob("gpu_time*.json"))
+        gpu = sum(json.loads(f.read_text()).get("total_gpu_seconds") or 0 for f in gfiles)
         sess = [json.loads(f.read_text()) for f in d.glob("kaggle_session*.json")]
         sec = sum(s.get("session_seconds") or 0 for s in sess)
         ts = dt.datetime.fromtimestamp(d.stat().st_mtime)

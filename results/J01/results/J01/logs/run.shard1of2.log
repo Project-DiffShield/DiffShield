@@ -1,0 +1,10 @@
+[14:27:42] run J01 method=v1 device=cuda backend=real shard=(1, 2) git=50dd3b4 dirty=False
+[14:27:42] 35 images in this shard (70 total), 0 already done
+[14:31:58] [5/35] 1172 psnr=42.49 ssim=0.9733 gpu_s=46.7
+[14:35:55] [10/35] 1600 psnr=42.65 ssim=0.9690 gpu_s=46.9
+[14:39:52] [15/35] 2459 psnr=42.37 ssim=0.9820 gpu_s=46.9
+[14:43:48] [20/35] 3272 psnr=42.02 ssim=0.9787 gpu_s=46.7
+[14:47:44] [25/35] 4875 psnr=41.71 ssim=0.9714 gpu_s=46.7
+[14:51:41] [30/35] 6736 psnr=41.27 ssim=0.9769 gpu_s=46.8
+[14:55:37] [35/35] 9954 psnr=42.40 ssim=0.9686 gpu_s=46.8
+[14:55:37] done

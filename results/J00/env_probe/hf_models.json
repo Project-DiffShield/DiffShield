@@ -1,0 +1,34 @@
+{
+  "runwayml/stable-diffusion-v1-5": {
+    "resolves": true,
+    "sha_commit": "451f4fe16113bff5a5d2269ed5ad43b0592e9a14",
+    "files": {
+      "vae/config.json": null,
+      "vae/diffusion_pytorch_model.safetensors": "a2b5134f4dbc140d9c11f11cba3233099e00af40f262f136c691fb7d38d2194c"
+    }
+  },
+  "stable-diffusion-v1-5/stable-diffusion-v1-5": {
+    "resolves": true,
+    "sha_commit": "451f4fe16113bff5a5d2269ed5ad43b0592e9a14",
+    "files": {
+      "vae/config.json": null,
+      "vae/diffusion_pytorch_model.safetensors": "a2b5134f4dbc140d9c11f11cba3233099e00af40f262f136c691fb7d38d2194c"
+    }
+  },
+  "openai/clip-vit-base-patch32": {
+    "resolves": true,
+    "sha_commit": "3d74acf9a28c67741b2f4f2ea7635f0aaf6f0268",
+    "files": {
+      "pytorch_model.bin": "a63082132ba4f97a80bea76823f544493bffa8082296d62d71581a4feff1576f"
+    }
+  },
+  "openai/clip-vit-large-patch14": {
+    "resolves": true,
+    "sha_commit": "32bd64288804d66eefd0ccbe215aa642df71cc41",
+    "files": {
+      "model.safetensors": "a2bf730a0c7debf160f7a6b50b3aaf3703e7e88ac73de7a314903141db026dcb",
+      "pytorch_model.bin": "f1a17cdbe0f36fec524f5cafb1c261ea3bbbc13e346e0f74fc9eb0460dedd0d3"
+    }
+  },
+  "_vae_sha256_identical_between_sd15_ids": true
+}

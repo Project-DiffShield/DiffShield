@@ -1,0 +1,2 @@
+run_id,iso_week,session_seconds,gpu_seconds,gpu_name
+J01,2026-W42,1756.1258375644684,3188.669117270999,Tesla T4

@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config config/config.yaml --method v1 --input_dir /kaggle/working/J01/data/v1_inputs --list data/splits/v1_eval70.txt --limit 70 --run_id J01 --output_root /kaggle/working/J01/results --checkpoint_every 5 --set budget.iters=40 --split v1_eval70 --backend real --set data.image_size=512 --shard 0/2

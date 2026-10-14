@@ -1,0 +1,3 @@
+[14:26:18] J00: start: Environment probe (pip freeze, GPU/CUDA info, HF model hashes). CPU session is enough. | gpus=2 params={} resume=None
+[14:26:18] J00: [env_probe] /usr/bin/python3 scripts/env_probe.py --out /kaggle/working/J00/env_probe
+[14:26:28] J00: step env_probe: rc=0 (10s)

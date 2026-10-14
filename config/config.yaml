@@ -28,8 +28,8 @@ models:                        # ids UNVERIFIED until env probe / first load; th
 
 budget:
   scale: standard_0_255
-  eps_255: 4                   # PROVISIONAL. v1 code: 8/255 on [-1,1] == 4/255 standard. Phase 0 budget check confirms.
-  eps_confirmed: false         # set true (with run_id) after the Phase 0 budget check on real outputs
+  eps_255: 4                   # confirmed by J01 budget check: v1 code 8/255 on [-1,1] == 4/255 standard
+  eps_confirmed: true          # J01 (2026-10-14): 70/70 PNGs max |gray-level change| = 4, Linf = 8/255 on [-1,1]
   step_255: 0.5                # v1 actual (alpha=1/255 on [-1,1]). Handoff table said 1; see PHASE_0.md finding F1
   iters: 40
   random_start: uniform_full   # uniform_full = U(-eps,eps) (v1) | uniform_half (handoff ref code) | zero

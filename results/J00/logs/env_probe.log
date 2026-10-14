@@ -1,0 +1,2 @@
+env probe written to /kaggle/working/J00/env_probe
+torch 2.11.0+cu128 cuda 12.8 gpus ['Tesla T4', 'Tesla T4']

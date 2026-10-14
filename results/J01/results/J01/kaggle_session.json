@@ -1,0 +1,57 @@
+{
+  "job_id": "J01",
+  "run_id": "J01",
+  "session_seconds": 1756.1258375644684,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 4.0
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 2.5
+    },
+    "tests": {
+      "rc": 0,
+      "seconds": 62.1
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 2.9
+    },
+    "protect": {
+      "rc": 0,
+      "seconds": 1680.1
+    },
+    "merge": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "budget_check": {
+      "rc": 0,
+      "seconds": 2.6
+    },
+    "tables": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "compare_to_v1": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "ledger": {
+      "rc": 0,
+      "seconds": 0.1
+    }
+  },
+  "params": {
+    "n_images": 70,
+    "iters": 40,
+    "run_tests": true,
+    "backend": "real",
+    "image_size": 512,
+    "extra_args": []
+  },
+  "ok": true
+}

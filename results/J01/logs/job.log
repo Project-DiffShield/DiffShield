@@ -1,0 +1,24 @@
+[14:26:28] J01: start: Phase 0 - reproduce v1 Phase 1 on the 70 original evaluation images (budget check + invisibility metrics) | gpus=2 params={'n_images': 70, 'iters': 40, 'run_tests': True, 'backend': 'real', 'image_size': 512, 'extra_args': []} resume=None
+[14:26:28] J01: pip_install: /usr/bin/python3 -m pip install -q diffusers>=0.28 transformers>=4.40 accelerate huggingface_hub kornia>=0.7.0 lpips==0.1.4 kneed>=0.8 scikit-image scikit-learn pandas pyyaml tqdm
+[14:26:32] J01: step install: rc=0 (4s)
+[14:26:32] J01: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[14:26:35] J01: step check_env: rc=0 (2s)
+[14:26:35] J01: [tests] /usr/bin/python3 -m pytest -q -x tests -p no:cacheprovider
+[14:27:37] J01: step tests: rc=0 (62s)
+[14:27:37] J01: [prepare_data] /usr/bin/python3 scripts/prepare_v1_data.py --from_manifest --out_dir /kaggle/working/J01/data/v1_inputs --which eval --limit 70 --size 512
+[14:27:40] J01: step prepare_data: rc=0 (3s)
+[14:27:40] J01: [protect] gpu0: /usr/bin/python3 scripts/run_protect.py --config config/config.yaml --method v1 --input_dir /kaggle/working/J01/data/v1_inputs --list data/splits/v1_eval70.txt --limit 70 --run_id J01 --output_root /kaggle/working/J01/results --checkpoint_every 5 --set budget.iters=40 --split v1_eval70 --backend real --set data.image_size=512 --shard 0/2
+[14:27:40] J01: [protect] gpu1: /usr/bin/python3 scripts/run_protect.py --config config/config.yaml --method v1 --input_dir /kaggle/working/J01/data/v1_inputs --list data/splits/v1_eval70.txt --limit 70 --run_id J01 --output_root /kaggle/working/J01/results --checkpoint_every 5 --set budget.iters=40 --split v1_eval70 --backend real --set data.image_size=512 --shard 1/2
+[14:54:35] J01: [protect] protect.gpu0.log exited 0; tail: ['Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)', '[14:54:29] [35/35] 986 psnr=42.03 ssim=0.9768 gpu_s=44.6', '[14:54:29] done']
+[14:55:40] J01: [protect] protect.gpu1.log exited 0; tail: ['Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)', '[14:55:37] [35/35] 9954 psnr=42.40 ssim=0.9686 gpu_s=46.8', '[14:55:37] done']
+[14:55:40] J01: step protect: rc=0 (1680s)
+[14:55:40] J01: [merge] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/J01/results/J01 --list data/splits/v1_eval70.txt
+[14:55:40] J01: step merge: rc=0 (1s)
+[14:55:40] J01: [budget_check] /usr/bin/python3 scripts/budget_check.py --clean_dir /kaggle/working/J01/data/v1_inputs --protected_dir /kaggle/working/J01/results/J01/images --run_id J01 --output_root /kaggle/working/J01/results
+[14:55:43] J01: step budget_check: rc=0 (3s)
+[14:55:43] J01: [tables] /usr/bin/python3 scripts/make_tables.py --run_id J01 --output_root /kaggle/working/J01/results --table invisibility
+[14:55:44] J01: step tables: rc=0 (1s)
+[14:55:44] J01: [compare_to_v1] /usr/bin/python3 scripts/compare_runs.py --a /kaggle/working/J01/results/J01 --v1_csv data/v1_ref/stage1_per_image_metrics.csv
+[14:55:44] J01: step compare_to_v1: rc=0 (1s)
+[14:55:44] J01: [ledger] /usr/bin/python3 scripts/gpu_ledger.py --results /kaggle/working/J01/results
+[14:55:44] J01: step ledger: rc=0 (0s)
