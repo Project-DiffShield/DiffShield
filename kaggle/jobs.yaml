@@ -218,7 +218,8 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [val, test, messy]}}
-      - {name: mkdir_optuna, run: ["{py}", -c, "import os; os.makedirs('{out}/optuna', exist_ok=True)"]}
+      - name: prepare_optuna_dir      # also restores an Optuna study from an earlier session (RESUME_FROM)
+        run: ["{py}", -c, "import os, shutil; os.makedirs('{out}/optuna', exist_ok=True); s = os.path.join('{resume_root}', 'optuna'); shutil.copytree(s, '{out}/optuna', dirs_exist_ok=True) if os.path.isdir(s) else None"]
       - name: tune
         workers: true
         timeout_min: 180
@@ -440,6 +441,8 @@ jobs:
       - macro: protect
         with: {method: v2_final, split: ae_pool, extra: ["--set", "methods.v2_final.eot.k_draws=2"]}
       - {macro: protect, with: {method: v1, split: test}}
+      - name: restore_ae_ckpt
+        run: ["{py}", -c, "import os, shutil; os.makedirs('{out}/adaptive_ae', exist_ok=True); s = os.path.join('{resume_root}', 'adaptive_ae'); shutil.copytree(s, '{out}/adaptive_ae', dirs_exist_ok=True) if os.path.isdir(s) else None"]
       - name: train_ae
         run: ["{py}", scripts/train_adaptive_ae.py, --protected_dir, "{results}/prot_v2_final_ae_pool/images",
               --clean_dir, "{out}/data/ae_pool", --out, "{out}/adaptive_ae/ae_final.pt", --minutes, "{ae_minutes}", --resume]

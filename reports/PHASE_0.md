@@ -69,6 +69,9 @@ Gate with the proposed tolerance (mean PSNR within ±0.5 dB, SSIM ±0.005, LPIPS
 - Metrics are reported in two conventions: v1 (tensor -> uint8 by truncation) and published PNG (rounded).
 - `requirements.txt` is provisional (lower bounds, no invented pins) until J00 provides the Kaggle freeze.
 
+- **Step size (integration):** `methods.v1` keeps v1's true step 0.5/255 (standard scale). Every v2 preset (`v2_cheap`, `v2_main`, `v2_antipure`, `v2_final_default`, `abl_*`) sets `budget.step_255: 1.0` explicitly, as in the handoff; `eps2/6/8` inherit it. The v2 loss weights start from v1's exact Optuna values (alpha 0.2699475469647097, beta 0.9023875567667267, gamma 60.52658429696642; eta = alpha) instead of the rounded 0.27/0.90/60.5.
+- **v2 method presets** are resolved inside `src/protect/v2_registry.py`; `run_protect` writes the resolved preset to `resolved_method_cfg*.json` and logs its hash and budget in the CSV.
+
 ## Open questions for the user
 
 1. Accept the proposed reproduction tolerance (±0.5 dB PSNR, ±0.005 SSIM, ±0.03 LPIPS)?

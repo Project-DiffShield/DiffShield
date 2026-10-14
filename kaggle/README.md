@@ -1,5 +1,7 @@
 # Running DiffShield jobs on Kaggle
 
+**Sessions S01-S18 (launch table, inputs, parameters, expected outputs): `docs/KAGGLE_LAUNCH.md`.** The text below is the generic runbook (written for J00/J01).
+
 You never edit code on Kaggle. You upload one zip once, then set `JOB_IDS` in one notebook and press Run All.
 
 ## One-time setup (per Kaggle account)
