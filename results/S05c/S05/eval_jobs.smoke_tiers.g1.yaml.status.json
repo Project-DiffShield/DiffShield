@@ -1,0 +1,32 @@
+{
+  "smoke_clean_test": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 341.87317943573
+  },
+  "smoke_clean_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 267.01013803482056
+  },
+  "smoke_clean_messy": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 276.5818703174591
+  },
+  "smoke_noise_uniform_test": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 272.5880494117737
+  },
+  "smoke_noise_uniform_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 188.05758094787598
+  },
+  "smoke_noise_uniform_messy": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 165.45806241035461
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "percentile": 95.0,
+  "per_editor": {
+    "sd15_img2img": 0.11725911653031998,
+    "sdxl_img2img": 0.04384416672224884,
+    "ip2p": 0.12943155932900463,
+    "sd_inpaint": 0.10443936408218923,
+    "ipadapter_faceid": 0.09396597765495265
+  },
+  "n_pairs": {
+    "sd15_img2img": 12,
+    "sdxl_img2img": 8,
+    "ip2p": 4,
+    "sd_inpaint": 8,
+    "ipadapter_faceid": 8,
+    "pooled": 40
+  },
+  "n_sources_with_face": 5,
+  "pooled": 0.14222766226203185
+}

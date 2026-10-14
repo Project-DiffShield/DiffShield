@@ -1,0 +1,62 @@
+[
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "ip2p",
+    "strength": "",
+    "n_images": 2,
+    "n_edits": 2,
+    "mean_arcface_sim": 0.4275955026969313,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.6026433408260345,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 2,
+    "n_edits": 2,
+    "mean_arcface_sim": 0.7475533783435822,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.802676260471344,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 2,
+    "n_edits": 2,
+    "mean_arcface_sim": 0.3057387173175812,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7323129177093506,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sd_inpaint",
+    "strength": "1",
+    "n_images": 2,
+    "n_edits": 2,
+    "mean_arcface_sim": 0.9539772570133209,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.8065801858901978,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sdxl_img2img",
+    "strength": "0.55",
+    "n_images": 2,
+    "n_edits": 2,
+    "mean_arcface_sim": 0.42113944888114924,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7605681419372559,
+    "mean_edit_lpips": NaN
+  }
+]

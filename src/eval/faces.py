@@ -15,6 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Optional, Sequence, Tuple
 
+import contextlib
 import random
 import time
 
@@ -50,6 +51,22 @@ def cosine_matrix(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     A = A / np.clip(np.linalg.norm(A, axis=1, keepdims=True), 1e-12, None)
     B = B / np.clip(np.linalg.norm(B, axis=1, keepdims=True), 1e-12, None)
     return A @ B.T
+
+
+@contextlib.contextmanager
+def _init_lock(path: str = "/tmp/diffshield_insightface_init.lock"):
+    """Cross-process lock around FaceAnalysis init (no-op where fcntl is missing, e.g. Windows tests)."""
+    try:
+        import fcntl
+    except ImportError:
+        yield
+        return
+    with open(path, "w") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
 
 
 def choose_providers(prefer_gpu: bool = True, available: Optional[Sequence[str]] = None) -> list:
@@ -108,15 +125,21 @@ class FaceScorer:
         if self.root:
             kw["root"] = self.root
         app = None
-        for attempt in range(6):  # two shard processes download the same pack: one can hit FileExistsError (S05)
-            try:
-                app = FaceAnalysis(**kw)
-                break
-            except (FileExistsError, OSError) as e:
-                if attempt == 5:
-                    raise
-                self.log(f"[faces] FaceAnalysis init failed ({e}); retry {attempt + 1}/5")
-                time.sleep(3 + 3 * attempt + random.random() * 3)
+        # Two shard processes download/unpack the same model pack. S05: one hit FileExistsError, retried and then loaded a
+        # half-unpacked pack WITHOUT the recognition model (embeddings came out as NaN 0-d arrays). So: serialise the init
+        # with a file lock and refuse to continue unless detection AND recognition are loaded.
+        with _init_lock():
+            for attempt in range(6):
+                try:
+                    app = FaceAnalysis(**kw)
+                    if "recognition" not in getattr(app, "models", {}) or "detection" not in app.models:
+                        raise RuntimeError(f"insightface pack incomplete, models loaded: {sorted(getattr(app, 'models', {}))}")
+                    break
+                except (FileExistsError, OSError, RuntimeError) as e:
+                    if attempt == 5:
+                        raise
+                    self.log(f"[faces] FaceAnalysis init failed ({e}); retry {attempt + 1}/5")
+                    time.sleep(3 + 3 * attempt + random.random() * 3)
         app.prepare(ctx_id=0 if "CUDAExecutionProvider" in self.providers else -1, det_size=self.det_size)
         self._app = app
         self.log(f"[faces] insightface {self.pack} providers={self.providers}")
@@ -134,6 +157,8 @@ class FaceScorer:
         areas = [(f.bbox[2] - f.bbox[0]) * (f.bbox[3] - f.bbox[1]) for f in faces]
         f = faces[int(np.argmax(areas))]
         emb = getattr(f, "normed_embedding", None)
+        if emb is None and getattr(f, "embedding", None) is None:
+            raise RuntimeError("insightface returned a face without an embedding: recognition model not loaded")
         if emb is None:
             e = np.asarray(f.embedding, dtype=np.float64)
             emb = e / max(np.linalg.norm(e), 1e-12)

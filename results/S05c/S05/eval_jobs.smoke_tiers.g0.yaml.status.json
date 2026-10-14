@@ -1,0 +1,32 @@
+{
+  "smoke_clean_test": {
+    "state": "failed",
+    "error": "IndexError('tuple index out of range')",
+    "seconds": 10.67750859260559
+  },
+  "smoke_clean_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 345.81643056869507
+  },
+  "smoke_clean_messy": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 277.9978868961334
+  },
+  "smoke_noise_uniform_test": {
+    "state": "failed",
+    "error": "IndexError('tuple index out of range')",
+    "seconds": 0.39361119270324707
+  },
+  "smoke_noise_uniform_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 277.750296831131
+  },
+  "smoke_noise_uniform_messy": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 272.1043734550476
+  }
+}

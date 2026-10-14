@@ -1,0 +1,10 @@
+[20:44:17] run prot_noise_uniform_val method=noise_uniform device=cuda backend=real shard=(0, 2) git=58d6c2c dirty=False
+[20:44:17] 3 images in this shard (5 total), 0 already done
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[20:44:23] [3/3] 13030 psnr=41.01 ssim=0.9555 gpu_s=0.0
+[20:44:23] done

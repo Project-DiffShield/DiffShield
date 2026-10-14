@@ -1,0 +1,4 @@
+[20:44:28] run prot_noise_uniform_messy method=noise_uniform device=cuda backend=real shard=(0, 2) git=58d6c2c dirty=False
+[20:44:28] 3 images in this shard (5 total), 0 already done
+[20:44:34] [3/3] 19617 psnr=40.68 ssim=0.9607 gpu_s=0.0
+[20:44:34] done

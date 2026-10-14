@@ -1,0 +1,10 @@
+# Cost report (measured)
+
+## Protection
+
+| run | method | n | iters | s_per_img | s_per_img_per_iter | peak_mem_mb | psnr | ssim | maxabs_u8 |
+|---|---|---|---|---|---|---|---|---|---|
+| prot_noise_uniform_messy | noise_uniform | 5 | 5.000 | 0.043 | 0.009 | 57.015 | 40.747 | 0.948 | 4 |
+| prot_noise_uniform_test | noise_uniform | 5 | 5.000 | 0.072 | 0.014 | 57.015 | 40.754 | 0.949 | 4 |
+| prot_noise_uniform_val | noise_uniform | 5 | 5.000 | 0.044 | 0.009 | 57.015 | 40.788 | 0.953 | 4 |
+
