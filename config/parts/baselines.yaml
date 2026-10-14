@@ -1,0 +1,51 @@
+# Baselines (E1 noise controls, E2 PhotoGuard / Mist) and E8 adaptive autoencoder purifier. Owner: agent A4.
+# Loaded by load_config via the config/parts/*.yaml deep-merge. eps_255 = null -> budget.eps_255 (standard 0-255 scale).
+# All PhotoGuard / Mist hyper-parameters below are from the task spec or my recollection of the papers and are
+# UNVERIFIED against the official repos (see docstrings in src/baselines/{photoguard,mist}.py).
+baselines:
+  _common:
+    eps_255: null
+    dtype: auto                     # fp16 on cuda, fp32 on cpu
+  noise_uniform:
+    variant: uniform                # uniform | sign (sign = +/-eps, extra control)
+  noise_gauss_psnr:
+    target_psnr: 41.911             # v1 mean PSNR over the 70 eval images (V2_PLAN_48H section 0); fallback only
+    psnr_csv: null                  # per-image target: CSV with the protected-image PSNRs to match
+    psnr_key_col: Original_Filename # v1 stage1_per_image_metrics.csv columns (key stripped to the image stem)
+    psnr_val_col: PSNR_dB
+  photoguard:                       # encoder attack only; the diffusion attack variant is OUT of scope
+    iters: 200
+    step_255: 1.0
+    step_decay: true                # linear decay step -> step/100 (unverified recollection of the official pgd())
+    target: gray                    # gray | zero_latent | image (+ target_image path)
+    target_image: null
+    loss_scale: 1024.0              # only used when the VAE runs in fp16
+  mist:                             # REIMPLEMENTATION of the fused semantic + textural loss
+    iters: 100
+    step_255: 1.0
+    w_sem: 1.0
+    w_tex: 1.0
+    t_min: 1
+    t_max: 1000
+    n_noise: 1
+    prompt: ""
+    target_image: null              # null -> procedural pattern (official MIST.png is not vendored)
+    loss_scale: 1024.0
+    grad_checkpointing: true
+
+# E8 adaptive attacker (LightShed-style autoencoder). Weights are produced by scripts/train_adaptive_ae.py (job J42).
+# src/eval/adaptive_ae.py::build_purifier(cfg, device) reads this block (eval.purifiers.adaptive_ae, if set, overrides it).
+adaptive_ae:
+  weights_path: results/adaptive_ae/ae_final.pt
+  base_channels: 32
+  depth: 3                          # number of 2x downsamplings (image side padded to a multiple of 2**depth)
+  patch: 128
+  device: auto
+  train:
+    minutes: 60                     # wall-clock budget (~1 GPU-hour)
+    batch_size: 16
+    lr: 0.0002
+    lpips_weight: 0.0               # 0 = L1 only; >0 needs the `lpips` package
+    val_fraction: 0.1
+    log_every: 50
+    ckpt_every: 500

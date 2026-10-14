@@ -1,0 +1,10 @@
+# Extra dependencies for agent A4 (baselines, splits, adaptive AE). Merged into requirements.txt at integration.
+# Versions are floors only; the integrator pins exact versions from the Kaggle env probe (J00).
+scikit-learn>=1.3        # KMeans in scripts/make_splits.py
+pillow>=10.0
+numpy>=1.24
+pyyaml>=6.0
+# Already required elsewhere (shown for completeness): torch, diffusers, transformers (PhotoGuard / Mist VAE + UNet loader)
+# Optional:
+#   insightface==0.7.3 + onnxruntime   ArcFace de-duplication in make_splits.py (identity_mode arcface), face cache in prepare_data.py
+#   lpips                              only if adaptive_ae.train.lpips_weight > 0
