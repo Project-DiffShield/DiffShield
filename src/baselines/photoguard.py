@@ -1,27 +1,24 @@
 """PhotoGuard encoder attack (Salman et al. 2023, "Raising the Cost of Malicious AI-Powered Image Editing").
 
-THIS IS A REIMPLEMENTATION from the published method description and from memory of the public repo
-(MadryLab/photoguard); the repo was NOT available in this workspace (no network access from the coding agent).
-Everything marked UNVERIFIED must be checked against the official code before it is cited as "PhotoGuard".
+THIS IS A REIMPLEMENTATION (label kept) of the public MadryLab/photoguard encoder attack, now checked against
+the official code. source_verified: https://github.com/MadryLab/photoguard @ 686bea75c786cb46c88fc396a0cd0ee3d7d28c2e
+(2023-02-27), notebooks/demo_simple_attack_img2img.ipynb cell 7 (pgd, img2img: loss = latent_dist.mean.norm(), i.e.
+zero-latent target) and notebooks/demo_simple_attack_inpainting.ipynb cell 7 (pgd with target =
+vae.encode(target_image).latent_dist.mean, loss = (mean - target).norm()).
 
-Method (encoder attack): PGD on the image so that the SD VAE *encoder* maps the protected image close to a
-target latent, i.e. minimize ||E(x + delta) - z_T||_2 over ||delta||_inf <= eps. Editing pipelines
-(img2img / inpainting) first encode the input, so a corrupted latent corrupts every downstream edit.
-
-Implemented as in the paper / repo demo:
-  * PGD with sign gradient *descent* on the latent distance, random start in the eps ball, projection onto
-    the eps ball and onto [-1, 1] each step.
-  * 200 iterations (task spec; the paper/demo values are UNVERIFIED), eps at OUR budget (default 4/255 standard
-    scale) instead of the official default (UNVERIFIED, the official demo uses a larger L_inf budget of
-    roughly 0.06-0.1 on [-1,1], i.e. 3-6/255 standard; check before quoting).
-  * Step size decays linearly from ``step`` to ``step/100`` over the run (my recollection of the repo's pgd();
-    UNVERIFIED).
-  * Target latent: ``target="gray"`` encodes a constant mid-gray image (task spec); ``"zero_latent"`` uses
-    z_T = 0, which is the "minimize ||E(x)||" variant I recall from the repo's simple demo (UNVERIFIED);
-    ``"image"`` encodes a user-supplied target image (the paper uses a specific structured target image; the
-    official asset is not vendored here).
-  * Latent = posterior MEAN of the VAE encoder, unscaled (the scale factor does not change the sign gradient
-    for this single-term loss).
+Official hyper-parameters (on [-1,1] scale) vs ours here:
+  * PGD, L_inf, sign gradient DESCENT, uniform random start in [-eps, eps] (no projection of the start), project to
+    the eps box then clamp to [-1,1] each step: matches.
+  * step size decays linearly step -> step/100: matches the official pgd().
+  * iters: official demos use 1000 (we now default to 1000; was 200).
+  * step: official 0.02 (img2img demo) / 0.01 (inpainting demo) = 2.55 / 1.275 in /255 standard units; we default to
+    the img2img value 2.55 (was 1.0).
+  * eps: official 0.06 on [-1,1] = 7.65/255 standard. NOT adopted: eps is OUR budget (4/255).
+  * loss: L2 norm (not squared) of the latent MEAN (latent_dist.mean, unscaled) minus target; ours is the same norm
+    (the sign of the gradient is identical to the squared version).
+  * target: img2img demo = zero latent; inpainting demo = latent of a target image (the repo's assets/ image, not
+    vendored; pass ``target_image``). Default is now ``zero_latent`` (was gray); ``gray`` stays as an extra option.
+  * Official fp16 autocast; ours runs the VAE in fp16 on cuda with a loss scale (does not change the sign).
 
 Deviations / out of scope (documented, not hidden):
   * The "diffusion" attack variant of PhotoGuard (backprop through the whole sampling chain, ~10x cost) is OUT
@@ -37,6 +34,9 @@ from typing import Callable, Dict, Optional, Tuple
 import torch
 
 from .noise_control import from_u8, int_budget, linf_u8, psnr_tensors, quantize_to_budget, to_model_scale, to_u8
+
+SOURCE_VERIFIED = ("https://github.com/MadryLab/photoguard@686bea75c786cb46c88fc396a0cd0ee3d7d28c2e "
+                   "notebooks/demo_simple_attack_{img2img,inpainting}.ipynb cell 7")
 
 EncodeFn = Callable[[torch.Tensor], torch.Tensor]  # x[B,3,H,W] in [-1,1] -> latent mean (differentiable, float)
 
@@ -55,7 +55,7 @@ def project(x_adv: torch.Tensor, x_ref: torch.Tensor, eps_m: float) -> torch.Ten
 
 
 def step_size_at(step: float, i: int, iters: int, decay: bool = True) -> float:
-    """Linear decay step -> step/100 (UNVERIFIED recollection of the official pgd())."""
+    """Linear decay step -> step/100 (official pgd(), verified)."""
     if not decay:
         return step
     return step - (step - step / 100.0) / max(iters, 1) * i
@@ -66,8 +66,8 @@ class EncoderAttackProtector:
 
     name = "photoguard"
 
-    def __init__(self, encode_fn: EncodeFn, eps_255: float = 4.0, step_255: float = 1.0, iters: int = 200,
-                 target: str = "gray", target_image: Optional[torch.Tensor] = None, step_decay: bool = True,
+    def __init__(self, encode_fn: EncodeFn, eps_255: float = 4.0, step_255: float = 2.55, iters: int = 1000,
+                 target: str = "zero_latent", target_image: Optional[torch.Tensor] = None, step_decay: bool = True,
                  random_start: bool = True, loss_scale: float = 1.0):
         if target not in ("gray", "zero_latent", "image"):
             raise ValueError("target must be gray | zero_latent | image")
@@ -113,7 +113,7 @@ class EncoderAttackProtector:
         for i in range(self.iters):
             x_adv = x_adv.detach().requires_grad_(True)
             z = self.encode_fn(x_adv).float()
-            loss = (z - z_t).pow(2).sum()             # sign step is invariant to the sqrt / scale of this loss
+            loss = (z - z_t).norm()                   # official: (mean - target).norm()
             grad, = torch.autograd.grad(loss * self.loss_scale, x_adv)
             if i == 0:
                 loss_first = float(loss.detach())
@@ -122,9 +122,10 @@ class EncoderAttackProtector:
             x_adv = project(x_adv.detach() - s * grad.sign(), x_ref, eps_m)
         x_pub = quantize_to_budget(x_ref, x_adv.detach(), self.eps_255).to(x.dtype)
         with torch.no_grad():
-            loss_pub = float((self.encode_fn(x_pub).float() - z_t).pow(2).sum())
+            loss_pub = float((self.encode_fn(x_pub).float() - z_t).norm())
         info = {"method": self.name, "attack": "encoder", "target": self.target, "eps_255": self.eps_255,
                 "step_255": self.step_255, "iters": self.iters, "seed": int(seed),
+                "implementation": "reimplementation", "source_verified": SOURCE_VERIFIED,
                 "loss_first": loss_first, "loss_last_iter": loss_last, "loss_published": loss_pub,
                 "linf_u8": linf_u8(x_ref, x_pub), "psnr": psnr_tensors(x_ref, x_pub)}
         return x_pub, info

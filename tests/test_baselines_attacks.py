@@ -67,9 +67,9 @@ def test_photoguard_budget_gradient_and_progress(target):
     # progress: closer to the target latent than clean and than same-budget uniform noise
     with torch.no_grad():
         noise = nc.uniform_linf(x, 4, 1)
-        dist_y = (enc(y) - zt).pow(2).sum().item()
-        dist_x = (enc(x) - zt).pow(2).sum().item()
-        dist_n = (enc(noise) - zt).pow(2).sum().item()
+        dist_y = (enc(y) - zt).norm().item()
+        dist_x = (enc(x) - zt).norm().item()
+        dist_n = (enc(noise) - zt).norm().item()
     assert dist_y < dist_x
     assert dist_y < dist_n
     assert abs(info["loss_published"] - dist_y) < 1e-3 * max(1.0, dist_y)

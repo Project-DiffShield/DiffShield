@@ -21,9 +21,9 @@ _DEFAULTS = {
     "noise_uniform": {"variant": "uniform"},
     "noise_gauss_psnr": {"target_psnr": 41.911, "psnr_csv": None, "psnr_key_col": "Original_Filename",
                          "psnr_val_col": "PSNR_dB"},
-    "photoguard": {"step_255": 1.0, "iters": 200, "target": "gray", "step_decay": True, "loss_scale": 1024.0},
-    "mist": {"step_255": 1.0, "iters": 100, "w_sem": 1.0, "w_tex": 1.0, "t_min": 1, "t_max": 1000,
-             "n_noise": 1, "prompt": "", "target_image": None, "loss_scale": 1024.0, "grad_checkpointing": True},
+    "photoguard": {"step_255": 2.55, "iters": 1000, "target": "zero_latent", "step_decay": True, "loss_scale": 1024.0},
+    "mist": {"step_255": 1.0, "iters": 100, "w_sem": 1e4, "w_tex": 1.0, "t_min": 0, "t_max": 1000,
+             "n_noise": 1, "prompt": "a painting", "target_image": None, "loss_scale": 1024.0, "grad_checkpointing": True},
 }
 
 

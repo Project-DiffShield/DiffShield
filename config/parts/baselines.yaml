@@ -1,7 +1,7 @@
 # Baselines (E1 noise controls, E2 PhotoGuard / Mist) and E8 adaptive autoencoder purifier. Owner: agent A4.
 # Loaded by load_config via the config/parts/*.yaml deep-merge. eps_255 = null -> budget.eps_255 (standard 0-255 scale).
-# All PhotoGuard / Mist hyper-parameters below are from the task spec or my recollection of the papers and are
-# UNVERIFIED against the official repos (see docstrings in src/baselines/{photoguard,mist}.py).
+# PhotoGuard / Mist stay labelled "reimplementation", but hyper-parameters were checked against the official code
+# (details in src/baselines/{photoguard,mist}.py). eps is OUR budget (budget.eps_255), never the official one.
 baselines:
   _common:
     eps_255: null
@@ -14,23 +14,35 @@ baselines:
     psnr_key_col: Original_Filename # v1 stage1_per_image_metrics.csv columns (key stripped to the image stem)
     psnr_val_col: PSNR_dB
   photoguard:                       # encoder attack only; the diffusion attack variant is OUT of scope
-    iters: 200
-    step_255: 1.0
-    step_decay: true                # linear decay step -> step/100 (unverified recollection of the official pgd())
-    target: gray                    # gray | zero_latent | image (+ target_image path)
-    target_image: null
+    # source_verified: https://github.com/MadryLab/photoguard@686bea75c786cb46c88fc396a0cd0ee3d7d28c2e
+    #   notebooks/demo_simple_attack_img2img.ipynb cell 7 / demo_simple_attack_inpainting.ipynb cell 7
+    # official defaults (NOT adopted for eps): eps=0.06 on [-1,1] = 7.65/255 standard; step 0.02 (img2img) or 0.01
+    #   (inpainting) = 2.55 / 1.275 /255; iters=1000; linear step decay to step/100; loss = latent_dist.mean.norm()
+    #   (img2img) or (mean - target_latent).norm() (inpainting, target = a target image or zeros).
+    iters: 1000
+    step_255: 2.55                  # official img2img demo 0.02 on [-1,1]
+    step_decay: true                # linear decay step -> step/100 (verified, official pgd())
+    target: zero_latent             # zero_latent (img2img demo) | image (+ target_image path) | gray (ours, non-official)
+    target_image: null              # official asset: MadryLab/photoguard assets/ (not vendored)
     loss_scale: 1024.0              # only used when the VAE runs in fp16
   mist:                             # REIMPLEMENTATION of the fused semantic + textural loss
+    # source_verified: https://github.com/psyker-team/mist@99f5f3c455022bef77ef25ba440a4289ea472d25 (mist_v3.py, mist_utils.py)
+    # official defaults (NOT adopted for eps): epsilon=16 (/255, final budget (eps+1)/255), steps=100, alpha=1,
+    #   mode=2 (fused), --rate 1 -> fused weight 10**(1+3)=1e4 on the semantic loss, input 512, seed 23.
     iters: 100
     step_255: 1.0
-    w_sem: 1.0
+    w_sem: 10000.0                  # official rate
     w_tex: 1.0
-    t_min: 1
+    t_min: 0
     t_max: 1000
     n_noise: 1
-    prompt: ""
-    target_image: null              # null -> procedural pattern (official MIST.png is not vendored)
-    loss_scale: 1024.0
+    prompt: "a painting"            # official style default ("a photo" with --object)
+    # Official target MIST.png (repo root, GPL-3.0 repo) is NOT vendored. To use it:
+    #   curl -L -o assets/MIST.png https://raw.githubusercontent.com/psyker-team/mist/99f5f3c455022bef77ef25ba440a4289ea472d25/MIST.png
+    # then set target_image: assets/MIST.png. null -> procedural stand-in (must be reported as a deviation).
+    target_image: null
+    target_image_url: https://raw.githubusercontent.com/psyker-team/mist/99f5f3c455022bef77ef25ba440a4289ea472d25/MIST.png
+    loss_scale: 1024.0              # GPU TODO: w_sem=1e4 with fp16 VAE backward may overflow; lower to 1 if grads are inf/NaN
     grad_checkpointing: true
 
 # E8 adaptive attacker (LightShed-style autoencoder). Weights are produced by scripts/train_adaptive_ae.py (job J42).
