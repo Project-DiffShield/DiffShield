@@ -1,0 +1,14 @@
+# Extra dependencies for the v2 protection loop (A2). Merged into requirements.txt at integration.
+# Versions below are the ones the CPU tests were run with locally; pin for Kaggle after the env probe.
+torch>=2.0.0
+kornia>=0.7.0          # tested with 0.8.3: kornia.enhance.jpeg_codec_differentiable
+diffusers>=0.25.0      # tested with 0.41.0 (tiny-model API test only)
+transformers           # tested with 5.19.0
+optuna>=3.5            # scripts/tune_optuna.py; tested with 5.0.0
+pyyaml
+numpy
+pillow
+pytest
+# Optional, only when loss.lambda_id > 0 (face_loss.py): install WITHOUT deps, its metadata pins old torch
+#   pip install --no-deps facenet-pytorch
+# optional backend: onnx2torch

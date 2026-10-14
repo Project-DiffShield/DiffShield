@@ -1,0 +1,97 @@
+# Half A (v2 protection loop) config part. Owned by agent A2. Deep-merged over config/config.yaml by load_config
+# (parts are merged in sorted file order, so DO NOT define `methods.v2_final` here: the tuned
+# `config/parts/final.yaml` sorts BEFORE this file and would be overwritten. The hand-set
+# starting point is `methods.v2_final_default`; src/protect/v2_registry.py layers
+# v2_final_default < methods.v2_final (tuned, from final.yaml, optional) < epsN).
+#
+# All budgets on the STANDARD 0-255 scale. Numbers below are the handoff's / v1's starting values,
+# not tuned results. Root keys used by the code (defined in config/config.yaml; defaults in code
+# otherwise): models.*, budget.*, loss.*, eot.k_draws, runtime.*, purifier_train_params.
+
+protect:
+  quantize: true                 # snap input to uint8 grid, return uint8-grid output (|diff| <= floor(eps_255) in saved PNG)
+  ensemble:
+    enabled: false               # average L_vis over SD1.5 VAE + the VAEs listed (Phase 6)
+    vaes: [sdxl_vae_fp16]        # keys into models.*; run in fp32 here
+    weights: {}                  # optional per-VAE weights, e.g. {sd15: 1.0, sdxl_vae_fp16: 1.0}
+
+face:                            # L_id (loss.lambda_id > 0 only). Different network from the eval ArcFace on purpose (R16).
+  backend: facenet               # facenet (facenet-pytorch InceptionResnetV1, vggface2) | onnx2torch
+  pretrained: vggface2
+  bbox: null                     # (x0, y0, x1, y1) of the face on the clean image; null = central 60% crop
+
+# training purifier details; merged with the root dict of the same name
+purifier_train_params:
+  jpeg:            {impl: kornia_diff, quality: [50, 95]}      # impl: pil_bpda = real PIL codec + straight-through backward
+  downup:          {scale: [0.5, 0.9], modes: [bilinear, bicubic], antialias: true}
+  downup_heldout:  {scale: [0.30, 0.45], modes: [bicubic], antialias: true}   # disjoint from `downup`; never drawn in training
+  vae_roundtrip:   {model: sd15, latent: mean}
+  sd_onestep:      {model: sd15, t_min: 50, t_max: 300, prompt: ""}
+purifier_train_exclude: [downup_heldout]
+
+methods:
+  # Phase 3: cheap purifiers in the loop, no UNet term (cost estimate 54 s/img on T4: planner estimate, not measured)
+  v2_cheap:
+    purifiers_train: [jpeg, downup, vae_roundtrip]
+    purifier_train_probs: {jpeg: 0.35, downup: 0.35, vae_roundtrip: 0.3}
+    loss: {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.0, lambda_id: 0.0}
+    eot: {k_draws: 4}
+  # Phase 4: + one-step SD purifier (share 0.3) and L_den (eta starts = alpha)
+  v2_main:
+    purifiers_train: &main_purifiers [jpeg, downup, vae_roundtrip, sd_onestep]
+    purifier_train_probs: &main_probs {jpeg: 0.25, downup: 0.25, vae_roundtrip: 0.2, sd_onestep: 0.3}
+    loss: {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    eot: {k_draws: 4}
+  # Phase 5: + anti-purification terms (patch-DCT high-frequency + error-grows-with-t), weights 0.5 / 0.5
+  v2_antipure:
+    purifiers_train: *main_purifiers
+    purifier_train_probs: *main_probs
+    loss:
+      alpha: 0.27
+      beta: 0.90
+      gamma: 60.5
+      eta: 0.27
+      lambda_id: 0.0
+      anti_purify: {enabled: true, w_hf: 0.5, w_mono: 0.5}
+    eot: {k_draws: 4}
+  # E7 ablations (phase ablation). INTERPRETATION: vis_only / den_only drop L_sem too (beta 0) so that
+  # phases are isolated; abl_no_sem = both phases without L_sem; v2_main is "both". Compare vis_only /
+  # den_only / abl_no_sem to each other, and abl_no_sem vs v2_main for L_sem.
+  abl_vis_only:
+    purifiers_train: *main_purifiers
+    purifier_train_probs: *main_probs
+    loss: {alpha: 0.27, beta: 0.0, gamma: 60.5, eta: 0.0, lambda_id: 0.0}
+    eot: {k_draws: 4}
+  abl_den_only:
+    purifiers_train: *main_purifiers
+    purifier_train_probs: *main_probs
+    loss: {alpha: 0.0, beta: 0.0, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    eot: {k_draws: 4}
+  abl_no_sem:
+    purifiers_train: *main_purifiers
+    purifier_train_probs: *main_probs
+    loss: {alpha: 0.27, beta: 0.0, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    eot: {k_draws: 4}
+  abl_no_pur:                    # v2_main losses, no purifier in the loop (identity); L_den uses its own UNet pass
+    purifiers_train: []
+    loss: {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    eot: {k_draws: 4}
+  # Hand-set starting point for v2_final (before Optuna). Tuned values arrive as methods.v2_final in
+  # config/parts/final.yaml and are layered on top of this by the registry.
+  v2_final_default:
+    purifiers_train: *main_purifiers
+    purifier_train_probs: *main_probs
+    loss:
+      alpha: 0.27
+      beta: 0.90
+      gamma: 60.5
+      eta: 0.27
+      lambda_id: 0.0
+      anti_purify: {enabled: false, w_hf: 0.5, w_mono: 0.5}
+    eot: {k_draws: 4}
+    protect:
+      ensemble: {enabled: true, vaes: [sdxl_vae_fp16]}
+  # E9 eps sweep: variants of v2_final (only the budget differs)
+  eps2: {budget: {eps_255: 2}}
+  eps6: {budget: {eps_255: 6}}
+  eps8: {budget: {eps_255: 8}}
