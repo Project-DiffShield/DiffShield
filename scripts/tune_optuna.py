@@ -246,17 +246,29 @@ def resolve_score_fn(spec_str: str, stub: bool, cfg: dict = None, threshold=None
 
 # --------------------------------------------------------------------------------------------
 def make_study(args):
+    import random
+    import time
+
     import optuna
 
-    storage = optuna.storages.RDBStorage(
-        args.storage, engine_kwargs={"connect_args": {"timeout": 120}},
-        heartbeat_interval=60, grace_period=600,
-        failed_trial_callback=optuna.storages.RetryFailedTrialCallback(max_retry=1))
-    sampler = optuna.samplers.TPESampler(seed=args.seed, n_startup_trials=args.startup, constant_liar=True,
-                                         constraints_func=lambda t: t.user_attrs.get("constraints", [0.0, 0.0]))
-    study = optuna.create_study(study_name=args.study, storage=storage, sampler=sampler,
-                                direction="maximize", load_if_exists=True)
-    return study
+    # S06: two workers creating the SQLite tables at the same instant raised an OperationalError in one of them
+    # (that worker died, leaving one GPU idle). Retry the whole creation with jitter; the second attempt sees the tables.
+    last = None
+    for attempt in range(8):
+        try:
+            storage = optuna.storages.RDBStorage(
+                args.storage, engine_kwargs={"connect_args": {"timeout": 120}},
+                heartbeat_interval=60, grace_period=600,
+                failed_trial_callback=optuna.storages.RetryFailedTrialCallback(max_retry=1))
+            sampler = optuna.samplers.TPESampler(seed=args.seed, n_startup_trials=args.startup, constant_liar=True,
+                                                 constraints_func=lambda t: t.user_attrs.get("constraints", [0.0, 0.0]))
+            return optuna.create_study(study_name=args.study, storage=storage, sampler=sampler,
+                                       direction="maximize", load_if_exists=True)
+        except Exception as e:  # noqa: BLE001
+            last = e
+            print(f"[{getattr(args, 'worker_id', '?')}] study creation failed ({type(e).__name__}); retry {attempt + 1}/8", flush=True)
+            time.sleep(2 + 3 * attempt + random.random() * 3)
+    raise last
 
 
 def n_started(study) -> int:
