@@ -382,8 +382,13 @@ jobs:
       - {macro: prep, with: {splits: [test, messy]}}
       - {macro: protect, with: {method: photoguard, split: test}}
       - {macro: protect, with: {method: photoguard, split: messy}}
-      - {macro: protect, with: {method: mist, split: test}}
-      - {macro: protect, with: {method: mist, split: messy}}
+      # official Mist target image (GPL-3.0 repo): fetched at runtime, never vendored into the bundle
+      - name: fetch_mist_target
+        run: ["{py}", "-c", "import os,sys,urllib.request as u; p=sys.argv[2]; os.makedirs(os.path.dirname(p),exist_ok=True); u.urlretrieve(sys.argv[1],p); print('saved',p,os.path.getsize(p))",
+              "https://raw.githubusercontent.com/psyker-team/mist/99f5f3c455022bef77ef25ba440a4289ea472d25/MIST.png",
+              "{out}/assets/MIST.png"]
+      - {macro: protect, with: {method: mist, split: test, extra: ["--set", "baselines.mist.target_image={out}/assets/MIST.png"]}}
+      - {macro: protect, with: {method: mist, split: messy, extra: ["--set", "baselines.mist.target_image={out}/assets/MIST.png"]}}
       - macro: evaluate
         with:
           name: e2
