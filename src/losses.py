@@ -6,34 +6,53 @@ import kornia.filters as KF
 import torch.nn.functional as F
 
 class DiffShieldLoss(nn.Module):
-    def __init__(self, device='cpu'):
+    def __init__(self, device='cpu', sd_model_id="runwayml/stable-diffusion-v1-5",
+                 clip_model_id="openai/clip-vit-base-patch32", revision=None,
+                 vae=None, clip_vision=None, clip_text=None, clip_tokenizer=None):
+        """
+        Defaults reproduce v1 exactly (same model ids, fp32, no pinned revision).
+        Any component passed in (vae, clip_vision, clip_text, clip_tokenizer) is used
+        as-is and frozen; nothing is downloaded for it. This allows CPU unit tests
+        with tiny random models and pinning a model revision for reproducibility.
+        """
         super().__init__()
         self.device = device
-        
+        rev = {"revision": revision} if revision else {}
+
         # Load VAE for Visual Loss
-        self.vae = AutoencoderKL.from_pretrained("runwayml/stable-diffusion-v1-5", subfolder="vae")
+        if vae is None:
+            vae = AutoencoderKL.from_pretrained(sd_model_id, subfolder="vae", **rev)
+        self.vae = vae
         self.vae.to(self.device)
         self.vae.eval()
         for param in self.vae.parameters():
             param.requires_grad = False
 
         # Load CLIP Vision Encoder for Semantic Loss (image side)
-        self.clip_vision = CLIPVisionModelWithProjection.from_pretrained("openai/clip-vit-base-patch32")
+        if clip_vision is None:
+            clip_vision = CLIPVisionModelWithProjection.from_pretrained(clip_model_id)
+        self.clip_vision = clip_vision
         self.clip_vision.to(self.device)
         self.clip_vision.eval()
         for param in self.clip_vision.parameters():
             param.requires_grad = False
-        
+
         # Load CLIP Text Encoder for Semantic Loss (text side)
-        self.clip_text = CLIPTextModelWithProjection.from_pretrained("openai/clip-vit-base-patch32")
+        if clip_text is None:
+            clip_text = CLIPTextModelWithProjection.from_pretrained(clip_model_id)
+        self.clip_text = clip_text
         self.clip_text.to(self.device)
         self.clip_text.eval()
         for param in self.clip_text.parameters():
             param.requires_grad = False
-            
-        self.clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-        self.clip_tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
-        
+
+        if clip_tokenizer is None:
+            self.clip_processor = CLIPProcessor.from_pretrained(clip_model_id)
+            clip_tokenizer = CLIPTokenizer.from_pretrained(clip_model_id)
+        else:
+            self.clip_processor = None
+        self.clip_tokenizer = clip_tokenizer
+
         # L_str is a differentiable windowed-SSIM term (see compute_structure_loss).
 
         self.mse_loss = nn.MSELoss()
