@@ -1,0 +1,7 @@
+{
+  "smoke_purifiers_clean": {
+    "state": "failed",
+    "error": "NotAvailable('GrIDPure checkpoint missing: download 256x256_diffusion_uncond.pt (https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt) and set eval.purifiers.gridpure.checkpoint')",
+    "seconds": 43.69720816612244
+  }
+}

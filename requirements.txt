@@ -30,7 +30,7 @@ tqdm==4.67.3
 optuna==5.0.0
 # === INSTALL[eval] (only for jobs that set extras: [eval]; face scoring) ===
 insightface==0.7.3          # not in the Kaggle image; compiles Cython at install time; buffalo_l downloads on first use (unverified on Kaggle)
-onnxruntime-gpu             # not in the Kaggle image (J00); version to pin after S05 shows which build loads with CUDA 12.8 / cuDNN 9
+onnxruntime-gpu==1.22.0    # not in the Kaggle image. S05: the unpinned latest wheel needs CUDA 13 (libcublasLt.so.13) and fell back to CPU; 1.22.0 is a CUDA 12 build (UNVERIFIED on this image; faces.py calls preload_dlls and falls back to CPU)
 opencv-python-headless==4.14.0.94
 # === OPTIONAL (never auto-installed) ===
 # facenet-pytorch (L_id / second recogniser): pip install --no-deps facenet-pytorch ; onnx2torch (optional L_id backend)

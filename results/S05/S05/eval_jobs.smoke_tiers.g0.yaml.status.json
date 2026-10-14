@@ -1,0 +1,32 @@
+{
+  "smoke_clean_test": {
+    "state": "failed",
+    "error": "FileExistsError(17, 'File exists')",
+    "seconds": 6.376532316207886
+  },
+  "smoke_clean_val": {
+    "state": "failed",
+    "error": "AttributeError(\"'BaseModelOutputWithPooling' object has no attribute 'float'\")",
+    "seconds": 86.96190452575684
+  },
+  "smoke_clean_messy": {
+    "state": "failed",
+    "error": "AttributeError(\"'BaseModelOutputWithPooling' object has no attribute 'float'\")",
+    "seconds": 15.66588306427002
+  },
+  "smoke_noise_uniform_test": {
+    "state": "failed",
+    "error": "AttributeError(\"'BaseModelOutputWithPooling' object has no attribute 'float'\")",
+    "seconds": 22.5229651927948
+  },
+  "smoke_noise_uniform_val": {
+    "state": "failed",
+    "error": "FileNotFoundError('protected image for 4338 not found in /kaggle/working/S05/results/prot_noise_uniform_val/images')",
+    "seconds": 2.3589770793914795
+  },
+  "smoke_noise_uniform_messy": {
+    "state": "failed",
+    "error": "AttributeError(\"'BaseModelOutputWithPooling' object has no attribute 'float'\")",
+    "seconds": 10.823567867279053
+  }
+}

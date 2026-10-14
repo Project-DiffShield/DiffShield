@@ -354,3 +354,29 @@ def test_jobs_file_runs_sequentially_and_skips_failures(tmp_path):
     assert len(read(tmp_path / "r_v1")) == 2 * 2 * 3
     # rerun skips completed jobs
     assert ev.main(["--jobs_file", str(jf)]) == 1
+
+
+def test_unavailable_purifier_is_skipped_not_fatal(tmp_path):
+    """S05: GrIDPure's checkpoint was missing and aborted the whole job. Now its jobs are skipped, the rest runs."""
+    from src.eval.purify_attacks import NotAvailable
+
+    cfg = make_cfg()
+    src, prot, ids = make_data(tmp_path)
+    out = tmp_path / "out"
+    be = er.fake_backends(cfg)
+    orig = be.purifier_factory
+
+    def factory(name):
+        if name == "jpeg_q75":
+            raise NotAvailable("checkpoint missing")
+        return orig(name)
+
+    be.purifier_factory = factory
+    runner = er.EditRunner(cfg, be, out, src, "test", str(prot), "rid", "prid", tmp_path / "cache")
+    jobs = []
+    for m in ("clean", "v1"):
+        jobs += er.expand_tier(cfg["eval"], "T", m, "test", ids, ["all"], None, None)
+    runner.run(jobs)
+    rows = read(out)
+    assert rows and {r["purifier"] for r in rows} == {"none"}
+    assert runner.unavailable_purifiers == {"jpeg_q75"}

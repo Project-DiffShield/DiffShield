@@ -51,7 +51,9 @@ class ClipScorer:
         inp = self.processor(images=[i.convert("RGB") for i in imgs], return_tensors="pt")
         pix = inp["pixel_values"].to(self.device, dtype=next(self.model.parameters()).dtype)
         with torch.no_grad():
-            f = self.model.get_image_features(pixel_values=pix)
+            # vision tower + projection: independent of whether get_image_features returns a tensor (transformers 4)
+            # or a BaseModelOutputWithPooling (transformers 5; S05 crashed on that)
+            f = self.model.visual_projection(self.model.vision_model(pixel_values=pix).pooler_output)
         f = torch.nn.functional.normalize(f.float(), dim=-1)
         return f.cpu().numpy()
 

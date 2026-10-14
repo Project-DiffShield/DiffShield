@@ -15,6 +15,9 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Optional, Sequence, Tuple
 
+import random
+import time
+
 import numpy as np
 
 
@@ -89,11 +92,26 @@ class FaceScorer:
         if self._app is not None:
             return self
         from insightface.app import FaceAnalysis  # lazy
+        try:  # onnxruntime >= 1.21: find the CUDA/cuDNN libs shipped with torch's nvidia-* wheels
+            import onnxruntime as _ort
+            if hasattr(_ort, "preload_dlls"):
+                _ort.preload_dlls()
+        except Exception as e:  # pragma: no cover - environment dependent
+            self.log(f"[faces] onnxruntime.preload_dlls failed ({e}); CPU fallback is possible")
         self.providers = choose_providers(self.prefer_gpu)
         kw = {"name": self.pack, "providers": self.providers, "allowed_modules": ["detection", "recognition"]}
         if self.root:
             kw["root"] = self.root
-        app = FaceAnalysis(**kw)
+        app = None
+        for attempt in range(6):  # two shard processes download the same pack: one can hit FileExistsError (S05)
+            try:
+                app = FaceAnalysis(**kw)
+                break
+            except (FileExistsError, OSError) as e:
+                if attempt == 5:
+                    raise
+                self.log(f"[faces] FaceAnalysis init failed ({e}); retry {attempt + 1}/5")
+                time.sleep(3 + 3 * attempt + random.random() * 3)
         app.prepare(ctx_id=0 if "CUDAExecutionProvider" in self.providers else -1, det_size=self.det_size)
         self._app = app
         self.log(f"[faces] insightface {self.pack} providers={self.providers}")

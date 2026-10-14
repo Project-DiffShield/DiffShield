@@ -1,0 +1,30 @@
+[jobs] smoke_purifiers_clean: start
+[runner] 9 jobs, 9 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:  15%|█▌        | 2/13 [00:00<00:00, 12.85it/s]Fetching 13 files:  69%|██████▉   | 9/13 [00:00<00:00, 35.91it/s]Fetching 13 files: 100%|██████████| 13/13 [00:08<00:00,  1.20it/s]Fetching 13 files: 100%|██████████| 13/13 [00:08<00:00,  1.55it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:06<00:30,  6.07s/it]Loading pipeline components...:  33%|███▎      | 2/6 [00:07<00:14,  3.52s/it]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:12, 15.06it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1244.06it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:08<00:06,  2.05s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:08<00:00,  1.36s/it]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 698, in run
+    self._purify_stage(todo)
+    ~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 731, in _purify_stage
+    built[n].load(self.b.device)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/gridpure.py", line 175, in load
+    self._patch_fn = GuidedDiffusionPatchFn(p.get("checkpoint"), p.get("repo_path"), p.get("pure_steps", 10), dev)
+                     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/gridpure.py", line 113, in __init__
+    raise NotAvailable(
+    ...<2 lines>...
+        "and set eval.purifiers.gridpure.checkpoint")
+src.eval.purify_attacks.NotAvailable: GrIDPure checkpoint missing: download 256x256_diffusion_uncond.pt (https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt) and set eval.purifiers.gridpure.checkpoint

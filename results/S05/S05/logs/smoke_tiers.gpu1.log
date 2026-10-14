@@ -1,0 +1,229 @@
+[jobs] smoke_clean_test: start
+[runner] 10 jobs, 10 to do (0 already complete)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  1%|          | 2702/281857 [00:00<00:10, 26683.74KB/s]  4%|▎         | 10241/281857 [00:00<00:06, 39364.69KB/s]  7%|▋         | 20186/281857 [00:00<00:04, 61808.57KB/s] 11%|█         | 29662/281857 [00:00<00:03, 73172.85KB/s] 14%|█▍        | 40313/281857 [00:00<00:02, 84230.11KB/s] 17%|█▋        | 49078/281857 [00:00<00:03, 73058.64KB/s] 21%|██        | 58541/281857 [00:00<00:02, 79142.61KB/s] 24%|██▍       | 68172/281857 [00:00<00:02, 84074.64KB/s] 27%|██▋       | 77483/281857 [00:01<00:02, 86702.56KB/s] 31%|███       | 87021/281857 [00:01<00:02, 89249.85KB/s] 34%|███▍      | 96971/281857 [00:01<00:02, 92277.99KB/s] 38%|███▊      | 106969/281857 [00:01<00:01, 94563.33KB/s] 41%|████▏     | 116528/281857 [00:01<00:01, 94866.79KB/s] 45%|████▍     | 126211/281857 [00:01<00:01, 95451.37KB/s] 48%|████▊     | 136385/281857 [00:01<00:01, 97329.79KB/s] 52%|█████▏    | 146490/281857 [00:01<00:01, 98442.39KB/s] 56%|█████▌    | 156637/281857 [00:01<00:01, 99348.00KB/s] 59%|█████▉    | 166608/281857 [00:01<00:01, 99450.24KB/s] 63%|██████▎   | 176832/281857 [00:02<00:01, 100285.48KB/s] 66%|██████▋   | 186870/281857 [00:02<00:00, 99813.86KB/s]  70%|██████▉   | 196859/281857 [00:02<00:00, 85663.76KB/s] 73%|███████▎  | 206713/281857 [00:02<00:00, 89113.71KB/s] 77%|███████▋  | 215914/281857 [00:02<00:00, 88329.08KB/s] 80%|███████▉  | 224947/281857 [00:02<00:00, 86146.59KB/s] 83%|████████▎ | 233703/281857 [00:02<00:00, 85180.25KB/s] 86%|████████▌ | 242317/281857 [00:02<00:00, 81318.02KB/s] 89%|████████▉ | 251786/281857 [00:02<00:00, 84957.48KB/s] 93%|█████████▎| 261433/281857 [00:03<00:00, 88208.27KB/s] 96%|█████████▌| 270336/281857 [00:03<00:00, 76724.22KB/s] 99%|█████████▉| 279446/281857 [00:03<00:00, 80506.77KB/s]100%|██████████| 281857/281857 [00:03<00:00, 85501.25KB/s]
+[1;31m2026-10-14 19:11:37.454265174 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+[1;31m2026-10-14 19:11:38.004108601 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+[1;31m2026-10-14 19:11:38.033504733 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+[1;31m2026-10-14 19:11:38.079601456 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+[1;31m2026-10-14 19:11:38.315149747 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+WARNING:huggingface_hub.utils._http:Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files:  15%|█▌        | 2/13 [00:00<00:00, 15.12it/s]Fetching 13 files:  62%|██████▏   | 8/13 [00:00<00:00, 31.68it/s]Fetching 13 files:  92%|█████████▏| 12/13 [00:02<00:00,  3.18it/s]Fetching 13 files: 100%|██████████| 13/13 [00:08<00:00,  1.55it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:14<01:12, 14.40s/it]Loading pipeline components...:  50%|█████     | 3/6 [00:17<00:14,  4.87s/it]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  83%|████████▎ | 162/196 [00:00<00:00, 1615.17it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1731.18it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:17<00:06,  3.30s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:18<00:00,  1.71s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:18<00:00,  3.00s/it]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  27%|██▋       | 158/590 [00:00<00:00, 1285.92it/s]Loading weights:  49%|████▊     | 287/590 [00:00<00:00, 1250.19it/s]Loading weights:  70%|██████▉   | 412/590 [00:00<00:00, 872.44it/s] Loading weights:  86%|████████▋ | 509/590 [00:00<00:00, 864.23it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 932.38it/s]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 708, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 822, in _process
+    clip_i = self.b.clip.similarity(src_img, e_img) if self.b.clip is not None else NAN
+             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 59, in similarity
+    e = self.embed([a, b])
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 55, in embed
+    f = torch.nn.functional.normalize(f.float(), dim=-1)
+                                      ^^^^^^^
+AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'
+[jobs] smoke_clean_val: start
+[runner] 10 jobs, 10 to do (0 already complete)
+[1;31m2026-10-14 19:12:57.706131201 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+[1;31m2026-10-14 19:12:58.064523900 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+[1;31m2026-10-14 19:12:58.093738591 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+[1;31m2026-10-14 19:12:58.161027864 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+[1;31m2026-10-14 19:12:58.313407444 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  7.78it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.25it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  92%|█████████▏| 180/196 [00:00<00:00, 1798.75it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1926.28it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.65it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.67it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.29it/s]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  31%|███▏      | 185/590 [00:00<00:00, 1841.97it/s]Loading weights:  63%|██████▎   | 370/590 [00:00<00:00, 1569.50it/s]Loading weights:  90%|████████▉ | 530/590 [00:00<00:00, 1464.36it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 1534.21it/s]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 708, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 822, in _process
+    clip_i = self.b.clip.similarity(src_img, e_img) if self.b.clip is not None else NAN
+             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 59, in similarity
+    e = self.embed([a, b])
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 55, in embed
+    f = torch.nn.functional.normalize(f.float(), dim=-1)
+                                      ^^^^^^^
+AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'
+[jobs] smoke_clean_messy: start
+[runner] 10 jobs, 10 to do (0 already complete)
+[1;31m2026-10-14 19:13:12.755447859 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+[1;31m2026-10-14 19:13:13.029818656 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+[1;31m2026-10-14 19:13:13.059079754 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+[1;31m2026-10-14 19:13:13.106101641 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+[1;31m2026-10-14 19:13:13.188215941 [E:onnxruntime:Default, provider_bridge_ort.cc:2458 operator()] /onnxruntime_src/onnxruntime/core/session/provider_bridge_ort.cc:2043 onnxruntime::Provider& onnxruntime::ProviderLibrary::Get() [ONNXRuntimeError] : 1 : FAIL : Failed to load library /usr/local/lib/python3.13/dist-packages/onnxruntime/capi/libonnxruntime_providers_cuda.so with error: libcublasLt.so.13: cannot open shared object file: No such file or directory
+[m
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  6.96it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.71it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  82%|████████▏ | 160/196 [00:00<00:00, 1587.49it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1665.26it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  3.13it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.64it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.04it/s]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  35%|███▌      | 209/590 [00:00<00:00, 2083.12it/s]Loading weights:  71%|███████   | 418/590 [00:00<00:00, 1688.62it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 1651.48it/s]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 708, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 822, in _process
+    clip_i = self.b.clip.similarity(src_img, e_img) if self.b.clip is not None else NAN
+             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 59, in similarity
+    e = self.embed([a, b])
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 55, in embed
+    f = torch.nn.functional.normalize(f.float(), dim=-1)
+                                      ^^^^^^^
+AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'
+[jobs] smoke_noise_uniform_test: start
+[runner] 10 jobs, 10 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  4.63it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1979.48it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  4.96it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.80it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.03it/s]
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 708, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 781, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 5330 not found in /kaggle/working/S05/results/prot_noise_uniform_test/images
+[jobs] smoke_noise_uniform_val: start
+[runner] 10 jobs, 10 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  4.28it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2286.68it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  4.67it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  6.38it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.64it/s]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 708, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 822, in _process
+    clip_i = self.b.clip.similarity(src_img, e_img) if self.b.clip is not None else NAN
+             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 59, in similarity
+    e = self.embed([a, b])
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 55, in embed
+    f = torch.nn.functional.normalize(f.float(), dim=-1)
+                                      ^^^^^^^
+AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'
+[jobs] smoke_noise_uniform_messy: start
+[runner] 10 jobs, 10 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  4.70it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2165.54it/s]
+Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  5.25it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  7.25it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.35it/s]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 256, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 222, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 708, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/edit_runner.py", line 822, in _process
+    clip_i = self.b.clip.similarity(src_img, e_img) if self.b.clip is not None else NAN
+             ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 59, in similarity
+    e = self.embed([a, b])
+  File "/kaggle/working/DiffShield/src/eval/clip_metric.py", line 55, in embed
+    f = torch.nn.functional.normalize(f.float(), dim=-1)
+                                      ^^^^^^^
+AttributeError: 'BaseModelOutputWithPooling' object has no attribute 'float'

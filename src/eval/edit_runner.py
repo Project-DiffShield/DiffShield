@@ -695,7 +695,12 @@ class EditRunner:
         for iid in sorted({j.image_id for j in todo}):
             self.store.face_of(iid)
         self.store.save()
+        self.unavailable_purifiers = set()
         self._purify_stage(todo)
+        if self.unavailable_purifiers:
+            skipped = [j for j in todo if j.purifier in self.unavailable_purifiers]
+            self.log(f"[runner] SKIPPING {len(skipped)} jobs with unavailable purifiers: {sorted(self.unavailable_purifiers)}")
+            todo = [j for j in todo if j.purifier not in self.unavailable_purifiers]
         by_editor: Dict[str, List[Job]] = {}
         for j in todo:
             by_editor.setdefault(j.editor, []).append(j)
@@ -712,12 +717,22 @@ class EditRunner:
         return {"jobs": len(jobs), "executed": len(todo), "rows": self.rows_written}
 
     def _purify_stage(self, todo: Sequence[Job]):
+        from .purify_attacks import NotAvailable
+        if not hasattr(self, 'unavailable_purifiers'):
+            self.unavailable_purifiers = set()
         need: Dict[str, set] = {}
         for j in todo:
             if j.purifier != "none":
                 need.setdefault(j.purifier, set()).add((j.method, j.image_id))
         names = sorted(need)
-        built = {n: self.b.purifier_factory(n) for n in names}
+        built = {}
+        for n in names:
+            try:
+                built[n] = self.b.purifier_factory(n)
+            except NotAvailable as e:
+                self.unavailable_purifiers.add(n)
+                self.log(f"[purify] {n} NOT AVAILABLE, its jobs are skipped: {e}")
+        names = [n for n in names if n in built]
         groups: Dict[str, List[str]] = {}
         for n in names:
             groups.setdefault(getattr(built[n], "share_key", None) or n, []).append(n)
@@ -728,7 +743,12 @@ class EditRunner:
                     pairs = [(m, i) for (m, i) in sorted(need[n]) if not self.purified_path(m, n, i).is_file()]
                     if not pairs:
                         continue
-                    built[n].load(self.b.device)
+                    try:
+                        built[n].load(self.b.device)
+                    except NotAvailable as e:
+                        self.unavailable_purifiers.add(n)
+                        self.log(f"[purify] {n} NOT AVAILABLE, its jobs are skipped: {e}")
+                        continue
                     loaded.append(n)
                     for (m, iid) in pairs:
                         t0 = time.perf_counter()

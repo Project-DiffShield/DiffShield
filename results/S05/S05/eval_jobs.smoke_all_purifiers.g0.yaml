@@ -1,0 +1,18 @@
+defaults:
+  no_generate_clean: false
+  limit: 2
+  set:
+  - eval.seeds=[1]
+  config: /kaggle/working/S05/cfg/config.yaml
+  cache_dir: /kaggle/working/S05/cache
+  parsing_dir: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+jobs:
+- name: smoke_purifiers_clean
+  tier: P
+  method: clean
+  split: test
+  editor: sd15_img2img
+  purifier: jpeg_q90,jpeg_q50,jpeg_other,downup_other,diffpure_0.05,diffpure_0.2,diffpure_0.3,restore_swin2sr,gridpure
+  split_file: /kaggle/working/S05/splits/test.txt
+  source_dir: /kaggle/working/S05/data/test
+  out: /kaggle/working/S05/results/smoke_purifiers_clean

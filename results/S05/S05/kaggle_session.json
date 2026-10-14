@@ -1,0 +1,82 @@
+{
+  "job_id": "S05",
+  "run_id": "S05",
+  "session_seconds": 301.85804867744446,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 31.7
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 7.1
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.1
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 4.1
+    },
+    "protect_prot_noise_uniform_test": {
+      "rc": 0,
+      "seconds": 30.0
+    },
+    "merge_prot_noise_uniform_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_noise_uniform_val": {
+      "rc": 0,
+      "seconds": 10.0
+    },
+    "merge_prot_noise_uniform_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_noise_uniform_messy": {
+      "rc": 0,
+      "seconds": 10.0
+    },
+    "merge_prot_noise_uniform_messy": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "smoke_tiers": {
+      "rc": 1,
+      "seconds": 150.0
+    },
+    "smoke_all_purifiers": {
+      "rc": 1,
+      "seconds": 50.0
+    },
+    "lpips_stage": {
+      "rc": 1,
+      "seconds": 0.3
+    },
+    "thresholds_stage": {
+      "rc": 1,
+      "seconds": 6.4
+    },
+    "smoke_report": {
+      "rc": 0,
+      "seconds": 0.5
+    }
+  },
+  "params": {
+    "smoke": true,
+    "n_images": 5,
+    "iters": 5
+  },
+  "ok": false,
+  "failed_steps": [
+    "smoke_tiers",
+    "smoke_all_purifiers"
+  ]
+}

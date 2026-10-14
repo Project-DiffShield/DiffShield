@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 279, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 275, in main
+    return run_job(args, cfg, argv, {})
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 137, in run_job
+    ids = read_split(args, cfg)
+  File "/kaggle/working/DiffShield/scripts/evaluate.py", line 83, in read_split
+    ids = sorted({p.stem for p in src.iterdir() if p.suffix.lower() in er.IMG_EXTS})
+                                  ~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/pathlib/_local.py", line 575, in iterdir
+    with os.scandir(root_dir) as scandir_it:
+         ~~~~~~~~~~^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'data/images/test'

@@ -234,7 +234,8 @@ jobs:
                purifier: "jpeg_q90,jpeg_q50,jpeg_other,downup_other,diffpure_0.05,diffpure_0.2,diffpure_0.3,restore_swin2sr,gridpure"}
       - name: lpips_stage
         run: ["{py}", scripts/evaluate.py, --stage, lpips, --config, "{cfg}", --out, "{results}/smoke_noise_uniform_test",
-              --cache_dir, "{out}/cache", --clean_edits_dir, "{out}/cache/clean_edits"]
+              --split, test, --source_dir, "{out}/data/test", --cache_dir, "{out}/cache",
+              --clean_edits_dir, "{out}/cache/clean_edits"]
         optional: true
         soft: true
       - name: thresholds_stage
