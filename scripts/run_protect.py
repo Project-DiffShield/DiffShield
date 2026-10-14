@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import json
 import shutil
 import sys
 from pathlib import Path
@@ -64,9 +65,10 @@ def process_one(item, protector, ctx, lpips, cfg, split=""):
     x_c, x_p = x.to(dev), x_adv.to(dev)
     m1 = v1_quality_metrics(x_c, x_p, lpips)
     m2 = png_quality_metrics(item, out_path, lpips)
-    b = cfg["budget"]
+    rcfg = getattr(protector, "cfg", None) or cfg  # v2 protectors expose the fully resolved preset (budget, losses)
+    b = rcfg["budget"]
     row = {
-        "run_id": ctx.run_id, "method": cfg.get("_method") or "", "method_cfg_hash": ctx.cfg_hash,
+        "run_id": ctx.run_id, "method": cfg.get("_method") or "", "method_cfg_hash": getattr(ctx, "method_hash", ctx.cfg_hash),
         "image_id": image_id, "split": split, "seed": seed, "editor": "none", "prompt_id": "none",
         "strength": "", "purifier": "none",
         "src_file": item.name, "out_file": out_path.name, "eps_255": b["eps_255"], "step_255": b["step_255"],
@@ -139,6 +141,12 @@ def main(argv=None) -> int:
 
     if todo:
         protector = build_protector(args.method, cfg, device, backend=args.backend)
+        rc = getattr(protector, "cfg", None)
+        if rc is not None:  # record what the method actually used (presets are layered inside the registry)
+            from src.utils.config import config_hash
+            ctx.method_hash = config_hash(rc)
+            (ctx.dir / f"resolved_method_cfg{ctx.suffix}.json").write_text(
+                json.dumps(rc, indent=2, sort_keys=True, default=str), encoding="utf-8")
         lpips = None if args.no_lpips else LPIPSScorer(device)
         ck = int(cfg["runtime"].get("checkpoint_every", 5))
         t0 = dt.datetime.now()

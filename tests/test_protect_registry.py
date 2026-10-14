@@ -36,7 +36,7 @@ def test_every_preset_constructs_and_resolves_without_loading_models(name):
 def test_preset_contents():
     r = {n: resolve_cfg(n, full_cfg()) for n in PRESETS}
     assert r["v2_cheap"]["purifiers_train"] == ["jpeg", "downup", "vae_roundtrip"] and r["v2_cheap"]["loss"]["eta"] == 0
-    assert "sd_onestep" in r["v2_main"]["purifiers_train"] and r["v2_main"]["loss"]["eta"] == 0.27
+    assert "sd_onestep" in r["v2_main"]["purifiers_train"] and r["v2_main"]["loss"]["eta"] == 0.2699475469647097
     assert r["v2_antipure"]["loss"]["anti_purify"]["enabled"] is True
     assert r["v2_main"]["loss"]["anti_purify"]["enabled"] is False
     assert r["abl_vis_only"]["loss"]["eta"] == 0 and r["abl_vis_only"]["loss"]["beta"] == 0
@@ -53,11 +53,11 @@ def test_tuned_final_layer_overrides_default_and_flows_to_eps_variants():
     c = full_cfg(**tuned)
     f = resolve_cfg("v2_final", c)
     assert f["loss"]["alpha"] == 0.5 and f["loss"]["beta"] == 0.0 and f["loss"]["anti_purify"]["enabled"]
-    assert f["loss"]["gamma"] == 60.5  # untouched values kept from the default
+    assert f["loss"]["gamma"] == 60.52658429696642  # untouched values kept from the default
     e = resolve_cfg("eps8", c)
     assert e["loss"]["alpha"] == 0.5 and e["budget"]["eps_255"] == 8
     # a non-final preset ignores the tuned layer
-    assert resolve_cfg("v2_main", c)["loss"]["alpha"] == 0.27
+    assert resolve_cfg("v2_main", c)["loss"]["alpha"] == 0.2699475469647097
 
 
 def test_unknown_preset_and_idempotent_resolution():
@@ -70,7 +70,7 @@ def test_unknown_preset_and_idempotent_resolution():
 
 def test_registry_works_with_minimal_cfg_via_part_file():
     p = build_v2_protector("v2_main", {}, "cpu")
-    assert p.params.alpha == 0.27 and "sd_onestep" in p.cfg["purifiers_train"]
+    assert p.params.alpha == 0.2699475469647097 and "sd_onestep" in p.cfg["purifiers_train"]
 
 
 @pytest.mark.parametrize("name", PRESETS)

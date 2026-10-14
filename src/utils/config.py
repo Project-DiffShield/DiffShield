@@ -94,9 +94,13 @@ def load_config(path, method: str | None = None, overrides: Sequence[str] = (),
             cfg = deep_merge(cfg, _load_yaml(p))
     if method is not None:
         presets = cfg.get("methods", {}) or {}
-        if method not in presets:
+        if method == "v2_final" and method not in presets and "v2_final_default" in presets:
+            method_key = "v2_final_default"  # tuned layer (config/parts/final.yaml) not present yet
+        else:
+            method_key = method
+        if method_key not in presets:
             raise KeyError(f"method preset {method!r} not found in config (have: {sorted(presets)})")
-        cfg = deep_merge(cfg, presets[method])
+        cfg = deep_merge(cfg, presets[method_key])
     cfg = apply_overrides(cfg, overrides)
     cfg["_method"] = method
     cfg["_overrides"] = list(overrides or ())

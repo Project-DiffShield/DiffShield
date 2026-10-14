@@ -104,7 +104,13 @@ def load_val_images(list_path: str, image_dir: str, n: int, size: int = 512):
     names = [ln.strip() for ln in open(list_path, encoding="utf-8") if ln.strip() and not ln.startswith("#")]
     out = []
     for nm in names[:n]:
-        im = Image.open(Path(image_dir) / nm).convert("RGB")
+        pth = Path(image_dir) / nm
+        if not pth.exists():  # split lists hold CelebA-HQ names (.jpg); prepare_data writes <stem>.png
+            for ext in (".png", ".jpg", ".jpeg"):
+                if (Path(image_dir) / (Path(nm).stem + ext)).exists():
+                    pth = Path(image_dir) / (Path(nm).stem + ext)
+                    break
+        im = Image.open(pth).convert("RGB")
         if im.size != (size, size):
             im = im.resize((size, size), Image.BICUBIC)
         out.append((nm, im))

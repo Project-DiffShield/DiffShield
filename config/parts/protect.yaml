@@ -32,25 +32,28 @@ purifier_train_exclude: [downup_heldout]
 methods:
   # Phase 3: cheap purifiers in the loop, no UNet term (cost estimate 54 s/img on T4: planner estimate, not measured)
   v2_cheap:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: [jpeg, downup, vae_roundtrip]
     purifier_train_probs: {jpeg: 0.35, downup: 0.35, vae_roundtrip: 0.3}
-    loss: {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.0, lambda_id: 0.0}
+    loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0}
     eot: {k_draws: 4}
   # Phase 4: + one-step SD purifier (share 0.3) and L_den (eta starts = alpha)
   v2_main:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: &main_purifiers [jpeg, downup, vae_roundtrip, sd_onestep]
     purifier_train_probs: &main_probs {jpeg: 0.25, downup: 0.25, vae_roundtrip: 0.2, sd_onestep: 0.3}
-    loss: {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.2699475469647097, lambda_id: 0.0}
     eot: {k_draws: 4}
   # Phase 5: + anti-purification terms (patch-DCT high-frequency + error-grows-with-t), weights 0.5 / 0.5
   v2_antipure:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: *main_purifiers
     purifier_train_probs: *main_probs
     loss:
-      alpha: 0.27
-      beta: 0.90
-      gamma: 60.5
-      eta: 0.27
+      alpha: 0.2699475469647097
+      beta: 0.9023875567667267
+      gamma: 60.52658429696642
+      eta: 0.2699475469647097
       lambda_id: 0.0
       anti_purify: {enabled: true, w_hf: 0.5, w_mono: 0.5}
     eot: {k_draws: 4}
@@ -58,34 +61,39 @@ methods:
   # phases are isolated; abl_no_sem = both phases without L_sem; v2_main is "both". Compare vis_only /
   # den_only / abl_no_sem to each other, and abl_no_sem vs v2_main for L_sem.
   abl_vis_only:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: *main_purifiers
     purifier_train_probs: *main_probs
-    loss: {alpha: 0.27, beta: 0.0, gamma: 60.5, eta: 0.0, lambda_id: 0.0}
+    loss: {alpha: 0.2699475469647097, beta: 0.0, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0}
     eot: {k_draws: 4}
   abl_den_only:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: *main_purifiers
     purifier_train_probs: *main_probs
-    loss: {alpha: 0.0, beta: 0.0, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    loss: {alpha: 0.0, beta: 0.0, gamma: 60.52658429696642, eta: 0.2699475469647097, lambda_id: 0.0}
     eot: {k_draws: 4}
   abl_no_sem:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: *main_purifiers
     purifier_train_probs: *main_probs
-    loss: {alpha: 0.27, beta: 0.0, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    loss: {alpha: 0.2699475469647097, beta: 0.0, gamma: 60.52658429696642, eta: 0.2699475469647097, lambda_id: 0.0}
     eot: {k_draws: 4}
-  abl_no_pur:                    # v2_main losses, no purifier in the loop (identity); L_den uses its own UNet pass
+  abl_no_pur:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5                    # v2_main losses, no purifier in the loop (identity); L_den uses its own UNet pass
     purifiers_train: []
-    loss: {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+    loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.2699475469647097, lambda_id: 0.0}
     eot: {k_draws: 4}
   # Hand-set starting point for v2_final (before Optuna). Tuned values arrive as methods.v2_final in
   # config/parts/final.yaml and are layered on top of this by the registry.
   v2_final_default:
+    budget: {step_255: 1.0}   # handoff value; v1 preset keeps its true 0.5
     purifiers_train: *main_purifiers
     purifier_train_probs: *main_probs
     loss:
-      alpha: 0.27
-      beta: 0.90
-      gamma: 60.5
-      eta: 0.27
+      alpha: 0.2699475469647097
+      beta: 0.9023875567667267
+      gamma: 60.52658429696642
+      eta: 0.2699475469647097
       lambda_id: 0.0
       anti_purify: {enabled: false, w_hf: 0.5, w_mono: 0.5}
     eot: {k_draws: 4}
