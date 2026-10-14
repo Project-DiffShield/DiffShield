@@ -8,12 +8,15 @@ import numpy as np
 from PIL import Image
 
 
-def list_images(input_dir, list_file=None, exts=(".png", ".jpg", ".jpeg")):
+def list_images(input_dir, list_file=None, exts=(".png", ".jpg", ".jpeg"), limit=None):
     """Images in input_dir sorted by stem. If list_file is given, only the names listed there
     (names with or without extension), in sorted order; missing files raise FileNotFoundError."""
     input_dir = Path(input_dir)
     if list_file is not None:
         names = [l.strip() for l in Path(list_file).read_text(encoding="utf-8").splitlines() if l.strip()]
+        names = sorted(names, key=lambda n: (Path(n).stem, n))
+        if limit:  # limit BEFORE the existence check so a smoke run only needs the first N files
+            names = names[:limit]
         out = []
         for n in names:
             p = input_dir / n
@@ -26,7 +29,8 @@ def list_images(input_dir, list_file=None, exts=(".png", ".jpg", ".jpeg")):
             out.append(p)
     else:
         out = [p for p in input_dir.iterdir() if p.suffix.lower() in exts]
-    return sorted(out, key=lambda p: (p.stem, p.name))
+    out = sorted(out, key=lambda p: (p.stem, p.name))
+    return out[:limit] if limit else out
 
 
 def shard_items(items, shard):

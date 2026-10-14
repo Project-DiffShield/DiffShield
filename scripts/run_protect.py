@@ -131,9 +131,7 @@ def main(argv=None) -> int:
     ctx.log(f"run {run_id} method={args.method} device={device} backend={args.backend} shard={shard} "
             f"git={ctx.git['hash'][:7]} dirty={ctx.git['dirty']}")
 
-    items = list_images(args.input_dir, args.list)
-    if args.limit:
-        items = items[: args.limit]
+    items = list_images(args.input_dir, args.list, limit=args.limit)
     my_items = shard_items(items, shard)
     done = ctx.done_ids(CSV)
     todo = [it for it in my_items if not (it.stem in done and (ctx.images_dir / f"{it.stem}.png").exists())]

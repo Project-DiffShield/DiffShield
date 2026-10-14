@@ -1,0 +1,66 @@
+# Kaggle job definitions, read by scripts/run_job.py (schema documented in that file's docstring).
+# The human only sets JOB_IDS in kaggle/job_runner.ipynb; everything else is here.
+# Other agents / integration add their jobs below (J02 ... J42) using the same schema. Do not edit J00/J01 casually:
+# the Phase 0 report refers to them.
+jobs:
+
+  J00:
+    title: Environment probe (pip freeze, GPU/CUDA info, HF model hashes). CPU session is enough.
+    accelerator: cpu
+    params: {}
+    steps:
+      - name: env_probe
+        run: ["{py}", "scripts/env_probe.py", "--out", "{out}/env_probe"]
+
+  J01:
+    title: Phase 0 - reproduce v1 Phase 1 on the 70 original evaluation images (budget check + invisibility metrics)
+    accelerator: gpu_t4x2
+    params:
+      n_images: 70        # 5 = smoke test
+      iters: 40
+      run_tests: true
+      backend: real       # 'tiny' only for local CPU tests of this pipeline
+      image_size: 512
+      extra_args: []
+    steps:
+      - name: install
+        builtin: pip_install
+      - name: check_env
+        run: ["{py}", "scripts/check_env.py", "--allow_mismatch"]
+        optional: true
+      - name: tests
+        when: run_tests
+        run: ["{py}", "-m", "pytest", "-q", "-x", "tests", "-p", "no:cacheprovider"]
+        optional: true
+        echo: false
+      - name: prepare_data
+        run: ["{py}", "scripts/prepare_v1_data.py", "--from_manifest", "--out_dir", "{out}/data/v1_inputs",
+              "--which", "eval", "--limit", "{n_images}", "--size", "{image_size}"]
+      - name: protect
+        sharded: true
+        run: ["{py}", "scripts/run_protect.py", "--config", "config/config.yaml", "--method", "v1",
+              "--input_dir", "{out}/data/v1_inputs", "--list", "data/splits/v1_eval70.txt",
+              "--limit", "{n_images}", "--run_id", "{run_id}", "--output_root", "{results}",
+              "--checkpoint_every", "5", "--set", "budget.iters={iters}", "--split", "v1_eval70",
+              "--backend", "{backend}", "--set", "data.image_size={image_size}", "{extra_args}", "{resume_arg}"]
+      - name: merge
+        run: ["{py}", "scripts/merge_shards.py", "--run_dir", "{results}/{run_id}", "--list",
+              "data/splits/v1_eval70.txt"]
+      - name: budget_check
+        run: ["{py}", "scripts/budget_check.py", "--clean_dir", "{out}/data/v1_inputs",
+              "--protected_dir", "{results}/{run_id}/images", "--run_id", "{run_id}", "--output_root", "{results}"]
+      - name: tables
+        run: ["{py}", "scripts/make_tables.py", "--run_id", "{run_id}", "--output_root", "{results}",
+              "--table", "invisibility"]
+      - name: compare_to_v1
+        run: ["{py}", "scripts/compare_runs.py", "--a", "{results}/{run_id}", "--v1_csv",
+              "data/v1_ref/stage1_per_image_metrics.csv"]
+        optional: true
+      - name: ledger
+        run: ["{py}", "scripts/gpu_ledger.py", "--results", "{results}"]
+        optional: true
+
+  # Same as J01, run by a second person / account (compare_runs.py --a J01 --b J01b afterwards).
+  J01b:
+    title: Phase 0 - second-person reproduction (identical spec to J01)
+    extends: J01
