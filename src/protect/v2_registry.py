@@ -80,7 +80,7 @@ def resolve_cfg(name: str, cfg) -> dict:
     base = deep_merge({k: v for k, v in part.items() if k != "methods"},
                       {k: v for k, v in cfg.items() if k != "methods"})
     chain = _CHAIN.get(name, [name])
-    if chain[-1] not in methods:
+    if chain[0] not in methods:
         raise KeyError(f"unknown v2 preset {name!r}; known: {', '.join(PRESETS)}")
     out = base
     for layer in chain:
