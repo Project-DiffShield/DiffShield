@@ -1,0 +1,4 @@
+[19:39:53] run prot_v2_main_fp32_test method=v2_main device=cuda backend=real shard=(1, 2) git=7c55cb6 dirty=False
+[19:39:53] 2 images in this shard (4 total), 0 already done
+[19:44:28] [2/2] 10457 psnr=45.17 ssim=0.9860 gpu_s=102.9
+[19:44:28] done

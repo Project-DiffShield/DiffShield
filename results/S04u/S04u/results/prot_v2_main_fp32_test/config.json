@@ -1,0 +1,1444 @@
+{
+  "_method": "v2_main",
+  "_overrides": [
+    "budget.iters=10",
+    "baselines.photoguard.iters=10",
+    "baselines.mist.iters=10",
+    "runtime.backend=real"
+  ],
+  "adaptive_ae": {
+    "base_channels": 32,
+    "depth": 3,
+    "device": "auto",
+    "patch": 128,
+    "train": {
+      "batch_size": 16,
+      "ckpt_every": 500,
+      "log_every": 50,
+      "lpips_weight": 0.0,
+      "lr": 0.0002,
+      "minutes": 60,
+      "val_fraction": 0.1
+    },
+    "weights_path": "results/adaptive_ae/ae_final.pt"
+  },
+  "baselines": {
+    "_common": {
+      "dtype": "auto",
+      "eps_255": null
+    },
+    "mist": {
+      "grad_checkpointing": true,
+      "iters": 10,
+      "loss_scale": 1024.0,
+      "n_noise": 1,
+      "prompt": "a painting",
+      "step_255": 1.0,
+      "t_max": 1000,
+      "t_min": 0,
+      "target_image": null,
+      "target_image_url": "https://raw.githubusercontent.com/psyker-team/mist/99f5f3c455022bef77ef25ba440a4289ea472d25/MIST.png",
+      "w_sem": 10000.0,
+      "w_tex": 1.0
+    },
+    "noise_gauss_psnr": {
+      "psnr_csv": null,
+      "psnr_key_col": "Original_Filename",
+      "psnr_val_col": "PSNR_dB",
+      "target_psnr": 41.911
+    },
+    "noise_uniform": {
+      "variant": "uniform"
+    },
+    "photoguard": {
+      "iters": 10,
+      "loss_scale": 1024.0,
+      "step_255": 2.55,
+      "step_decay": true,
+      "target": "zero_latent",
+      "target_image": null
+    }
+  },
+  "budget": {
+    "eps_255": 4,
+    "eps_confirmed": true,
+    "eps_sweep_255": [
+      2,
+      4,
+      6,
+      8
+    ],
+    "iters": 10,
+    "random_start": "uniform_full",
+    "scale": "standard_0_255",
+    "step_255": 1.0
+  },
+  "config_version": 1,
+  "data": {
+    "clean_format": "png",
+    "identity": {
+      "arcface_same_person_cosine": 0.5,
+      "mode": "auto"
+    },
+    "image_size": 512,
+    "messy": {
+      "degrade": {
+        "jpeg_quality": [
+          50,
+          70
+        ],
+        "resample": "bicubic",
+        "scale": [
+          0.6,
+          0.85
+        ]
+      },
+      "pose_top_fraction": 0.1,
+      "quota": {
+        "blur": 5,
+        "lighting": 5,
+        "occlusion": 4,
+        "pose": 6
+      }
+    },
+    "n_ae_pool": 120,
+    "n_messy": 20,
+    "n_test": 100,
+    "n_train": 20,
+    "n_val": 20,
+    "prepared": {
+      "format": "png",
+      "resample": "bicubic"
+    },
+    "split_seed": 2026,
+    "splits_files": {
+      "ae_pool": "data/splits/ae_pool.txt",
+      "messy": "data/splits/messy.txt",
+      "meta": "data/splits/splits_meta.json",
+      "test": "data/splits/test.txt",
+      "train": "data/splits/train.txt",
+      "val": "data/splits/val.txt"
+    },
+    "v1_calib_file": "data/splits/v1_calib.txt",
+    "v1_eval70_file": "data/splits/v1_eval70.txt",
+    "v1_selection": {
+      "fallback_k_calib": 4,
+      "k_eval": 70,
+      "k_range": [
+        1,
+        20
+      ],
+      "kmeans_random_state": 42,
+      "n_init": 10
+    }
+  },
+  "edit": {
+    "default_strength": 0.55,
+    "guidance_scale": 7.5,
+    "ip2p_image_guidance": 1.5,
+    "num_inference_steps": 50,
+    "prompts": {
+      "img2img": [
+        "a person in a suit",
+        "a person at a beach",
+        "an oil painting of a person"
+      ],
+      "ip2p": [
+        "put the person in a suit",
+        "put the person on a beach",
+        "turn it into an oil painting"
+      ]
+    },
+    "sdxl_resolution": 1024,
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "strengths": [
+      0.3,
+      0.55,
+      0.75
+    ],
+    "v1_phase2": {
+      "guidance": 7.5,
+      "prompt": "a highly detailed portrait, cyberpunk style, neon lighting, digital art masterpiece",
+      "seed": 2026,
+      "strength": 0.55
+    }
+  },
+  "editors": [
+    "sd15_img2img",
+    "sdxl_img2img",
+    "ip2p",
+    "sd_inpaint",
+    "ipadapter_faceid"
+  ],
+  "eot": {
+    "k_draws": 4,
+    "spatial": {
+      "crop_scale": [
+        0.8,
+        1.0
+      ],
+      "enabled": false,
+      "p": 0.5
+    },
+    "v1": {
+      "crop_scale": [
+        0.8,
+        1.0
+      ],
+      "jpeg_quality": [
+        50,
+        100
+      ],
+      "p": 0.5,
+      "same_on_batch": true
+    }
+  },
+  "eval": {
+    "_groups": {
+      "cell_faceid": {
+        "editor": "ipadapter_faceid",
+        "prompts": "rotate",
+        "strengths": null
+      },
+      "cell_inpaint": {
+        "editor": "sd_inpaint",
+        "prompts": "rotate",
+        "strengths": null
+      },
+      "cell_ip2p": {
+        "editor": "ip2p",
+        "prompts": "rotate",
+        "strengths": null
+      },
+      "cell_sd15_055_rot": {
+        "editor": "sd15_img2img",
+        "prompts": "rotate",
+        "strengths": [
+          0.55
+        ]
+      },
+      "cell_sd15_headline": {
+        "editor": "sd15_img2img",
+        "prompts": "all_if_headline",
+        "strengths": [
+          0.3,
+          0.55,
+          0.75
+        ]
+      },
+      "cell_sdxl": {
+        "editor": "sdxl_img2img",
+        "prompts": "rotate",
+        "strengths": [
+          0.55
+        ]
+      },
+      "methods_h": [
+        "clean",
+        "noise_uniform",
+        "noise_gauss_psnr",
+        "photoguard",
+        "mist",
+        "v1",
+        "v2_cheap",
+        "v2_main",
+        "v2_final"
+      ],
+      "purifiers_13": [
+        "jpeg_q90",
+        "jpeg_q75",
+        "jpeg_q50",
+        "jpeg_other",
+        "downup_0.5",
+        "downup_other",
+        "vae_rt",
+        "diffpure_0.05",
+        "diffpure_0.1",
+        "diffpure_0.2",
+        "diffpure_0.3",
+        "restore_swin2sr",
+        "gridpure"
+      ],
+      "purifiers_5": [
+        "jpeg_q75",
+        "jpeg_q50",
+        "downup_0.5",
+        "vae_rt",
+        "diffpure_0.1"
+      ],
+      "purifiers_abl": [
+        "none",
+        "jpeg_q50",
+        "vae_rt",
+        "diffpure_0.1",
+        "diffpure_0.2"
+      ],
+      "purifiers_faceid": [
+        "jpeg_q75",
+        "vae_rt",
+        "diffpure_0.1",
+        "diffpure_0.2"
+      ],
+      "purifiers_ip2p": [
+        "jpeg_q75",
+        "diffpure_0.1"
+      ]
+    },
+    "cache_purified": true,
+    "checkpoint_every": 50,
+    "dtype": "float16",
+    "edit_images": {
+      "format": "jpg",
+      "quality": 90
+    },
+    "editors": {
+      "ip2p": {
+        "default_strength": null,
+        "kind": "ip2p",
+        "max_batch": 3,
+        "model": "ip2p",
+        "prompts": "ip2p"
+      },
+      "ipadapter_faceid": {
+        "base_model": "sd15",
+        "default_strength": 0.55,
+        "ip_adapter_scale": 0.6,
+        "kind": "ipadapter_faceid",
+        "max_batch": 1,
+        "model": "ipadapter_faceid",
+        "prompts": "img2img",
+        "scheduler": "dpmpp"
+      },
+      "sd15_img2img": {
+        "default_strength": 0.55,
+        "kind": "sd15_img2img",
+        "max_batch": 3,
+        "model": "sd15",
+        "prompts": "img2img"
+      },
+      "sd_inpaint": {
+        "default_strength": 1.0,
+        "kind": "sd_inpaint",
+        "max_batch": 3,
+        "model": "sd15_inpaint",
+        "needs_mask": true,
+        "prompts": "img2img"
+      },
+      "sdxl_img2img": {
+        "cpu_offload": false,
+        "default_strength": 0.55,
+        "kind": "sdxl_img2img",
+        "max_batch": 1,
+        "model": "sdxl",
+        "prompts": "img2img",
+        "resolution": 1024
+      }
+    },
+    "guidance_scale": 7.5,
+    "headline": {
+      "editor": "sd15_img2img",
+      "strength": 0.55
+    },
+    "image_size": 512,
+    "ip2p_image_guidance": 1.5,
+    "masks": {
+      "dilate_px": 8,
+      "keep_parts": [
+        "skin",
+        "nose",
+        "l_eye",
+        "r_eye",
+        "l_brow",
+        "r_brow",
+        "l_ear",
+        "r_ear",
+        "mouth",
+        "u_lip",
+        "l_lip",
+        "eye_g",
+        "ear_r",
+        "neck",
+        "neck_l"
+      ]
+    },
+    "models": {
+      "arcface": {
+        "det_size": [
+          640,
+          640
+        ],
+        "pack": "buffalo_l"
+      },
+      "clip_eval": {
+        "id": "openai/clip-vit-large-patch14",
+        "revision": null
+      },
+      "ip2p": {
+        "id": "timbrooks/instruct-pix2pix",
+        "revision": null
+      },
+      "ipadapter_faceid": {
+        "id": "h94/IP-Adapter-FaceID",
+        "revision": null,
+        "weight_name": "ip-adapter-faceid_sd15.bin"
+      },
+      "lpips_net": "vgg",
+      "sd15": {
+        "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+        "revision": null
+      },
+      "sd15_inpaint": {
+        "id": "stable-diffusion-v1-5/stable-diffusion-inpainting",
+        "revision": null
+      },
+      "sdxl": {
+        "id": "stabilityai/stable-diffusion-xl-base-1.0",
+        "revision": null
+      },
+      "sdxl_vae_fp16": {
+        "id": "madebyollin/sdxl-vae-fp16-fix",
+        "revision": null
+      },
+      "swin2sr": {
+        "id": "caidas/swin2SR-classical-sr-x2-64",
+        "revision": null
+      }
+    },
+    "num_inference_steps": 30,
+    "prompts": {
+      "img2img": [
+        "a person in a suit",
+        "a person at a beach",
+        "an oil painting of a person"
+      ],
+      "ip2p": [
+        "put the person in a suit",
+        "put the person on a beach",
+        "turn it into an oil painting"
+      ]
+    },
+    "psr": {
+      "percentile": 95,
+      "scope": "per_editor"
+    },
+    "purifier_aliases": {
+      "diffpure_t0.05": "diffpure_0.05",
+      "diffpure_t0.1": "diffpure_0.1",
+      "diffpure_t0.2": "diffpure_0.2",
+      "diffpure_t0.3": "diffpure_0.3",
+      "jpeg_q_other": "jpeg_other",
+      "vae_rt_sd15": "vae_rt"
+    },
+    "purifiers": {
+      "adaptive_ae": {},
+      "diffpure_0.05": {
+        "guidance": 1.0,
+        "model": "sd15",
+        "steps": 50,
+        "strength": 0.05
+      },
+      "diffpure_0.1": {
+        "guidance": 1.0,
+        "model": "sd15",
+        "steps": 50,
+        "strength": 0.1
+      },
+      "diffpure_0.2": {
+        "guidance": 1.0,
+        "model": "sd15",
+        "steps": 50,
+        "strength": 0.2
+      },
+      "diffpure_0.3": {
+        "guidance": 1.0,
+        "model": "sd15",
+        "steps": 50,
+        "strength": 0.3
+      },
+      "downup_0.5": {
+        "resample": "bicubic",
+        "scale": 0.5
+      },
+      "downup_other": {
+        "resample": "lanczos",
+        "scale": 0.375
+      },
+      "gridpure": {
+        "checkpoint": null,
+        "gamma": 0.1,
+        "iters": 20,
+        "pure_model_url": "https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt",
+        "pure_steps": 10,
+        "repo_path": null,
+        "stride": 128,
+        "window": 256
+      },
+      "jpeg_other": {
+        "quality": 65,
+        "subsampling": 0
+      },
+      "jpeg_q50": {
+        "quality": 50
+      },
+      "jpeg_q75": {
+        "quality": 75
+      },
+      "jpeg_q90": {
+        "quality": 90
+      },
+      "restore_swin2sr": {
+        "down_scale": 0.5,
+        "model": "swin2sr"
+      },
+      "vae_rt": {
+        "latent": "mean",
+        "model": "sd15"
+      }
+    },
+    "save_edits": {
+      "all": true,
+      "headline_methods": [
+        "clean",
+        "v1",
+        "v2_final"
+      ],
+      "headline_purifiers": [
+        "none"
+      ],
+      "sample_first_n": 10
+    },
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "tiers": {
+      "A": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            }
+          ],
+          "methods": [
+            "abl_vis_only",
+            "abl_den_only",
+            "abl_no_sem",
+            "abl_no_pur"
+          ],
+          "purifiers": [
+            "none",
+            "jpeg_q50",
+            "vae_rt",
+            "diffpure_0.1",
+            "diffpure_0.2"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "ip2p",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "sd_inpaint",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "abl_vis_only",
+            "abl_den_only",
+            "abl_no_sem",
+            "abl_no_pur"
+          ],
+          "purifiers": [
+            "none"
+          ],
+          "splits": [
+            "test"
+          ]
+        }
+      ],
+      "E8": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            },
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "clean",
+            "v1",
+            "v2_final"
+          ],
+          "purifiers": [
+            "adaptive_ae"
+          ],
+          "splits": [
+            "test"
+          ]
+        }
+      ],
+      "E9": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            }
+          ],
+          "methods": [
+            "eps*",
+            "*_eps*"
+          ],
+          "purifiers": [
+            "none",
+            "jpeg_q75",
+            "diffpure_0.1"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "eps*",
+            "*_eps*"
+          ],
+          "purifiers": [
+            "none"
+          ],
+          "splits": [
+            "test"
+          ]
+        }
+      ],
+      "H": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "all_if_headline",
+              "strengths": [
+                0.3,
+                0.55,
+                0.75
+              ]
+            },
+            {
+              "editor": "ip2p",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "sd_inpaint",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "clean",
+            "noise_uniform",
+            "noise_gauss_psnr",
+            "photoguard",
+            "mist",
+            "v1",
+            "v2_cheap",
+            "v2_main",
+            "v2_final"
+          ],
+          "purifiers": [
+            "none"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "sdxl_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            }
+          ],
+          "methods": [
+            "clean",
+            "v1",
+            "photoguard",
+            "v2_final"
+          ],
+          "purifiers": [
+            "none"
+          ],
+          "splits": [
+            "test"
+          ]
+        }
+      ],
+      "M": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            },
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "clean",
+            "noise_uniform",
+            "noise_gauss_psnr",
+            "photoguard",
+            "mist",
+            "v1",
+            "v2_main",
+            "v2_final"
+          ],
+          "purifiers": [
+            "none"
+          ],
+          "splits": [
+            "messy"
+          ]
+        }
+      ],
+      "P": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            }
+          ],
+          "methods": [
+            "clean",
+            "v1",
+            "v2_cheap",
+            "v2_main",
+            "v2_antipure",
+            "v2_final"
+          ],
+          "purifiers": [
+            "jpeg_q90",
+            "jpeg_q75",
+            "jpeg_q50",
+            "jpeg_other",
+            "downup_0.5",
+            "downup_other",
+            "vae_rt",
+            "diffpure_0.05",
+            "diffpure_0.1",
+            "diffpure_0.2",
+            "diffpure_0.3",
+            "restore_swin2sr",
+            "gridpure"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            }
+          ],
+          "methods": [
+            "photoguard",
+            "mist"
+          ],
+          "purifiers": [
+            "jpeg_q75",
+            "jpeg_q50",
+            "downup_0.5",
+            "vae_rt",
+            "diffpure_0.1"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "clean",
+            "v1",
+            "v2_main",
+            "v2_final"
+          ],
+          "purifiers": [
+            "jpeg_q75",
+            "vae_rt",
+            "diffpure_0.1",
+            "diffpure_0.2"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "ip2p",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "v1",
+            "v2_final"
+          ],
+          "purifiers": [
+            "jpeg_q75",
+            "diffpure_0.1"
+          ],
+          "splits": [
+            "test"
+          ]
+        },
+        {
+          "cells": [
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            }
+          ],
+          "methods": [
+            "v2_antipure"
+          ],
+          "purifiers": [
+            "none"
+          ],
+          "splits": [
+            "test"
+          ]
+        }
+      ],
+      "SMOKE": [
+        {
+          "cells": [
+            {
+              "editor": "sd15_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            },
+            {
+              "editor": "ip2p",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "sd_inpaint",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "ipadapter_faceid",
+              "prompts": "rotate",
+              "strengths": null
+            },
+            {
+              "editor": "sdxl_img2img",
+              "prompts": "rotate",
+              "strengths": [
+                0.55
+              ]
+            }
+          ],
+          "methods": [
+            "*"
+          ],
+          "purifiers": [
+            "none",
+            "jpeg_q75",
+            "downup_0.5",
+            "vae_rt",
+            "diffpure_0.1"
+          ],
+          "splits": [
+            "test",
+            "val",
+            "messy"
+          ]
+        }
+      ]
+    }
+  },
+  "face": {
+    "backend": "facenet",
+    "bbox": null,
+    "pretrained": "vggface2"
+  },
+  "loss": {
+    "alpha": 0.2699475469647097,
+    "anti_purify": {
+      "enabled": false,
+      "w_hf": 0.5,
+      "w_mono": 0.5
+    },
+    "beta": 0.9023875567667267,
+    "eta": 0.2699475469647097,
+    "gamma": 60.52658429696642,
+    "l_str_on": "published",
+    "l_vis_latent": "unscaled_mean",
+    "lambda_id": 0.0,
+    "normalize_terms": false,
+    "sem_target_text": "a potted plant",
+    "ssim": {
+      "sigma": 1.5,
+      "window": 11
+    }
+  },
+  "methods": {
+    "abl_den_only": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.0,
+        "beta": 0.0,
+        "eta": 0.2699475469647097,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifier_train_probs": {
+        "downup": 0.25,
+        "jpeg": 0.25,
+        "sd_onestep": 0.3,
+        "vae_roundtrip": 0.2
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip",
+        "sd_onestep"
+      ]
+    },
+    "abl_no_pur": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.9023875567667267,
+        "eta": 0.2699475469647097,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifiers_train": []
+    },
+    "abl_no_sem": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.0,
+        "eta": 0.2699475469647097,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifier_train_probs": {
+        "downup": 0.25,
+        "jpeg": 0.25,
+        "sd_onestep": 0.3,
+        "vae_roundtrip": 0.2
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip",
+        "sd_onestep"
+      ]
+    },
+    "abl_vis_only": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.0,
+        "eta": 0.0,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifier_train_probs": {
+        "downup": 0.25,
+        "jpeg": 0.25,
+        "sd_onestep": 0.3,
+        "vae_roundtrip": 0.2
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip",
+        "sd_onestep"
+      ]
+    },
+    "eps2": {
+      "budget": {
+        "eps_255": 2
+      }
+    },
+    "eps6": {
+      "budget": {
+        "eps_255": 6
+      }
+    },
+    "eps8": {
+      "budget": {
+        "eps_255": 8
+      }
+    },
+    "v1": {
+      "budget": {
+        "eps_255": 4,
+        "iters": 40,
+        "random_start": "uniform_full",
+        "step_255": 0.5
+      },
+      "data": {
+        "clean_format": "v1_jpeg"
+      },
+      "eot": {
+        "k_draws": 1
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.9023875567667267,
+        "eta": 0.0,
+        "gamma": 60.52658429696642,
+        "l_str_on": "augmented_pair",
+        "lambda_id": 0.0
+      },
+      "model_key": "sd15_v1",
+      "purifiers_train": []
+    },
+    "v2_antipure": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "anti_purify": {
+          "enabled": true,
+          "w_hf": 0.5,
+          "w_mono": 0.5
+        },
+        "beta": 0.9023875567667267,
+        "eta": 0.2699475469647097,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifier_train_probs": {
+        "downup": 0.25,
+        "jpeg": 0.25,
+        "sd_onestep": 0.3,
+        "vae_roundtrip": 0.2
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip",
+        "sd_onestep"
+      ]
+    },
+    "v2_cheap": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.9023875567667267,
+        "eta": 0.0,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifier_train_probs": {
+        "downup": 0.35,
+        "jpeg": 0.35,
+        "vae_roundtrip": 0.3
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip"
+      ]
+    },
+    "v2_final_default": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "anti_purify": {
+          "enabled": false,
+          "w_hf": 0.5,
+          "w_mono": 0.5
+        },
+        "beta": 0.9023875567667267,
+        "eta": 0.2699475469647097,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "protect": {
+        "ensemble": {
+          "enabled": true,
+          "vaes": [
+            "sdxl_vae_fp16"
+          ]
+        }
+      },
+      "purifier_train_probs": {
+        "downup": 0.25,
+        "jpeg": 0.25,
+        "sd_onestep": 0.3,
+        "vae_roundtrip": 0.2
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip",
+        "sd_onestep"
+      ]
+    },
+    "v2_main": {
+      "budget": {
+        "step_255": 1.0
+      },
+      "eot": {
+        "k_draws": 4
+      },
+      "loss": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.9023875567667267,
+        "eta": 0.2699475469647097,
+        "gamma": 60.52658429696642,
+        "lambda_id": 0.0
+      },
+      "purifier_train_probs": {
+        "downup": 0.25,
+        "jpeg": 0.25,
+        "sd_onestep": 0.3,
+        "vae_roundtrip": 0.2
+      },
+      "purifiers_train": [
+        "jpeg",
+        "downup",
+        "vae_roundtrip",
+        "sd_onestep"
+      ]
+    }
+  },
+  "metrics": {
+    "identity": "arcface",
+    "invisibility_min": {
+      "psnr": 38.0,
+      "ssim": 0.95
+    },
+    "no_face_counts_as_success": true,
+    "psr_impostor_percentile": 95,
+    "psr_threshold": "from clean-edit distribution",
+    "psr_threshold_scope": "per_editor"
+  },
+  "models": {
+    "arcface_eval": {
+      "det_size": [
+        640,
+        640
+      ],
+      "pack": "buffalo_l"
+    },
+    "clip_eval": {
+      "id": "openai/clip-vit-large-patch14",
+      "revision": null
+    },
+    "clip_sem": {
+      "id": "openai/clip-vit-base-patch32",
+      "revision": null
+    },
+    "ip2p": {
+      "id": "timbrooks/instruct-pix2pix",
+      "revision": null
+    },
+    "ipadapter_faceid": {
+      "id": "h94/IP-Adapter-FaceID",
+      "revision": null,
+      "weight": "ip-adapter-faceid_sd15.bin"
+    },
+    "lpips_net": "vgg",
+    "sd15": {
+      "id": "stable-diffusion-v1-5/stable-diffusion-v1-5",
+      "revision": null
+    },
+    "sd15_inpaint": {
+      "id": "stable-diffusion-v1-5/stable-diffusion-inpainting",
+      "revision": null
+    },
+    "sd15_v1": {
+      "id": "runwayml/stable-diffusion-v1-5",
+      "revision": null
+    },
+    "sdxl": {
+      "id": "stabilityai/stable-diffusion-xl-base-1.0",
+      "revision": null
+    },
+    "sdxl_vae_fp16": {
+      "id": "madebyollin/sdxl-vae-fp16-fix",
+      "revision": null
+    }
+  },
+  "paths": {
+    "cache_dir": "results/cache",
+    "celebahq_root": null,
+    "data_root": "data",
+    "results_root": "results",
+    "splits_dir": "data/splits"
+  },
+  "project": "diffshield",
+  "protect": {
+    "ensemble": {
+      "enabled": false,
+      "vaes": [
+        "sdxl_vae_fp16"
+      ],
+      "weights": {}
+    },
+    "quantize": true
+  },
+  "purifier_eval": {
+    "diffpure_t0.05": {
+      "guidance": 1.0,
+      "impl": "sd_img2img_empty_prompt",
+      "steps": 50,
+      "strength": 0.05
+    },
+    "diffpure_t0.1": {
+      "guidance": 1.0,
+      "impl": "sd_img2img_empty_prompt",
+      "steps": 50,
+      "strength": 0.1
+    },
+    "diffpure_t0.2": {
+      "guidance": 1.0,
+      "impl": "sd_img2img_empty_prompt",
+      "steps": 50,
+      "strength": 0.2
+    },
+    "diffpure_t0.3": {
+      "guidance": 1.0,
+      "impl": "sd_img2img_empty_prompt",
+      "steps": 50,
+      "strength": 0.3
+    },
+    "downup_0.5": {
+      "impl": "pil",
+      "resample": "bicubic",
+      "scale": 0.5
+    },
+    "downup_other": {
+      "impl": "pil",
+      "resample": "lanczos",
+      "scale": 0.375
+    },
+    "gridpure": {
+      "feasible": "unverified",
+      "impl": "official"
+    },
+    "jpeg_q50": {
+      "impl": "pil",
+      "quality": 50
+    },
+    "jpeg_q75": {
+      "impl": "pil",
+      "quality": 75
+    },
+    "jpeg_q90": {
+      "impl": "pil",
+      "quality": 90
+    },
+    "jpeg_q_other": {
+      "impl": "pil",
+      "quality": 65,
+      "subsampling": "4:4:4"
+    },
+    "none": {},
+    "restore_swin2sr": {
+      "impl": "downup_then_sr",
+      "model": "caidas/swin2SR-classical-sr-x2-64",
+      "scale": 0.5
+    },
+    "vae_rt_sd15": {
+      "model": "sd15"
+    }
+  },
+  "purifier_train_exclude": [
+    "downup_heldout"
+  ],
+  "purifier_train_params": {
+    "downup": {
+      "antialias": true,
+      "modes": [
+        "bilinear",
+        "bicubic"
+      ],
+      "scale": [
+        0.5,
+        0.9
+      ]
+    },
+    "downup_heldout": {
+      "antialias": true,
+      "modes": [
+        "bicubic"
+      ],
+      "scale": [
+        0.3,
+        0.45
+      ]
+    },
+    "jpeg": {
+      "impl": "kornia_diff",
+      "quality": [
+        50,
+        95
+      ]
+    },
+    "sd_onestep": {
+      "model": "sd15",
+      "prompt": "",
+      "t_max": 300,
+      "t_min": 50
+    },
+    "vae_roundtrip": {
+      "latent": "mean",
+      "model": "sd15"
+    }
+  },
+  "purifier_train_probs": {
+    "downup": 0.25,
+    "jpeg": 0.25,
+    "sd_onestep": 0.3,
+    "vae_roundtrip": 0.2
+  },
+  "purifiers_heldout": [
+    "jpeg_q_other",
+    "downup_other",
+    "diffpure_t0.1",
+    "diffpure_t0.2",
+    "diffpure_t0.3",
+    "gridpure"
+  ],
+  "purifiers_train": [
+    "jpeg",
+    "downup",
+    "vae_roundtrip",
+    "sd_onestep"
+  ],
+  "runtime": {
+    "backend": "real",
+    "checkpoint_every": 5,
+    "cudnn_benchmark": false,
+    "device": "auto",
+    "grad_checkpointing": true,
+    "loss_scale": 1024.0,
+    "unet_dtype": "fp16",
+    "vae_dtype_protect": "fp32"
+  },
+  "seed": 2026,
+  "stats": {
+    "bootstrap_seed": 2026,
+    "ci": 0.95,
+    "n_boot": 10000,
+    "unit": "image"
+  }
+}

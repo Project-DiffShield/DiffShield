@@ -1,0 +1,4 @@
+[19:47:14] run prot_v2_cheap_ac_test method=v2_cheap device=cuda backend=real shard=(0, 2) git=7c55cb6 dirty=False
+[19:47:14] 2 images in this shard (4 total), 0 already done
+[19:48:36] [2/2] 1033 psnr=43.03 ssim=0.9823 gpu_s=34.0
+[19:48:36] done

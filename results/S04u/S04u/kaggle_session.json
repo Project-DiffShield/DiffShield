@@ -1,0 +1,72 @@
+{
+  "job_id": "S04u",
+  "run_id": "S04u",
+  "session_seconds": 794.7843027114868,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 5.4
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.9
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 12.2
+    },
+    "protect_prot_v2_main_fp32_test": {
+      "rc": 0,
+      "seconds": 295.0
+    },
+    "merge_prot_v2_main_fp32_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_main_ac_test": {
+      "rc": 0,
+      "seconds": 145.0
+    },
+    "merge_prot_v2_main_ac_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_cheap_ac_test": {
+      "rc": 0,
+      "seconds": 90.0
+    },
+    "merge_prot_v2_cheap_ac_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_v2_final_ac_test": {
+      "rc": 0,
+      "seconds": 215.0
+    },
+    "merge_prot_v2_final_ac_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_main_ac_nockpt_test": {
+      "rc": 1,
+      "seconds": 25.0
+    }
+  },
+  "params": {
+    "n_images": 4,
+    "iters": 10
+  },
+  "ok": false,
+  "failed_steps": [
+    "protect_prot_v2_main_ac_nockpt_test"
+  ]
+}

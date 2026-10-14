@@ -1,0 +1,2 @@
+[19:52:20] run prot_v2_main_ac_nockpt_test method=v2_main device=cuda backend=real shard=(0, 2) git=7c55cb6 dirty=False
+[19:52:20] 2 images in this shard (4 total), 0 already done
