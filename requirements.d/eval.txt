@@ -1,0 +1,13 @@
+# Half B (evaluation harness) extras. Owned by A3. Exact pins must come from the Kaggle env probe (kaggle_env_freeze);
+# only floors that are hard requirements are given here. UNVERIFIED versions are marked.
+# provided by the Kaggle image (verified by scripts/check_env.py, not reinstalled): torch, torchvision, numpy, pillow,
+# pandas, pyyaml, scikit-image, transformers, accelerate
+diffusers>=0.28            # IP-Adapter ip_adapter_image_embeds / load_ip_adapter(image_encoder_folder=None); pin from probe
+transformers>=4.40         # CLIP ViT-L/14 (CLIP-I), Swin2SR restoration purifier
+lpips==0.1.4
+insightface==0.7.3         # compiles Cython at install time; buffalo_l pack downloads on first use (unverified on Kaggle)
+onnxruntime-gpu            # pin to match Kaggle CUDA/cuDNN; if it falls back to CPU, scoring is slower but correct (provider is logged)
+opencv-python-headless     # insightface dependency (cv2)
+scikit-image               # SSIM for the invisibility columns (NaN if missing)
+# GrIDPure (optional): clone github.com/ZhengyueZhao/GrIDPure, put it on eval.purifiers.gridpure.repo_path and download
+# 256x256_diffusion_uncond.pt (guided-diffusion) to eval.purifiers.gridpure.checkpoint. Not pip-installable.
