@@ -10,15 +10,20 @@ class EoTLayer(nn.Module):
     
     Supports a paired mode where the SAME random transform parameters are
     applied to two inputs (clean + poisoned) to maintain spatial alignment.
+
+    same_on_batch=True makes Kornia draw ONE set of random parameters for the
+    whole batch. forward_paired() relies on this (clean and poisoned are
+    concatenated on the batch axis). The same sharing also applies across the
+    batch dimension in forward(), which is fine for batch size 1.
     """
     def __init__(self, jpeg_quality=(50, 100), crop_scale=(0.8, 1.0), image_size=512):
         super().__init__()
         self.image_size = image_size
         # Differentiable JPEG compression
-        self.jpeg = K.RandomJPEG(jpeg_quality=jpeg_quality, p=0.5)
+        self.jpeg = K.RandomJPEG(jpeg_quality=jpeg_quality, p=0.5, same_on_batch=True)
         # Random resized crop for robustness against cropping/resizing
         self.crop = K.RandomResizedCrop(
-            size=(image_size, image_size), scale=crop_scale, p=0.5
+            size=(image_size, image_size), scale=crop_scale, p=0.5, same_on_batch=True
         )
 
     def forward(self, x):
