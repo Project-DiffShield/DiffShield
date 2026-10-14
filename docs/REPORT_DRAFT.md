@@ -1,6 +1,6 @@
 # DiffShield v2: report draft (skeleton)
 
-Status: **skeleton with placeholders.** Nothing in this file is a result. Placeholders `{{table:NAME}}`, `{{num:KEY}}` and `{{gate:ID}}` are
+Status: **skeleton with placeholders.** Nothing in this file is a result. Placeholders (double-brace `table:`, `num:` and `gate:` tags) are
 filled by `python scripts/make_tables.py --render docs/REPORT_DRAFT.md --tables_dir results/tables --out reports/rendered` from the tables and
 `numbers.json` generated from the results CSVs; a placeholder with no data renders as `PENDING (...)`, never as an invented value.
 Text outside placeholders is method description and limitations decided before any results existed (sources: docs/HANDOFF_v2.txt,
