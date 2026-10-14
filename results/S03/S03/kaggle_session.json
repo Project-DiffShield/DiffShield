@@ -1,0 +1,34 @@
+{
+  "job_id": "S03",
+  "run_id": "S03",
+  "session_seconds": 3079.5089812278748,
+  "n_gpus": 0,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 37.4
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 2.3
+    },
+    "make_splits": {
+      "rc": 0,
+      "seconds": 2768.9
+    },
+    "use_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_check": {
+      "rc": 0,
+      "seconds": 270.9
+    }
+  },
+  "params": {
+    "smoke": false,
+    "extra_args": []
+  },
+  "ok": true,
+  "failed_steps": []
+}

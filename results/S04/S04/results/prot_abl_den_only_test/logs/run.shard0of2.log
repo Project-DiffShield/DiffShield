@@ -1,0 +1,4 @@
+[17:16:45] run prot_abl_den_only_test method=abl_den_only device=cuda backend=real shard=(0, 2) git=caac5a1 dirty=False
+[17:16:45] 3 images in this shard (5 total), 0 already done
+[17:18:49] [3/3] 3602 psnr=50.40 ssim=0.9960 gpu_s=34.3
+[17:18:49] done

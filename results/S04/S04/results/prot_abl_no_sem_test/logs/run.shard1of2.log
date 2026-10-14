@@ -1,0 +1,4 @@
+[17:18:56] run prot_abl_no_sem_test method=abl_no_sem device=cuda backend=real shard=(1, 2) git=caac5a1 dirty=False
+[17:18:56] 2 images in this shard (5 total), 0 already done
+[17:20:55] [2/2] 18621 psnr=44.49 ssim=0.9852 gpu_s=49.5
+[17:20:55] done

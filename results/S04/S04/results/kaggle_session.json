@@ -1,0 +1,137 @@
+{
+  "job_id": "S04",
+  "run_id": "S04",
+  "session_seconds": 1772.3054201602936,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 4.8
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.2
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.1
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 1.5
+    },
+    "protect_prot_v1_test": {
+      "rc": 0,
+      "seconds": 70.0
+    },
+    "merge_prot_v1_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_cheap_test": {
+      "rc": 0,
+      "seconds": 135.0
+    },
+    "merge_prot_v2_cheap_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_v2_main_test": {
+      "rc": 0,
+      "seconds": 195.0
+    },
+    "merge_prot_v2_main_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_v2_antipure_test": {
+      "rc": 0,
+      "seconds": 230.0
+    },
+    "merge_prot_v2_antipure_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_v2_final_test": {
+      "rc": 0,
+      "seconds": 245.0
+    },
+    "merge_prot_v2_final_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_abl_vis_only_test": {
+      "rc": 0,
+      "seconds": 145.0
+    },
+    "merge_prot_abl_vis_only_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_abl_den_only_test": {
+      "rc": 0,
+      "seconds": 130.0
+    },
+    "merge_prot_abl_den_only_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_abl_no_sem_test": {
+      "rc": 0,
+      "seconds": 195.0
+    },
+    "merge_prot_abl_no_sem_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_abl_no_pur_test": {
+      "rc": 0,
+      "seconds": 135.0
+    },
+    "merge_prot_abl_no_pur_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_eps2_test": {
+      "rc": 0,
+      "seconds": 240.0
+    },
+    "merge_prot_eps2_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_noise_uniform_test": {
+      "rc": 0,
+      "seconds": 10.0
+    },
+    "merge_prot_noise_uniform_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_noise_gauss_psnr_test": {
+      "rc": 0,
+      "seconds": 10.0
+    },
+    "merge_prot_noise_gauss_psnr_test": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_photoguard_test": {
+      "rc": 1,
+      "seconds": 15.0
+    }
+  },
+  "params": {
+    "smoke": true,
+    "n_images": 5,
+    "iters": 5
+  },
+  "ok": false,
+  "failed_steps": [
+    "protect_prot_photoguard_test"
+  ]
+}

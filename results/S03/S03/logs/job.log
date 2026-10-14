@@ -1,0 +1,11 @@
+[17:06:55] S03: start: S03 splits (test100, messy20, train20, val20, ae_pool120; v1 calib excluded), ArcFace dedup, caches. CPU is enough. | gpus=0 smoke=False n_images=None iters=None resume=None
+[17:06:55] S03: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu opencv-python-headless==4.14.0.94
+[17:07:32] S03: step install: rc=0 (37s)
+[17:07:32] S03: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[17:07:34] S03: step check_env: rc=0 (2s)
+[17:07:34] S03: [make_splits] /usr/bin/python3 scripts/make_splits.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --out_dir /kaggle/working/S03/splits_out --identity_mode auto
+[17:53:43] S03: step make_splits: rc=0 (2769s)
+[17:53:43] S03: set splits_dir = /kaggle/working/S03/splits_out
+[17:53:43] S03: step use_splits: rc=0 (0s)
+[17:53:43] S03: [prepare_check] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/working/S03/splits_out --out_dir /kaggle/working/S03/data --cache_dir /kaggle/working/S03/cache --parsing_dir /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+[17:58:14] S03: step prepare_check: rc=0 (271s)

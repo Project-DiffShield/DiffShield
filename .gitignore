@@ -40,3 +40,4 @@ results/human_study/private/
 results/human_study/answers/
 results/combined/arcface/
 results/tables_synthetic*/
+results/**/*.npz

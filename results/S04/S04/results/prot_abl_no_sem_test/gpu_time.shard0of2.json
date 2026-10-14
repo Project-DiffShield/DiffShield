@@ -1,0 +1,8 @@
+{
+  "total_gpu_seconds": 182.91091126700007,
+  "peak_mem_mb": 5577.60400390625,
+  "wall_seconds": 187.35291695594788,
+  "n_images": 3,
+  "gpu_name": "Tesla T4",
+  "per_image_mean": 60.97030375566669
+}

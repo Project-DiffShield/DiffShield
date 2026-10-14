@@ -1,0 +1,4 @@
+[17:28:38] run prot_noise_gauss_psnr_test method=noise_gauss_psnr device=cuda backend=real shard=(0, 2) git=caac5a1 dirty=False
+[17:28:38] 3 images in this shard (5 total), 0 already done
+[17:28:44] [3/3] 3602 psnr=41.92 ssim=0.9678 gpu_s=0.0
+[17:28:44] done

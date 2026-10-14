@@ -1,0 +1,22 @@
+[prepare_data] test: 100 PNGs
+[prepare_data] messy: 20 PNGs
+[prepare_data] train: 20 PNGs
+[prepare_data] val: 20 PNGs
+[prepare_data] ae_pool: 120 PNGs
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CPUExecutionProvider']
+[prepare_data] cached ArcFace sources for test
+[prepare_data] cached ArcFace sources for messy
+[prepare_data] cached ArcFace sources for train
+[prepare_data] cached ArcFace sources for val
+[prepare_data] cached ArcFace sources for ae_pool

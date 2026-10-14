@@ -1,0 +1,4 @@
+[17:14:20] run prot_abl_vis_only_test method=abl_vis_only device=cuda backend=real shard=(0, 2) git=caac5a1 dirty=False
+[17:14:20] 3 images in this shard (5 total), 0 already done
+[17:16:38] [3/3] 3602 psnr=44.59 ssim=0.9883 gpu_s=37.2
+[17:16:38] done

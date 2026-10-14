@@ -1,0 +1,4 @@
+[17:10:14] run prot_v2_final_test method=v2_final device=cuda backend=real shard=(0, 2) git=caac5a1 dirty=False
+[17:10:14] 3 images in this shard (5 total), 0 already done
+[17:14:11] [3/3] 3602 psnr=42.40 ssim=0.9761 gpu_s=70.1
+[17:14:11] done

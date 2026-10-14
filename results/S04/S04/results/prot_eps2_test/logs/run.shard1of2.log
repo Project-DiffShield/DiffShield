@@ -1,0 +1,4 @@
+[17:24:27] run prot_eps2_test method=eps2 device=cuda backend=real shard=(1, 2) git=caac5a1 dirty=False
+[17:24:27] 2 images in this shard (5 total), 0 already done
+[17:27:03] [2/2] 18621 psnr=45.60 ssim=0.9864 gpu_s=67.9
+[17:27:03] done

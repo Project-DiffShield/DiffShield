@@ -1,0 +1,48 @@
+[make_splits] 30000 images, 40 attributes from /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-attribute-anno.txt
+[make_splits] pose annotation: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-pose-anno.txt (30000 rows)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+
+  0%|          | 0/281857 [00:00<?, ?KB/s]
+  2%|▏         | 4357/281857 [00:00<00:06, 43564.74KB/s]
+  5%|▌         | 14391/281857 [00:00<00:03, 76952.24KB/s]
+  9%|▉         | 24776/281857 [00:00<00:02, 89230.71KB/s]
+ 12%|█▏        | 34573/281857 [00:00<00:02, 92678.85KB/s]
+ 16%|█▌        | 44544/281857 [00:00<00:02, 95211.44KB/s]
+ 19%|█▉        | 54290/281857 [00:00<00:02, 95966.22KB/s]
+ 23%|██▎       | 64221/281857 [00:00<00:02, 97048.63KB/s]
+ 26%|██▋       | 74497/281857 [00:00<00:02, 98799.59KB/s]
+ 30%|███       | 84741/281857 [00:00<00:01, 99926.90KB/s]
+ 34%|███▎      | 94734/281857 [00:01<00:01, 98431.32KB/s]
+ 37%|███▋      | 104582/281857 [00:01<00:01, 98275.84KB/s]
+ 41%|████      | 114717/281857 [00:01<00:01, 99197.85KB/s]
+ 44%|████▍     | 125306/281857 [00:01<00:01, 101210.36KB/s]
+ 48%|████▊     | 135676/281857 [00:01<00:01, 101958.05KB/s]
+ 52%|█████▏    | 145875/281857 [00:01<00:01, 101572.72KB/s]
+ 55%|█████▌    | 156317/281857 [00:01<00:01, 102421.12KB/s]
+ 59%|█████▉    | 166561/281857 [00:01<00:01, 102403.76KB/s]
+ 63%|██████▎   | 176984/281857 [00:01<00:01, 102941.82KB/s]
+ 66%|██████▋   | 187280/281857 [00:01<00:00, 102271.50KB/s]
+ 70%|███████   | 197509/281857 [00:02<00:00, 101629.71KB/s]
+ 74%|███████▍  | 208008/281857 [00:02<00:00, 102627.35KB/s]
+ 77%|███████▋  | 218273/281857 [00:02<00:00, 101536.89KB/s]
+ 81%|████████  | 228451/281857 [00:02<00:00, 101607.22KB/s]
+ 85%|████████▍ | 238735/281857 [00:02<00:00, 101973.02KB/s]
+ 88%|████████▊ | 248941/281857 [00:02<00:00, 101995.66KB/s]
+ 92%|█████████▏| 259528/281857 [00:02<00:00, 103152.04KB/s]
+ 96%|█████████▌| 270073/281857 [00:02<00:00, 103835.67KB/s]
+100%|█████████▉| 280458/281857 [00:02<00:00, 102685.66KB/s]
+100%|██████████| 281857/281857 [00:02<00:00, 99503.69KB/s] 
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CPUExecutionProvider']
+[make_splits] wrote {'test': 100, 'messy': 20, 'val': 20, 'train': 20, 'ae_pool': 120} -> /kaggle/working/S03/splits_out
