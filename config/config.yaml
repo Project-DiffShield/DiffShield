@@ -115,7 +115,7 @@ stats: {n_boot: 10000, ci: 0.95, unit: image, bootstrap_seed: 2026}
 runtime:
   device: auto                  # cuda if available else cpu
   unet_dtype: fp16
-  vae_dtype_protect: fp32
+  vae_dtype_protect: fp32       # fp32 | autocast (fp16 autocast for VAE fwd/bwd in the protection loop; see S04u)
   grad_checkpointing: true
   loss_scale: 1024.0            # multiply loss before autograd.grad (fp16 underflow guard; sign() is scale-invariant)
   checkpoint_every: 5           # images

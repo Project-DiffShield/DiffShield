@@ -1,0 +1,4 @@
+[18:28:16] run prot_v2_antipure_test method=v2_antipure device=cuda backend=real shard=(0, 2) git=8f535c1 dirty=False
+[18:28:16] 2 images in this shard (4 total), 0 already done
+[18:33:16] [2/2] 1033 psnr=42.81 ssim=0.9791 gpu_s=141.1
+[18:33:16] done

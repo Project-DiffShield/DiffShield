@@ -1,0 +1,4 @@
+[18:39:12] run prot_photoguard_test method=photoguard device=cuda backend=real shard=(1, 2) git=8f535c1 dirty=False
+[18:39:12] 2 images in this shard (4 total), 0 already done
+[18:39:31] [2/2] 10457 psnr=38.40 ssim=0.9115 gpu_s=2.4
+[18:39:31] done

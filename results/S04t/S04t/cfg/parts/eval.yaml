@@ -1,0 +1,138 @@
+# Half B (attack-and-score harness) config. Owned by agent A3. Loaded by load_config via
+# config/parts/*.yaml deep-merge. Everything lives under the `eval:` key so it cannot collide with
+# config/config.yaml. Model ids marked "unverified" were NOT loaded in this workspace (no GPU / no
+# downloads); the J03b smoke job is the first real load. Pin `revision` after the smoke job.
+eval:
+  seeds: [1, 2, 3]                  # edit seeds; protection uses its own per-image seed
+  num_inference_steps: 30           # DPM-Solver++ (multistep, 2nd order) for ALL editors (48h plan section 2)
+  guidance_scale: 7.5
+  ip2p_image_guidance: 1.5
+  dtype: float16
+  image_size: 512
+  checkpoint_every: 50              # edits (rows) between progress.json / gpu_time.json writes
+  cache_purified: true              # purified PNGs reused across editors of one run
+
+  headline:                         # all 3 prompts here, 1 rotated prompt (image_index mod 3) elsewhere
+    editor: sd15_img2img
+    strength: 0.55
+
+  save_edits:
+    all: true                       # coordinator request: save EVERY edit (JPEG q90, small). false => policy below
+    sample_first_n: 10              # policy mode: first N images of the split (all methods)
+    headline_methods: [clean, v1, v2_final]
+    headline_purifiers: [none]      # headline methods are saved for these purifiers only
+
+  psr:
+    percentile: 95                  # 95th pct of ArcFace sim between DIFFERENT people (clean edits vs other sources)
+    scope: per_editor               # also write a pooled threshold
+
+  masks:                            # keep-face inpainting masks (src/eval/masks.py); 255 = repaint
+    keep_parts: [skin, nose, l_eye, r_eye, l_brow, r_brow, l_ear, r_ear, mouth, u_lip, l_lip, eye_g, ear_r, neck, neck_l]
+    dilate_px: 8                    # repainted: background, cloth, hat, hair. Messy / non-CelebA ids: face-bbox ellipse fallback
+
+  edit_images:                      # every edit is saved as JPEG so edit-LPIPS can be recomputed later (stage lpips)
+    format: jpg
+    quality: 90                     # edit_lpips is defined on JPEG-q90 round-tripped images (clean AND protected edit)
+
+  prompts:
+    img2img: ["a person in a suit", "a person at a beach", "an oil painting of a person"]
+    ip2p:    ["put the person in a suit", "put the person on a beach", "turn it into an oil painting"]
+
+  models:                           # ids: see 'verification' notes
+    sd15:           {id: "stable-diffusion-v1-5/stable-diffusion-v1-5", revision: null}      # id seen in current diffusers docs; weights load unverified here
+    sd15_inpaint:   {id: "stable-diffusion-v1-5/stable-diffusion-inpainting", revision: null} # unverified (mirror of runwayml repo)
+    sdxl:           {id: "stabilityai/stable-diffusion-xl-base-1.0", revision: null}          # unverified here
+    sdxl_vae_fp16:  {id: "madebyollin/sdxl-vae-fp16-fix", revision: null}                     # unverified here
+    ip2p:           {id: "timbrooks/instruct-pix2pix", revision: null}                        # unverified here
+    ipadapter_faceid: {id: "h94/IP-Adapter-FaceID", weight_name: "ip-adapter-faceid_sd15.bin", revision: null}  # repo + file name seen in diffusers docs (verified by reading docs, not by loading)
+    swin2sr:        {id: "caidas/swin2SR-classical-sr-x2-64", revision: null}                 # unverified
+    clip_eval:      {id: "openai/clip-vit-large-patch14", revision: null}                     # CLIP-I metric
+    lpips_net: vgg
+    arcface: {pack: buffalo_l, det_size: [640, 640]}                                          # insightface; pack downloads on first use (unverified on Kaggle)
+
+  editors:
+    sd15_img2img:     {kind: sd15_img2img, model: sd15, prompts: img2img, default_strength: 0.55, max_batch: 3}
+    sdxl_img2img:     {kind: sdxl_img2img, model: sdxl, prompts: img2img, default_strength: 0.55, max_batch: 1,
+                       resolution: 1024, cpu_offload: false}
+    ip2p:             {kind: ip2p, model: ip2p, prompts: ip2p, default_strength: null, max_batch: 3}   # no strength param
+    sd_inpaint:       {kind: sd_inpaint, model: sd15_inpaint, prompts: img2img, default_strength: 1.0, max_batch: 3,
+                       needs_mask: true}
+    ipadapter_faceid: {kind: ipadapter_faceid, model: ipadapter_faceid, base_model: sd15, prompts: img2img,
+                       default_strength: 0.55, max_batch: 1, ip_adapter_scale: 0.6,
+                       scheduler: dpmpp   # diffusers docs recommend DDIM or Euler for FaceID; switch to `ddim` if J03b shows artefacts
+                       }
+
+  # Purifier params (code defaults used if a key is missing). Names are canonical; aliases map the older config.yaml names.
+  purifier_aliases:
+    jpeg_q_other: jpeg_other
+    vae_rt_sd15: vae_rt
+    diffpure_t0.05: diffpure_0.05
+    diffpure_t0.1: diffpure_0.1
+    diffpure_t0.2: diffpure_0.2
+    diffpure_t0.3: diffpure_0.3
+  purifiers:
+    jpeg_q90:   {quality: 90}
+    jpeg_q75:   {quality: 75}
+    jpeg_q50:   {quality: 50}
+    jpeg_other: {quality: 65, subsampling: 0}          # 4:4:4
+    downup_0.5:   {scale: 0.5, resample: bicubic}
+    downup_other: {scale: 0.375, resample: lanczos}
+    vae_rt:     {model: sd15, latent: mean}
+    diffpure_0.05: {model: sd15, strength: 0.05, steps: 50, guidance: 1.0}
+    diffpure_0.1:  {model: sd15, strength: 0.1,  steps: 50, guidance: 1.0}
+    diffpure_0.2:  {model: sd15, strength: 0.2,  steps: 50, guidance: 1.0}
+    diffpure_0.3:  {model: sd15, strength: 0.3,  steps: 50, guidance: 1.0}
+    restore_swin2sr: {down_scale: 0.5, model: swin2sr}
+    gridpure:                                           # from the paper/official repo description (see src/eval/gridpure.py)
+      window: 256
+      stride: 128
+      pure_steps: 10                                    # official example --pure_steps
+      iters: 20                                         # official example --pure_iter_num
+      gamma: 0.1
+      repo_path: null                                   # clone of github.com/ZhengyueZhao/GrIDPure (guided_diffusion package)
+      checkpoint: null                                  # path to 256x256_diffusion_uncond.pt (guided-diffusion); null => NotAvailable
+      pure_model_url: "https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt"
+    adaptive_ae: {}                                     # lazy: src/eval/adaptive_ae.py must expose build_purifier(cfg, device)
+
+  # ---- Tiers (48h plan section 3). A rule = (methods x purifiers x cells). `methods` accept fnmatch patterns.
+  # cell: {editor, strengths (null => editor default), prompts: all_if_headline | rotate}
+  _groups:
+    purifiers_13: &p13 [jpeg_q90, jpeg_q75, jpeg_q50, jpeg_other, downup_0.5, downup_other, vae_rt,
+                        diffpure_0.05, diffpure_0.1, diffpure_0.2, diffpure_0.3, restore_swin2sr, gridpure]
+    purifiers_5:  &p5  [jpeg_q75, jpeg_q50, downup_0.5, vae_rt, diffpure_0.1]
+    purifiers_faceid: &pf [jpeg_q75, vae_rt, diffpure_0.1, diffpure_0.2]
+    purifiers_ip2p: &pi [jpeg_q75, diffpure_0.1]
+    purifiers_abl: &pa [none, jpeg_q50, vae_rt, diffpure_0.1, diffpure_0.2]
+    methods_h: &mh [clean, noise_uniform, noise_gauss_psnr, photoguard, mist, v1, v2_cheap, v2_main, v2_final]
+    cell_sd15_headline: &c_sd15 {editor: sd15_img2img, strengths: [0.3, 0.55, 0.75], prompts: all_if_headline}
+    cell_sd15_055_rot: &c_sd15r {editor: sd15_img2img, strengths: [0.55], prompts: rotate}
+    cell_faceid: &c_fid {editor: ipadapter_faceid, strengths: null, prompts: rotate}
+    cell_ip2p: &c_ip2p {editor: ip2p, strengths: null, prompts: rotate}
+    cell_inpaint: &c_inp {editor: sd_inpaint, strengths: null, prompts: rotate}
+    cell_sdxl: &c_sdxl {editor: sdxl_img2img, strengths: [0.55], prompts: rotate}
+
+  tiers:
+    H:                                                  # no purifier, test split
+      - {splits: [test], methods: *mh, purifiers: [none], cells: [*c_sd15, *c_ip2p, *c_inp, *c_fid]}
+      - {splits: [test], methods: [clean, v1, photoguard, v2_final], purifiers: [none], cells: [*c_sdxl]}
+    M:                                                  # messy 20: SD1.5 rotated + FaceID
+      - {splits: [messy], methods: [clean, noise_uniform, noise_gauss_psnr, photoguard, mist, v1, v2_main, v2_final],
+         purifiers: [none], cells: [*c_sd15r, *c_fid]}
+    P:                                                  # purifier grid (test split)
+      - {splits: [test], methods: [clean, v1, v2_cheap, v2_main, v2_antipure, v2_final], purifiers: *p13, cells: [*c_sd15r]}
+      - {splits: [test], methods: [photoguard, mist], purifiers: *p5, cells: [*c_sd15r]}
+      - {splits: [test], methods: [clean, v1, v2_main, v2_final], purifiers: *pf, cells: [*c_fid]}
+      - {splits: [test], methods: [v1, v2_final], purifiers: *pi, cells: [*c_ip2p]}
+      - {splits: [test], methods: [v2_antipure], purifiers: [none], cells: [*c_fid]}      # E6 "FaceID none"
+    A:                                                  # phase ablation (v2_main is the "both" arm)
+      - {splits: [test], methods: [abl_vis_only, abl_den_only, abl_no_sem, abl_no_pur], purifiers: *pa, cells: [*c_sd15r]}
+      - {splits: [test], methods: [abl_vis_only, abl_den_only, abl_no_sem, abl_no_pur], purifiers: [none],
+         cells: [*c_fid, *c_ip2p, *c_inp]}
+    E9:                                                 # epsilon sweep of v2_final (method names eps2/eps6/eps8; unverified naming)
+      - {splits: [test], methods: ["eps*", "*_eps*"], purifiers: [none, jpeg_q75, diffpure_0.1], cells: [*c_sd15r]}
+      - {splits: [test], methods: ["eps*", "*_eps*"], purifiers: [none], cells: [*c_fid]}
+    E8:                                                 # adaptive autoencoder attacker (A4 module)
+      - {splits: [test], methods: [clean, v1, v2_final], purifiers: [adaptive_ae], cells: [*c_sd15r, *c_fid]}
+    SMOKE:                                              # J03b: every editor and a few purifiers, 5 images
+      - {splits: [test, val, messy], methods: ["*"], purifiers: [none, jpeg_q75, downup_0.5, vae_rt, diffpure_0.1],
+         cells: [*c_sd15r, *c_ip2p, *c_inp, *c_fid, *c_sdxl]}

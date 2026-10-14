@@ -185,6 +185,24 @@ jobs:
       - {name: smoke_report, run: ["{py}", scripts/smoke_report.py, --root, "{results}", --out, "{results}/smoke_report.md"],
          soft: true, optional: true}
 
+  # ---------------------------------------------------------------------------------------------- S04u
+  S04u:
+    title: S04u fp16-autocast VAE speed/quality probe - same 4 images x 10 iterations as S04t (fp32 control, then autocast, then autocast without checkpointing)
+    accelerator: gpu_t4x2
+    params: {n_images: 4, iters: 10}
+    steps:
+      - {macro: setup}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_main, run: prot_v2_main_fp32_test}}
+      - {macro: protect, with: {method: v2_main, run: prot_v2_main_ac_test, extra: ["--set", "runtime.vae_dtype_protect=autocast"]}}
+      - {macro: protect, with: {method: v2_cheap, run: prot_v2_cheap_ac_test, extra: ["--set", "runtime.vae_dtype_protect=autocast"]}}
+      - {macro: protect, with: {method: v2_final, run: prot_v2_final_ac_test, extra: ["--set", "runtime.vae_dtype_protect=autocast"]}}
+      - macro: protect
+        with: {method: v2_main, run: prot_v2_main_ac_nockpt_test,
+               extra: ["--set", "runtime.vae_dtype_protect=autocast", "--set", "runtime.grad_checkpointing=false"]}
+      - {name: smoke_report, run: ["{py}", scripts/smoke_report.py, --root, "{results}", --out, "{results}/smoke_report.md"],
+         soft: true, optional: true}
+
   # ---------------------------------------------------------------------------------------------- S05
   S05:
     title: S05 edit/purifier smoke - all editors, purifiers, GrIDPure attempt, LPIPS and threshold stages (5 images, 1 seed)

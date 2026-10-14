@@ -1,0 +1,27 @@
+# Dataset / split settings. Owner: agent A4. Deep-merged over config/config.yaml `data:` (keys there: image_size, n_train, ...).
+data:
+  n_test: 100
+  n_messy: 20
+  n_train: 20
+  n_val: 20
+  n_ae_pool: 120                    # adaptive-attacker (E8) training pool; disjoint from every other split
+  split_seed: 2026
+  splits_files:                     # written by scripts/make_splits.py (frozen; never edited by hand)
+    test: data/splits/test.txt
+    messy: data/splits/messy.txt
+    train: data/splits/train.txt
+    val: data/splits/val.txt
+    ae_pool: data/splits/ae_pool.txt
+    meta: data/splits/splits_meta.json
+  v1_calib_file: data/splits/v1_calib.txt        # 5319, 1715, 6385, 8932 - excluded from every v2 split
+  v1_eval70_file: data/splits/v1_eval70.txt      # ALL 70 kept in test (paired v1 comparison) + 30 new
+  identity:
+    mode: auto                      # auto | labels | arcface | none. CelebAMask-HQ Kaggle copy has NO identity_CelebA.txt -> arcface
+    arcface_same_person_cosine: 0.5 # UNVERIFIED threshold
+  messy:
+    quota: {blur: 5, lighting: 5, occlusion: 4, pose: 6}
+    pose_top_fraction: 0.10         # top 10% by max(|yaw|,|pitch|) of CelebAMask-HQ-pose-anno.txt (rank based, units unverified)
+    degrade: {scale: [0.60, 0.85], jpeg_quality: [50, 70], resample: bicubic}   # applied by scripts/prepare_data.py
+  prepared:
+    format: png                     # lossless 512 px (v1 inputs were JPEG q75)
+    resample: bicubic

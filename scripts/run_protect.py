@@ -62,6 +62,11 @@ def process_one(item, protector, ctx, lpips, cfg, split=""):
         x_adv, info = protector.protect(x.to(dev), seed)
     out_path = ctx.images_dir / f"{image_id}.png"
     save_png_v1(x_adv, out_path)
+    if isinstance(info, dict) and info.get("terms"):  # per-image loss history (v2 protectors) for cost/quality probes
+        import json
+        idir = ctx.images_dir.parent / "info"
+        idir.mkdir(exist_ok=True)
+        (idir / f"{image_id}.json").write_text(json.dumps(info, default=float), encoding="utf-8")
     x_c, x_p = x.to(dev), x_adv.to(dev)
     m1 = v1_quality_metrics(x_c, x_p, lpips)
     m2 = png_quality_metrics(item, out_path, lpips)

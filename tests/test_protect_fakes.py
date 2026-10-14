@@ -109,3 +109,11 @@ def test_fakes_signatures():
     assert m.decode(z, scaled=False).shape == x.shape
     t = torch.tensor([100])
     assert m.unet_eps(z, t).shape == z.shape
+
+
+def test_vae_autocast_flag_is_noop_on_cpu():
+    m0, m1 = make_models(), make_models(vae_autocast=True)
+    assert m1.vae_autocast is False  # autocast only on CUDA
+    x = make_image()
+    assert torch.allclose(m0.encode_mean(x), m1.encode_mean(x))
+    assert m1.decode(m1.encode_mean(x, scaled=True)).dtype == torch.float32

@@ -49,3 +49,31 @@ def test_resume_from_copies_and_skips(synth_dir, tmp_path):
     assert rp.main(_args(synth_dir, out, "b", "--resume_from", str(out / "a"))) == 0
     df = pd.read_csv(out / "b" / "metrics.csv")
     assert len(df) == 3 and df.image_id.is_unique
+
+
+
+def test_process_one_writes_info_sidecar(synth_dir, tmp_path, monkeypatch):
+    """v2 protectors return an info dict with loss histories; run_protect keeps it per image."""
+    import types
+
+    import torch
+
+    class Stub:
+        device = "cpu"
+
+        def protect(self, x, seed):
+            return x.clone(), {"terms": {"vis": [1.0, 2.0]}, "terms_init": {"vis": 1.0}, "terms_final": {"vis": 2.0},
+                               "zero_grad_frac_mean": 0.1, "nonfinite_draws": 0}
+
+    img_dir = tmp_path / "run" / "images"
+    img_dir.mkdir(parents=True)
+    ctx = types.SimpleNamespace(images_dir=img_dir, run_id="r", cfg_hash="h", gpu_timer=lambda: __import__("contextlib").nullcontext(
+        types.SimpleNamespace(seconds=0.0, peak_mem_mb=0.0)))
+    monkeypatch.setattr(rp, "load_tensor_v1", lambda item, size: torch.zeros(1, 3, 8, 8))
+    monkeypatch.setattr(rp, "save_png_v1", lambda x, path: None)
+    monkeypatch.setattr(rp, "v1_quality_metrics", lambda *a, **k: (_ for _ in ()).throw(RuntimeError("stop")))
+    item = next(synth_dir.iterdir())
+    with pytest.raises(RuntimeError, match="stop"):
+        rp.process_one(item, Stub(), ctx, None, {"seed": 1, "data": {"image_size": 8}})
+    f = tmp_path / "run" / "info" / f"{item.stem}.json"
+    assert json.loads(f.read_text())["terms_final"] == {"vis": 2.0}

@@ -67,8 +67,11 @@ class SDModels:
 
     def __init__(self, vae, unet, alphas_cumprod: torch.Tensor, null_cond: torch.Tensor,
                  device="cpu", unet_dtype="fp32", scaling_factor: Optional[float] = None,
-                 grad_checkpointing: bool = False):
+                 grad_checkpointing: bool = False, vae_autocast: bool = False):
         self.device = torch.device(device)
+        # runtime.vae_dtype_protect == "autocast": VAE fwd/bwd under fp16 autocast on CUDA (weights stay fp32).
+        # S04t measured the fp32 VAE at 3-6x the planned cost on a T4; sign-PGD only needs gradient signs.
+        self.vae_autocast = bool(vae_autocast) and self.device.type == "cuda"
         self.unet_mode = str(unet_dtype)
         self.unet_dtype = _dtype(unet_dtype)
         self.vae = _freeze(vae).to(self.device).float()
@@ -101,14 +104,21 @@ class SDModels:
 
     # -- VAE --------------------------------------------------------------------------------
     def encode_mean(self, x: torch.Tensor, scaled: bool = False) -> torch.Tensor:
-        z = self.vae.encode(x.float()).latent_dist.mean
+        with self._vae_ctx():
+            z = self.vae.encode(x.float()).latent_dist.mean
+        z = z.float()
         return z * self.scaling_factor if scaled else z
 
     def decode(self, z: torch.Tensor, scaled: bool = True) -> torch.Tensor:
         """Decode latents. ``scaled=True``: ``z`` is in UNet scale (divides by the scaling factor)."""
         if scaled:
             z = z / self.scaling_factor
-        return self.vae.decode(z.float()).sample
+        with self._vae_ctx():
+            out = self.vae.decode(z.float()).sample
+        return out.float()
+
+    def _vae_ctx(self):
+        return torch.autocast("cuda", dtype=torch.float16) if self.vae_autocast else nullcontext()
 
     # -- UNet -------------------------------------------------------------------------------
     def unet_eps(self, zt: torch.Tensor, t: torch.Tensor) -> torch.Tensor:
@@ -161,6 +171,7 @@ def load_sd15(cfg: dict, device="cuda") -> SDModels:
         null_cond = te(ids.input_ids)[0]  # (1, 77, 768)
     del te
     return SDModels(vae, unet, ac, null_cond, device=device, unet_dtype=unet_mode,
+                    vae_autocast=str(rt.get("vae_dtype_protect", "fp32")) == "autocast",
                     grad_checkpointing=bool(rt.get("grad_checkpointing", True)))
 
 
@@ -223,7 +234,9 @@ _CACHE: dict = {}
 
 def get_sd15(cfg: dict, device="cuda") -> SDModels:
     mid, rev = _model_cfg(cfg, "sd15")
-    key = ("sd15", mid, rev, str(device), (cfg.get("runtime") or {}).get("unet_dtype", "fp16"))
+    rt = cfg.get("runtime") or {}
+    key = ("sd15", mid, rev, str(device), rt.get("unet_dtype", "fp16"), rt.get("vae_dtype_protect", "fp32"),
+           bool(rt.get("grad_checkpointing", True)))
     if key not in _CACHE:
         _CACHE[key] = load_sd15(cfg, device)
     return _CACHE[key]

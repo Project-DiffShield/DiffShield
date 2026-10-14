@@ -1,0 +1,25 @@
+OK  accelerate: pinned 1.14.0, installed 1.14.0
+OK  diffusers: pinned 0.40.0, installed 0.40.0
+OK  huggingface-hub: pinned 1.29.0, installed 1.29.0
+DIFF insightface: pinned 0.7.3, installed not-installed
+OK  kneed: pinned 0.8.6, installed 0.8.6
+OK  kornia: pinned 0.8.3, installed 0.8.3
+OK  lpips: pinned 0.1.4, installed 0.1.4
+OK  matplotlib: pinned 3.10.0, installed 3.10.0
+OK  numpy: pinned 2.1.3, installed 2.1.3
+OK  opencv-python-headless: pinned 4.14.0.94, installed 4.14.0.94
+OK  optuna: pinned 5.0.0, installed 5.0.0
+OK  pandas: pinned 2.3.3, installed 2.3.3
+OK  pillow: pinned 12.3.0, installed 12.3.0
+OK  pyyaml: pinned 6.0.3, installed 6.0.3
+OK  safetensors: pinned 0.8.0, installed 0.8.0
+OK  scikit-image: pinned 0.25.2, installed 0.25.2
+OK  scikit-learn: pinned 1.6.1, installed 1.6.1
+OK  scipy: pinned 1.16.3, installed 1.16.3
+OK  torch: pinned 2.11.0, installed 2.11.0+cu128
+OK  torchvision: pinned 0.26.0, installed 0.26.0+cu128
+OK  tqdm: pinned 4.67.3, installed 4.67.3
+OK  transformers: pinned 5.16.1, installed 5.16.1
+torch 2.11.0+cu128 cuda 12.8 available True
+gpus: ['Tesla T4', 'Tesla T4']
+arch list: ['sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120']

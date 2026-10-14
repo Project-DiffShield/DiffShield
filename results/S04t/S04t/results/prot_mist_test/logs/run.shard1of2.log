@@ -1,0 +1,4 @@
+[18:39:38] run prot_mist_test method=mist device=cuda backend=real shard=(1, 2) git=8f535c1 dirty=False
+[18:39:38] 2 images in this shard (4 total), 0 already done
+[18:40:05] [2/2] 10457 psnr=38.66 ssim=0.9195 gpu_s=5.5
+[18:40:05] done

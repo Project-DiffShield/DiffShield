@@ -1,0 +1,13 @@
+# Cost report (measured)
+
+## Protection
+
+| run | method | n | iters | s_per_img | s_per_img_per_iter | peak_mem_mb | psnr | ssim | maxabs_u8 |
+|---|---|---|---|---|---|---|---|---|---|
+| prot_mist_test | mist | 4 | 10.000 | 5.543 | 0.554 | 3656.193 | 38.602 | 0.931 | 4 |
+| prot_photoguard_test | photoguard | 4 | 10.000 | 2.741 | 0.274 | 1791.124 | 38.292 | 0.923 | 4 |
+| prot_v2_antipure_test | v2_antipure | 4 | 10.000 | 158.931 | 15.893 | 7357.296 | 42.352 | 0.973 | 4 |
+| prot_v2_cheap_test | v2_cheap | 4 | 10.000 | 86.942 | 8.694 | 5755.372 | 43.109 | 0.981 | 4 |
+| prot_v2_final_test | v2_final | 4 | 10.000 | 145.031 | 14.503 | 6235.028 | 42.885 | 0.974 | 4 |
+| prot_v2_main_test | v2_main | 4 | 10.000 | 113.236 | 11.324 | 5913.913 | 43.706 | 0.983 | 4 |
+

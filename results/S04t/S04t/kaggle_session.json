@@ -1,0 +1,86 @@
+{
+  "job_id": "S04t",
+  "run_id": "S04t",
+  "session_seconds": 1176.2187304496765,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 5.0
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.4
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 12.7
+    },
+    "protect_prot_v2_cheap_test": {
+      "rc": 0,
+      "seconds": 195.0
+    },
+    "merge_prot_v2_cheap_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_main_test": {
+      "rc": 0,
+      "seconds": 240.0
+    },
+    "merge_prot_v2_main_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_antipure_test": {
+      "rc": 0,
+      "seconds": 350.0
+    },
+    "merge_prot_v2_antipure_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_final_test": {
+      "rc": 0,
+      "seconds": 305.0
+    },
+    "merge_prot_v2_final_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_photoguard_test": {
+      "rc": 0,
+      "seconds": 25.0
+    },
+    "merge_prot_photoguard_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_mist_test": {
+      "rc": 0,
+      "seconds": 35.0
+    },
+    "merge_prot_mist_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "smoke_report": {
+      "rc": 0,
+      "seconds": 0.6
+    }
+  },
+  "params": {
+    "n_images": 4,
+    "iters": 10
+  },
+  "ok": true,
+  "failed_steps": []
+}
