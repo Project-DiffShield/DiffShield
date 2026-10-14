@@ -100,7 +100,8 @@ def _start_run(cfg, run_id, out: Path, argv, shard):
     """Use A1's start_run/finish_run if present, else write a minimal provenance set."""
     try:  # pragma: no cover - depends on A1
         from src.utils.runlog import start_run
-        return start_run(cfg, run_id, str(out.parent), "scripts/evaluate.py", list(argv), int(cfg.get("seed", 2026)), shard)
+        # start_run writes into output_root/<name>, so pass the output folder's own name
+        return start_run(cfg, out.name, str(out.parent), "scripts/evaluate.py", list(argv), int(cfg.get("seed", 2026)), shard)
     except Exception:
         out.mkdir(parents=True, exist_ok=True)
         if not (out / "config.json").exists():
