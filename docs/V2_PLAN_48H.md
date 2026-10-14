@@ -89,54 +89,67 @@ Edit jobs score in-job (ArcFace via insightface, CLIP-I, edit LPIPS vs shared E0
 
 Bundles: B0 (Phase 0), B1 (integrated, T+8), B2 (smoke fixes, T+9.3), B3 (tuned `config/parts/final.yaml`, T+12.7).
 
-## 5. Kaggle job matrix (each account 2 slots s1/s2, T4 x2; wall ≈ GPU-h/2 + 0.3 h)
+## 5. Kaggle session matrix (5 accounts, chained sessions)
 
-Cross-account inputs: Kaggle datasets `diffshield-code` (bundles) and `diffshield-e0` (clean edits), owned by account 1 with accounts 2–6 as collaborators. All jobs checkpoint every 5 protected images / 50 edits, resume via `--resume_from`, write `gpu_time.json`.
+**Clock.** T+0 = 16:30 day 1 (2026-10-14); deadline T+48 = 16:30 day 3. Acct1 and Acct2 (coordinating user) launch any hour. Acct3–5 launch only 09:00–23:00, but a committed run ("Save Version → Run All") continues unattended up to 12 h. All sessions GPU T4 x2.
 
-| Job | Acct/slot | T+h | Experiment | Inputs | GPU-h |
-|---|---|---|---|---|---|
-| J00 | 1/s2 CPU | 1→1.3 | env probe (pip freeze, model hashes) | — | 0 |
-| J01 | 1/s1 | 4→4.6 | Phase 0 v1 reproduction, 70 imgs (JPEG q75 inputs) | B0, CelebAMask-HQ | 0.5 |
-| J01b | 2/s1 | 5→5.6 | same, second person | same | 0.5 |
-| J02 | 2/s2 CPU | 5→6 | splits (test100, messy20, train20, val20, AE pool 120, excl. 4 calib), ArcFace dedup, source embeddings, inpaint masks | CelebAMask-HQ, B0 | 0 |
-| J03a | 1/s1 | 8→8.5 | protection smoke, all methods, 5 imgs, 5 iters | B1 | 0.3 |
-| J03b | 1/s2 | 8→8.6 | edit/purifier smoke, 5 imgs, 1 seed, all editors/purifiers, GrIDPure attempt | B1 | 0.4 |
-| J10a/b | 1/s1+s2 | 9.5→12.2 | E0 clean edits (H + SDXL + P + subsets + messy), 2 shards → publish `diffshield-e0` | B2 | 9.4 |
-| J11 | 2/s1 | 9.5→11.7 | protect v1, PhotoGuard, Mist (test+messy); noise (CPU) | B2 | 3.8 |
-| J12a/b | 3/s1+s2 | 9.5→11.2 | protect v2_cheap (100), v2_main (120) | B2 | 5.5 |
-| J13 | 4/s1 | 9.5→13.0 | protect v2_antipure, abl_no_pur | B2 | 6.3 |
-| J14 | 4/s2 | 9.5→14.2 | protect abl_vis_only, abl_den_only, abl_no_sem | B2 | 8.7 |
-| J15 | 5/s1 | 9.5→12.2 | Phase 6 Optuna on val → `config/parts/final.yaml` (B3) | B2 | 4.7 |
-| J16 | 5/s2 | 9.5→11.0 | Phase 5 single-term antipure ablation on val | B2 | 2.3 |
-| J20a/b | 2/s1+s2 | 12.5→15.2 | E3 v1 edits (H + SDXL + P + subsets + messy) | J11, e0 | 9.4 |
-| J23 | 3/s1 | 12.5→15.6 | E4 v2_cheap edits H + P | J12, e0 | 5.6 |
-| J24 | 3/s2 | 12.5→16.3 | E5 v2_main edits H + P + FaceID subset + messy | J12, e0 | 7.0 |
-| J30a/b | 5/s1+s2 | 12.8→14.7 | protect v2_final test+messy | B3 | 6.3 |
-| J31a | 6/s1 | 12.8→16.3 | E9 ε=2 protect + edit | B3, e0 | 6.3 |
-| J31b | 6/s2 | 12.8→16.3 | E9 ε=6 | B3, e0 | 6.3 |
-| J25 | 4/s1 | 13.1→15.2 | E6 v2_antipure edits P + FaceID none | J13, e0 | 3.6 |
-| J26a | 4/s2 | 14.3→16.7 | E7 edits abl_vis_only, abl_den_only | J14, e0 | 4.2 |
-| J40a/b | 5/s1+s2 | 14.8→17.5 | v2_final edits H + SDXL + P + subsets + messy | J30, e0 | 9.4 |
-| J21 | 2/s1 | 15.3→18.0 | E1 noise-control edits H + messy | J11, e0 | 4.7 |
-| J22 | 2/s2 | 15.3→19.9 | E2 PhotoGuard + Mist edits | J11, e0 | 8.5 |
-| J26b | 4/s1 | 15.3→17.7 | E7 edits abl_no_pur, abl_no_sem | J13+J14, e0 | 4.2 |
-| J31c | 6/s1 | 16.4→19.9 | E9 ε=8 | B3, e0 | 6.3 |
-| J42 | 5/s1 | 17.6→20.9 | E8: protect 120 pool imgs (v2_final K=2), train AE, apply to clean/v1/v2_final, edit | J30, e0 | 5.9 |
-| Buffer | 6/s2, 3/*, 1/* | 16→28 | re-runs / fallback | | ≤30 |
+**Every session:** `kaggle/job_runner.ipynb` takes `JOBS=[...]` and runs them sequentially; work sharded across the 2 GPUs; checkpoint every 5 protected images / 50 edits; `--resume_from`; `gpu_time.json` per job. **Wall guard:** skip a job whose estimate would push the session past 11 h (goes to buffer).
 
-Totals ≈ 130 GPU-h ≈ 73 of 180 session-h (41%). Per account ≈ 7 / 15 / 9 / 13 / 15 / 11 session-h. Last planned GPU job ends ≈ T+21; every job < 5 h wall.
+**Dependencies.** Edit LPIPS is NOT computed in-run: all edits saved as JPEG q90; edit LPIPS vs E0 clean edits computed later (rule 6). Each session needs only the code bundle, `ipythonx/celebamaskhq`, and its own account's earlier outputs. Bundles: B0 Phase 0 (~20:00 d1), B1 full code (00:30 d2), B2 smoke fixes (01:50 d2), B3 = B2 + `config/parts/final.yaml` (~09:40 d2). S15/S16 on acct1 read the tuned config and protected set directly from S06 output (`--config_from_run`).
 
-## 6. Timeline
+| Session | Acct/slot | Launch → end (local) | T+ | Jobs in order | Inputs | GPU-h |
+|---|---|---|---|---|---|---|
+| S01 | 1/s1 | d1 20:30 → 21:05 | 4.0→4.6 | Phase 0 v1 reproduction, 70 images | B0 | 0.5 |
+| S02 | 3/s1 | d1 21:30 → 22:05 | 5.0→5.6 | Phase 0 reproduction by second person | B0 | 0.5 |
+| S03 | 2 CPU | d1 21:00 or d2 00:30 | 4.5/8.0 | splits (test100, messy20, train20, val20, AE pool 120; excl. v1 calib), ArcFace dedup, source embeddings, inpaint masks | B0 + A4 | 0 |
+| S04 | 1/s1 | d2 00:30 → 01:00 | 8.0→8.5 | protection smoke, all methods, 5 imgs, 5 iters | B1 | 0.3 |
+| S05 | 1/s2 | d2 00:30 → 01:10 | 8.0→8.7 | edit/purifier smoke, 5 imgs, 1 seed, all editors/purifiers, GrIDPure attempt | B1 | 0.4 |
+| S06 | 1/s1 | d2 02:00 → ~09:20 | 9.5→16.8 | Optuna on val (cap 3 h) → protect v2_final test+messy → v2_final Tier H edits (no SDXL) | B2 | 13.25 |
+| S07 | 1/s2 | d2 02:00 → ~08:15 | 9.5→15.75 | Phase 5 antipure single-term ablation on val → E0 all clean edits | B2 | 11.7 |
+| S08 | 2/s1 | d2 02:00 → ~07:25 | 9.5→14.9 | protect v1 test+messy → E3 edits (H + SDXL + P + subsets + messy) | B2 | 10.2 |
+| S09 | 2/s2 | d2 02:00 → ~07:50 | 9.5→15.3 | protect v2_main → E5 edits (H + P + FaceID subset + messy) | B2 | 11.0 |
+| S10 | 3/s1 | d2 09:00 → ~12:55 | 16.5→20.4 | protect v2_cheap → E4 edits H + P | B2 | 7.1 |
+| S11 | 3/s2 | d2 09:00 → ~14:10 | 16.5→21.7 | protect abl_vis_only + abl_den_only → E7a edits | B2 | 9.7 |
+| S12 | 4/s2 | d2 09:00 → ~13:10 | 16.5→20.7 | protect v2_antipure → E6 edits | B2 | 7.8 |
+| S13 | 5/s1 | d2 09:00 → ~15:05 | 16.5→22.6 | protect PhotoGuard + Mist → E2 edits | B2 | 11.5 |
+| S14 | 5/s2 | d2 09:00 → ~16:25 | 16.5→23.9 | protect abl_no_sem + abl_no_pur → E7b edits → noise controls (CPU) → E1 edits | B2 | 14.2 |
+| S15 | 1/s1 | d2 09:30 → ~13:10 | 17.0→20.7 | E8: protect AE pool with v2_final (K=2) + re-protect v1 on test → train AE (1 h) → apply → edits | B2 + S06 out | 6.7 |
+| S16 | 1/s2 | d2 09:30 → ~13:25 | 17.0→20.9 | v2_final remainder: SDXL + Tier P + FaceID-P + IP2P-P + messy | B2 + S06 out | 7.15 |
+| S17 | 4/s1 | d2 09:45 → ~16:20 | 17.25→23.8 | E9 ε=2 then ε=6 (protect + edits) | B3 | 12.6 |
+| S18 | 2/s1 | d2 09:45 → ~13:15 | 17.25→20.75 | E9 ε=8 | B3 | 6.3 |
+| Buffer | 2/s2 from d2 08:00; 3/s1 from 13:00; 4/s2 from 13:15; 1/* from 13:30 | until d3 ~10:00 | ≤41.5 | re-runs, wall-guard leftovers, late GrIDPure, J50 LPIPS fallback | | ≤20 |
 
-| T+h | Coding | Kaggle | Analysis / report |
-|---|---|---|---|
-| 0–1 | freeze interfaces; spawn A2–A4; A1 continues Phase 0 | J00 | |
-| 1–6 | A1 finishes Phase 0 → B0; A2–A4 build with fakes/tiny models | J01, J01b, J02 | PHASE_0 checkpoint |
-| 6–8 | integration, CPU tests → B1 | | A5 starts tables/figures |
-| 8–9.3 | smoke fixes → B2 | J03a/b | measured costs → fallback cuts if needed |
-| 9.5–12.7 | on-call; tuned config → B3 | wave 2: J10–J16 | PHASE_1 from E0 |
-| 12.5–21 | on-call | waves 3–4: J20–J42 | PHASE_2..6 checkpoints as CSVs land |
-| 18 | human-study materials ready | | students run study T+18→T+40 |
-| 21–28 | re-runs | buffer | PHASE_7 tables/figures, failure-case gallery |
-| 28–42 | demo (T+30–34); `git tag v2.0-final` (T+34) | | report: threat model, method, results w/ CIs, failures, limitations |
-| 42–48 | README reproduction, package splits/configs | | final review |
+Totals ≈ 131 GPU-h ≈ 71 session-h of 150 (47%). Per account: acct1 ≈22.7, acct2 ≈14.7, acct3 ≈9.6, acct4 ≈10.8, acct5 ≈13.5 session-h. Latest planned GPU job: S14 ≈16:25 d2. Critical path: B2 (01:50) → S06 (09:20) → B3 (09:40) → S17 (16:20).
+
+Coverage: E0 S07; E1 S14; E2 S13; E3 S08; E4 S10; E5 S09; E6 S12; E7 S11+S14 (+ v2_main from S09 as "both"); E8 S15; E9 S17+S18 (ε=4 = v2_final from S06+S16); E10 human study.
+
+### Fallback rules
+1. Optuna capped at 3 h wall inside S06; use best trial so far; report trials completed.
+2. Wall guard: if S06 projects > 11 h after smoke, move its Tier H edits into S16; guard-skipped jobs re-queue in buffer.
+3. Smoke > 1.5× estimate (known by 01:10 d2): apply §2 cut order before the 02:00 launches: SDXL 1 seed → drop FaceID-P → ablation purifiers 5→3 → ε-sweep purifiers {none, diffpure0.1} → K=2 for ablations.
+4. Quota check (unverified how Kaggle charges T4 x2): after S04/S05 compare quota used vs wall time; if 1 wall-h costs 2 quota-h the plan needs ≈141/150 → apply cuts 1–5 immediately; buffer only for failures.
+5. Launch windows: acct3–5 latest launch 22:30 d2; missed 09:00 launch moves to next buffer slot. Acct1–2 last re-run launch 04:00 d3. No new experiments after 23:00 d2.
+6. LPIPS pass: `scripts/compute_edit_lpips.py` locally on CPU (4 workers, ≈0.2 s/pair, ≈71k pairs, ≈4 h) as outputs are downloaded; fallback Kaggle job J50 (~0.5 GPU-h). Report states both images were JPEG q90 before LPIPS (same for every method).
+7. Data moves between accounts only via the user's local download; v1 protected images for E8 regenerated inside S15 with the same per-image seeds.
+
+## 6. Timeline (local clock; T+0 = 16:30 d1)
+
+| Local time | T+ | Coding | Kaggle | Analysis / humans |
+|---|---|---|---|---|
+| d1 16:30–20:00 | 0–3.5 | A1 Phase 0; A2/A3/A4; A4 make_splits first | J00 env probe (acct1 CPU) | coordinator writes `kaggle/jobs.yaml` |
+| d1 20:00–22:30 | 3.5–6 | B0 (~20:00) | S01 20:30; S03 21:00 if ready; S02 (acct3) 21:30 | PHASE_0 draft from S01 |
+| d1 22:30–d2 00:30 | 6–8 | integration, CPU tests → B1 | (S03 at 00:30 if not earlier) | PHASE_0 final (budget confirmed?) |
+| d2 00:30–01:50 | 8–9.3 | smoke fixes → B2 | S04, S05 (acct1) | measured costs → fallback rules 3–4 |
+| **d2 02:00** | 9.5 | on call | **launch S06, S07 (acct1), S08, S09 (acct2)** | |
+| d2 02:00–09:00 | 9.5–16.5 | hotfixes → B2.x | running | A5 tables from S01–S05 |
+| d2 07:25–08:15 | 15–15.75 | | S07–S09 finish; download | E3/E5 identity numbers; PSR thresholds from E0 |
+| **d2 09:00** | 16.5 | | **acct3–5 launch S10–S14** | |
+| d2 09:20–09:45 | 16.8–17.25 | commit final.yaml → B3 | S06 ends → S15, S16 (acct1) 09:30; S17 (acct4), S18 (acct2) 09:45 | PHASE_6 checkpoint |
+| d2 09:45–12:00 | 17.25–19.5 | A5 human-study materials | | study forms ready by 12:00; sessions d2 12:00–22:00 and d3 09:00–12:00 |
+| d2 12:55–16:25 | 20.4–23.9 | | sessions finish (S14 last ~16:25) | rolling download → LPIPS pass → tables; PHASE_1/2 ~14:00; PHASE_3/4/5 ~16:00 |
+| d2 16:30–23:00 | 24–30.5 | fixes; demo.py | buffer re-runs (acct3–5 by 22:30) | PHASE_7 tables/figures, failure gallery |
+| d2 23:00–d3 09:00 | 30.5–40.5 | `git tag v2.0-final` | acct1/2 re-runs only (by 04:00) | report drafting |
+| d3 09:00–13:00 | 40.5–44.5 | README reproduction, package splits/configs | done | human-study analysis ~13:00; final figures |
+| d3 13:00–16:30 | 44.5–48 | | | final review, PHASE_8, demo check |
+
+**User actions:** d1 ~17:30 J00 · 20:00 upload B0 · 20:30 S01 · 21:30 teammate S02 · d2 00:30 upload B1 + S04/S05 (+S03) · 01:50 upload B2 · 02:00 launch S06–S09 · 07:30–08:30 download S07–S09 · 09:00 teammates S10–S14 · 09:20 download S06 best params · 09:40 upload B3 · 09:30/09:45 S15/S16, S18, S17 · afternoon downloads.
