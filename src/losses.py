@@ -3,6 +3,7 @@ import torch.nn as nn
 from diffusers import AutoencoderKL
 from transformers import CLIPVisionModelWithProjection, CLIPTextModelWithProjection, CLIPProcessor, CLIPTokenizer
 import kornia.filters as KF
+import torch.nn.functional as F
 
 class DiffShieldLoss(nn.Module):
     def __init__(self, device='cpu'):
@@ -33,10 +34,8 @@ class DiffShieldLoss(nn.Module):
         self.clip_processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
         self.clip_tokenizer = CLIPTokenizer.from_pretrained("openai/clip-vit-base-patch32")
         
-        # Canny edge detector is natively differentiable via Kornia
-        # We use the gradient magnitude (first return value), NOT the thresholded binary edges,
-        # because binary thresholding is non-differentiable and blocks gradient flow.
-        
+        # L_str is a differentiable windowed-SSIM term (see compute_structure_loss).
+
         self.mse_loss = nn.MSELoss()
         self.cosine_sim = nn.CosineSimilarity(dim=1)
 
@@ -96,48 +95,61 @@ class DiffShieldLoss(nn.Module):
         cos_sim = self.cosine_sim(image_embeddings, target_concept_embedding)
         return (1 - cos_sim).mean()
 
+    def _gaussian_window(self, window_size=11, sigma=1.5, channels=3, device="cpu", dtype=torch.float32):
+        coords = torch.arange(window_size, dtype=dtype, device=device) - window_size // 2
+        g = torch.exp(-(coords ** 2) / (2 * sigma ** 2))
+        g = (g / g.sum()).unsqueeze(1)
+        window_2d = g @ g.t()
+        window = window_2d.expand(channels, 1, window_size, window_size).contiguous()
+        return window
+
     def compute_structure_loss(self, clean_image, poisoned_image):
         """
-        L_str = ||Canny_mag(X_aug) - Canny_mag(X)||^2_2
-        
-        Uses the gradient MAGNITUDE from Kornia's Canny detector (not the binary
-        thresholded edges) because:
-        - Gradient magnitude is fully differentiable (smooth function of pixel values)
-        - Binary thresholding involves non-differentiable operations (NMS + hysteresis)
-        - The magnitude captures edge strength continuously, giving useful gradients
-        
-        Maximizing this MSE injects fake micro-edges that disrupt ControlNet's
-        geometric constraints.
+        L_str = 1 - SSIM_windowed(X, X_aug)   (11x11 Gaussian window, sigma=1.5)
+
+        FIDELITY-PRESERVATION term (unlike L_vis / L_sem, which are disruption
+        terms). We want PGD to MINIMIZE this quantity, i.e. keep windowed SSIM
+        high, so it must be SUBTRACTED in forward(), not added.
         """
-        # Kornia Canny expects [0, 1] range
         clean_01 = (clean_image + 1.0) / 2.0
         poison_01 = (poisoned_image + 1.0) / 2.0
-        
-        # canny() returns (magnitude, edges) — we use magnitude for differentiability
-        clean_magnitude, _ = KF.canny(clean_01)
-        poison_magnitude, _ = KF.canny(poison_01)
-        
-        return self.mse_loss(poison_magnitude, clean_magnitude)
+
+        C = clean_01.shape[1]
+        window = self._gaussian_window(11, 1.5, C, clean_01.device, clean_01.dtype)
+        pad = 11 // 2
+
+        mu_x = F.conv2d(clean_01, window, padding=pad, groups=C)
+        mu_y = F.conv2d(poison_01, window, padding=pad, groups=C)
+        mu_x_sq, mu_y_sq, mu_xy = mu_x ** 2, mu_y ** 2, mu_x * mu_y
+
+        sigma_x_sq = F.conv2d(clean_01 * clean_01, window, padding=pad, groups=C) - mu_x_sq
+        sigma_y_sq = F.conv2d(poison_01 * poison_01, window, padding=pad, groups=C) - mu_y_sq
+        sigma_xy = F.conv2d(clean_01 * poison_01, window, padding=pad, groups=C) - mu_xy
+
+        C1, C2 = 0.01 ** 2, 0.03 ** 2
+        ssim_map = ((2 * mu_xy + C1) * (2 * sigma_xy + C2)) /                    ((mu_x_sq + mu_y_sq + C1) * (sigma_x_sq + sigma_y_sq + C2))
+
+        return 1.0 - ssim_map.mean()
 
     def forward(self, clean_image, poisoned_image, target_concept_embedding, alpha=1.0, beta=1.0, gamma=1.0):
         """
-        Tri-Modal Loss: max_δ (α·L_vis - β·L_sem + γ·L_str)
-        
+        Tri-Modal Loss: max_delta (alpha*L_vis - beta*L_sem - gamma*L_str)
+
         Sign convention explanation:
-        - L_vis (MSE in VAE latent): We MAXIMIZE this → destroys spatial blueprint
-        - L_sem (1 - cos_sim):       We MINIMIZE this → pushes cos_sim toward 1.0
-                                      (image embedding → "a potted plant")
-        - L_str (MSE of edge magnitudes): We MAXIMIZE this → injects fake edges
-        
+        - L_vis (MSE in VAE latent):  We MAXIMIZE this -> destroys spatial blueprint
+        - L_sem (1 - cos_sim):        We MINIMIZE this -> pushes cos_sim toward 1.0
+                                       (image embedding -> "a potted plant")
+        - L_str (1 - windowed SSIM):  We MINIMIZE this -> PRESERVES structural fidelity
+
         Since PGD performs gradient ASCENT on total_loss:
-        - +α·L_vis: ascending maximizes latent divergence ✓
-        - -β·L_sem: ascending minimizes (1-cos), i.e. maximizes cos_sim ✓
-        - +γ·L_str: ascending maximizes edge divergence ✓
+        - +alpha*L_vis: ascending maximizes latent divergence (attack)
+        - -beta*L_sem:  ascending minimizes (1-cos), i.e. maximizes cos_sim (attack)
+        - -gamma*L_str: ascending minimizes (1-SSIM), i.e. keeps SSIM high (preservation)
         """
         l_vis = self.compute_visual_loss(clean_image, poisoned_image)
         l_sem = self.compute_semantic_loss(poisoned_image, target_concept_embedding)
         l_str = self.compute_structure_loss(clean_image, poisoned_image)
-        
+
         # Objective to MAXIMIZE via PGD gradient ascent
-        total_loss = (alpha * l_vis) - (beta * l_sem) + (gamma * l_str)
+        total_loss = (alpha * l_vis) - (beta * l_sem) - (gamma * l_str)
         return total_loss, l_vis, l_sem, l_str
