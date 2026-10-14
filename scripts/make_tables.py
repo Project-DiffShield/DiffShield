@@ -3,7 +3,7 @@
 
 Combined mode (after scripts/ingest_results.py):
   python scripts/make_tables.py --combined results/combined --out results/tables [--table all|NAME,NAME]
-  tables: coverage e0 e1 e2 e3 e4 e5 e6 e7 e7_editors e7_paired e8 e9 e10 headline headline_full per_editor per_prompt
+  tables: coverage e0 e1 e2 e3 e4 e5 e6 e7 e7_editors e7_paired e8 e9 e10 headline headline_full headline_sim edit_lpips clip_i per_editor per_prompt
           messy invisibility_methods paired_vs_v1 paired_vs_noise claims gates     (plus numbers.json)
   --gate_param key=value ...   change a gate operationalisation (see src.eval.analysis.GateParams)
   --n_boot N                   bootstrap resamples (default 10000)
@@ -204,6 +204,25 @@ def t_per_editor(ctx):
                          "(V2_PLAN R10). SDXL ran for clean, v1, PhotoGuard and v2_final only.")
 
 
+def t_headline_sim(ctx):
+    return _matrix(ctx, "headline_sim", "Mean ArcFace similarity of the edit to the source (lower = identity removed), SD1.5 s0.55 (test split)",
+                   HEAD_METHODS, HEAD_PURS, lambda m, p: Spec(m, p), metric="sim",
+                   extra="ArcFace cosine similarity: 1 = same face embedding. Mean over images of the per-image mean over seeds and prompts; edits without a detected face are excluded from the mean (they count as successes in PSR).")
+
+
+def t_edit_lpips(ctx):
+    return _matrix(ctx, "edit_lpips", "Edit LPIPS (clean-image edit vs protected-image edit, both JPEG q90), no purifier",
+                   [m for m in HEAD_METHODS if m != "clean"], [c for c in EDITOR_CELLS], lambda m, c: Spec(m, "none", c[1], c[2]),
+                   metric="edit_lpips", col_label=lambda c: c[0],
+                   extra="Higher = the edit changed more because of the protection. Computed after the runs on CPU (scripts/compute_edit_lpips.py); n/a means not computed yet.")
+
+
+def t_clip_i(ctx):
+    return _matrix(ctx, "clip_i", "CLIP-I (ViT-L/14) similarity between the source and the edit, no purifier", HEAD_METHODS,
+                   [c for c in EDITOR_CELLS], lambda m, c: Spec(m, "none", c[1], c[2]), metric="clip_i", col_label=lambda c: c[0],
+                   extra="Secondary metric (the CLIP model differs from the one in L_sem on purpose).")
+
+
 def t_per_prompt(ctx):
     ctx.reset()
     ed = ctx.edits
@@ -261,18 +280,19 @@ def _paired_rows(ctx, comps, cells=None, purs=("none",)):
                 sa, sb = Spec(a, pur, ed, st), Spec(b, pur, ed, st)
                 ca, cb = ctx.cell(sa), ctx.cell(sb)
                 prs, prm = ctx.an.paired(sa, sb, "psr"), ctx.an.paired(sa, sb, "sim")
-                if ca is None or cb is None or prs is None:
-                    rows.append({"comparison (A vs B)": f"{a} vs {b}", "purifier": pur, "editor": name, "pairs": 0,
-                                 "PSR A": NOT_RUN, "PSR B": NOT_RUN, "PSR A-B [95% CI]": NOT_RUN, "p (PSR)": "", "sim A-B [95% CI]": NOT_RUN,
-                                 "p (sim)": "", "images A>B": ""})
+                base = {"comparison (A vs B)": f"{a} vs {b}", "purifier": pur, "editor": name}
+                if ca is None or cb is None or (prs is None and prm is None):
+                    rows.append({**base, "pairs": 0, "PSR A": NOT_RUN, "PSR B": NOT_RUN, "PSR A-B [95% CI]": NOT_RUN, "p (PSR)": "",
+                                 "sim A-B [95% CI]": NOT_RUN, "p (sim)": "", "images A>B": ""})
                     continue
-                rows.append({"comparison (A vs B)": f"{a} vs {b}", "purifier": pur, "editor": name, "pairs": prs["n_pairs"],
-                             "PSR A": fmt_num(prs["mean_a"]), "PSR B": fmt_num(prs["mean_b"]),
-                             "PSR A-B [95% CI]": fmt_ci(prs["mean_diff"], prs["ci_lo"], prs["ci_hi"], 2, True),
-                             "p (PSR)": fmt_p(prs["p_wilcoxon"]),
-                             "sim A-B [95% CI]": fmt_ci(prm["mean_diff"], prm["ci_lo"], prm["ci_hi"], 3, True) if prm else "n/a",
-                             "p (sim)": fmt_p(prm["p_wilcoxon"]) if prm else "n/a",
-                             "images A>B": f"{prs['share_a_greater']:.2f}"})
+                na = "n/a"                                   # cells exist but PSR needs the E0 thresholds
+                rows.append({**base, "pairs": (prs or prm)["n_pairs"],
+                             "PSR A": fmt_num(prs["mean_a"]) if prs else na, "PSR B": fmt_num(prs["mean_b"]) if prs else na,
+                             "PSR A-B [95% CI]": fmt_ci(prs["mean_diff"], prs["ci_lo"], prs["ci_hi"], 2, True) if prs else na,
+                             "p (PSR)": fmt_p(prs["p_wilcoxon"]) if prs else na,
+                             "sim A-B [95% CI]": fmt_ci(prm["mean_diff"], prm["ci_lo"], prm["ci_hi"], 3, True) if prm else na,
+                             "p (sim)": fmt_p(prm["p_wilcoxon"]) if prm else na,
+                             "images A>B": f"{prs['share_a_greater']:.2f}" if prs else na})
     return pd.DataFrame(rows)
 
 
@@ -563,7 +583,8 @@ def t_e10(ctx):
 
 TABLES = {"coverage": t_coverage, "e0": t_e0, "e1": t_e1, "e2": t_e2, "e3": t_e3, "e4": t_e4, "e5": t_e5, "e6": t_e6,
           "e7": t_e7, "e7_editors": t_e7_editors, "e7_paired": t_e7_paired, "e8": t_e8, "e9": t_e9, "e10": t_e10,
-          "headline": t_headline, "headline_full": t_headline_full, "per_editor": t_per_editor, "per_prompt": t_per_prompt,
+          "headline": t_headline, "headline_full": t_headline_full, "headline_sim": t_headline_sim, "edit_lpips": t_edit_lpips,
+          "clip_i": t_clip_i, "per_editor": t_per_editor, "per_prompt": t_per_prompt,
           "messy": t_messy, "invisibility_methods": t_invisibility_methods, "paired_vs_v1": t_paired_vs_v1,
           "paired_vs_noise": t_paired_vs_noise, "claims": lambda c: claims(c)[0], "gates": t_gates}
 

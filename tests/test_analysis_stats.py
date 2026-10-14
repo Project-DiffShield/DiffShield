@@ -214,3 +214,13 @@ def test_dedup_prefers_lpips_then_latest_and_counts_conflicts():
     assert len(out) == 2 and st["duplicates_dropped"] == 1 and st["conflicts"] == 1
     kept = out[out["image_id"] == "1"].iloc[0]
     assert kept["edit_lpips"] == "0.4"          # the row with LPIPS wins even though it is older
+
+
+def test_invisibility_infers_blank_protect_split_from_edits_and_keeps_n():
+    e = pd.DataFrame(_edit_rows("v1", [0.1, 0.4, 0.6]))
+    et = A.typed_edits(e)
+    p = pd.DataFrame([{"run_id": "r", "method": "v1", "image_id": f"im{i}", "split": "", "png_psnr": 41.0 + i, "png_ssim": 0.97,
+                       "png_lpips": 0.2, "eps_255": 4} for i in range(3)])
+    inv = A.invisibility_by_method(A.typed_protect(p), et, n_boot=100)
+    row = inv[(inv["method"] == "v1") & (inv["split"] == "test")].iloc[0]
+    assert row["n_images"] == 3 and row["psnr_mean"] == pytest.approx(42.0) and row["n_below_psnr"] == 0 and row["source"] == "protect.csv"

@@ -544,7 +544,12 @@ def invisibility_by_method(protect: Optional[pd.DataFrame], edits: Optional[pd.D
     rows = []
     seen = set()
     if protect is not None and len(protect):
-        p = protect[protect["method"].astype(str) != ""]
+        p = protect[protect["method"].astype(str) != ""].copy()
+        if edits is not None and len(edits) and (p["split"].astype(str) == "").any():
+            # run_protect leaves split empty unless --split was given: infer it from the edit rows (image ids are unique per split)
+            sp = edits.groupby("image_id")["split"].agg(lambda x: x.iloc[0] if x.nunique() == 1 else "")
+            blank = p["split"].astype(str) == ""
+            p.loc[blank, "split"] = p.loc[blank, "image_id"].map(sp).fillna("")
         for (m, sp), g in p.groupby(["method", "split"], sort=True):
             runs = g.groupby("run_id").size().sort_values(ascending=False)
             run = runs.index[0]

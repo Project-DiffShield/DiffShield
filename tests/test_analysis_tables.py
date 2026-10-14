@@ -37,7 +37,7 @@ def built(tmp_path_factory):
 
 
 EXPECTED = ["coverage", "e0", "e1", "e2", "e3", "e4", "e5", "e6", "e7", "e7_editors", "e7_paired", "e8", "e9", "e10", "headline",
-            "headline_full", "per_editor", "per_prompt", "messy", "invisibility_methods", "paired_vs_v1", "paired_vs_noise",
+            "headline_full", "headline_sim", "edit_lpips", "clip_i", "per_editor", "per_prompt", "messy", "invisibility_methods", "paired_vs_v1", "paired_vs_noise",
             "claims", "gates"]
 
 
