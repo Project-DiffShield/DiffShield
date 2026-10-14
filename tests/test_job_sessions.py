@@ -68,7 +68,7 @@ def test_mini_session_end_to_end_with_fake_backends(tmp_path, repo_root, monkeyp
 
     real = yaml.safe_load((repo_root / "kaggle" / "jobs.yaml").read_text())
     mini = {"macros": real["macros"], "jobs": {"MINI": {
-        "params": {"smoke": True},
+        "params": {"smoke": True, "force_smoke_splits": True},
         "smoke_params": {"n_images": 3},
         "steps": [
             {"name": "resolve_splits", "builtin": "resolve_splits"},
