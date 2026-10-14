@@ -34,3 +34,9 @@ kaggle/dist/
 _to_delete/
 *.zip
 .pytest_cache/
+# human study forms embed CelebA-HQ images and the answer key: never commit
+results/human_study/for_raters/
+results/human_study/private/
+results/human_study/answers/
+results/combined/arcface/
+results/tables_synthetic*/
