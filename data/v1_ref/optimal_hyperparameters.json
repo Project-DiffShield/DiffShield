@@ -1,0 +1,9 @@
+{
+    "best_trial_number": 23,
+    "best_objective_value": 0.12650258839130402,
+    "optimal_weights": {
+        "alpha": 0.2699475469647097,
+        "beta": 0.9023875567667267,
+        "gamma": 60.52658429696642
+    }
+}

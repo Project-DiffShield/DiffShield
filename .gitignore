@@ -21,3 +21,16 @@ __pycache__/
 .idea/
 *.swp
 .DS_Store
+
+# --- DiffShield v2 ---
+# Identifiable CelebA-HQ derivatives and bulk outputs never go to git. Only CSV/JSON/txt results are committed.
+results/**/images/
+results/**/edits/
+results/cache/
+results/*/*.zip
+data/images/
+data/v1/
+kaggle/dist/
+_to_delete/
+*.zip
+.pytest_cache/

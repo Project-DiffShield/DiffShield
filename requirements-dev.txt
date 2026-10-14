@@ -1,0 +1,18 @@
+# Local CPU dev environment (Windows, Python 3.13). Lower bounds only.
+# Setup: py -3.13 -m venv .venv && .venv\Scripts\python -m pip install -r requirements-dev.txt
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.6
+torchvision>=0.21
+kornia>=0.7.0
+diffusers>=0.28
+transformers>=4.40
+numpy>=1.26
+pillow>=10
+pyyaml>=6
+scikit-image>=0.22
+scikit-learn>=1.4
+kneed>=0.8
+pandas>=2.1
+lpips==0.1.4
+pytest>=8
+tqdm
