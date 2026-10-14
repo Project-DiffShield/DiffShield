@@ -1,11 +1,21 @@
-torch>=2.0.0
-torchvision
-torchaudio
-diffusers>=0.25.0
-transformers
-kornia>=0.7.0
+# DiffShield v2 requirements.
+# STATUS: PROVISIONAL. Packages provided by the Kaggle image are listed without pins; the exact `==` pins must be
+# filled from the J00 environment probe (pip_freeze.txt) and then checked with scripts/check_env.py.
+# Nothing below is an invented pin: lower bounds are the hard requirements of the code.
+#
+# --- provided by the Kaggle image (verified, NOT reinstalled by the job runner) ---
+# torch, torchvision, numpy, pillow, pandas, pyyaml, scikit-learn, scikit-image
+#
+# === INSTALL (job runner pip-installs everything below this line) ===
+diffusers>=0.28
+transformers>=4.40
 accelerate
-opencv-python
-matplotlib
-numpy
-pillow
+huggingface_hub
+kornia>=0.7.0
+lpips==0.1.4
+kneed>=0.8
+scikit-image
+scikit-learn
+pandas
+pyyaml
+tqdm

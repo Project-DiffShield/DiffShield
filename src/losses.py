@@ -47,7 +47,10 @@ class DiffShieldLoss(nn.Module):
             param.requires_grad = False
 
         if clip_tokenizer is None:
-            self.clip_processor = CLIPProcessor.from_pretrained(clip_model_id)
+            try:  # unused by the loss; tolerate processor-loading differences across transformers versions
+                self.clip_processor = CLIPProcessor.from_pretrained(clip_model_id)
+            except Exception:
+                self.clip_processor = None
             clip_tokenizer = CLIPTokenizer.from_pretrained(clip_model_id)
         else:
             self.clip_processor = None
