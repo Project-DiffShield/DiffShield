@@ -1,0 +1,176 @@
+{
+ "seed": 2026,
+ "sizes": {
+  "test": 100,
+  "messy": 20,
+  "train": 20,
+  "val": 20,
+  "ae_pool": 120
+ },
+ "identity": {
+  "mode": "arcface",
+  "same_person_cosine_threshold": 0.5,
+  "threshold_verified": false,
+  "n_noface_forced": 40
+ },
+ "notes": [],
+ "v1_calib_identity_clashes_among_themselves": 0,
+ "v1_eval70_identity_clashes": 0,
+ "messy": {
+  "quota": {
+   "blur": 5,
+   "lighting": 5,
+   "occlusion": 4,
+   "pose": 6
+  },
+  "records": [
+   {
+    "file": "4334.jpg",
+    "stratum": "blur"
+   },
+   {
+    "file": "12996.jpg",
+    "stratum": "blur"
+   },
+   {
+    "file": "19617.jpg",
+    "stratum": "blur"
+   },
+   {
+    "file": "22599.jpg",
+    "stratum": "blur"
+   },
+   {
+    "file": "23465.jpg",
+    "stratum": "blur"
+   },
+   {
+    "file": "23397.jpg",
+    "stratum": "lighting",
+    "luma_mean": 0.6623525582107843,
+    "luma_std": 0.27067194724672433,
+    "lap_var": 0.005369940092365264
+   },
+   {
+    "file": "8790.jpg",
+    "stratum": "lighting",
+    "luma_mean": 0.6519390031403187,
+    "luma_std": 0.15362471567973976,
+    "lap_var": 0.004397294938632763
+   },
+   {
+    "file": "26980.jpg",
+    "stratum": "lighting",
+    "luma_mean": 0.7373958812040441,
+    "luma_std": 0.23935411387311473,
+    "lap_var": 0.004244676279921762
+   },
+   {
+    "file": "2425.jpg",
+    "stratum": "lighting",
+    "luma_mean": 0.7786113664215686,
+    "luma_std": 0.2371663354638369,
+    "lap_var": 0.006480741249359351
+   },
+   {
+    "file": "9918.jpg",
+    "stratum": "lighting",
+    "luma_mean": 0.27572380514705885,
+    "luma_std": 0.15940795979090885,
+    "lap_var": 0.005099508844865802
+   },
+   {
+    "file": "20055.jpg",
+    "stratum": "occlusion"
+   },
+   {
+    "file": "26413.jpg",
+    "stratum": "occlusion"
+   },
+   {
+    "file": "17020.jpg",
+    "stratum": "occlusion"
+   },
+   {
+    "file": "18692.jpg",
+    "stratum": "occlusion"
+   },
+   {
+    "file": "26365.jpg",
+    "stratum": "pose",
+    "yaw": 37.909714,
+    "pitch": -12.095139,
+    "roll": -8.720497
+   },
+   {
+    "file": "12744.jpg",
+    "stratum": "pose",
+    "yaw": 45.408157,
+    "pitch": 5.635231,
+    "roll": 1.6748962
+   },
+   {
+    "file": "19750.jpg",
+    "stratum": "pose",
+    "yaw": -42.805725,
+    "pitch": 5.269821,
+    "roll": -1.2263184
+   },
+   {
+    "file": "28282.jpg",
+    "stratum": "pose",
+    "yaw": -52.869446,
+    "pitch": -0.97850037,
+    "roll": 0.87387085
+   },
+   {
+    "file": "28745.jpg",
+    "stratum": "pose",
+    "yaw": -35.438313,
+    "pitch": -12.548386,
+    "roll": 4.4150085
+   },
+   {
+    "file": "27461.jpg",
+    "stratum": "pose",
+    "yaw": -39.726334,
+    "pitch": -9.401093,
+    "roll": 4.2938843
+   }
+  ],
+  "image_stats_used": true,
+  "pose_source": "pose_anno",
+  "pose_rule": "top 10% of pool by max(|yaw|,|pitch|) (rank-based; units unverified)"
+ },
+ "celebahq_attr_file": "/kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-attribute-anno.txt",
+ "n_images_total": 30000,
+ "v1_calib": [
+  "5319.jpg",
+  "1715.jpg",
+  "6385.jpg",
+  "8932.jpg"
+ ],
+ "v1_eval70_file": "/kaggle/working/DiffShield/data/splits/v1_eval70.txt",
+ "argv": [
+  "--celebahq_root",
+  "/kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ",
+  "--out_dir",
+  "/kaggle/working/S03/splits_out",
+  "--identity_mode",
+  "auto"
+ ],
+ "sha256": {
+  "test": "7dd3db3ffba1bd2e002059c14f42eef56fe0be480f10b1c610029b636fe435bb",
+  "messy": "e03bae8f4d54993966d03103f83df1893a2ee070cab02a2b024a2c97012b351c",
+  "val": "fe56b9221ae0d71e6dacb3d1f70b633c7e2c6c8d4a690acd866fa03136c4c545",
+  "train": "c2fc64e43ac3d80a44c4f5782bfe1d9fbab375d1bdffef335a75c45d2d00d636",
+  "ae_pool": "480b9842dc4e7577183185196c5def4b04626d1ad2a5eb58a775e3a80b5fabc4"
+ },
+ "counts": {
+  "test": 100,
+  "messy": 20,
+  "val": 20,
+  "train": 20,
+  "ae_pool": 120
+ }
+}

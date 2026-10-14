@@ -131,18 +131,22 @@ def build_baseline(name: str, cfg: Optional[dict], device="cpu"):
         from .photoguard import EncoderAttackProtector
         comp = load_sd_components(cfg, device, need_unet=False, dtype=p.get("dtype", "auto"))
         ti = _load_target_image(p["target_image"]) if p.get("target_image") else None
-        return EncoderAttackProtector(
+        prot = EncoderAttackProtector(
             vae_mean_encode_fn(comp["vae"]), eps_255=p["eps_255"], step_255=p["step_255"], iters=p["iters"],
             target="image" if ti is not None else p["target"], target_image=ti, step_decay=p["step_decay"],
             loss_scale=p["loss_scale"] if comp["dtype"].itemsize == 2 else 1.0)
+        prot.device = str(device)  # run_protect moves the input image to protector.device (S04 failure: cpu image, cuda VAE)
+        return prot
     if name == "mist":
         from .mist import MistProtector
         comp = load_sd_components(cfg, device, need_unet=True, dtype=p.get("dtype", "auto"),
                                   grad_checkpointing=bool(p["grad_checkpointing"]), prompt=p["prompt"])
         ti = _load_target_image(p["target_image"]) if p.get("target_image") else None
-        return MistProtector(
+        prot = MistProtector(
             vae_mean_encode_fn(comp["vae"]), unet_eps_fn(comp["unet"]), comp["alphas_cumprod"], comp["cond"],
             eps_255=p["eps_255"], step_255=p["step_255"], iters=p["iters"], w_sem=p["w_sem"], w_tex=p["w_tex"],
             t_min=p["t_min"], t_max=p["t_max"], n_noise=p["n_noise"], scaling_factor=comp["scaling_factor"],
             target_image=ti, loss_scale=p["loss_scale"] if comp["dtype"].itemsize == 2 else 1.0)
+        prot.device = str(device)
+        return prot
     raise KeyError(name)  # pragma: no cover
