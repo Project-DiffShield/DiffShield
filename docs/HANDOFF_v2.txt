@@ -1,0 +1,570 @@
+﻿DiffShield v2: Agent Handoff
+Oct 14, 2026  Â·  @Siddhartha Gopala
+Mission and how to use this document
+You are taking over a final-year university project, DiffShield, from a team of 5 students.
+Your job is to implement, run and evaluate the improved version (v2) and produce the
+code, results, figures and report material for it. This document is your complete brief: read
+it fully before doing anything, then follow Section 6 in order.
+The project in one paragraph. People post face photos online and anyone can feed them
+to a diffusion-model editor (Stable Diffusion img2img, inpainting, and similar) to make
+fakes. DiffShield adds an invisible adversarial perturbation to the photo (an Lâˆž-bounded
+noise found by PGD) so that edits made from the protected photo no longer look like the
+same person, while the protected photo looks identical to the original. v2 makes it survive
+"purification" (attackers cleaning the noise off first), tests it fairly, and compares it with
+existing tools.
+This is a defensive, privacy-protecting project. It protects people's own photos. It does
+not generate fakes of real people for any other purpose.
+What done looks like:
+1. A versioned repo that reproduces every number with one command per step.
+2. Result tables and figures for experiments E0 to E10 (Section 7), with confidence
+intervals.
+3. A short threat-model-first report section and an honest list of failure cases.
+4. A small demo script that protects an image and shows before and after edits.
+Who decides what. The students decide scope, deadlines and anything marked "ask the
+user" in Section 9. You decide implementation details. When unsure which side a choice is
+on, ask.
+Background and current state (v1)
+What exists. Two notebooks: Phase 1 (build and tune the protection) and Phase 2 (test it
+on Stable Diffusion img2img). Phase 1 clones the repo Project-DiffShield/DiffShield
+and patches it at runtime (string replaces in src/eot.py , src/optimizer.py ,
+Diï¬€Shield v2: Agent Handoï¬€
+Page 1 of 17
+src/losses.py ). The notebooks are not in this document; ask the user to place them, and
+the repo, in a connected folder (see Section 5).
+v1 algorithm. PGD on the image with Îµ  = 8/255 (see budget warning below), step 1/255, 40
+iterations, with Expectation over Transformation (EoT): Kornia RandomJPEG plus
+RandomResizedCrop (patched with same_on_batch=True ). Loss:
+L = \alpha\, L_{vis} - \beta\, L_{sem} - \gamma\, L_{str}
+L_vis: MSE between the SD1.5 VAE latent of the protected image and of the original;
+maximized.
+L_sem: 1 âˆ’ cosine similarity between the CLIP image embedding and the text
+embedding of "a potted plant"; minimized.
+L_str: 1 âˆ’ windowed SSIM between original and protected; minimized (keeps the photo
+looking unchanged). It replaced an earlier Canny-based term that was buggy.
+Tuning: KMeans over CelebA-HQ attributes (elbow via kneed) gives a calibration set;
+70 disjoint evaluation centroids; Optuna 30 trials maximizing worst-case LPIPS(clean,
+protected) subject to PSNR â‰¥ 38 and SSIM â‰¥ 0.95. Best weights: Î±  = 0.27, Î²  = 0.90, Î³  =
+60.5.
+v1 results.
+Budget warning (check this first). The reported Lâˆž of 8/255 is on tensors scaled to [-1,1].
+On the standard 0 to 255 scale that is about 4 gray levels, so the effective Îµ  is probably
+4/255 (PSNR 41.9 is consistent with that). Verify in Phase 0 and report budgets on the
+standard scale from then on.
+What is wrong with v1 (what v2 fixes).
+1. The claim "survives any scenario" cannot be proven.
+Test Result
+Invisibility, 70 images PSNR 41.9 Â± 0.4, SSIM 0.975 Â± 0.005, LPIPS(clean,
+protected) 0.232 Â± 0.063
+Max pixel change exactly 8/255 on [-1,1] tensors
+Edit disruption, SD1.5 img2img, 15
+pairs
+LPIPS between clean-edit and protected-edit
+about 0.46 (range 0.38 to 0.53)
+Edit settings strength 0.55, guidance 7.5, seed 2026, one prompt
+Diï¬€Shield v2: Agent Handoï¬€
+Page 2 of 17
+2. No random-noise control, so the effect may be partly just noise.
+3. No identity metric; LPIPS measures change, not whether the person is still
+recognizable.
+4. Never tested against purification (JPEG, DiffPure, GrIDPure, IMPRESS).
+5. One editor, one prompt, one strength, one seed, 15 images.
+6. Optuna objective rewards visible change, not protection.
+7. One encoder, no ensemble; no ablation of the loss terms.
+8. Attacks mainly one phase (the VAE encoder); the denoiser (UNet) and identity-
+conditioned editors are untouched; L_sem uses the CLIP image encoder, which SD1.5
+img2img never runs, so it may do nothing (unverified).
+9. Runtime string patches, unlogged seeds, hard to reproduce; clean CelebA-HQ only.
+Target system (v2)
+Two halves that must never share components.
+Half A, the protection loop (offline). For each photo x, repeat PGD steps:
+1. Draw a purifier P from a training mixture, and transform randomness Î¾  (EoT).
+2. Compute scores on P(x + Î´ ): latent shift (L_vis), denoiser error (L_den), identity loss
+through ArcFace (L_id, added in Phase 6), semantic term (L_sem, kept only if the
+ablation shows it helps), and a visibility penalty L_str computed on x + Î´  itself (the
+published image), not on the purified one.
+3. Step Î´  by sign gradient, clip to the Lâˆž ball of radius Îµ , repeat.
+\delta^* = \arg\max_{\|\delta\|_\infty \le \epsilon} \; 
+\mathbb{E}_{P,\xi}\big[\alpha\, L_{vis}(x, P(x+\delta;\xi)) + \eta\, L_{den}
+(P(x+\delta;\xi)) - \beta\, L_{sem}(P(x+\delta;\xi))\big] - \gamma\, L_{str}
+(x, x+\delta)
+Half B, the attack-and-score harness. Takes a protected image, applies held-out purifiers,
+edits with several editors, and scores with ArcFace identity retention and LPIPS. This is
+how every claim is measured.
+Key vocabulary.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 3 of 17
+Why purifiers in the loop. Attackers can clean noise off before editing. Optimizing against
+the purified image makes the noise survive the cleanup. Held-out purifiers are how we
+check it is not memorizing the training cleanups.
+Operating rules: how to work
+Order and discipline
+Term Meaning
+Purifier A cleanup an attacker applies before editing: JPEG,
+resize down-up, VAE encode-decode, noise-then-
+denoise with a diffusion model (DiffPure),
+GrIDPure, IMPRESS, restoration models
+Training purifiers Used inside the loop (Half A). JPEG, down-up, VAE
+round trip, one-step SD purifier
+Held-out purifiers Used only in Half B. Multi-step DiffPure at several
+strengths, GrIDPure, IMPRESS if feasible, a
+restoration purifier, and a differently-
+parameterized JPEG and resize
+L_vis Distance between the SD1.5 VAE latent of the
+processed image and of the original; maximized
+L_den Noise-prediction error of the SD UNet on the
+processed image at a random timestep; maximized
+L_id ArcFace cosine similarity between the source face
+and the face recovered through the VAE
+reconstruction; minimized
+L_str 1 âˆ’ SSIM between x and x + Î´ ; minimized
+(invisibility)
+PSR Protection Success Rate: share of edits whose
+ArcFace similarity to the source falls below a
+threshold
+EoT Averaging gradients over random purifiers and
+transforms so the noise survives all of them
+Diï¬€Shield v2: Agent Handoï¬€
+Page 4 of 17
+1. Measure before you build. Phases 0 to 2 (reproducible base, evaluation harness,
+baselines) come before any new loss term. Without a control, an identity metric and a
+purifier baseline nobody can tell whether a change helped.
+2. One phase at a time, with a gate. At the end of each phase write
+reports/PHASE_<n>.md  (what was done, the numbers, decisions taken, open
+questions) and stop at every gate marked "STOP and report" in Section 6. Do not
+continue past a failed gate without the user's decision.
+3. Smoke test first. Run every new script on 5 images, 1 seed and few iterations before
+any full run. Fix problems at small scale.
+4. Report negative results. If a change does not help, record it with numbers. Never hide
+a failure to make the story cleaner.
+Honesty and statistics
+5. Never invent a number, citation or result. Mark anything unverified as "unverified". Do
+not use any "RSAS" or similar named method: its source could not be verified and the
+user asked to ignore it.
+6. Every reported number needs: sample size, mean Â± 95% bootstrap confidence interval
+over images, number of seeds (3). Use paired comparisons against v1 on the same
+images.
+7. Split identities into train, validation and test once, fix the lists in files, and never tune
+on the test split. Held-out purifiers and editors appear only in evaluation.
+Reproducibility
+8. One config.yaml  holds every hyperparameter, seed and path. Each run writes its
+resolved config, git commit hash, library versions and seed beside its outputs. Commit
+code often with clear messages.
+9. Pin library versions in requirements.txt . No runtime string patching of installed
+libraries: put changes in the forked repo as commits.
+10. Results go to CSV with one row per (image, seed, editor, purifier, method). Tables and
+figures are generated from those CSVs by scripts, never by hand.
+Safety with the user's files and accounts
+11. Work on copies. Never edit the user's original notebooks, images or datasets in place.
+Write new files next to the sources inside the connected folder.
+12. Do not delete anything. If something must be removed, move it into a _to_delete/
+folder and tell the user, or ask for permission once.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 5 of 17
+13. Never type, store or ask for passwords or API tokens. If a step needs a logged-in
+account (Kaggle, Hugging Face), ask the user to sign in themselves.
+14. Datasets (CelebA-HQ and others) are for research use. Do not redistribute them or
+publish identifiable images. Use only the face images in the project dataset.
+Communication. The students are new to diffusion models. Report in short plain
+language, define a term the first time you use it, and lead with the result. Ask at most one
+or two questions at a time, and only for decisions in Section 9.
+Environment, compute and setup
+First actions (do these before anything else).
+1. Call get_device_info and list the connected folders. If no project folder is connected,
+ask the user to add one (the "Add folder" button in the desktop app) and put the repo,
+both notebooks and the dataset subset there.
+2. Run nvidia-smi . Expect no GPU in this workspace. If there is none, you write and test
+code here on CPU and prepare GPU jobs for Kaggle (below). Do not try to run Stable
+Diffusion at scale on CPU.
+3. Check network access to package registries, GitHub and Hugging Face. If a host is
+blocked, say so plainly and ask the user to download that file instead of retrying other
+ways.
+4. Create the repo layout below inside the connected folder.
+Compute plan. The team uses Kaggle GPU notebooks and has a limited weekly GPU
+quota; the exact hours are unknown, so ask (Section 9) and keep every job small and
+resumable.
+Package each GPU job as a self-contained script plus a thin Kaggle notebook that
+installs pinned requirements, loads the config and writes results to the Kaggle output
+folder.
+The user (not you) signs in to Kaggle and runs or schedules the notebook, then places
+the downloaded outputs in results/  in the project folder. You then ingest, analyze
+and plot them.
+Make jobs checkpoint after every N images so a stopped session loses little work. Log
+elapsed GPU time per job so the budget can be tracked.
+Use fp16, gradient checkpointing and small batches to fit a 16 GB GPU. Cache
+everything that does not change (clean-image edits, ArcFace embeddings of sources).
+Diï¬€Shield v2: Agent Handoï¬€
+Page 6 of 17
+Models and data to obtain. Verify each source and its current Hugging Face id before use:
+Stable Diffusion 1.5 (and its inpainting variant), SDXL, InstructPix2Pix, ArcFace via
+insightface , LPIPS weights, a CLIP image encoder, CelebA-HQ subset (the team already
+uses it), and for baselines PhotoGuard and Mist public code. A model that cannot be
+obtained becomes a documented limitation, not a silent drop.
+Repository layout.
+diffshield/
+  config/config.yaml          # all hyperparameters, seeds, paths
+  requirements.txt            # pinned versions
+  src/
+    protect/  losses.py purifiers.py pgd.py
+    eval/     editors.py purify_attacks.py metrics.py stats.py
+    baselines/ noise_control.py photoguard.py mist.py
+  scripts/    run_protect.py evaluate.py make_tables.py make_figures.py
+  data/       splits/ (train.txt val.txt test.txt)
+  results/    <run_id>/ (config.json, git_hash.txt, metrics.csv, images/)
+  reports/    PHASE_0.md ... PHASE_8.md
+  kaggle/     job notebooks and packaging scripts
+Config skeleton.
+seed: 2026
+budget:   {eps_255: 4, step_255: 1, iters: 40, scale: "standard_0_255"}
+loss:     {alpha: 0.27, beta: 0.90, gamma: 60.5, eta: 0.27, lambda_id: 0.0}
+eot:      {k_draws: 4}
+purifiers_train: [jpeg, downup, vae_roundtrip, sd_onestep]
+purifiers_heldout: [jpeg_q_other, downup_other, diffpure_t0.1, diffpure_t0.2, 
+diffpure_t0.3, gridpure]
+editors:  [sd15_img2img, sdxl_img2img, ip2p, sd_inpaint, 
+ipadapter_or_instantid]
+edit:     {strengths: [0.3, 0.55, 0.75], seeds: [1, 2, 3]}
+data:     {n_train: 20, n_val: 20, n_test: 100}
+metrics:  {identity: arcface, psr_threshold: "from clean-edit distribution"}
+The starting weights are v1's ( Î± , Î² , Î³ ). Î·  starts equal to Î±  and is retuned in Phase 6. Keep Îµ
+on the standard 0 to 255 scale and confirm the true v1 value in Phase 0 before fixing it.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 7 of 17
+Work plan by phase
+Do the phases in order. Effort estimates are for one person; the team can overlap them.
+Minimum project (if time is short): Phases 0 to 4, then 7 and 8. Cut order if short: Phase 5,
+the human study, SDXL and Mist baselines, the encoder ensemble. Never cut Phases 0, 1,
+2, 3, 4 or 7.
+Phase 0: Reproducible base (about 3 to 4 days)
+1. Fork the repo Project-DiffShield/DiffShield . Turn the runtime patches
+( same_on_batch  in eot.py, loss injection in optimizer.py, the SSIM structure loss in
+losses.py) into real commits.
+2. Create config.yaml  and requirements.txt ; make every script read the config and
+log config, seed and git hash.
+3. Budget check: protect one image, convert both images to uint8 with
+((x+1)*127.5).round() , and compute the maximum absolute pixel difference. If it is
+4, the effective Îµ  is 4/255; set budget.eps_255  accordingly and note it in the report.
+4. Write run_protect.py  (folder in, protected folder out).
+Done when: another person reproduces v1's Phase 1 numbers (PSNR about 41.9, SSIM
+about 0.975). STOP and report with the budget finding.
+Phase 1: Evaluation harness (about 1 to 1.5 weeks)
+1. Dataset: 100 CelebA-HQ test identities (one image each), plus 20 messier photos
+(varied pose, lighting, pre-compressed), plus 20 train and 20 validation identities. Save
+the lists in data/splits/ .
+2. Editors: SD1.5 img2img (strengths 0.3, 0.55, 0.75), SDXL img2img, InstructPix2Pix, SD
+inpainting with keep-face masks (mask the background or clothes, not the face), and
+one identity-conditioned editor (IP-Adapter FaceID or InstantID). Three prompts per
+editor (for example "a person in a suit", "a person at a beach", "an oil painting of a
+person"), three seeds.
+3. Metrics (Section 7): ArcFace similarity and PSR, LPIPS, CLIP-I, plus PSNR, SSIM and
+LPIPS of the protected image.
+4. Statistics: bootstrap 95% CI over images; paired difference against v1.
+5. Cache clean-image edits once.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 8 of 17
+Done when: evaluate.py --protected_dir X --purifier none  writes a CSV and a
+summary table with CIs, run on v1 outputs. STOP and report with the v1 identity-retention
+numbers.
+Phase 2: Baselines and controls (about 4 to 5 days)
+1. Noise controls: uniform random noise at the same Lâˆž budget, and Gaussian noise
+matched to the same PSNR.
+2. P0, v1 under purification: apply each purifier to v1's protected images, then edit and
+score: JPEG (q 90, 75, 50), down-up (0.5Ã— bicubic), SD VAE round trip, DiffPure-style
+noise-and-denoise at t* = 0.05, 0.1, 0.2 (and GrIDPure if feasible).
+3. Run PhotoGuard and Mist on the same images and budget with their public code; if one
+will not run, record why and compare against what does.
+Done when: one table shows PSR for noise control, PhotoGuard, Mist, v1, and v1 after each
+purifier. STOP and report. Decision rule: if v1's PSR barely drops under purification, tell the
+user and recommend skipping Phase 5; if it collapses, continue as planned.
+Phase 3: Cheap purifiers in the loop (about 1 week)
+1. Implement differentiable purifier modules: Kornia JPEG at random quality, bicubic
+down-up at random scale, SD VAE encode-decode.
+2. In each PGD step, draw a purifier P and transform Î¾  per EoT sample, compute the loss
+on P(x + Î´ ), keep L_str on x + Î´ , and average gradients over K = 4 draws (8 if memory
+allows).
+3. Keep one purifier variant (for example a different down-up ratio) out of training as an
+early held-out check.
+Done when: PSR under JPEG, down-up and VAE round trip rises clearly above Phase 2's
+P0 numbers with PSNR â‰¥ 38. STOP and report.
+Phase 4: One-step diffusion purifier and denoiser loss (about 1.5 weeks)
+1. Implement SDOneStepPurifier  (Section 8): VAE-encode x to latent z0, add noise at a
+random timestep t in [50, 300], predict the noise with the SD1.5 UNet (empty prompt),
+recover the one-step estimate of z0, decode. Freeze all weights; gradients flow only to
+pixels.
+2. Add it to the purifier mixture with probability about 0.3.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 9 of 17
+3. Use torch.autocast  fp16 and gradient checkpointing on the UNet. If memory is tight
+use K = 2 and 512 px images.
+4. Evaluate on held-out DiffPure at t* = 0.1, 0.2, 0.3, which is not in the mixture.
+5. Denoiser loss L_den. Reuse the UNet pass: add the noise-prediction error on the
+purified image at the sampled timestep to the objective with weight Î·  (start equal to
+Î± ) so the loop also maximizes the denoiser's error. Verify its value in the Phase 7 phase
+ablation.
+Done when: held-out DiffPure PSR is clearly above Phase 3's at equal PSNR. If not, raise
+the one-step purifier's share and retry once. STOP and report.
+Phase 5: Anti-purification terms (optional, about 1 week)
+Go ahead only if Phase 2's decision rule said purification really hurts v1.
+1. Add the AntiPure idea: a term that raises the high-frequency content (patch-wise
+DCT) of the one-step reconstruction, and a term that keeps the reconstruction error
+growing with t. Start both at weight 0.5.
+2. Optionally add 3 to 5 step DDIM purification with checkpointing for the last 5 to 10 PGD
+iterations only.
+3. Ablate each term alone.
+Done when: a go or no-go on Tier 3 from the ablation. Drop it if gains are within the
+confidence interval. STOP and report.
+Phase 6: Encoder ensemble and protection-aware tuning (about 1 week)
+1. Ensemble: average the loss over the SD1.5 VAE plus the SDXL VAE (and over two CLIP
+image encoders only if the Phase 7 phase ablation shows L_sem helps).
+2. Identity term: add L_id, the ArcFace cosine between the source face and the face
+recovered through the VAE reconstruction of x + Î´ , minimized.
+3. Re-run Optuna (30 to 50 trials, 20 validation images each): objective = mean PSR under
+the purifier mixture, constraints PSNR â‰¥ 38 and SSIM â‰¥ 0.95. Normalize all loss terms to
+comparable scales first.
+4. Randomize the perturbation (random start, random transform seed) so a learned
+fingerprint-removal attack has less to latch on to.
+Done when: the tuned configuration beats the hand-set one on validation PSR. STOP and
+report.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 10 of 17
+Phase 7: Final experiments (about 1.5 weeks)
+1. Freeze code and config; tag the git commit.
+2. Run experiments E0 to E10 (Section 7) on the 100 test identities, 3 seeds.
+3. Îµ  sweep: 2, 4, 6, 8 / 255 on the standard scale. Plot PSR against PSNR.
+4. Adaptive attacker (E8): train a small autoencoder on clean and protected pairs from
+disjoint images (the LightShed idea) and apply it as a purifier. Report how far PSR falls.
+5. Human study (E10, small): 15 raters, 20 image pairs. Task A: which of two images has
+noise (2AFC; 50% is chance). Task B: is the edited face the same person. Prepare the
+forms and analysis scripts; the students run the sessions.
+6. Make all tables and figures with make_tables.py  and make_figures.py .
+7. Phase ablation: four variants on the same 100 identities: encoder loss only (L_vis),
+denoiser loss only (L_den), both, and both without L_sem. Report PSR per editor. This
+answers which phase to attack and whether L_sem is needed for SD1.5.
+STOP and report with the full results and every failure case.
+Phase 8: Write-up and demo (about 1 week)
+1. Draft the report sections: threat model on page one (attacker knowledge, editors,
+purifiers, budget), method, results with CIs, failure cases, limitations.
+2. Build a demo script that takes one image and returns the protected image plus a
+before and after edit panel.
+3. Package: README that reproduces the main table from the saved config, plus a
+requirements file and the split lists.
+Evaluation spec
+Two modes, never mixed. Non-adaptive: the attacker picks purifiers and editors without
+knowing the method; this is the headline. Adaptive: the attacker knows the method and
+tries to remove it; this is the honest stress test.
+Metrics per edited image.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 11 of 17
+If no face is detected in an edit, count it as a protection success but also report the no-
+face rate separately.
+Experiment table.
+Metric How Use
+ArcFace similarity Cosine similarity between the
+ArcFace embedding of the
+source face and of the face in the
+edited image ( insightface ,
+aligned crop)
+Main identity measure; lower is
+better for protection
+PSR (Protection
+Success Rate)
+Share of edits with ArcFace
+similarity below a threshold. Set
+the threshold from clean edits:
+for example the 95th percentile
+of ArcFace similarity between
+different people
+Headline number
+Edit LPIPS LPIPS between the clean-image
+edit and the protected-image
+edit
+How much the edit changed
+CLIP-I CLIP image similarity between
+the source and the edit
+Secondary
+Invisibility PSNR, SSIM and LPIPS between
+the clean and protected images
+Must stay PSNR â‰¥ 38, SSIM â‰¥
+0.95
+ID Experiment Question
+E0 Clean image â†’ editors Reference edit distribution and the PSR
+threshold
+E1 Random noise at the same budget â†’
+editors
+Control: how much is just noise?
+E2 PhotoGuard and Mist â†’ editors How does it compare with existing
+tools?
+E3 v1 â†’ each purifier â†’ editors How badly does purification break v1?
+Diï¬€Shield v2: Agent Handoï¬€
+Page 12 of 17
+Pass and fail gates.
+After E3: if v1 does not degrade under purification, skip Phase 5 and spend the time on
+the ensemble and the study.
+After E4: PSR under JPEG, down-up and VAE round trip at least doubles against v1,
+with PSNR â‰¥ 38.
+After E5: PSR under held-out DiffPure at t* = 0.1 reaches at least half of the no-purifier
+PSR.
+Every experiment: at least 100 identities, 3 seeds, mean Â± 95% CI, paired test against
+v1.
+Invisibility: PSNR â‰¥ 38, SSIM â‰¥ 0.95, human 2AFC accuracy not far above 50%.
+The gate values are suggestions. If one is missed, report the numbers and ask the user
+how to proceed; do not quietly change a gate.
+Reference code and starting hyperparameters
+These are starting points written without running them. Test each on a few images, fix
+what breaks, and keep the interfaces. Tensors are in [-1, 1].
+Budget check (Phase 0).
+ID Experiment Question
+E4 v2 with cheap purifiers â†’ same Does it fix JPEG, down-up, VAE round
+trip?
+E5 v2 with the one-step SD purifier â†’ held-
+out DiffPure, GrIDPure
+Does it transfer to unseen purifiers?
+E6 v2 with anti-purification terms â†’ same at
+higher t*
+Do they add robustness?
+E7 Ablations: drop each loss term, purifier or
+phase (encoder only vs encoder +
+denoiser)
+What matters?
+E8 v2 against an adaptive attacker What breaks it?
+E9 Îµ  sweep (2, 4, 6, 8 / 255) Invisibility against robustness
+E10 Human study Is it invisible, and is the identity gone?
+Diï¬€Shield v2: Agent Handoï¬€
+Page 13 of 17
+import numpy as np
+from PIL import Image
+c = np.array(Image.open('clean.png').convert('RGB')).astype(int)
+p = np.array(Image.open('protected.png').convert('RGB')).astype(int)
+print('max gray-level change:', np.abs(c - p).max())   # 4 => effective eps 
+is 4/255
+PGD loop with purifiers in EoT.
+def protect(x, purifiers, probs, cfg, m):
+    eps  = cfg.eps_255  * 2 / 255        # [-1,1] scale; 4/255 standard => 
+8/255 here
+    step = cfg.step_255 * 2 / 255
+    z_clean = m.encode(x).detach()
+    delta = (torch.rand_like(x) * 2 - 1) * eps * 0.5   # random start
+    for _ in range(cfg.iters):
+        delta.requires_grad_(True)
+        g = torch.zeros_like(x)
+        for _ in range(cfg.k_draws):
+            P  = sample_purifier(purifiers, probs)
+            xp = P(torch.clamp(x + delta, -1, 1))
+            loss = (cfg.alpha * l_vis(m, xp, z_clean)
+                    + cfg.eta * l_den(m, xp)
+                    - cfg.beta * l_sem(m, xp)
+                    - cfg.gamma * l_str(x, x + delta))   # visibility on the 
+published image
+            g += torch.autograd.grad(loss, delta)[0]
+        delta = (delta + step * g.sign()).clamp(-eps, eps)
+        delta = (torch.clamp(x + delta, -1, 1) - x).detach()
+    return torch.clamp(x + delta, -1, 1)
+Loss pieces.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 14 of 17
+def l_vis(m, xp, z_clean):               # maximize
+    return F.mse_loss(m.encode(xp), z_clean)
+def l_den(m, xp):                        # maximize; one UNet pass at a 
+random timestep
+    z = m.encode(xp)
+    t = torch.randint(50, 300, (z.size(0),), device=z.device)
+    n = torch.randn_like(z)
+    zt = m.scheduler.add_noise(z, n, t)
+    pred = m.unet(zt, t, encoder_hidden_states=m.null_cond).sample
+    return F.mse_loss(pred, n)
+One-step diffusion purifier (also used as the surrogate for DiffPure-style cleanup).
+class SDOneStepPurifier(nn.Module):
+    def __init__(self, vae, unet, alphas_cumprod, null_cond, t_min=50, 
+t_max=300, s=0.18215):
+        super().__init__()
+        self.vae, self.unet, self.ab, self.c, self.s = vae, unet, 
+alphas_cumprod, null_cond, s
+        self.t_min, self.t_max = t_min, t_max
+    def forward(self, x):
+        z0 = self.vae.encode(x).latent_dist.mean * self.s
+        t  = torch.randint(self.t_min, self.t_max, (x.size(0),), 
+device=x.device)
+        ab = self.ab[t].view(-1, 1, 1, 1)
+        zt = ab.sqrt() * z0 + (1 - ab).sqrt() * torch.randn_like(z0)
+        eps = self.unet(zt, t, encoder_hidden_states=self.c.expand(x.size(0), 
+-1, -1)).sample
+        z0h = (zt - (1 - ab).sqrt() * eps) / ab.sqrt()
+        return self.vae.decode(z0h / self.s).sample.clamp(-1, 1)
+Protection Success Rate.
+thr = np.percentile(impostor_sims, 95)      # ArcFace similarity between 
+different people
+psr = float((edit_sims < thr).mean())       # edits that no longer match the 
+source person
+Starting hyperparameters.
+Diï¬€Shield v2: Agent Handoï¬€
+Page 15 of 17
+Open decisions, risks, claims and sources
+Ask the user (one or two at a time, only when it blocks work).
+1. Deadline and the dates of the final report and demo (unknown; the plan is about 10
+weeks of sequential work, 7 to 8 with the team overlapping).
+2. Kaggle GPU hours per week and whether each team member has an account
+(unknown).
+3. Where the notebooks, repo copy and dataset subset live, and which folder to use as
+the project folder.
+4. Whether the report needs the human study, and whether recruiting 15 raters is
+realistic.
+5. Whether PhotoGuard and Mist baselines are required or optional.
+Item Start value Note
+Îµ 4/255 standard scale Confirm in Phase 0; sweep 2, 4, 6, 8 in
+E9
+Step size 1/255 standard scale Same as v1
+PGD iterations 40, raise to 100 if gains
+continue
+AntiPure used 100
+EoT draws K 4 (8 if memory allows) Memory is the limit
+Î± , Î² , Î³ 0.27, 0.90, 60.5 v1 Optuna result; re-normalize terms
+before retuning
+Î·  (L_den) equal to Î± Retune in Phase 6
+One-step purifier
+timesteps
+50 to 300 Keep as a config value
+One-step purifier
+share
+about 0.3 of draws Raise if held-out DiffPure does not
+improve
+Anti-purification
+weights
+0.5 and 0.5 From the AntiPure paper
+Optuna 30 to 50 trials, 20
+validation images
+Objective: mean PSR under purifiers;
+constraints PSNR â‰¥ 38, SSIM â‰¥ 0.95
+Diï¬€Shield v2: Agent Handoï¬€
+Page 16 of 17
+Risks and how to handle them.
+Compute: multi-step purifier gradients are expensive. Use the one-step purifier and
+checkpointing in the loop; keep multi-step purification for evaluation only.
+Robustness costs invisibility. Show the Îµ  sweep (E9) instead of hiding the trade-off.
+Surrogate gap: the one-step purifier is not the attacker's purifier. Held-out tests
+expose it; report it.
+Adaptive attackers (LightShed-style) may still win. Randomization helps; report the
+real result.
+A baseline or model may not run or may be unavailable. Document it and continue.
+Inpainting: if an attacker masks the face itself, the masked pixels are discarded before
+the model sees them, so noise there cannot protect it. State this in the threat model.
+Expected outcome. Cheap purifiers (JPEG, down-up, VAE round trip) largely fixed; partial
+transfer to low-strength DiffPure; weak protection at high purification strength, against
+restoration-based purifiers and against adaptive attackers. Partial but measured results
+are a good outcome.
+What to claim, and what not to. Claim: "Under a stated threat model (white-box SD
+encoders, listed editors and purifiers, Îµ  = X/255), DiffShield lowers ArcFace identity
+retention of edits by A points versus a noise control and B points over v1, including after
+[held-out purifiers]; an adaptive attacker reduces this to C." Do not claim: survives any
+scenario, immunity to purification, or protection against editors and attacks that were not
+tested.
+Sources.
+DiffPure, diffusion models for adversarial purification
+GrIDPure (Zhao et al.)
+IMPRESS
+DiffAttack
+AntiPure
+LightShed (USENIX Security 2025)
+Liu et al., diffusion purification benchmark
+FastProtect (Ahn et al., CVPR 2025), PhotoGuard and Mist: look up the official papers
+and code before use
+Diï¬€Shield v2: Agent Handoï¬€
+Page 17 of 17
