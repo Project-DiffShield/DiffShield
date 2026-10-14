@@ -1,7 +1,46 @@
 # Kaggle job definitions, read by scripts/run_job.py (schema documented in that file's docstring).
-# The human only sets JOB_IDS in kaggle/job_runner.ipynb; everything else is here.
-# Other agents / integration add their jobs below (J02 ... J42) using the same schema. Do not edit J00/J01 casually:
-# the Phase 0 report refers to them.
+# The human only sets JOB_IDS (and optionally PARAMS) in kaggle/job_runner.ipynb; everything else is here.
+# J00/J01/J01b are the Phase 0 jobs (reports/PHASE_0.md refers to them); S01..S18 are the sessions of
+# docs/V2_PLAN_48H.md section 5 (S01 = J01, S02 = J01b).
+macros:
+
+  setup:                      # install pinned/lower-bound deps, check versions, pick splits, copy config to {out}/cfg
+    defaults: {extras: []}
+    steps:
+      - {name: install, builtin: pip_install, extras: <<extras>>}
+      - {name: check_env, run: ["{py}", scripts/check_env.py, --allow_mismatch], optional: true, soft: true, echo: false}
+      - {name: resolve_splits, builtin: resolve_splits}
+      - {name: make_config, builtin: make_config}
+
+  prep:                       # 512 px PNGs of the listed splits (messy gets its pre-compression), no caches
+    defaults: {splits: [test]}
+    steps:
+      - name: prepare_data
+        run: ["{py}", scripts/prepare_data.py, "{celebahq_args}", --splits_dir, "{splits_dir}", --out_dir, "{out}/data",
+              --splits, <<splits>>, --no_cache]
+
+  protect:                    # protect one split with one method on both GPUs, then merge the shard CSVs
+    defaults: {method: v1, split: test, run: "prot_<<method>>_<<split>>", extra: []}
+    steps:
+      - name: protect_<<run>>
+        sharded: true
+        run_id: <<run>>
+        run: ["{py}", scripts/run_protect.py, --config, "{cfg}", --method, <<method>>, --input_dir,
+              "{out}/data/<<split>>", --list, "{splits_dir}/<<split>>.txt", "{limit_args}", --run_id, <<run>>,
+              --output_root, "{results}", --checkpoint_every, "5", --split, <<split>>, "{iters_args}", <<extra>>,
+              "{resume_arg}"]
+      - name: merge_<<run>>
+        run: ["{py}", scripts/merge_shards.py, --run_dir, "{results}/<<run>>"]
+
+  evaluate:                   # edit + score jobs (scripts/evaluate.py --jobs_file); models stay loaded between jobs
+    defaults: {name: eval, defs: {}, jobs: []}
+    steps:
+      - name: <<name>>
+        sharded: true
+        optional: true
+        eval_jobs: {defaults: <<defs>>, jobs: <<jobs>>}
+        run: ["{py}", scripts/evaluate.py, --jobs_file, "{jobs_file}"]
+
 jobs:
 
   J00:
@@ -28,10 +67,12 @@ jobs:
       - name: check_env
         run: ["{py}", "scripts/check_env.py", "--allow_mismatch"]
         optional: true
+        soft: true
       - name: tests
         when: run_tests
         run: ["{py}", "-m", "pytest", "-q", "-x", "tests", "-p", "no:cacheprovider"]
         optional: true
+        soft: true
         echo: false
       - name: prepare_data
         run: ["{py}", "scripts/prepare_v1_data.py", "--from_manifest", "--out_dir", "{out}/data/v1_inputs",
@@ -56,11 +97,420 @@ jobs:
         run: ["{py}", "scripts/compare_runs.py", "--a", "{results}/{run_id}", "--v1_csv",
               "data/v1_ref/stage1_per_image_metrics.csv"]
         optional: true
+        soft: true
       - name: ledger
         run: ["{py}", "scripts/gpu_ledger.py", "--results", "{results}"]
         optional: true
+        soft: true
 
   # Same as J01, run by a second person / account (compare_runs.py --a J01 --b J01b afterwards).
   J01b:
     title: Phase 0 - second-person reproduction (identical spec to J01)
     extends: J01
+
+  # ================================================================================================
+  # Sessions S01..S18 of docs/V2_PLAN_48H.md section 5.  Run with JOB_IDS=["S06"] (or a list).
+  # Every session: PARAMS={"smoke": true} runs it end to end with 5 images, 5 iterations, 1 edit seed.
+  # Sessions that need an earlier session's output take  prev_root  (the /kaggle/input/<name> mount of that output).
+  # ================================================================================================
+
+  S01:
+    title: S01 = J01 (Phase 0 v1 reproduction, acct1)
+    extends: J01
+  S02:
+    title: S02 = J01b (Phase 0 reproduction by a second person, acct3)
+    extends: J01b
+
+  # ---------------------------------------------------------------------------------------------- S03
+  S03:
+    title: S03 splits (test100, messy20, train20, val20, ae_pool120; v1 calib excluded), ArcFace dedup, caches. CPU is enough.
+    accelerator: cpu
+    params: {smoke: false, extra_args: []}
+    steps:
+      - {name: install, builtin: pip_install, extras: [eval]}
+      - {name: check_env, run: ["{py}", scripts/check_env.py, --allow_mismatch], optional: true, soft: true, echo: false}
+      - name: make_splits            # PARAMS {"extra_args": ["--allow_no_dedup", "--identity_mode", "none"]} if insightface fails
+        run: ["{py}", scripts/make_splits.py, "{celebahq_args}", --out_dir, "{out}/splits_out", --identity_mode, auto,
+              "{extra_args}"]
+      - {name: use_splits, builtin: set_var, vars: {splits_dir: "{out}/splits_out"}}
+      - name: prepare_check
+        run: ["{py}", scripts/prepare_data.py, "{celebahq_args}", --splits_dir, "{out}/splits_out", --out_dir,
+              "{out}/data", --cache_dir, "{out}/cache", "{parsing_args}"]
+        soft: true
+        optional: true
+
+  # ---------------------------------------------------------------------------------------------- S04
+  S04:
+    title: S04 protection smoke - every method on 5 images, 5 iterations (timings -> smoke_report.md)
+    accelerator: gpu_t4x2
+    params: {smoke: true}
+    steps:
+      - {macro: setup}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v1}}
+      - {macro: protect, with: {method: v2_cheap}}
+      - {macro: protect, with: {method: v2_main}}
+      - {macro: protect, with: {method: v2_antipure}}
+      - {macro: protect, with: {method: v2_final}}
+      - {macro: protect, with: {method: abl_vis_only}}
+      - {macro: protect, with: {method: abl_den_only}}
+      - {macro: protect, with: {method: abl_no_sem}}
+      - {macro: protect, with: {method: abl_no_pur}}
+      - {macro: protect, with: {method: eps2}}
+      - {macro: protect, with: {method: noise_uniform}}
+      - macro: protect
+        with: {method: noise_gauss_psnr,
+               extra: ["--set", "baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv"]}
+      - {macro: protect, with: {method: photoguard}}
+      - {macro: protect, with: {method: mist}}
+      - {name: smoke_report, run: ["{py}", scripts/smoke_report.py, --root, "{results}", --out, "{results}/smoke_report.md"],
+         soft: true, optional: true}
+
+  # ---------------------------------------------------------------------------------------------- S05
+  S05:
+    title: S05 edit/purifier smoke - all editors, purifiers, GrIDPure attempt, LPIPS and threshold stages (5 images, 1 seed)
+    accelerator: gpu_t4x2
+    params: {smoke: true}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, val, messy]}}
+      - {macro: protect, with: {method: noise_uniform, split: test}}
+      - {macro: protect, with: {method: noise_uniform, split: val}}
+      - {macro: protect, with: {method: noise_uniform, split: messy}}
+      - macro: evaluate
+        with:
+          name: smoke_tiers
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: smoke_clean_test, tier: SMOKE, method: clean, split: test}
+            - {name: smoke_clean_val, tier: SMOKE, method: clean, split: val}
+            - {name: smoke_clean_messy, tier: SMOKE, method: clean, split: messy}
+            - {name: smoke_noise_uniform_test, tier: SMOKE, method: noise_uniform, split: test}
+            - {name: smoke_noise_uniform_val, tier: SMOKE, method: noise_uniform, split: val}
+            - {name: smoke_noise_uniform_messy, tier: SMOKE, method: noise_uniform, split: messy}
+      - macro: evaluate
+        with:
+          name: smoke_all_purifiers
+          defs: {no_generate_clean: false, limit: 2}
+          jobs:
+            - {name: smoke_purifiers_clean, tier: P, method: clean, split: test, editor: sd15_img2img,
+               purifier: "jpeg_q90,jpeg_q50,jpeg_other,downup_other,diffpure_0.05,diffpure_0.2,diffpure_0.3,restore_swin2sr,gridpure"}
+      - name: lpips_stage
+        run: ["{py}", scripts/evaluate.py, --stage, lpips, --config, "{cfg}", --out, "{results}/smoke_noise_uniform_test",
+              --cache_dir, "{out}/cache", --clean_edits_dir, "{out}/cache/clean_edits"]
+        optional: true
+        soft: true
+      - name: thresholds_stage
+        run: ["{py}", scripts/evaluate.py, --stage, thresholds, --config, "{cfg}", --split, test, --split_file,
+              "{splits_dir}/test.txt", --source_dir, "{out}/data/test", --cache_dir, "{out}/cache", --out,
+              "{results}/thresholds", "{limit_args}"]
+        optional: true
+        soft: true
+      - {name: smoke_report, run: ["{py}", scripts/smoke_report.py, --root, "{results}", --out, "{results}/smoke_report.md"],
+         soft: true, optional: true}
+
+  # ---------------------------------------------------------------------------------------------- S06
+  S06:
+    title: S06 Optuna on val (cap 3 h) -> tuned v2_final -> protect v2_final test+messy -> Tier H edits (no SDXL)
+    accelerator: gpu_t4x2
+    params: {smoke: false, optuna_trials: 16, optuna_images: 10, optuna_iters: 20, confirm_images: 20, final_yaml: ""}
+    smoke_params: {optuna_trials: 2, optuna_images: 2, optuna_iters: 3, confirm_images: 2}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [val, test, messy]}}
+      - {name: mkdir_optuna, run: ["{py}", -c, "import os; os.makedirs('{out}/optuna', exist_ok=True)"]}
+      - name: tune
+        workers: true
+        timeout_min: 180
+        allow_timeout: true
+        run: ["{py}", scripts/tune_optuna.py, --config, "{cfg}", --storage, "sqlite:///{out}/optuna/v2_final.db",
+              --study, v2_final, --n-trials, "{optuna_trials}", --n-images, "{optuna_images}", --iters, "{optuna_iters}",
+              --image-dir, "{out}/data/val", --val-list, "{splits_dir}/val.txt", --out-dir, "{out}/optuna",
+              --device, cuda]
+      - name: confirm
+        run: ["{py}", scripts/tune_optuna.py, --config, "{cfg}", --storage, "sqlite:///{out}/optuna/v2_final.db",
+              --study, v2_final, --confirm-top, "3", --confirm-images, "{confirm_images}", --confirm-iters, "{optuna_iters}",
+              --image-dir, "{out}/data/val", --val-list, "{splits_dir}/val.txt", --out-dir, "{out}/optuna",
+              --device, cuda]
+        optional: true
+      - name: make_config_tuned
+        builtin: make_config
+        final_yaml: "{out}/optuna/v2_final/final_candidate.yaml"
+        optional: true
+      - {macro: protect, with: {method: v2_final, split: test}}
+      - {macro: protect, with: {method: v2_final, split: messy}}
+      - macro: evaluate
+        with:
+          name: eval_h
+          jobs:
+            - {name: eval_v2_final_H, tier: H, method: v2_final, split: test,
+               editor: "sd15_img2img,ip2p,sd_inpaint,ipadapter_faceid"}
+
+  # ---------------------------------------------------------------------------------------------- S07
+  S07:
+    title: S07 Phase 5 single-term antipure ablation on val -> E0 clean edits (H, M, P) -> PSR thresholds
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [val, test, messy]}}
+      - {macro: protect, with: {method: v2_antipure, split: val, run: prot_ap_hf_val,
+                                extra: ["--set", "methods.v2_antipure.loss.anti_purify.w_mono=0.0"]}}
+      - {macro: protect, with: {method: v2_antipure, split: val, run: prot_ap_mono_val,
+                                extra: ["--set", "methods.v2_antipure.loss.anti_purify.w_hf=0.0"]}}
+      - {macro: protect, with: {method: v2_antipure, split: val, run: prot_ap_both_val}}
+      - macro: evaluate
+        with:
+          name: antipure_val
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: eval_ap_hf_val, tier: P, method: v2_antipure, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{results}/prot_ap_hf_val/images"}
+            - {name: eval_ap_mono_val, tier: P, method: v2_antipure, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{results}/prot_ap_mono_val/images"}
+            - {name: eval_ap_both_val, tier: P, method: v2_antipure, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{results}/prot_ap_both_val/images"}
+            - {name: eval_clean_val, tier: P, method: clean, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1"}
+      - macro: evaluate
+        with:
+          name: e0
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: e0_clean_H, tier: H, method: clean, split: test}
+            - {name: e0_clean_M, tier: M, method: clean, split: messy}
+            - {name: e0_clean_P, tier: P, method: clean, split: test}
+      - name: thresholds
+        run: ["{py}", scripts/evaluate.py, --stage, thresholds, --config, "{cfg}", --split, test, --split_file,
+              "{splits_dir}/test.txt", --source_dir, "{out}/data/test", --cache_dir, "{out}/cache", --out,
+              "{results}/thresholds", "{limit_args}"]
+        optional: true
+
+  # ---------------------------------------------------------------------------------------------- S08
+  S08:
+    title: S08 protect v1 (test+messy) -> E3 edits (H, M, P)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
+      - {macro: protect, with: {method: v1, split: test}}
+      - {macro: protect, with: {method: v1, split: messy}}
+      - macro: evaluate
+        with:
+          name: e3
+          jobs:
+            - {name: eval_v1_H, tier: H, method: v1, split: test}
+            - {name: eval_v1_M, tier: M, method: v1, split: messy}
+            - {name: eval_v1_P, tier: P, method: v1, split: test}
+
+  # ---------------------------------------------------------------------------------------------- S09
+  S09:
+    title: S09 protect v2_main (test+messy) -> E5 edits (H, M, P incl. FaceID subset)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
+      - {macro: protect, with: {method: v2_main, split: test}}
+      - {macro: protect, with: {method: v2_main, split: messy}}
+      - macro: evaluate
+        with:
+          name: e5
+          jobs:
+            - {name: eval_v2_main_H, tier: H, method: v2_main, split: test}
+            - {name: eval_v2_main_M, tier: M, method: v2_main, split: messy}
+            - {name: eval_v2_main_P, tier: P, method: v2_main, split: test}
+
+  # ---------------------------------------------------------------------------------------------- S10
+  S10:
+    title: S10 protect v2_cheap (test) -> E4 edits (H, P)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_cheap, split: test}}
+      - macro: evaluate
+        with:
+          name: e4
+          jobs:
+            - {name: eval_v2_cheap_H, tier: H, method: v2_cheap, split: test}
+            - {name: eval_v2_cheap_P, tier: P, method: v2_cheap, split: test}
+
+  # ---------------------------------------------------------------------------------------------- S11
+  S11:
+    title: S11 protect abl_vis_only + abl_den_only (test) -> E7a edits (tier A)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: abl_vis_only, split: test}}
+      - {macro: protect, with: {method: abl_den_only, split: test}}
+      - macro: evaluate
+        with:
+          name: e7a
+          jobs:
+            - {name: eval_abl_vis_den_A, tier: A, method: "abl_vis_only,abl_den_only", split: test}
+
+  # ---------------------------------------------------------------------------------------------- S12
+  S12:
+    title: S12 protect v2_antipure (test) -> E6 edits (tier P incl. FaceID none)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_antipure, split: test}}
+      - macro: evaluate
+        with:
+          name: e6
+          jobs:
+            - {name: eval_v2_antipure_P, tier: P, method: v2_antipure, split: test}
+
+  # ---------------------------------------------------------------------------------------------- S13
+  S13:
+    title: S13 protect PhotoGuard + Mist (test+messy) -> E2 edits (H, M, P)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
+      - {macro: protect, with: {method: photoguard, split: test}}
+      - {macro: protect, with: {method: photoguard, split: messy}}
+      - {macro: protect, with: {method: mist, split: test}}
+      - {macro: protect, with: {method: mist, split: messy}}
+      - macro: evaluate
+        with:
+          name: e2
+          jobs:
+            - {name: eval_pg_mist_H, tier: H, method: "photoguard,mist", split: test}
+            - {name: eval_pg_mist_M, tier: M, method: "photoguard,mist", split: messy}
+            - {name: eval_pg_mist_P, tier: P, method: "photoguard,mist", split: test}
+
+  # ---------------------------------------------------------------------------------------------- S14
+  S14:
+    title: S14 protect abl_no_sem + abl_no_pur -> E7b edits; noise controls (CPU) -> E1 edits
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
+      - {macro: protect, with: {method: abl_no_sem, split: test}}
+      - {macro: protect, with: {method: abl_no_pur, split: test}}
+      - macro: evaluate
+        with:
+          name: e7b
+          jobs:
+            - {name: eval_abl_nosem_nopur_A, tier: A, method: "abl_no_sem,abl_no_pur", split: test}
+      - {macro: protect, with: {method: noise_uniform, split: test}}
+      - {macro: protect, with: {method: noise_uniform, split: messy}}
+      - macro: protect
+        with: {method: noise_gauss_psnr, split: test,
+               extra: ["--set", "baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv"]}
+      - macro: protect
+        with: {method: noise_gauss_psnr, split: messy,
+               extra: ["--set", "baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv"]}
+      - macro: evaluate
+        with:
+          name: e1
+          jobs:
+            - {name: eval_noise_H, tier: H, method: "noise_uniform,noise_gauss_psnr", split: test}
+            - {name: eval_noise_M, tier: M, method: "noise_uniform,noise_gauss_psnr", split: messy}
+
+  # ---------------------------------------------------------------------------------------------- S15
+  S15:
+    title: S15 E8 adaptive attacker - protect AE pool with v2_final (K=2) + v1 on test -> train AE (1 h) -> edits
+    accelerator: gpu_t4x2
+    params:
+      smoke: false
+      prev_root: ""            # /kaggle/input/<S06 output>; needs S06/results/prot_v2_final_test and S06/optuna/...
+      final_yaml: "{prev_root}/S06/optuna/v2_final/final_candidate.yaml"
+      ae_minutes: 60
+    smoke_params: {ae_minutes: 1}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, ae_pool]}}
+      - {name: v2final_src_prev, when_not: smoke, builtin: set_var, vars: {v2final_results: "{prev_root}/S06/results"}}
+      - {name: v2final_src_local, when: smoke, builtin: set_var, vars: {v2final_results: "{results}"}}
+      - macro: protect
+        with: {method: v2_final, split: test}
+        when: smoke
+      - macro: protect
+        with: {method: v2_final, split: ae_pool, extra: ["--set", "methods.v2_final.eot.k_draws=2"]}
+      - {macro: protect, with: {method: v1, split: test}}
+      - name: train_ae
+        run: ["{py}", scripts/train_adaptive_ae.py, --protected_dir, "{results}/prot_v2_final_ae_pool/images",
+              --clean_dir, "{out}/data/ae_pool", --out, "{out}/adaptive_ae/ae_final.pt", --minutes, "{ae_minutes}", --resume]
+      - macro: evaluate
+        with:
+          name: e8
+          defs: {set: ["adaptive_ae.weights_path={out}/adaptive_ae/ae_final.pt"]}
+          jobs:
+            - {name: eval_ae_clean, tier: E8, method: clean, split: test}
+            - {name: eval_ae_v1, tier: E8, method: v1, split: test}
+            - {name: eval_ae_v2_final, tier: E8, method: v2_final, split: test,
+               protected_dir: "{v2final_results}/prot_v2_final_test/images"}
+
+  # ---------------------------------------------------------------------------------------------- S16
+  S16:
+    title: S16 v2_final remainder from the S06 protected images - SDXL (H), Tier P, FaceID-P, IP2P-P, messy (M)
+    accelerator: gpu_t4x2
+    params: {smoke: false, prev_root: "", final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
+      - {name: v2final_src_prev, when_not: smoke, builtin: set_var, vars: {v2final_results: "{prev_root}/S06/results"}}
+      - {name: v2final_src_local, when: smoke, builtin: set_var, vars: {v2final_results: "{results}"}}
+      - macro: protect
+        with: {method: v2_final, split: test}
+        when: smoke
+      - macro: protect
+        with: {method: v2_final, split: messy}
+        when: smoke
+      - macro: evaluate
+        with:
+          name: v2_final_rest
+          jobs:
+            - {name: eval_v2_final_P, tier: P, method: v2_final, split: test,
+               protected_dir: "{v2final_results}/prot_v2_final_test/images"}
+            - {name: eval_v2_final_M, tier: M, method: v2_final, split: messy,
+               protected_dir: "{v2final_results}/prot_v2_final_messy/images"}
+            - {name: eval_v2_final_H_sdxl, tier: H, method: v2_final, split: test, editor: sdxl_img2img,
+               protected_dir: "{v2final_results}/prot_v2_final_test/images"}
+
+  # ---------------------------------------------------------------------------------------------- S17 / S18
+  S17:
+    title: S17 E9 eps=2 then eps=6 (protect + edits); needs the tuned config/parts/final.yaml in the bundle (B3) or final_yaml
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: eps2, split: test}}
+      - macro: evaluate
+        with:
+          name: e9_eps2
+          jobs:
+            - {name: eval_eps2_E9, tier: E9, method: eps2, split: test}
+      - {macro: protect, with: {method: eps6, split: test}}
+      - macro: evaluate
+        with:
+          name: e9_eps6
+          jobs:
+            - {name: eval_eps6_E9, tier: E9, method: eps6, split: test}
+
+  S18:
+    title: S18 E9 eps=8 (protect + edits); needs config/parts/final.yaml in the bundle (B3) or final_yaml
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: eps8, split: test}}
+      - macro: evaluate
+        with:
+          name: e9_eps8
+          jobs:
+            - {name: eval_eps8_E9, tier: E9, method: eps8, split: test}

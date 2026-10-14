@@ -252,7 +252,7 @@ def run_jobs_file(args, cfg, argv) -> int:
         print(f"[jobs] {name}: start")
         try:
             ns = _job_namespace(base, ent)
-            job_cfg = er.load_eval_config(ns.config, ns.set, REPO) if (ns.set != base.set or ns.config != base.config) else cfg
+            job_cfg = er.load_eval_config(ns.config, ns.set, REPO) if (ns.set != args.set or ns.config != args.config) else cfg
             rc = run_job(ns, job_cfg, argv, shared)
             status[name] = {"state": "done" if rc == 0 else "failed", "rc": rc, "seconds": time.time() - t0}
         except Exception as e:  # keep going: overnight sessions are limited

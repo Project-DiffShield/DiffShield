@@ -23,7 +23,8 @@ jobs.yaml schema (see kaggle/jobs.yaml):
           run: [argv...]               # {py} {code} {out} {results} {cfg} {splits_dir} {run_id} {job_id} {n_gpus} + params
           sharded: true                # one process per GPU, CUDA_VISIBLE_DEVICES=g, "--shard K/N" appended
           workers: true                # one process per GPU with "--worker-id w<g>" appended (Optuna)
-          optional: true               # failure does not abort the job
+          optional: true               # failure does not abort the job (but the job is then not marked DONE)
+          soft: true                   # failure is ignored completely (checks, optional reports)
           when: <param> | [params]     # run only if all those params are truthy ("when_not" for the inverse)
           timeout_min: 180             # kill the step after N minutes (allow_timeout: true => counts as success)
           run_id: <str>                # resume key for {resume_arg}
@@ -88,6 +89,7 @@ def expand_steps(steps, macros):
         if "macro" in st:
             body = macros[st["macro"]]
             mapping = {**(body.get("defaults") or {}), **(st.get("with") or {})}
+            mapping = {k: (subst(v, mapping) if isinstance(v, str) else v) for k, v in mapping.items()}
             inner = expand_steps(subst(copy.deepcopy(body["steps"]), mapping), macros)
             for s in inner:
                 for k in ("when", "when_not"):
@@ -466,7 +468,7 @@ def run_job(jid, jobs, a, session_log):
     env = dict(os.environ)
     env["PYTHONIOENCODING"] = "utf-8"
     env["PYTHONPATH"] = str(REPO) + os.pathsep + env.get("PYTHONPATH", "")
-    status, rc_job = {}, 0
+    status, rc_job, hard_fail = {}, 0, []
     for st in steps:
         if not step_enabled(st, params):
             log(f"step {st['name']}: skipped (condition)")
@@ -475,12 +477,15 @@ def run_job(jid, jobs, a, session_log):
         rc = run_step(st, vars_, params, env, out / "logs", log, tag, a)
         status[st["name"]] = {"rc": rc, "seconds": round(time.time() - s0, 1)}
         log(f"step {st['name']}: rc={rc} ({time.time() - s0:.0f}s)")
-        if rc != 0 and not st.get("optional"):
+        if rc != 0 and not st.get("soft"):
+            hard_fail.append(st["name"])
+        if rc != 0 and not st.get("optional") and not st.get("soft"):
             rc_job = rc
             log(f"step {st['name']} failed; aborting job (rerun the same command to resume)")
             break
     sess = {"job_id": jid, "run_id": run_id, "session_seconds": time.time() - t0, "n_gpus": n_gpus,
-            "steps": status, "params": dict(params), "ok": rc_job == 0}
+            "steps": status, "params": dict(params), "ok": rc_job == 0 and not hard_fail,
+            "failed_steps": hard_fail}
     (out / "kaggle_session.json").write_text(json.dumps(sess, indent=2, default=str))
     results.mkdir(exist_ok=True)
     shutil.copy2(out / "kaggle_session.json", results / "kaggle_session.json")

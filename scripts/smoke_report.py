@@ -18,8 +18,7 @@ def md(df):
     rows = ["| " + " | ".join(cols) + " |", "|" + "---|" * len(cols)]
     for r in df.itertuples(index=False):
         rows.append("| " + " | ".join(f"{v:.3f}" if isinstance(v, float) else str(v) for v in r) + " |")
-    return "
-".join(rows)
+    return chr(10).join(rows)
 
 
 def main(argv=None) -> int:

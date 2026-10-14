@@ -98,9 +98,12 @@ def load_config(path, method: str | None = None, overrides: Sequence[str] = (),
             method_key = "v2_final_default"  # tuned layer (config/parts/final.yaml) not present yet
         else:
             method_key = method
-        if method_key not in presets:
+        if method_key not in presets and (method.startswith("noise_") or method in ("photoguard", "mist")):
+            method_key = None  # baselines read their own `baselines:` block; no method preset
+        elif method_key not in presets:
             raise KeyError(f"method preset {method!r} not found in config (have: {sorted(presets)})")
-        cfg = deep_merge(cfg, presets[method_key])
+        if method_key is not None:
+            cfg = deep_merge(cfg, presets[method_key])
     cfg = apply_overrides(cfg, overrides)
     cfg["_method"] = method
     cfg["_overrides"] = list(overrides or ())
