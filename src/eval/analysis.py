@@ -306,8 +306,14 @@ def load_npz_sources(paths: Sequence[Path]) -> Dict[str, Optional[np.ndarray]]:
     out: Dict[str, Optional[np.ndarray]] = {}
     for p in paths:
         z = np.load(p, allow_pickle=False)
+        if "ok" not in z.files:
+            # S03's make_splits caches (keys det_score / n_faces, made with the UNPADDED detector that missed 38 of 100
+            # test faces) are a different layout and are not evaluation sources: skip them instead of mixing them in.
+            continue
         for i, k in enumerate(z["ids"]):
-            out.setdefault(str(k), z["emb"][i].astype(np.float32) if bool(z["ok"][i]) else None)
+            emb = z["emb"][i].astype(np.float32) if bool(z["ok"][i]) else None
+            if str(k) not in out or (out[str(k)] is None and emb is not None):
+                out[str(k)] = emb
     return out
 
 

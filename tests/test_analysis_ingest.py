@@ -146,3 +146,15 @@ def test_compute_edit_lpips_fills_nan_resumable(tmp_path, workers):
     # second run: nothing left to compute except the missing one; cache not duplicated
     assert clp.main(args) == 0
     assert len(pd.read_csv(comb / "edit_lpips_cache.csv", dtype=str)) == 2
+
+
+def test_smoke_sessions_are_excluded():
+    from pathlib import Path
+
+    from scripts.ingest_results import is_smoke_path
+
+    assert is_smoke_path(Path("S05c/S05/results/smoke_clean_test/metrics.csv").parts)
+    assert is_smoke_path(Path("S04t/S04t/results/prot_v2_main_test/metrics.csv").parts)
+    assert is_smoke_path(Path("S08/S08/results/smoke_x/metrics.csv").parts)
+    assert not is_smoke_path(Path("S08/S08/results/eval_v1_H/metrics.shard0.csv").parts)
+    assert not is_smoke_path(Path("J01/results/J01/metrics.csv").parts)

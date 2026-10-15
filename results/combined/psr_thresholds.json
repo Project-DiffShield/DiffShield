@@ -1,0 +1,24 @@
+{
+  "percentile": 95.0,
+  "per_editor": {
+    "ip2p": 0.10775226496545169,
+    "ipadapter_faceid": 0.1078936712001695,
+    "sd15_img2img": 0.10054539651520272,
+    "sd_inpaint": 0.10970453486167729,
+    "sdxl_img2img": 0.10367028692086117
+  },
+  "n_pairs": {
+    "ip2p": 24453,
+    "ipadapter_faceid": 29700,
+    "sd15_img2img": 147609,
+    "sd_inpaint": 29700,
+    "sdxl_img2img": 29700,
+    "pooled": 261162
+  },
+  "n_sources_with_face": 100,
+  "computed_by": "src.eval.analysis.thresholds_from_embeddings",
+  "pooled": 0.1034364047631,
+  "n_source_embeddings_merged": 120,
+  "n_edit_embeddings_merged": 2820,
+  "restricted_to": "test split image ids"
+}

@@ -1,0 +1,132 @@
+# DiffShield v2: single source of truth for hyperparameters, seeds and paths.
+# ALL perturbation budgets are on the STANDARD 0-255 scale. Tensors in code are in [-1, 1],
+# so code converts with eps_model = eps_255 * 2 / 255 (src/utils/budget.py). Never hard-code 8/255.
+project: diffshield
+config_version: 1
+seed: 2026                     # base seed; per-item seeds = derive_seed(seed, purpose, item_id) (sha256)
+
+paths:
+  results_root: results
+  data_root: data
+  splits_dir: data/splits
+  cache_dir: results/cache
+  celebahq_root: null          # dir containing CelebA-HQ-img/ and CelebAMask-HQ-attribute-anno.txt
+                               # null on Kaggle => auto-discover under /kaggle/input (same logic as v1)
+
+models:                        # ids UNVERIFIED until env probe / first load; then pin `revision` to the commit sha
+  sd15:          {id: "stable-diffusion-v1-5/stable-diffusion-v1-5", revision: null}
+  sd15_v1:       {id: "runwayml/stable-diffusion-v1-5", revision: null}      # id used by v1; reproduction only
+  sd15_inpaint:  {id: "stable-diffusion-v1-5/stable-diffusion-inpainting", revision: null}
+  sdxl:          {id: "stabilityai/stable-diffusion-xl-base-1.0", revision: null}
+  sdxl_vae_fp16: {id: "madebyollin/sdxl-vae-fp16-fix", revision: null}
+  ip2p:          {id: "timbrooks/instruct-pix2pix", revision: null}
+  ipadapter_faceid: {id: "h94/IP-Adapter-FaceID", weight: "ip-adapter-faceid_sd15.bin", revision: null}
+  clip_sem:      {id: "openai/clip-vit-base-patch32", revision: null}     # L_sem (v1)
+  clip_eval:     {id: "openai/clip-vit-large-patch14", revision: null}    # CLIP-I metric; deliberately != clip_sem
+  lpips_net: vgg
+  arcface_eval:  {pack: buffalo_l, det_size: [640, 640]}                  # insightface; evaluation only
+
+budget:
+  scale: standard_0_255
+  eps_255: 4                   # confirmed by J01 budget check: v1 code 8/255 on [-1,1] == 4/255 standard
+  eps_confirmed: true          # J01 (2026-10-14): 70/70 PNGs max |gray-level change| = 4, Linf = 8/255 on [-1,1]
+  step_255: 0.5                # v1 actual (alpha=1/255 on [-1,1]). Handoff table said 1; see PHASE_0.md finding F1
+  iters: 40
+  random_start: uniform_full   # uniform_full = U(-eps,eps) (v1) | uniform_half (handoff ref code) | zero
+  eps_sweep_255: [2, 4, 6, 8]  # E9
+
+loss:
+  alpha: 0.2699475469647097    # v1 Optuna best trial (data/v1_ref/optimal_hyperparameters.json); handoff rounds to 0.27
+  beta: 0.9023875567667267
+  gamma: 60.52658429696642
+  eta: 0.27                    # L_den weight; starts = alpha; retuned in Phase 6
+  lambda_id: 0.0               # L_id weight; enabled in Phase 6
+  sem_target_text: "a potted plant"
+  l_vis_latent: unscaled_mean  # MSE on vae.encode(x).latent_dist.mean, no scaling_factor (v1 scale; alpha tuned on it)
+  l_str_on: published          # v2: 1-SSIM(x, x+delta). v1 preset overrides to augmented_pair
+  ssim: {window: 11, sigma: 1.5}
+  normalize_terms: false       # Phase 6
+  anti_purify: {enabled: false, w_hf: 0.5, w_mono: 0.5}   # Phase 5 (AntiPure idea)
+
+eot:
+  k_draws: 4                   # 8 if memory allows
+  spatial: {enabled: false, crop_scale: [0.8, 1.0], p: 0.5}   # if enabled: same crop on clean, z_clean recomputed per draw
+  v1: {jpeg_quality: [50, 100], crop_scale: [0.8, 1.0], p: 0.5, same_on_batch: true}
+
+purifiers_train: [jpeg, downup, vae_roundtrip, sd_onestep]
+purifier_train_probs: {jpeg: 0.25, downup: 0.25, vae_roundtrip: 0.2, sd_onestep: 0.3}   # Phase 3 renormalizes without sd_onestep
+purifier_train_params:
+  jpeg:          {impl: kornia_diff, quality: [50, 95]}
+  downup:        {scale: [0.5, 0.9], modes: [bilinear, bicubic], antialias: true}
+  vae_roundtrip: {model: sd15, latent: mean}
+  sd_onestep:    {model: sd15, t_min: 50, t_max: 300, prompt: ""}
+purifiers_heldout: [jpeg_q_other, downup_other, diffpure_t0.1, diffpure_t0.2, diffpure_t0.3, gridpure]
+purifier_eval:                 # Half B only; real codecs (PIL), never the differentiable approximations
+  none: {}
+  jpeg_q90: {impl: pil, quality: 90}
+  jpeg_q75: {impl: pil, quality: 75}
+  jpeg_q50: {impl: pil, quality: 50}
+  jpeg_q_other: {impl: pil, quality: 65, subsampling: "4:4:4"}
+  downup_0.5:   {impl: pil, scale: 0.5, resample: bicubic}
+  downup_other: {impl: pil, scale: 0.375, resample: lanczos}
+  vae_rt_sd15:  {model: sd15}
+  diffpure_t0.05: {impl: sd_img2img_empty_prompt, strength: 0.05, steps: 50, guidance: 1.0}
+  diffpure_t0.1:  {impl: sd_img2img_empty_prompt, strength: 0.1,  steps: 50, guidance: 1.0}
+  diffpure_t0.2:  {impl: sd_img2img_empty_prompt, strength: 0.2,  steps: 50, guidance: 1.0}
+  diffpure_t0.3:  {impl: sd_img2img_empty_prompt, strength: 0.3,  steps: 50, guidance: 1.0}
+  gridpure: {impl: official, feasible: unverified}
+  restore_swin2sr: {impl: downup_then_sr, scale: 0.5, model: "caidas/swin2SR-classical-sr-x2-64"}
+
+editors: [sd15_img2img, sdxl_img2img, ip2p, sd_inpaint, ipadapter_faceid]   # identity editor: IP-Adapter FaceID (see Section 6)
+edit:
+  strengths: [0.3, 0.55, 0.75]          # sd15_img2img sweeps these; others use default_strength
+  default_strength: 0.55
+  seeds: [1, 2, 3]
+  guidance_scale: 7.5
+  num_inference_steps: 50
+  prompts:
+    img2img: ["a person in a suit", "a person at a beach", "an oil painting of a person"]
+    ip2p:    ["put the person in a suit", "put the person on a beach", "turn it into an oil painting"]
+  ip2p_image_guidance: 1.5
+  sdxl_resolution: 1024
+  v1_phase2: {prompt: "a highly detailed portrait, cyberpunk style, neon lighting, digital art masterpiece",
+              strength: 0.55, guidance: 7.5, seed: 2026}
+
+data:
+  image_size: 512
+  clean_format: png             # v2: lossless. v1 preset: v1_jpeg (PIL default q75)
+  n_train: 20
+  n_val: 20
+  n_test: 100
+  n_messy: 20
+  split_seed: 2026
+  v1_selection: {kmeans_random_state: 42, n_init: 10, k_range: [1, 20], k_eval: 70, fallback_k_calib: 4}
+
+metrics:
+  identity: arcface
+  psr_threshold: "from clean-edit distribution"   # 95th pct of ArcFace sim(source_i, clean_edit_j), i != j
+  psr_impostor_percentile: 95
+  psr_threshold_scope: per_editor
+  no_face_counts_as_success: true                  # and report no-face rate separately
+  invisibility_min: {psnr: 38.0, ssim: 0.95}
+
+stats: {n_boot: 10000, ci: 0.95, unit: image, bootstrap_seed: 2026}
+
+runtime:
+  device: auto                  # cuda if available else cpu
+  unet_dtype: fp16
+  vae_dtype_protect: autocast   # fp32 | autocast. autocast = fp16 VAE fwd/bwd; S04u: ~2x faster, same loss trajectory as fp32 (4 images, 10 iters)
+  grad_checkpointing: true
+  loss_scale: 1024.0            # multiply loss before autograd.grad (fp16 underflow guard; sign() is scale-invariant)
+  checkpoint_every: 5           # images
+  cudnn_benchmark: false
+
+methods:                        # presets deep-merged over the root by load_config(method=...)
+  v1:
+    budget: {eps_255: 4, step_255: 0.5, iters: 40, random_start: uniform_full}
+    eot: {k_draws: 1}
+    loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0, l_str_on: augmented_pair}
+    purifiers_train: []
+    model_key: sd15_v1
+    data: {clean_format: v1_jpeg}
+  # v2_cheap (Phase 3), v2_onestep (Phase 4), v2_full (Phase 6) are added later, never edited after their gate.

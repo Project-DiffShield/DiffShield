@@ -1,6 +1,6 @@
 # Launch sheet for the teammate accounts (acct3, acct4, acct5) - day 2, from 09:00
 
-Bundle: the dataset `diffshield-code-v3` (git `64b0815`, from `kaggle/dist/B2c`; shared by the coordinator). Do NOT use any older dataset.
+Bundle: the dataset `diffshield-code-v5` (from `kaggle/dist/B5`; shared by the coordinator). Check that the log prints the hash named in the coordinator's message. Do NOT use any older dataset (v2/v3/v4 have jobs that silently produce empty purifier results).
 Every notebook: import `kaggle/job_runner.ipynb`; inputs = the code dataset + `ipythonx/celebamaskhq`; accelerator GPU T4 x2; Internet ON;
 `PARAMS = {}`, `RESUME_FROM = None`; **Save & Run All** (so it keeps running when the laptop is closed). One notebook per session, two sessions can run at once per account.
 
@@ -9,13 +9,14 @@ Every notebook: import `kaggle/job_runner.ipynb`; inputs = the code dataset + `i
 | acct3 | A | `["S10"]` | v2_cheap protection (100 photos) + edits (E4) + the clean-photo purifier tier (E0 P) | ~7.5 h | `S10_outputs.zip` |
 | acct3 | B | `["S11"]` | abl_vis_only + abl_den_only on the first 50 test photos + edits (E7a) | ~6 h | `S11_outputs.zip` |
 | acct4 | A | `["S12"]` | v2_antipure protection (100 photos) + edits (E6) | ~8 h | `S12_outputs.zip` |
-| acct5 | A | `["S13"]` | PhotoGuard (1000 iterations) + Mist + edits (E2); downloads the official Mist target image at runtime | ~7.5 h | `S13_outputs.zip` |
+| acct5 | A | `["S13"]` | PhotoGuard (1000 iterations) + edits (E2) | ~6.5 h | `S13_outputs.zip` |
+| acct4 | B | `["S21"]` | Mist + edits (E2); downloads the official Mist target image at runtime | ~3 h | `S21_outputs.zip` |
 | acct5 | B | `["S14"]` | abl_no_sem + abl_no_pur (first 50 test photos) + edits (E7b), noise controls + edits (E1) | ~7.5 h | `S14_outputs.zip` |
 
 Estimates come from `docs/COST_MEASURED.md` and the S05 edit timings (edits are unmeasured at full scale; treat as +-30%).
 
 ## Check 10 minutes after each launch (Logs tab of the running version; open it in its own browser tab)
-1. `"git_hash"` starts with `64b0815`.
+1. `"git_hash"` matches the coordinator's message.
 2. After the data-preparation step you see protection lines `[k/n] <id> psnr=.. ssim=.. gpu_s=..` (expected `gpu_s` per image at 40 iterations: v2_cheap ~150, v2_antipure ~430, abl_* ~250, PhotoGuard ~270, Mist ~55).
 3. Later, in the edit stage: `[faces] insightface buffalo_l providers=['CUDAExecutionProvider', ...]` and NO line containing `EDITOR FAILED` or `pack incomplete`.
 If a line is wrong, copy the log into the chat with the coordinator right away. Do not edit the notebook or the dataset while a session is running (that restarts it).

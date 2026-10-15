@@ -1,0 +1,345 @@
+{
+  "results_root": "results",
+  "files": [
+    {
+      "file": "results\\J01\\results\\J01\\metrics.csv",
+      "kind": "protect",
+      "rows": 70,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\J01\\results\\J01\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 35,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\J01\\results\\J01\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 35,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\e0_clean_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1350,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\e0_clean_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1350,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\e0_clean_M\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\e0_clean_M\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\e0_clean_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\e0_clean_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_ap_both_val\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_ap_both_val\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_ap_hf_val\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_ap_hf_val\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_ap_mono_val\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_ap_mono_val\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_clean_val\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\eval_clean_val\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_both_val\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_both_val\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_both_val\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_hf_val\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_hf_val\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_hf_val\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_mono_val\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_mono_val\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S07\\S07\\results\\prot_ap_mono_val\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\eval_v1_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1350,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\eval_v1_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1350,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\eval_v1_M\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\eval_v1_M\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\eval_v1_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\eval_v1_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\prot_v1_messy\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\prot_v1_messy\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\prot_v1_messy\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\prot_v1_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\prot_v1_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S08\\S08\\results\\prot_v1_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\eval_v2_main_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1200,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\eval_v2_main_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1200,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\eval_v2_main_M\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\eval_v2_main_M\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\eval_v2_main_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\eval_v2_main_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 0,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\prot_v2_main_messy\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\prot_v2_main_messy\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\prot_v2_main_messy\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\prot_v2_main_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\prot_v2_main_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S09\\S09\\results\\prot_v2_main_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    }
+  ],
+  "rejected": [],
+  "unzipped": [],
+  "warnings": [],
+  "edits": {
+    "rows_in": 8160,
+    "rows_out": 8160,
+    "duplicates_dropped": 0,
+    "conflicts": 0,
+    "lpips_filled_from_cache": 0,
+    "n_cells": 20,
+    "lpips_missing": 8160
+  },
+  "plan": {
+    "expected_cells": 229,
+    "missing_cells": 203
+  },
+  "protect": {
+    "rows_in": 740,
+    "rows_out": 370,
+    "duplicates_dropped": 370
+  },
+  "thresholds_from_job": "results\\S07\\S07\\results\\thresholds\\psr_thresholds.json",
+  "thresholds": {
+    "per_editor": {
+      "ip2p": 0.10775226496545169,
+      "ipadapter_faceid": 0.1078936712001695,
+      "sd15_img2img": 0.10054539651520272,
+      "sd_inpaint": 0.10970453486167729,
+      "sdxl_img2img": 0.10367028692086117
+    },
+    "pooled": 0.1034364047631,
+    "n_pairs": {
+      "ip2p": 24453,
+      "ipadapter_faceid": 29700,
+      "sd15_img2img": 147609,
+      "sd_inpaint": 29700,
+      "sdxl_img2img": 29700,
+      "pooled": 261162
+    }
+  }
+}

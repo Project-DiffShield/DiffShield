@@ -1,0 +1,54 @@
+{
+  "job_id": "S09",
+  "run_id": "S09",
+  "session_seconds": 21424.91103744507,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 41.3
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.6
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 16.1
+    },
+    "protect_prot_v2_main_test": {
+      "rc": 0,
+      "seconds": 13545.4
+    },
+    "merge_prot_v2_main_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "protect_prot_v2_main_messy": {
+      "rc": 0,
+      "seconds": 2740.1
+    },
+    "merge_prot_v2_main_messy": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "e5": {
+      "rc": 0,
+      "seconds": 5075.2
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

@@ -1,0 +1,30 @@
+[22:19:22] S09: start: S09 protect v2_main (test+messy) -> E5 edits (H, M, P incl. FaceID subset) | gpus=2 smoke=False n_images=None iters=None resume=None
+[22:19:22] S09: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[22:20:03] S09: step install: rc=0 (41s)
+[22:20:03] S09: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[22:20:09] S09: step check_env: rc=0 (6s)
+[22:20:09] S09: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[22:20:09] S09: step resolve_splits: rc=0 (0s)
+[22:20:09] S09: config: no tuned final.yaml; v2_final = hand-set v2_final_default
+[22:20:09] S09: step make_config: rc=0 (0s)
+[22:20:09] S09: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S09/data --splits test messy --no_cache
+[22:20:25] S09: step prepare_data: rc=0 (16s)
+[22:20:25] S09: [protect_prot_v2_main_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S09/cfg/config.yaml --method v2_main --input_dir /kaggle/working/S09/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_main_test --output_root /kaggle/working/S09/results --checkpoint_every 5 --split test --shard 0/2
+[22:20:25] S09: [protect_prot_v2_main_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S09/cfg/config.yaml --method v2_main --input_dir /kaggle/working/S09/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_main_test --output_root /kaggle/working/S09/results --checkpoint_every 5 --split test --shard 1/2
+[01:48:15] S09: [protect_prot_v2_main_test] protect_prot_v2_main_test.gpu0.log exited 0; tail: ['[01:27:23] [45/50] 7551 psnr=41.49 ssim=0.9733 gpu_s=239.3', '[01:48:11] [50/50] 986 psnr=41.36 ssim=0.9811 gpu_s=248.2', '[01:48:11] done']
+[02:06:10] S09: [protect_prot_v2_main_test] protect_prot_v2_main_test.gpu1.log exited 0; tail: ['[01:43:53] [45/50] 7603 psnr=41.34 ssim=0.9795 gpu_s=278.1', '[02:06:07] [50/50] 9954 psnr=42.42 ssim=0.9755 gpu_s=264.0', '[02:06:07] done']
+[02:06:10] S09: step protect_prot_v2_main_test: rc=0 (13545s)
+[02:06:10] S09: [merge_prot_v2_main_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S09/results/prot_v2_main_test
+[02:06:11] S09: step merge_prot_v2_main_test: rc=0 (1s)
+[02:06:11] S09: [protect_prot_v2_main_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S09/cfg/config.yaml --method v2_main --input_dir /kaggle/working/S09/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v2_main_messy --output_root /kaggle/working/S09/results --checkpoint_every 5 --split messy --shard 0/2
+[02:06:11] S09: [protect_prot_v2_main_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S09/cfg/config.yaml --method v2_main --input_dir /kaggle/working/S09/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v2_main_messy --output_root /kaggle/working/S09/results --checkpoint_every 5 --split messy --shard 1/2
+[02:47:46] S09: [protect_prot_v2_main_messy] protect_prot_v2_main_messy.gpu0.log exited 0; tail: ['[02:27:01] [5/10] 23397 psnr=41.67 ssim=0.9715 gpu_s=254.9', '[02:47:43] [10/10] 8790 psnr=41.47 ssim=0.9772 gpu_s=245.6', '[02:47:43] done']
+[02:51:51] S09: [protect_prot_v2_main_messy] protect_prot_v2_main_messy.gpu1.log exited 0; tail: ['[02:29:02] [5/10] 23465 psnr=41.81 ssim=0.9752 gpu_s=281.0', '[02:51:47] [10/10] 9918 psnr=42.36 ssim=0.9763 gpu_s=260.2', '[02:51:47] done']
+[02:51:51] S09: step protect_prot_v2_main_messy: rc=0 (2740s)
+[02:51:51] S09: [merge_prot_v2_main_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S09/results/prot_v2_main_messy
+[02:51:52] S09: step merge_prot_v2_main_messy: rc=0 (1s)
+[02:51:52] S09: [e5] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S09/eval_jobs.e5.g0.yaml --shard 0/2
+[02:51:52] S09: [e5] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S09/eval_jobs.e5.g1.yaml --shard 1/2
+[04:08:07] S09: [e5] e5.gpu0.log exited 0; tail: ['  },', '  "summary": []', '}']
+[04:16:27] S09: [e5] e5.gpu1.log exited 0; tail: ['  },', '  "summary": []', '}']
+[04:16:27] S09: step e5: rc=0 (5075s)

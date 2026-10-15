@@ -408,7 +408,7 @@ jobs:
 
   # ---------------------------------------------------------------------------------------------- S13
   S13:
-    title: S13 protect PhotoGuard + Mist (test+messy) -> E2 edits (H, M, P)
+    title: S13 protect PhotoGuard (test+messy) -> E2 edits (H, M, P)   [Mist moved to S21 so that neither session can pass 11 h]
     accelerator: gpu_t4x2
     params: {smoke: false, final_yaml: ""}
     steps:
@@ -416,6 +416,21 @@ jobs:
       - {macro: prep, with: {splits: [test, messy]}}
       - {macro: protect, with: {method: photoguard, split: test}}
       - {macro: protect, with: {method: photoguard, split: messy}}
+      - macro: evaluate
+        with:
+          name: e2_pg
+          jobs:
+            - {name: eval_pg_H, tier: H, method: photoguard, split: test}
+            - {name: eval_pg_M, tier: M, method: photoguard, split: messy}
+            - {name: eval_pg_P, tier: P, purifier: all, method: photoguard, split: test}
+
+  S21:
+    title: S21 protect Mist (test+messy; official target image fetched at runtime) -> E2 edits (H, M, P)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
       # official Mist target image (GPL-3.0 repo): fetched at runtime, never vendored into the bundle
       - name: fetch_mist_target
         run: ["{py}", "-c", "import os,sys,urllib.request as u; p=sys.argv[2]; os.makedirs(os.path.dirname(p),exist_ok=True); u.urlretrieve(sys.argv[1],p); print('saved',p,os.path.getsize(p))",
@@ -425,11 +440,11 @@ jobs:
       - {macro: protect, with: {method: mist, split: messy, extra: ["--set", "baselines.mist.target_image={out}/assets/MIST.png"]}}
       - macro: evaluate
         with:
-          name: e2
+          name: e2_mist
           jobs:
-            - {name: eval_pg_mist_H, tier: H, method: "photoguard,mist", split: test}
-            - {name: eval_pg_mist_M, tier: M, method: "photoguard,mist", split: messy}
-            - {name: eval_pg_mist_P, tier: P, purifier: all, method: "photoguard,mist", split: test}
+            - {name: eval_mist_H, tier: H, method: mist, split: test}
+            - {name: eval_mist_M, tier: M, method: mist, split: messy}
+            - {name: eval_mist_P, tier: P, purifier: all, method: mist, split: test}
 
   # ---------------------------------------------------------------------------------------------- S14
   S14:
@@ -513,6 +528,9 @@ jobs:
       - macro: protect
         with: {method: v2_final, split: messy}
         when: smoke
+      - macro: protect                      # S06 timed out while protecting the messy photos: redo them here (tuned config via final_yaml)
+        with: {method: v2_final, split: messy}
+        when_not: smoke
       - macro: evaluate
         with:
           name: v2_final_rest
@@ -523,7 +541,7 @@ jobs:
             - {name: eval_v2_final_P, tier: P, purifier: all, method: v2_final, split: test,
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
             - {name: eval_v2_final_M, tier: M, method: v2_final, split: messy,
-               protected_dir: "{v2final_results}/prot_v2_final_messy/images"}
+               protected_dir: "{results}/prot_v2_final_messy/images"}
             - {name: eval_v2_final_H_sdxl, tier: H, method: v2_final, split: test, editor: sdxl_img2img,
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
 

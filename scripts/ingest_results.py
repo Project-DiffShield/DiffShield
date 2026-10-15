@@ -66,12 +66,26 @@ def safe_extract(zip_path: Path, dest: Path, with_images: bool = False, max_memb
     return {"zip": str(zip_path), "extracted": n_ok, "skipped": n_skip, "dest": str(dest)}
 
 
+# Smoke / validation sessions are throw-away (5 images, few iterations, throw-away splits): their rows must never reach the
+# combined result set (S05 smoke clean edits shared keys with the real E0 rows and produced "conflicts"). Top-level
+# folder names matched here, plus any path part starting with "smoke_", are skipped.
+SMOKE_TOP_LEVEL = ("S03", "S04", "S04t", "S04u", "S05", "S05b", "S05c", "J00")
+
+
+def is_smoke_path(rel_parts) -> bool:
+    return bool(rel_parts) and (rel_parts[0] in SMOKE_TOP_LEVEL or any(part.startswith("smoke_") for part in rel_parts))
+
+
 def find_files(root: Path, patterns, exclude_dirs=("combined", "_to_delete")) -> list:
     out = []
     for pat in patterns:
         for p in root.rglob(pat):
-            if p.is_file() and not any(part in exclude_dirs for part in p.relative_to(root).parts):
-                out.append(p)
+            if not p.is_file():
+                continue
+            parts = p.relative_to(root).parts
+            if any(part in exclude_dirs for part in parts) or is_smoke_path(parts):
+                continue
+            out.append(p)
     return sorted(set(out))
 
 
