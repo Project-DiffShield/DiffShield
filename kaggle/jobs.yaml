@@ -525,12 +525,8 @@ jobs:
       - macro: protect
         with: {method: v2_final, split: test}
         when: smoke
-      - macro: protect
-        with: {method: v2_final, split: messy}
-        when: smoke
       - macro: protect                      # S06 timed out while protecting the messy photos: redo them here (tuned config via final_yaml)
         with: {method: v2_final, split: messy}
-        when_not: smoke
       - macro: evaluate
         with:
           name: v2_final_rest
