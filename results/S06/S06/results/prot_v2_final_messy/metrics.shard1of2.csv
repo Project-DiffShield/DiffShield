@@ -1,0 +1,2 @@
+run_id,method,method_cfg_hash,image_id,split,seed,editor,prompt_id,strength,purifier,src_file,out_file,eps_255,step_255,iters,v1_psnr,v1_ssim,v1_lpips,v1_linf_model,png_psnr,png_ssim,png_lpips,png_maxabs_u8,png_frac_at_bound,gpu_seconds,peak_mem_mb,created_utc
+prot_v2_final_messy,v2_final,674df5124f6f,12996,messy,572414978,none,none,,none,12996.png,12996.png,4,1.0,40,38.32392388920711,0.9010043397881686,0.4700230360031128,0.031372666358947754,38.4243133212308,0.9023335032971355,0.4700230658054352,4,0.4019826253255208,381.6249625269993,6762.60400390625,2026-10-15T11:53:09Z

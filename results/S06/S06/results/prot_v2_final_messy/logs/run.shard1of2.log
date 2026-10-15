@@ -1,0 +1,2 @@
+[11:46:44] run prot_v2_final_messy method=v2_final device=cuda backend=real shard=(1, 2) git=64b0815 dirty=False
+[11:46:44] 10 images in this shard (20 total), 0 already done

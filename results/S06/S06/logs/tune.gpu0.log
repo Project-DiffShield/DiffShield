@@ -1,0 +1,167 @@
+/kaggle/tmp/DiffShield/scripts/tune_optuna.py:262: FutureWarning: RetryFailedTrialCallback has been deprecated in v4.9.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v4.9.0. Use `RetryHeartbeatStaleTrialCallback` instead.
+  failed_trial_callback=optuna.storages.RetryFailedTrialCallback(max_retry=1))
+/usr/local/lib/python3.13/dist-packages/optuna/_deprecated.py:180: ExperimentalWarning: RetryHeartbeatStaleTrialCallback is experimental (supported from v2.8.0). The interface can change in the future.
+  _original_init(self, *args, **kwargs)
+/kaggle/tmp/DiffShield/scripts/tune_optuna.py:259: ExperimentalWarning: Argument ``heartbeat_interval`` is an experimental feature. The interface can change in the future.
+  storage = optuna.storages.RDBStorage(
+/kaggle/tmp/DiffShield/scripts/tune_optuna.py:259: FutureWarning: `failed_trial_callback` has been deprecated in v4.9.0. This feature will be removed in v6.0.0. See https://github.com/optuna/optuna/releases/tag/v4.9.0. Use `heartbeat_stale_trial_callback` instead.
+  storage = optuna.storages.RDBStorage(
+/kaggle/tmp/DiffShield/scripts/tune_optuna.py:263: FutureWarning: `constraints_func` has been deprecated in v5.0.0. This feature will be removed in v7.0.0. See https://github.com/optuna/optuna/releases/tag/v5.0.0. Use `optuna.trial.Trial.set_constraint` instead.
+  sampler = optuna.samplers.TPESampler(seed=args.seed, n_startup_trials=args.startup, constant_liar=True,
+[I 2026-10-14 23:54:49,196] A new study created in RDB with name: v2_final
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s]Loading weights: 100%|██████████| 196/196 [00:00<00:00, 2472.10it/s]
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 6860.72it/s]
+[transformers] [1mCLIPVisionModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████| 197/197 [00:00<00:00, 4227.20it/s]
+[transformers] [1mCLIPTextModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+visual_projection.weight                                       | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+vision_model.embeddings.class_embedding                        | UNEXPECTED |  | 
+vision_model.pre_layrnorm.bias                                 | UNEXPECTED |  | 
+vision_model.pre_layrnorm.weight                               | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  2%|▏         | 5762/281857 [00:00<00:04, 57615.38KB/s]  6%|▌         | 17417/281857 [00:00<00:02, 92276.67KB/s] 10%|█         | 29215/281857 [00:00<00:02, 104010.23KB/s] 15%|█▍        | 41108/281857 [00:00<00:02, 109897.59KB/s] 19%|█▉        | 52904/281857 [00:00<00:02, 112803.41KB/s] 23%|██▎       | 64691/281857 [00:00<00:01, 114525.29KB/s] 27%|██▋       | 76661/281857 [00:00<00:01, 116215.38KB/s] 31%|███▏      | 88530/281857 [00:00<00:01, 117000.97KB/s] 36%|███▌      | 100231/281857 [00:00<00:01, 112742.04KB/s] 40%|███▉      | 111537/281857 [00:01<00:01, 112373.69KB/s] 44%|████▎     | 122796/281857 [00:01<00:01, 111081.08KB/s] 48%|████▊     | 133920/281857 [00:01<00:01, 110610.48KB/s] 51%|█████▏    | 144992/281857 [00:01<00:01, 109497.52KB/s] 55%|█████▌    | 155950/281857 [00:01<00:01, 108505.21KB/s] 59%|█████▉    | 167157/281857 [00:01<00:01, 109556.60KB/s] 63%|██████▎   | 178241/281857 [00:01<00:00, 109930.54KB/s] 67%|██████▋   | 189471/281857 [00:01<00:00, 110623.01KB/s] 71%|███████   | 200598/281857 [00:01<00:00, 110810.42KB/s] 75%|███████▌  | 211683/281857 [00:01<00:00, 109947.60KB/s] 79%|███████▉  | 222681/281857 [00:02<00:00, 105790.35KB/s] 83%|████████▎ | 233293/281857 [00:02<00:00, 99096.18KB/s]  86%|████████▋ | 243297/281857 [00:02<00:00, 95137.58KB/s] 90%|████████▉ | 252890/281857 [00:02<00:00, 90769.49KB/s] 93%|█████████▎| 262038/281857 [00:02<00:00, 90601.31KB/s] 96%|█████████▌| 271147/281857 [00:02<00:00, 90143.59KB/s] 99%|█████████▉| 280202/281857 [00:02<00:00, 90257.97KB/s]100%|██████████| 281857/281857 [00:02<00:00, 103522.94KB/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 164.70it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:11, 17.57it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1468.88it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  5.47it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  1.94it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.54it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.52it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  92%|█████████▏| 181/196 [00:00<00:00, 1803.00it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1802.07it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  5.59it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.49it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.25it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.63it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  54%|█████▎    | 105/196 [00:00<00:00, 1048.84it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1600.25it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  5.87it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.51it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.36it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.73it/s]
+[w0] trial 0: psr=0.0333 psnr=42.85 ssim=0.9775 params={'alpha': 0.27, 'eta': 0.27, 'beta': 0.9, 'gamma': 60.5, 'antipure': False, 'ap_w': 0.5}
+[I 2026-10-15 00:13:17,705] Trial 0 finished with value: 0.03333333333333333 and parameters: {'alpha': 0.27, 'eta': 0.27, 'beta': 0.9, 'gamma': 60.5, 'antipure': False}. Best is trial 0 with value: 0.03333333333333333.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  91%|█████████▏| 179/196 [00:00<00:00, 1763.95it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1826.94it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  5.07it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.58it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.44it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.79it/s]
+[w0] trial 2: psr=0.0500 psnr=42.31 ssim=0.9750 params={'alpha': 0.0964595551661953, 'eta': 0.17231007147371183, 'beta': 1.4649532172404518, 'gamma': 23.923355056260668, 'antipure': True, 'ap_w': 0.27832698011702633}
+[I 2026-10-15 00:31:47,949] Trial 2 finished with value: 0.05 and parameters: {'alpha': 0.0964595551661953, 'eta': 0.17231007147371183, 'beta': 1.4649532172404518, 'gamma': 23.923355056260668, 'antipure': True, 'ap_w': 0.27832698011702633}. Best is trial 1 with value: 0.06666666666666667.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2180.20it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  6.16it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  3.06it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.98it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.47it/s]
+[w0] trial 4: psr=0.0667 psnr=40.68 ssim=0.9601 params={'alpha': 0.7676067824189339, 'eta': 0.26623806540446715, 'beta': 1.1748442027136416, 'gamma': 36.78879325279285, 'antipure': False, 'ap_w': 0.5}
+[I 2026-10-15 00:47:53,571] Trial 4 finished with value: 0.06666666666666667 and parameters: {'alpha': 0.7676067824189339, 'eta': 0.26623806540446715, 'beta': 1.1748442027136416, 'gamma': 36.78879325279285, 'antipure': False}. Best is trial 1 with value: 0.06666666666666667.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  41%|████▏     | 81/196 [00:00<00:00, 798.57it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1515.73it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  5.41it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  3.16it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  5.22it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.67it/s]
+[w0] trial 6: psr=0.0667 psnr=41.50 ssim=0.9681 params={'alpha': 0.283098690149443, 'eta': 0.36343882957248647, 'beta': 0.18674069259247372, 'gamma': 33.584773763053484, 'antipure': True, 'ap_w': 0.10272934355089894}
+[I 2026-10-15 01:06:24,670] Trial 6 finished with value: 0.06666666666666667 and parameters: {'alpha': 0.283098690149443, 'eta': 0.36343882957248647, 'beta': 0.18674069259247372, 'gamma': 33.584773763053484, 'antipure': True, 'ap_w': 0.10272934355089894}. Best is trial 5 with value: 0.08333333333333333.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  74%|███████▍  | 145/196 [00:00<00:00, 1449.51it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1811.36it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  6.35it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  3.23it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  5.26it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.77it/s]
+[w0] trial 8: psr=0.0667 psnr=41.48 ssim=0.9677 params={'alpha': 0.5788048688488364, 'eta': 0.7348745665125305, 'beta': 0.9045329374259314, 'gamma': 71.18522124328018, 'antipure': True, 'ap_w': 0.9981878691980635}
+[I 2026-10-15 01:24:56,739] Trial 8 finished with value: 0.06666666666666667 and parameters: {'alpha': 0.5788048688488364, 'eta': 0.7348745665125305, 'beta': 0.9045329374259314, 'gamma': 71.18522124328018, 'antipure': True, 'ap_w': 0.9981878691980635}. Best is trial 5 with value: 0.08333333333333333.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  91%|█████████ | 178/196 [00:00<00:00, 1753.96it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1831.31it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  6.19it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.45it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.15it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.55it/s]
+[w0] trial 10: psr=0.1000 psnr=40.91 ssim=0.9625 params={'alpha': 0.9225257187908921, 'eta': 0.05998400488644367, 'beta': 0.2819109058377345, 'gamma': 56.50162332873948, 'antipure': False, 'ap_w': 0.5}
+[I 2026-10-15 01:41:00,495] Trial 10 finished with value: 0.1 and parameters: {'alpha': 0.9225257187908921, 'eta': 0.05998400488644367, 'beta': 0.2819109058377345, 'gamma': 56.50162332873948, 'antipure': False}. Best is trial 10 with value: 0.1.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  99%|█████████▉| 194/196 [00:00<00:00, 1939.81it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1953.20it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  6.66it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.60it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.46it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.87it/s]
+[w0] trial 12: psr=0.0500 psnr=41.11 ssim=0.9644 params={'alpha': 0.7988421536510956, 'eta': 0.06024529806387246, 'beta': 0.18155151928319996, 'gamma': 57.79500404579312, 'antipure': False, 'ap_w': 0.5}
+[I 2026-10-15 01:57:03,919] Trial 12 finished with value: 0.05 and parameters: {'alpha': 0.7988421536510956, 'eta': 0.06024529806387246, 'beta': 0.18155151928319996, 'gamma': 57.79500404579312, 'antipure': False}. Best is trial 10 with value: 0.1.
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2085.99it/s]
+Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:00,  6.46it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.52it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.35it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.75it/s]
+[w0] trial 14: psr=0.0333 psnr=41.28 ssim=0.9660 params={'alpha': 0.5034655363096517, 'eta': 0.05699360468259407, 'beta': 0.5451696487864905, 'gamma': 41.31335210499309, 'antipure': False, 'ap_w': 0.5}
+[I 2026-10-15 02:13:07,480] Trial 14 finished with value: 0.03333333333333333 and parameters: {'alpha': 0.5034655363096517, 'eta': 0.05699360468259407, 'beta': 0.5451696487864905, 'gamma': 41.31335210499309, 'antipure': False}. Best is trial 10 with value: 0.1.
+done: 16 trials; feasible=15; best feasible=(10, 0.1)

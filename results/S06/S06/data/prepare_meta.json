@@ -1,0 +1,9 @@
+{
+ "size": 512,
+ "format": "png (lossless; v1 used JPEG q75)",
+ "resample": "PIL BICUBIC",
+ "seed": 2026,
+ "celebahq_img_dir": "/kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebA-HQ-img",
+ "parsing_dir": "/kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno",
+ "caches": {}
+}

@@ -1,0 +1,93 @@
+{
+ "scale_range": [
+  0.6,
+  0.85
+ ],
+ "jpeg_quality_range": [
+  50,
+  70
+ ],
+ "seed": 2026,
+ "per_image": {
+  "4334.jpg": {
+   "scale": 0.83,
+   "jpeg_quality": 51
+  },
+  "12996.jpg": {
+   "scale": 0.689,
+   "jpeg_quality": 54
+  },
+  "19617.jpg": {
+   "scale": 0.614,
+   "jpeg_quality": 67
+  },
+  "22599.jpg": {
+   "scale": 0.638,
+   "jpeg_quality": 51
+  },
+  "23465.jpg": {
+   "scale": 0.735,
+   "jpeg_quality": 51
+  },
+  "23397.jpg": {
+   "scale": 0.806,
+   "jpeg_quality": 70
+  },
+  "8790.jpg": {
+   "scale": 0.675,
+   "jpeg_quality": 70
+  },
+  "26980.jpg": {
+   "scale": 0.778,
+   "jpeg_quality": 67
+  },
+  "2425.jpg": {
+   "scale": 0.809,
+   "jpeg_quality": 68
+  },
+  "9918.jpg": {
+   "scale": 0.616,
+   "jpeg_quality": 69
+  },
+  "20055.jpg": {
+   "scale": 0.801,
+   "jpeg_quality": 57
+  },
+  "26413.jpg": {
+   "scale": 0.676,
+   "jpeg_quality": 57
+  },
+  "17020.jpg": {
+   "scale": 0.642,
+   "jpeg_quality": 50
+  },
+  "18692.jpg": {
+   "scale": 0.682,
+   "jpeg_quality": 53
+  },
+  "26365.jpg": {
+   "scale": 0.682,
+   "jpeg_quality": 58
+  },
+  "12744.jpg": {
+   "scale": 0.817,
+   "jpeg_quality": 65
+  },
+  "19750.jpg": {
+   "scale": 0.747,
+   "jpeg_quality": 62
+  },
+  "28282.jpg": {
+   "scale": 0.664,
+   "jpeg_quality": 67
+  },
+  "28745.jpg": {
+   "scale": 0.698,
+   "jpeg_quality": 63
+  },
+  "27461.jpg": {
+   "scale": 0.67,
+   "jpeg_quality": 55
+  }
+ }
+}

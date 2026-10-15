@@ -35,7 +35,13 @@ def test_v2_names_dispatch_with_real_config(name, repo_root):
     assert p.cfg["budget"]["step_255"] == 1.0
     want_eps = {"eps2": 2, "eps6": 6, "eps8": 8}.get(name, 4)
     assert p.cfg["budget"]["eps_255"] == want_eps
-    assert p.cfg["loss"]["alpha"] in (0.0, 0.2699475469647097)
+    allowed = {0.0, 0.2699475469647097}
+    if name in ("v2_final", "eps2", "eps6", "eps8"):      # these use the Optuna-tuned config/parts/final.yaml when present
+        import yaml
+        fy = repo_root / "config" / "parts" / "final.yaml"
+        if fy.exists():
+            allowed.add(float(yaml.safe_load(fy.read_text())["methods"]["v2_final"]["loss"]["alpha"]))
+    assert p.cfg["loss"]["alpha"] in allowed
 
 
 def test_v1_preset_keeps_true_step(repo_root):
