@@ -1,0 +1,44 @@
+[21:44:44] S07: start: S07 Phase 5 single-term antipure ablation on val -> E0 clean edits (H, M, P) -> PSR thresholds | gpus=2 smoke=False n_images=None iters=None resume=None
+[21:44:44] S07: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[21:45:21] S07: step install: rc=0 (37s)
+[21:45:21] S07: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[21:45:26] S07: step check_env: rc=0 (5s)
+[21:45:26] S07: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[21:45:26] S07: step resolve_splits: rc=0 (0s)
+[21:45:26] S07: config: no tuned final.yaml; v2_final = hand-set v2_final_default
+[21:45:26] S07: step make_config: rc=0 (0s)
+[21:45:26] S07: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S07/data --splits val test messy --no_cache
+[21:45:44] S07: step prepare_data: rc=0 (18s)
+[21:45:44] S07: [protect_prot_ap_hf_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_hf_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --set methods.v2_antipure.loss.anti_purify.w_mono=0.0 --shard 0/2
+[21:45:44] S07: [protect_prot_ap_hf_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_hf_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --set methods.v2_antipure.loss.anti_purify.w_mono=0.0 --shard 1/2
+[22:27:29] S07: [protect_prot_ap_hf_val] protect_prot_ap_hf_val.gpu0.log exited 0; tail: ['[22:07:21] [5/10] 23056 psnr=41.38 ssim=0.9797 gpu_s=249.2', '[22:27:23] [10/10] 862 psnr=41.79 ssim=0.9823 gpu_s=235.6', '[22:27:23] done']
+[22:32:19] S07: [protect_prot_ap_hf_val] protect_prot_ap_hf_val.gpu1.log exited 0; tail: ['[22:09:14] [5/10] 2582 psnr=41.59 ssim=0.9736 gpu_s=268.6', '[22:32:15] [10/10] 9312 psnr=40.44 ssim=0.9636 gpu_s=268.0', '[22:32:15] done']
+[22:32:19] S07: step protect_prot_ap_hf_val: rc=0 (2795s)
+[22:32:19] S07: [merge_prot_ap_hf_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S07/results/prot_ap_hf_val
+[22:32:20] S07: step merge_prot_ap_hf_val: rc=0 (1s)
+[22:32:20] S07: [protect_prot_ap_mono_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_mono_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --set methods.v2_antipure.loss.anti_purify.w_hf=0.0 --shard 0/2
+[22:32:20] S07: [protect_prot_ap_mono_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_mono_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --set methods.v2_antipure.loss.anti_purify.w_hf=0.0 --shard 1/2
+[23:23:00] S07: [protect_prot_ap_mono_val] protect_prot_ap_mono_val.gpu0.log exited 0; tail: ['[22:57:54] [5/10] 23056 psnr=41.06 ssim=0.9794 gpu_s=313.1', '[23:22:54] [10/10] 862 psnr=41.81 ssim=0.9822 gpu_s=286.6', '[23:22:54] done']
+[23:30:20] S07: [protect_prot_ap_mono_val] protect_prot_ap_mono_val.gpu1.log exited 0; tail: ['[23:01:24] [5/10] 2582 psnr=41.61 ssim=0.9768 gpu_s=345.9', '[23:30:15] [10/10] 9312 psnr=41.69 ssim=0.9785 gpu_s=329.7', '[23:30:15] done']
+[23:30:20] S07: step protect_prot_ap_mono_val: rc=0 (3480s)
+[23:30:20] S07: [merge_prot_ap_mono_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S07/results/prot_ap_mono_val
+[23:30:21] S07: step merge_prot_ap_mono_val: rc=0 (1s)
+[23:30:21] S07: [protect_prot_ap_both_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_both_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --shard 0/2
+[23:30:21] S07: [protect_prot_ap_both_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_both_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --shard 1/2
+[00:21:01] S07: [protect_prot_ap_both_val] protect_prot_ap_both_val.gpu0.log exited 0; tail: ['[23:55:54] [5/10] 23056 psnr=41.23 ssim=0.9790 gpu_s=313.2', '[00:20:54] [10/10] 862 psnr=41.80 ssim=0.9820 gpu_s=286.2', '[00:20:54] done']
+[00:28:21] S07: [protect_prot_ap_both_val] protect_prot_ap_both_val.gpu1.log exited 0; tail: ['[23:59:24] [5/10] 2582 psnr=41.80 ssim=0.9769 gpu_s=345.9', '[00:28:15] [10/10] 9312 psnr=40.61 ssim=0.9665 gpu_s=329.7', '[00:28:15] done']
+[00:28:21] S07: step protect_prot_ap_both_val: rc=0 (3480s)
+[00:28:21] S07: [merge_prot_ap_both_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S07/results/prot_ap_both_val
+[00:28:21] S07: step merge_prot_ap_both_val: rc=0 (1s)
+[00:28:21] S07: [antipure_val] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S07/eval_jobs.antipure_val.g0.yaml --shard 0/2
+[00:28:21] S07: [antipure_val] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S07/eval_jobs.antipure_val.g1.yaml --shard 1/2
+[00:28:26] S07: [antipure_val] antipure_val.gpu0.log exited 0; tail: ['  },', '  "summary": []', '}']
+[00:28:26] S07: [antipure_val] antipure_val.gpu1.log exited 0; tail: ['  },', '  "summary": []', '}']
+[00:28:26] S07: step antipure_val: rc=0 (5s)
+[00:28:26] S07: [e0] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S07/eval_jobs.e0.g0.yaml --shard 0/2
+[00:28:26] S07: [e0] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S07/eval_jobs.e0.g1.yaml --shard 1/2
+[02:23:07] S07: [e0] e0.gpu0.log exited 0; tail: ['  },', '  "summary": []', '}']
+[02:41:22] S07: [e0] e0.gpu1.log exited 0; tail: ['  },', '  "summary": []', '}']
+[02:41:22] S07: step e0: rc=0 (7975s)
+[02:41:22] S07: [thresholds] /usr/bin/python3 scripts/evaluate.py --stage thresholds --config /kaggle/working/S07/cfg/config.yaml --split test --split_file /kaggle/tmp/DiffShield/data/splits/test.txt --source_dir /kaggle/working/S07/data/test --cache_dir /kaggle/working/S07/cache --out /kaggle/working/S07/results/thresholds
+[02:41:40] S07: step thresholds: rc=0 (19s)

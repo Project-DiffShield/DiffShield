@@ -1,0 +1,86 @@
+[
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "ip2p",
+    "strength": "",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.7824012774229051,
+    "no_face_rate": 0.06,
+    "mean_clip_i": 0.7280908127625785,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.6560880573590596,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7244537776708603,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.3",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.47353304813305536,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7781314361095427,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 450,
+    "mean_arcface_sim": 0.17331588249394878,
+    "no_face_rate": 0.006666666666666667,
+    "mean_clip_i": 0.6157604536745284,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.75",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.03133896146668119,
+    "no_face_rate": 0.03333333333333333,
+    "mean_clip_i": 0.5149678848187128,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd_inpaint",
+    "strength": "1",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.9448428444067638,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.807404998143514,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sdxl_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.33768155174950765,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7439123499393463,
+    "mean_edit_lpips": NaN
+  }
+]

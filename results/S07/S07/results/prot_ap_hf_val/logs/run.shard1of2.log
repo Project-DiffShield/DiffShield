@@ -1,0 +1,5 @@
+[21:45:47] run prot_ap_hf_val method=v2_antipure device=cuda backend=real shard=(1, 2) git=9e1128d dirty=False
+[21:45:47] 10 images in this shard (20 total), 0 already done
+[22:09:14] [5/10] 2582 psnr=41.59 ssim=0.9736 gpu_s=268.6
+[22:32:15] [10/10] 9312 psnr=40.44 ssim=0.9636 gpu_s=268.0
+[22:32:15] done

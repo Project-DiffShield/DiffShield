@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S08/cfg/config.yaml --method v1 --input_dir /kaggle/working/S08/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v1_messy --output_root /kaggle/working/S08/results --checkpoint_every 5 --split messy --shard 1/2

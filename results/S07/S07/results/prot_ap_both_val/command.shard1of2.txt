@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S07/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S07/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_ap_both_val --output_root /kaggle/working/S07/results --checkpoint_every 5 --split val --shard 1/2

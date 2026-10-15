@@ -41,3 +41,8 @@ results/human_study/answers/
 results/combined/arcface/
 results/tables_synthetic*/
 results/**/*.npz
+results/**/cache/
+results/**/*.jpg
+results/**/*.jpeg
+results/**/*.png
+results/**/*.npz

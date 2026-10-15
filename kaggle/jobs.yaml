@@ -298,13 +298,13 @@ jobs:
           name: antipure_val
           defs: {no_generate_clean: false}
           jobs:
-            - {name: eval_ap_hf_val, tier: P, method: v2_antipure, split: val, editor: sd15_img2img,
+            - {name: eval_ap_hf_val, tier: AP, method: v2_antipure, split: val, editor: sd15_img2img,
                purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{results}/prot_ap_hf_val/images"}
-            - {name: eval_ap_mono_val, tier: P, method: v2_antipure, split: val, editor: sd15_img2img,
+            - {name: eval_ap_mono_val, tier: AP, method: v2_antipure, split: val, editor: sd15_img2img,
                purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{results}/prot_ap_mono_val/images"}
-            - {name: eval_ap_both_val, tier: P, method: v2_antipure, split: val, editor: sd15_img2img,
+            - {name: eval_ap_both_val, tier: AP, method: v2_antipure, split: val, editor: sd15_img2img,
                purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{results}/prot_ap_both_val/images"}
-            - {name: eval_clean_val, tier: P, method: clean, split: val, editor: sd15_img2img,
+            - {name: eval_clean_val, tier: AP, method: clean, split: val, editor: sd15_img2img,
                purifier: "jpeg_q75,vae_rt,diffpure_0.1"}
       - macro: evaluate
         with:
@@ -313,7 +313,7 @@ jobs:
           jobs:
             - {name: e0_clean_H, tier: H, method: clean, split: test}
             - {name: e0_clean_M, tier: M, method: clean, split: messy}
-            - {name: e0_clean_P, tier: P, method: clean, split: test}
+            - {name: e0_clean_P, tier: P, purifier: all, method: clean, split: test}
       - name: thresholds
         run: ["{py}", scripts/evaluate.py, --stage, thresholds, --config, "{cfg}", --split, test, --split_file,
               "{splits_dir}/test.txt", --source_dir, "{out}/data/test", --cache_dir, "{out}/cache", --out,
@@ -336,7 +336,7 @@ jobs:
           jobs:
             - {name: eval_v1_H, tier: H, method: v1, split: test}
             - {name: eval_v1_M, tier: M, method: v1, split: messy}
-            - {name: eval_v1_P, tier: P, method: v1, split: test}
+            - {name: eval_v1_P, tier: P, purifier: all, method: v1, split: test}
 
   # ---------------------------------------------------------------------------------------------- S09
   S09:
@@ -354,11 +354,11 @@ jobs:
           jobs:
             - {name: eval_v2_main_H, tier: H, method: v2_main, split: test}
             - {name: eval_v2_main_M, tier: M, method: v2_main, split: messy}
-            - {name: eval_v2_main_P, tier: P, method: v2_main, split: test}
+            - {name: eval_v2_main_P, tier: P, purifier: all, method: v2_main, split: test}
 
   # ---------------------------------------------------------------------------------------------- S10
   S10:
-    title: S10 protect v2_cheap (test) -> E4 edits (H, P)
+    title: S10 protect v2_cheap (test) -> E4 edits (H, P) + E0 clean purifier tier (P)
     accelerator: gpu_t4x2
     params: {smoke: false, final_yaml: ""}
     steps:
@@ -368,9 +368,12 @@ jobs:
       - macro: evaluate
         with:
           name: e4
+          defs: {no_generate_clean: false}
           jobs:
             - {name: eval_v2_cheap_H, tier: H, method: v2_cheap, split: test}
-            - {name: eval_v2_cheap_P, tier: P, method: v2_cheap, split: test}
+            - {name: eval_v2_cheap_P, tier: P, purifier: all, method: v2_cheap, split: test}
+            # E0 clean purifier tier moved here from S07 (S07's copy expanded to zero jobs); needs no protected images
+            - {name: e0_clean_P, tier: P, purifier: all, method: clean, split: test}
 
   # ---------------------------------------------------------------------------------------------- S11
   S11:
@@ -386,7 +389,7 @@ jobs:
         with:
           name: e7a
           jobs:
-            - {name: eval_abl_vis_den_A, tier: A, method: "abl_vis_only,abl_den_only", split: test, limit: 50}
+            - {name: eval_abl_vis_den_A, tier: A, purifier: all, method: "abl_vis_only,abl_den_only", split: test, limit: 50}
 
   # ---------------------------------------------------------------------------------------------- S12
   S12:
@@ -401,7 +404,7 @@ jobs:
         with:
           name: e6
           jobs:
-            - {name: eval_v2_antipure_P, tier: P, method: v2_antipure, split: test}
+            - {name: eval_v2_antipure_P, tier: P, purifier: all, method: v2_antipure, split: test}
 
   # ---------------------------------------------------------------------------------------------- S13
   S13:
@@ -426,7 +429,7 @@ jobs:
           jobs:
             - {name: eval_pg_mist_H, tier: H, method: "photoguard,mist", split: test}
             - {name: eval_pg_mist_M, tier: M, method: "photoguard,mist", split: messy}
-            - {name: eval_pg_mist_P, tier: P, method: "photoguard,mist", split: test}
+            - {name: eval_pg_mist_P, tier: P, purifier: all, method: "photoguard,mist", split: test}
 
   # ---------------------------------------------------------------------------------------------- S14
   S14:
@@ -442,7 +445,7 @@ jobs:
         with:
           name: e7b
           jobs:
-            - {name: eval_abl_nosem_nopur_A, tier: A, method: "abl_no_sem,abl_no_pur", split: test, limit: 50}
+            - {name: eval_abl_nosem_nopur_A, tier: A, purifier: all, method: "abl_no_sem,abl_no_pur", split: test, limit: 50}
       - {macro: protect, with: {method: noise_uniform, split: test}}
       - {macro: protect, with: {method: noise_uniform, split: messy}}
       - macro: protect
@@ -489,9 +492,9 @@ jobs:
           name: e8
           defs: {set: ["adaptive_ae.weights_path={out}/adaptive_ae/ae_final.pt"]}
           jobs:
-            - {name: eval_ae_clean, tier: E8, method: clean, split: test}
-            - {name: eval_ae_v1, tier: E8, method: v1, split: test}
-            - {name: eval_ae_v2_final, tier: E8, method: v2_final, split: test,
+            - {name: eval_ae_clean, tier: E8, purifier: all, method: clean, split: test}
+            - {name: eval_ae_v1, tier: E8, purifier: all, method: v1, split: test}
+            - {name: eval_ae_v2_final, tier: E8, purifier: all, method: v2_final, split: test,
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
 
   # ---------------------------------------------------------------------------------------------- S16
@@ -517,13 +520,57 @@ jobs:
             - {name: eval_v2_final_H, tier: H, method: v2_final, split: test,
                editor: "sd15_img2img,ip2p,sd_inpaint,ipadapter_faceid",
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
-            - {name: eval_v2_final_P, tier: P, method: v2_final, split: test,
+            - {name: eval_v2_final_P, tier: P, purifier: all, method: v2_final, split: test,
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
             - {name: eval_v2_final_M, tier: M, method: v2_final, split: messy,
                protected_dir: "{v2final_results}/prot_v2_final_messy/images"}
             - {name: eval_v2_final_H_sdxl, tier: H, method: v2_final, split: test, editor: sdxl_img2img,
                protected_dir: "{v2final_results}/prot_v2_final_test/images"}
 
+  # ---------------------------------------------------------------------------------------------- S19 / S20 (re-runs)
+  # S07/S08/S09 ran their purifier-tier (P) jobs with the evaluate.py default `--purifier none`, which expands to ZERO jobs
+  # for tier P (and the val antipure ablation had no val rule). These sessions redo exactly those jobs from the protected
+  # images that S07/S08/S09 already wrote (add each earlier session's Notebook Output as an input, same account).
+  S19:
+    title: S19 purifier tier (P) for v1 and v2_main from the S08 / S09 protected images (re-run of the empty eval_v1_P / eval_v2_main_P)
+    accelerator: gpu_t4x2
+    params: {smoke: false, prev_root_s08: "", prev_root_s09: "", final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {name: src_s08, builtin: set_var, vars: {s08_results: "{prev_root_s08}/S08/results"}}
+      - {name: src_s09, builtin: set_var, vars: {s09_results: "{prev_root_s09}/S09/results"}}
+      - macro: evaluate
+        with:
+          name: p_rerun
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: eval_v1_P, tier: P, purifier: all, method: v1, split: test,
+               protected_dir: "{s08_results}/prot_v1_test/images"}
+            - {name: eval_v2_main_P, tier: P, purifier: all, method: v2_main, split: test,
+               protected_dir: "{s09_results}/prot_v2_main_test/images"}
+
+  S20:
+    title: S20 val antipure single-term ablation from the S07 protected images (re-run of the empty S07 jobs; the clean P tier moved to S10)
+    accelerator: gpu_t4x2
+    params: {smoke: false, prev_root_s07: "", final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [val]}}
+      - {name: src_s07, builtin: set_var, vars: {s07_results: "{prev_root_s07}/S07/results"}}
+      - macro: evaluate
+        with:
+          name: ap_rerun
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: eval_ap_hf_val, tier: AP, method: v2_antipure, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{s07_results}/prot_ap_hf_val/images"}
+            - {name: eval_ap_mono_val, tier: AP, method: v2_antipure, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{s07_results}/prot_ap_mono_val/images"}
+            - {name: eval_ap_both_val, tier: AP, method: v2_antipure, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{s07_results}/prot_ap_both_val/images"}
+            - {name: eval_clean_val, tier: AP, method: clean, split: val, editor: sd15_img2img,
+               purifier: "jpeg_q75,vae_rt,diffpure_0.1"}
   # ---------------------------------------------------------------------------------------------- S17 / S18
   S17:
     title: S17 E9 eps=2 then eps=6 (protect + edits); needs the tuned config/parts/final.yaml in the bundle (B3) or final_yaml
@@ -537,13 +584,13 @@ jobs:
         with:
           name: e9_eps2
           jobs:
-            - {name: eval_eps2_E9, tier: E9, method: eps2, split: test, limit: 50}
+            - {name: eval_eps2_E9, tier: E9, purifier: all, method: eps2, split: test, limit: 50}
       - {macro: protect, with: {method: eps6, split: test, extra: ["--limit", "50"]}}
       - macro: evaluate
         with:
           name: e9_eps6
           jobs:
-            - {name: eval_eps6_E9, tier: E9, method: eps6, split: test, limit: 50}
+            - {name: eval_eps6_E9, tier: E9, purifier: all, method: eps6, split: test, limit: 50}
 
   S18:
     title: S18 E9 eps=8 (protect + edits); needs config/parts/final.yaml in the bundle (B3) or final_yaml
@@ -557,4 +604,4 @@ jobs:
         with:
           name: e9_eps8
           jobs:
-            - {name: eval_eps8_E9, tier: E9, method: eps8, split: test, limit: 50}
+            - {name: eval_eps8_E9, tier: E9, purifier: all, method: eps8, split: test, limit: 50}

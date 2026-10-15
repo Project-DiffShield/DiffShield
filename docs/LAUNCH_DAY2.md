@@ -6,7 +6,7 @@ Every notebook: import `kaggle/job_runner.ipynb`; inputs = the code dataset + `i
 
 | Account | Notebook | `JOB_IDS` | What it does | Est. wall time | Output zip |
 |---|---|---|---|---|---|
-| acct3 | A | `["S10"]` | v2_cheap protection (100 photos) + edits (E4) | ~5 h | `S10_outputs.zip` |
+| acct3 | A | `["S10"]` | v2_cheap protection (100 photos) + edits (E4) + the clean-photo purifier tier (E0 P) | ~7.5 h | `S10_outputs.zip` |
 | acct3 | B | `["S11"]` | abl_vis_only + abl_den_only on the first 50 test photos + edits (E7a) | ~6 h | `S11_outputs.zip` |
 | acct4 | A | `["S12"]` | v2_antipure protection (100 photos) + edits (E6) | ~8 h | `S12_outputs.zip` |
 | acct5 | A | `["S13"]` | PhotoGuard (1000 iterations) + Mist + edits (E2); downloads the official Mist target image at runtime | ~7.5 h | `S13_outputs.zip` |
@@ -25,3 +25,11 @@ Notebook -> Output -> download `<SESSION>_outputs.zip` -> give it to the coordin
 
 ## Limits
 Latest launch on a teammate account: 22:30 on day 2. A committed run continues up to 12 h; the job stops starting new work after 11 h and can be resumed (`RESUME_FROM = "/kaggle/input/<name of the earlier output>"` with that output added as an input).
+
+## Re-run sessions after the S07/S08 finding (2026-10-15)
+S07/S08/S09 ran their purifier-tier jobs with a missing filter, so those jobs produced no rows (fixed in this bundle, test `tests/test_jobs_expand_nonempty.py`). Re-run from the protected images those sessions already wrote:
+| Account | Notebook | `JOB_IDS` | `PARAMS` | Extra inputs | Est. wall time |
+|---|---|---|---|---|---|
+| acct2 | new | `["S19"]` | `{"prev_root_s08": "/kaggle/input/<S08 output>", "prev_root_s09": "/kaggle/input/<S09 output>"}` | acct2's S08 and S09 notebook outputs (Add Input -> Notebook Output) | ~5.5 h |
+| acct1 | new | `["S20"]` | `{"prev_root_s07": "/kaggle/input/<S07 output>"}` | acct1's S07 notebook output | ~0.5 h |
+The exact `/kaggle/input/...` paths are printed at the top of the notebook log ("inputs attached to this notebook"). Start S19 only after S09 has finished.

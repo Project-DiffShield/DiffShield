@@ -1,0 +1,13 @@
+[21:52:59] run prot_v1_test method=v1 device=cuda backend=real shard=(1, 2) git=9e1128d dirty=False
+[21:52:59] 50 images in this shard (100 total), 0 already done
+[21:57:24] [5/50] 11318 psnr=41.59 ssim=0.9783 gpu_s=44.5
+[22:01:08] [10/50] 13117 psnr=41.92 ssim=0.9706 gpu_s=44.4
+[22:04:53] [15/50] 18621 psnr=42.56 ssim=0.9777 gpu_s=44.5
+[22:08:38] [20/50] 22085 psnr=41.62 ssim=0.9738 gpu_s=44.5
+[22:12:23] [25/50] 25877 psnr=42.39 ssim=0.9744 gpu_s=44.4
+[22:16:08] [30/50] 3463 psnr=42.68 ssim=0.9736 gpu_s=44.5
+[22:19:52] [35/50] 4535 psnr=42.10 ssim=0.9697 gpu_s=44.5
+[22:23:37] [40/50] 5464 psnr=41.98 ssim=0.9733 gpu_s=44.5
+[22:27:22] [45/50] 7603 psnr=42.01 ssim=0.9774 gpu_s=44.6
+[22:31:07] [50/50] 9954 psnr=42.68 ssim=0.9704 gpu_s=44.4
+[22:31:07] done

@@ -1,0 +1,22 @@
+{
+  "eval_ap_hf_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 2.016232490539551
+  },
+  "eval_ap_mono_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 0.26386213302612305
+  },
+  "eval_ap_both_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 0.1400301456451416
+  },
+  "eval_clean_val": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 0.13663458824157715
+  }
+}

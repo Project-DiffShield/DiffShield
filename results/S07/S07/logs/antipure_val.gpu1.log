@@ -1,0 +1,40 @@
+[jobs] eval_ap_hf_val: start
+[runner] 0 jobs, 0 to do (0 already complete)
+{
+  "run": {
+    "jobs": 0,
+    "executed": 0,
+    "rows": 0
+  },
+  "summary": []
+}
+[jobs] eval_ap_mono_val: start
+[runner] 0 jobs, 0 to do (0 already complete)
+{
+  "run": {
+    "jobs": 0,
+    "executed": 0,
+    "rows": 0
+  },
+  "summary": []
+}
+[jobs] eval_ap_both_val: start
+[runner] 0 jobs, 0 to do (0 already complete)
+{
+  "run": {
+    "jobs": 0,
+    "executed": 0,
+    "rows": 0
+  },
+  "summary": []
+}
+[jobs] eval_clean_val: start
+[runner] 0 jobs, 0 to do (0 already complete)
+{
+  "run": {
+    "jobs": 0,
+    "executed": 0,
+    "rows": 0
+  },
+  "summary": []
+}

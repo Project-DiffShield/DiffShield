@@ -1,0 +1,1 @@
+run_id,method,method_cfg_hash,image_id,split,seed,editor,prompt_id,strength,purifier,protect_run_id,eps_255,purifier_params,editor_params,source_path,protected_path,purified_path,edit_path,clean_edit_path,code_git_hash,created_utc,face_detected,n_faces,det_score,arcface_sim,fr2_sim,edit_lpips,clip_i,inv_psnr,inv_ssim,inv_lpips,gpu_seconds_edit,gpu_seconds_purify

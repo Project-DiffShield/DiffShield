@@ -1,0 +1,5 @@
+[22:35:54] run prot_v1_messy method=v1 device=cuda backend=real shard=(0, 2) git=9e1128d dirty=False
+[22:35:54] 10 images in this shard (20 total), 0 already done
+[22:40:22] [5/10] 23397 psnr=42.16 ssim=0.9718 gpu_s=49.9
+[22:44:36] [10/10] 8790 psnr=41.64 ssim=0.9696 gpu_s=50.3
+[22:44:36] done

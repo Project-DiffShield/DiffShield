@@ -1,0 +1,17 @@
+{
+  "e0_clean_H": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 7749.02813410759
+  },
+  "e0_clean_M": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 219.263601064682
+  },
+  "e0_clean_P": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 0.18958306312561035
+  }
+}

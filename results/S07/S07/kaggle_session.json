@@ -1,0 +1,70 @@
+{
+  "job_id": "S07",
+  "run_id": "S07",
+  "session_seconds": 17815.93907380104,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 36.9
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.4
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 17.7
+    },
+    "protect_prot_ap_hf_val": {
+      "rc": 0,
+      "seconds": 2795.1
+    },
+    "merge_prot_ap_hf_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_ap_mono_val": {
+      "rc": 0,
+      "seconds": 3480.1
+    },
+    "merge_prot_ap_mono_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_ap_both_val": {
+      "rc": 0,
+      "seconds": 3480.1
+    },
+    "merge_prot_ap_both_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "antipure_val": {
+      "rc": 0,
+      "seconds": 5.0
+    },
+    "e0": {
+      "rc": 0,
+      "seconds": 7975.3
+    },
+    "thresholds": {
+      "rc": 0,
+      "seconds": 18.6
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

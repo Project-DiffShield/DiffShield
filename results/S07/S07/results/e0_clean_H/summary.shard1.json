@@ -1,0 +1,86 @@
+[
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "ip2p",
+    "strength": "",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.8314735374499298,
+    "no_face_rate": 0.12666666666666668,
+    "mean_clip_i": 0.7641981085141499,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.7010357598463693,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7533334904909134,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.3",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.5194427779316901,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.8252715861797333,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 450,
+    "mean_arcface_sim": 0.21506154233072367,
+    "no_face_rate": 0.006666666666666667,
+    "mean_clip_i": 0.6544934103224013,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.75",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.03540080965593611,
+    "no_face_rate": 0.013333333333333334,
+    "mean_clip_i": 0.5326755899190903,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sd_inpaint",
+    "strength": "1",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.9573607619603476,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.8255777792135873,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "none",
+    "editor": "sdxl_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.3474844177812338,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7523476326465607,
+    "mean_edit_lpips": NaN
+  }
+]

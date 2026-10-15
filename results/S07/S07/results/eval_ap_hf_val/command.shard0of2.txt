@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S07/eval_jobs.antipure_val.g0.yaml --shard 0/2

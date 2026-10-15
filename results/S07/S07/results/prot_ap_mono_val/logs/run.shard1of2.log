@@ -1,0 +1,5 @@
+[22:32:23] run prot_ap_mono_val method=v2_antipure device=cuda backend=real shard=(1, 2) git=9e1128d dirty=False
+[22:32:23] 10 images in this shard (20 total), 0 already done
+[23:01:24] [5/10] 2582 psnr=41.61 ssim=0.9768 gpu_s=345.9
+[23:30:15] [10/10] 9312 psnr=41.69 ssim=0.9785 gpu_s=329.7
+[23:30:15] done

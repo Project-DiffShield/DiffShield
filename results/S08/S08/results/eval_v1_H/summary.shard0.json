@@ -1,0 +1,86 @@
+[
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "ip2p",
+    "strength": "",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.7867277179857349,
+    "no_face_rate": 0.09333333333333334,
+    "mean_clip_i": 0.7091151765982311,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.663848517537117,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7156348679463069,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.3",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.47046082725127536,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7405856577555339,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 450,
+    "mean_arcface_sim": 0.18084958090472758,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.5951141148143344,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.75",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.0398572011477275,
+    "no_face_rate": 0.04,
+    "mean_clip_i": 0.5125267980496089,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sd_inpaint",
+    "strength": "1",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.9442748407522837,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.793886442979177,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "v1",
+    "purifier": "none",
+    "editor": "sdxl_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.31337648332118984,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7009837669134141,
+    "mean_edit_lpips": NaN
+  }
+]
