@@ -1,0 +1,9 @@
+method,SD1.5 s0.55,IP-Adapter FaceID
+clean (E0),"0.15 [0.07, 0.25] (n=20)","0.00 [0.00, 0.00] (n=20)"
+uniform noise (E1),not run,not run
+"Gaussian noise, PSNR-matched (E1)",not run,not run
+"PhotoGuard encoder attack (E2, reimpl.)",not run,not run
+"Mist-style (E2, reimpl.)",not run,not run
+v1 (E3),"0.32 [0.18, 0.45] (n=20)","0.00 [0.00, 0.00] (n=20)"
+v2 + one-step SD purifier + L_den (E5),"0.28 [0.15, 0.43] (n=20)","0.00 [0.00, 0.00] (n=20)"
+v2 final,not run,not run

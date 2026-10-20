@@ -1,0 +1,7 @@
+method,editor,PSR (no purifier),PSR (adaptive AE),change [95% CI],p,ArcFace sim (adaptive AE)
+clean (E0),SD1.5 s0.55,"0.14 [0.10, 0.18]",not run,not run,,not run
+clean (E0),IP-Adapter FaceID,"0.00 [0.00, 0.00]",not run,not run,,not run
+v1 (E3),SD1.5 s0.55,"0.24 [0.19, 0.29]",not run,not run,,not run
+v1 (E3),IP-Adapter FaceID,"0.00 [0.00, 0.00]",not run,not run,,not run
+v2 final,SD1.5 s0.55,not run,not run,not run,,not run
+v2 final,IP-Adapter FaceID,not run,not run,not run,,not run

@@ -1,0 +1,13 @@
+# candidate for config/parts/final.yaml (trial_5; confirmed on 20 val images; hand-set psr=0.041666666666666664)
+methods:
+  v2_final:
+    loss:
+      alpha: 0.7281249466629797
+      eta: 0.05776266977639212
+      beta: 0.6676014641453782
+      gamma: 62.04711204188804
+      lambda_id: 0.0
+      anti_purify:
+        enabled: true
+        w_hf: 0.9310312738392569
+        w_mono: 0.9310312738392569

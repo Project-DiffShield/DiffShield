@@ -1,0 +1,276 @@
+{
+  "E3": {
+    "id": "E3",
+    "title": "v1 under purification (decision rule for Phase 5)",
+    "rule": "mean relative PSR drop of v1 over jpeg_q75,jpeg_q50,downup_0.5,vae_rt,diffpure_0.1,diffpure_0.2 (SD1.5 s0.55): >= 50% collapses -> continue with Phase 5; < 20% barely drops -> recommend skipping Phase 5 and ask the user; in between -> ask the user. The cut-offs are analyst proposals (the handoff gives none).",
+    "verdict": "NOT RUN",
+    "rows": [],
+    "notes": [
+      "only 0 of 6 core purifiers available"
+    ]
+  },
+  "E4": {
+    "id": "E4",
+    "title": "v2_cheap vs v1 under cheap purifiers",
+    "rule": "PSR(v2_cheap) >= 2 x PSR(v1) under jpeg_q75,jpeg_q50,downup_0.5,vae_rt (SD1.5 s0.55) with PSNR >= 38. Point estimate decides; the paired ratio CI is shown. Degenerate if v1 PSR >= 0.5 (doubling impossible), trivial if < 0.02.",
+    "verdict": "NOT RUN",
+    "rows": [
+      {
+        "purifier": "jpeg_q75",
+        "primary": true,
+        "psr_new": null,
+        "psr_v1": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "diff": NaN,
+        "diff_lo": NaN,
+        "diff_hi": NaN,
+        "p": NaN,
+        "status": "not run"
+      },
+      {
+        "purifier": "jpeg_q50",
+        "primary": true,
+        "psr_new": null,
+        "psr_v1": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "diff": NaN,
+        "diff_lo": NaN,
+        "diff_hi": NaN,
+        "p": NaN,
+        "status": "not run"
+      },
+      {
+        "purifier": "downup_0.5",
+        "primary": true,
+        "psr_new": null,
+        "psr_v1": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "diff": NaN,
+        "diff_lo": NaN,
+        "diff_hi": NaN,
+        "p": NaN,
+        "status": "not run"
+      },
+      {
+        "purifier": "vae_rt",
+        "primary": true,
+        "psr_new": null,
+        "psr_v1": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "diff": NaN,
+        "diff_lo": NaN,
+        "diff_hi": NaN,
+        "p": NaN,
+        "status": "not run"
+      },
+      {
+        "purifier": "jpeg_other",
+        "primary": false,
+        "psr_new": null,
+        "psr_v1": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "diff": NaN,
+        "diff_lo": NaN,
+        "diff_hi": NaN,
+        "p": NaN,
+        "status": "not run"
+      },
+      {
+        "purifier": "downup_other",
+        "primary": false,
+        "psr_new": null,
+        "psr_v1": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "diff": NaN,
+        "diff_lo": NaN,
+        "diff_hi": NaN,
+        "p": NaN,
+        "status": "not run"
+      }
+    ],
+    "notes": [
+      "invisibility of v2_cheap not available (no inv_psnr)"
+    ]
+  },
+  "E5": {
+    "id": "E5",
+    "title": "v2_main: held-out DiffPure t*=0.1 vs no purifier",
+    "rule": "PSR under diffpure_0.1 >= 0.5 x PSR without purifier (SD1.5 s0.55, same images). Point estimate decides; 'robust' if the paired ratio CI lower bound also >= the fraction.",
+    "verdict": "NOT RUN",
+    "rows": [
+      {
+        "method": "v2_main",
+        "purifier": "diffpure_0.1",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": true
+      },
+      {
+        "method": "v2_main",
+        "purifier": "diffpure_0.2",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_main",
+        "purifier": "diffpure_0.3",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_main",
+        "purifier": "gridpure",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_main",
+        "purifier": "restore_swin2sr",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "diffpure_0.1",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "diffpure_0.2",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "diffpure_0.3",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "gridpure",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "restore_swin2sr",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      }
+    ],
+    "notes": []
+  },
+  "E6": {
+    "id": "E6",
+    "title": "v2_antipure vs v2_main (anti-purification terms)",
+    "rule": "go if the paired PSR gain under higher-t* DiffPure has a 95% CI above 0; 'no gain (within CI)' otherwise (handoff Phase 5: drop it if gains are within the CI).",
+    "verdict": "NOT RUN",
+    "rows": [
+      {
+        "purifier": "diffpure_0.1",
+        "status": "not run"
+      },
+      {
+        "purifier": "diffpure_0.2",
+        "status": "not run"
+      },
+      {
+        "purifier": "diffpure_0.3",
+        "status": "not run"
+      }
+    ],
+    "notes": []
+  },
+  "INV": {
+    "id": "INV",
+    "title": "Invisibility",
+    "rule": "PSNR >= 38 and SSIM >= 0.95 (per image); human 2AFC accuracy not far above 50%.",
+    "verdict": "PASS",
+    "rows": [
+      {
+        "method": "v1",
+        "n": 100,
+        "psnr": 42.4194888155673,
+        "ssim": 0.9762525129099889,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "v2_main",
+        "n": 100,
+        "psnr": 41.72293537074832,
+        "ssim": 0.9784151444173068,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      }
+    ],
+    "notes": [
+      "human 2AFC result not available (E10 not run)"
+    ]
+  }
+}

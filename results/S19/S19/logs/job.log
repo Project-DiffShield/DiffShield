@@ -1,0 +1,20 @@
+[10:26:25] S19: start: S19 purifier tier (P) for v1 and v2_main from the S08 / S09 protected images (re-run of the empty eval_v1_P / eval_v2_main_P) | gpus=2 smoke=False n_images=None iters=None resume=None
+[10:26:25] S19: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[10:26:57] S19: step install: rc=0 (33s)
+[10:26:57] S19: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[10:27:02] S19: step check_env: rc=0 (4s)
+[10:27:02] S19: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[10:27:02] S19: step resolve_splits: rc=0 (0s)
+[10:27:02] S19: config: using config/parts/final.yaml from the bundle
+[10:27:02] S19: step make_config: rc=0 (0s)
+[10:27:02] S19: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S19/data --splits test --no_cache
+[10:27:28] S19: step prepare_data: rc=0 (26s)
+[10:27:28] S19: set s08_results = /kaggle/input/datasets/narainbk/s0-8-s0-9-op/S08_outputs/S08/results
+[10:27:28] S19: step src_s08: rc=0 (0s)
+[10:27:28] S19: set s09_results = /kaggle/input/datasets/narainbk/s0-8-s0-9-op/S09_outputs/S09/results
+[10:27:28] S19: step src_s09: rc=0 (0s)
+[10:27:28] S19: [p_rerun] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S19/eval_jobs.p_rerun.g0.yaml --shard 0/2
+[10:27:28] S19: [p_rerun] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S19/eval_jobs.p_rerun.g1.yaml --shard 1/2
+[15:47:18] S19: [p_rerun] p_rerun.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[15:53:58] S19: [p_rerun] p_rerun.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[15:53:58] S19: step p_rerun: rc=0 (19591s)

@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lccccc}
+\toprule
+method & none & jpeg\_q50 & vae\_rt & diffpure\_0.1 & diffpure\_0.2 \\
+\midrule
+L\_vis only & not run & not run & not run & not run & not run \\
+L\_den only & not run & not run & not run & not run & not run \\
+both, no L\_sem & not run & not run & not run & not run & not run \\
+both, no purifier in loop & not run & not run & not run & not run & not run \\
+v2 + one-step SD purifier + L\_den (E5) & 0.24 [0.20, 0.29] & not run & not run & not run & not run \\
+\bottomrule
+\end{tabular}
+\caption{E7 ablation: PSR by variant and purifier (SD1.5 s0.55; v2\_main = both phases, with L\_sem)}
+\label{tab:e7}
+\par\footnotesize n images per cell: 100; edit seeds per image: 3; prompts per image: up to 3. Mean with 95\% percentile-bootstrap CI over images (10000 resamples, seed 2026); seeds and prompts are averaged within each image first. PSR = share of edits with no detected face or ArcFace sim to the source below the per-editor threshold (95th percentile of impostor sim of the E0 clean edits): ip2p 0.108, ipadapter\_faceid 0.108, sd15\_img2img 0.101, sd\_inpaint 0.110, sdxl\_img2img 0.104, pooled 0.103. 'not run' = no rows for the cell. A cell with fewer images than the largest cell shows (n=...). abl\_vis\_only and abl\_den\_only also drop L\_sem (beta=0) to isolate the phases; compare abl\_no\_sem vs v2\_main for L\_sem, abl\_no\_pur vs v2\_main for the purifiers in the loop.
+\end{table}

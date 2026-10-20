@@ -1,0 +1,22 @@
+{
+  "eval_v2_final_H": {
+    "state": "failed",
+    "error": "RuntimeError(\"editors failed (other editors completed): ['ip2p', 'ipadapter_faceid', 'sd15_img2img', 'sd_inpaint']\")",
+    "seconds": 93.00892567634583
+  },
+  "eval_v2_final_P": {
+    "state": "failed",
+    "error": "FileNotFoundError('protected image for 10055 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images')",
+    "seconds": 5.471243619918823
+  },
+  "eval_v2_final_M": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 219.08513498306274
+  },
+  "eval_v2_final_H_sdxl": {
+    "state": "failed",
+    "error": "RuntimeError(\"editors failed (other editors completed): ['sdxl_img2img']\")",
+    "seconds": 92.83831691741943
+  }
+}

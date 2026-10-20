@@ -1,0 +1,7 @@
+purifier,v1 PSR,v2_cheap PSR,diff [95% CI],p,ratio [95% CI],gate (>= 2x)
+jpeg_q75,not run,not run,not run,n/a,not run,not run
+jpeg_q50,not run,not run,not run,n/a,not run,not run
+downup_0.5,not run,not run,not run,n/a,not run,not run
+vae_rt,not run,not run,not run,n/a,not run,not run
+"jpeg_other (held-out, info)",not run,not run,not run,n/a,not run,not run
+"downup_other (held-out, info)",not run,not run,not run,n/a,not run,not run

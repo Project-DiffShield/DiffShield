@@ -1,0 +1,6 @@
+method,none,jpeg_q50,vae_rt,diffpure_0.1,diffpure_0.2
+L_vis only,not run,not run,not run,not run,not run
+L_den only,not run,not run,not run,not run,not run
+"both, no L_sem",not run,not run,not run,not run,not run
+"both, no purifier in loop",not run,not run,not run,not run,not run
+v2 + one-step SD purifier + L_den (E5),"0.24 [0.20, 0.29]",not run,not run,not run,not run

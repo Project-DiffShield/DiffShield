@@ -1,0 +1,48 @@
+{
+  "job_id": "S19",
+  "run_id": "S19",
+  "session_seconds": 19653.80644774437,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 32.7
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.3
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 26.2
+    },
+    "src_s08": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "src_s09": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "p_rerun": {
+      "rc": 0,
+      "seconds": 19590.6
+    }
+  },
+  "params": {
+    "smoke": false,
+    "prev_root_s08": "/kaggle/input/datasets/narainbk/s0-8-s0-9-op/S08_outputs",
+    "prev_root_s09": "/kaggle/input/datasets/narainbk/s0-8-s0-9-op/S09_outputs",
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

@@ -1,0 +1,11 @@
+method,purifier,PSR (no purifier),PSR (purified),ratio purified/none [95% CI],minus v1 under same purifier [95% CI],p,gate
+v2_main,diffpure_0.1,not run,not run,not run,not run,,not run
+v2_main,diffpure_0.2,not run,not run,not run,not run,,not run
+v2_main,diffpure_0.3,not run,not run,not run,not run,,not run
+v2_main,gridpure,not run,not run,not run,not run,,not run
+v2_main,restore_swin2sr,not run,not run,not run,not run,,not run
+v2_final,diffpure_0.1,not run,not run,not run,not run,,not run
+v2_final,diffpure_0.2,not run,not run,not run,not run,,not run
+v2_final,diffpure_0.3,not run,not run,not run,not run,,not run
+v2_final,gridpure,not run,not run,not run,not run,,not run
+v2_final,restore_swin2sr,not run,not run,not run,not run,,not run

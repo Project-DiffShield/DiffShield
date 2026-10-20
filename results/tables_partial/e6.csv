@@ -1,0 +1,4 @@
+purifier,v2_main PSR,v2_antipure PSR,diff [95% CI],p,verdict
+diffpure_0.1,not run,not run,not run,n/a,not run
+diffpure_0.2,not run,not run,not run,n/a,not run
+diffpure_0.3,not run,not run,not run,n/a,not run

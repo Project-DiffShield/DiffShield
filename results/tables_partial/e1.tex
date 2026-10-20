@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lcccccccccc}
+\toprule
+comparison (A vs B) & purifier & editor & pairs & PSR A & PSR B & PSR A-B [95\% CI] & p (PSR) & sim A-B [95\% CI] & p (sim) & images A>B \\
+\midrule
+noise\_uniform vs clean & none & SD1.5 s0.3 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_uniform vs clean & none & SD1.5 s0.55 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_uniform vs clean & none & SD1.5 s0.75 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_uniform vs clean & none & SDXL s0.55 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_uniform vs clean & none & InstructPix2Pix & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_uniform vs clean & none & SD inpaint (keep-face) & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_uniform vs clean & none & IP-Adapter FaceID & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & SD1.5 s0.3 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & SD1.5 s0.55 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & SD1.5 s0.75 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & SDXL s0.55 & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & InstructPix2Pix & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & SD inpaint (keep-face) & 0 & not run & not run & not run &  & not run &  &  \\
+noise\_gauss\_psnr vs clean & none & IP-Adapter FaceID & 0 & not run & not run & not run &  & not run &  &  \\
+\bottomrule
+\end{tabular}
+}
+\caption{E1: random-noise controls vs clean images (how much of the effect is just noise?)}
+\label{tab:e1}
+\par\footnotesize n images per cell: 100; edit seeds per image: 3; prompts per image: up to 3. Mean with 95\% percentile-bootstrap CI over images (10000 resamples, seed 2026); seeds and prompts are averaged within each image first. PSR = share of edits with no detected face or ArcFace sim to the source below the per-editor threshold (95th percentile of impostor sim of the E0 clean edits): ip2p 0.108, ipadapter\_faceid 0.108, sd15\_img2img 0.101, sd\_inpaint 0.110, sdxl\_img2img 0.104, pooled 0.103. 'not run' = no rows for the cell. A cell with fewer images than the largest cell shows (n=...). Paired differences A-B on the same images (aligned by image\_id): mean per-image difference with paired image-bootstrap CI and two-sided Wilcoxon signed-rank p, NOT corrected for the number of comparisons in this table. PSR A-B > 0 means A protects more; sim A-B < 0 means A removes more identity (ArcFace sim, 1 = same person).
+\end{table}

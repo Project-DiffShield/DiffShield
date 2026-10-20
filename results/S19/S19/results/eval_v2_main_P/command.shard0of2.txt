@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S19/eval_jobs.p_rerun.g0.yaml --shard 0/2

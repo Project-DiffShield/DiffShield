@@ -1,0 +1,9 @@
+purifier,v2_final vs,pairs,"ArcFace sim reduction, points [95% CI]",p,PSR gain [95% CI]
+none,noise_uniform,0,not run,,not run
+none,noise_gauss_psnr,0,not run,,not run
+none,v1,0,not run,,not run
+jpeg_other,v1,0,not run,,not run
+downup_other,v1,0,not run,,not run
+diffpure_0.1,v1,0,not run,,not run
+diffpure_0.2,v1,0,not run,,not run
+diffpure_0.3,v1,0,not run,,not run

@@ -1,0 +1,6 @@
+method,SD1.5 s0.55,InstructPix2Pix,SD inpaint (keep-face),IP-Adapter FaceID
+L_vis only,not run,not run,not run,not run
+L_den only,not run,not run,not run,not run
+"both, no L_sem",not run,not run,not run,not run
+"both, no purifier in loop",not run,not run,not run,not run
+v2 + one-step SD purifier + L_den (E5),"0.24 [0.20, 0.29]","0.12 [0.07, 0.17]","0.00 [0.00, 0.00]","0.00 [0.00, 0.01]"

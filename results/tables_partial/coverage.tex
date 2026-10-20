@@ -1,0 +1,35 @@
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccccc}
+\toprule
+split & method & purifier & editor & strengths & n\_images & n\_rows & seeds & n\_prompts & face\_rate \\
+\midrule
+messy & clean & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & clean & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & v1 & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & v1 & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & v2\_main & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & v2\_main & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 0.98 \\
+test & clean & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.82 \\
+test & clean & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & clean & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.99 \\
+test & clean & none & sd\_inpaint & 1 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & clean & none & sdxl\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & v1 & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.92 \\
+test & v1 & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & v1 & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.99 \\
+test & v1 & none & sd\_inpaint & 1 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & v1 & none & sdxl\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & v2\_main & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.92 \\
+test & v2\_main & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & v2\_main & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.99 \\
+test & v2\_main & none & sd\_inpaint & 1 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+\bottomrule
+\end{tabular}
+}
+\caption{Coverage: cells with rows, images and seeds}
+\label{tab:coverage}
+\par\footnotesize Rows per (split, method, purifier, editor) cell. See results/combined/coverage\_vs\_plan.csv for planned-but-missing cells.
+\end{table}

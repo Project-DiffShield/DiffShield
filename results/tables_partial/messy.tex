@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcc}
+\toprule
+method & SD1.5 s0.55 & IP-Adapter FaceID \\
+\midrule
+clean (E0) & 0.15 [0.07, 0.25] (n=20) & 0.00 [0.00, 0.00] (n=20) \\
+uniform noise (E1) & not run & not run \\
+Gaussian noise, PSNR-matched (E1) & not run & not run \\
+PhotoGuard encoder attack (E2, reimpl.) & not run & not run \\
+Mist-style (E2, reimpl.) & not run & not run \\
+v1 (E3) & 0.32 [0.18, 0.45] (n=20) & 0.00 [0.00, 0.00] (n=20) \\
+v2 + one-step SD purifier + L\_den (E5) & 0.28 [0.15, 0.43] (n=20) & 0.00 [0.00, 0.00] (n=20) \\
+v2 final & not run & not run \\
+\bottomrule
+\end{tabular}
+\caption{PSR on the 20 messy photos (pose / lighting / pre-compression), no purifier}
+\label{tab:messy}
+\par\footnotesize n images per cell: 20; edit seeds per image: 3; prompts per image: up to 1. Mean with 95\% percentile-bootstrap CI over images (10000 resamples, seed 2026); seeds and prompts are averaged within each image first. PSR = share of edits with no detected face or ArcFace sim to the source below the per-editor threshold (95th percentile of impostor sim of the E0 clean edits): ip2p 0.108, ipadapter\_faceid 0.108, sd15\_img2img 0.101, sd\_inpaint 0.110, sdxl\_img2img 0.104, pooled 0.103. 'not run' = no rows for the cell. A cell with fewer images than the largest cell shows (n=...). Messy photos: one rotated prompt per image, 20 images only, so intervals are wide.
+\end{table}

@@ -1,0 +1,257 @@
+[jobs] eval_v2_final_H: start
+[runner] 400 jobs, 400 to do (0 already complete)
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files:  85%|████████▍ | 11/13 [00:01<00:00,  5.63it/s]Fetching 13 files:  92%|█████████▏| 12/13 [00:05<00:00,  1.81it/s]Fetching 13 files: 100%|██████████| 13/13 [00:19<00:00,  2.46s/it]Fetching 13 files: 100%|██████████| 13/13 [00:19<00:00,  1.50s/it]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  4.75it/s]Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.60it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  3.12it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:02<00:01,  1.06it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  58%|█████▊    | 114/196 [00:00<00:00, 1091.35it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1247.55it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:04<00:01,  1.35s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:05<00:00,  1.08it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:05<00:00,  1.19it/s]
+[runner] EDITOR FAILED: ip2p: FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 717, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 816, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 157.60it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 22.66it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:09, 19.41it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1303.78it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.53it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.04it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+[runner] EDITOR FAILED: ipadapter_faceid: FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 717, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 816, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 19.15it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:16, 11.78it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 864.89it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.12it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.11it/s]
+[runner] EDITOR FAILED: sd15_img2img: FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 717, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 816, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Fetching 14 files:  14%|█▍        | 2/14 [00:00<00:01, 10.40it/s]Fetching 14 files:  57%|█████▋    | 8/14 [00:00<00:00, 30.41it/s]Fetching 14 files:  86%|████████▌ | 12/14 [00:08<00:01,  1.08it/s]Fetching 14 files: 100%|██████████| 14/14 [00:14<00:00,  1.03s/it]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]An error occurred while trying to fetch /root/.cache/huggingface/hub/models--stable-diffusion-v1-5--stable-diffusion-inpainting/snapshots/8a4288a76071f7280aedbdb3253bdb9e9d5d84bb/vae: Error no file named diffusion_pytorch_model.safetensors found in directory /root/.cache/huggingface/hub/models--stable-diffusion-v1-5--stable-diffusion-inpainting/snapshots/8a4288a76071f7280aedbdb3253bdb9e9d5d84bb/vae.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 19.26it/s]An error occurred while trying to fetch /root/.cache/huggingface/hub/models--stable-diffusion-v1-5--stable-diffusion-inpainting/snapshots/8a4288a76071f7280aedbdb3253bdb9e9d5d84bb/unet: Error no file named diffusion_pytorch_model.safetensors found in directory /root/.cache/huggingface/hub/models--stable-diffusion-v1-5--stable-diffusion-inpainting/snapshots/8a4288a76071f7280aedbdb3253bdb9e9d5d84bb/unet.
+Defaulting to unsafe serialization. Pass `allow_pickle=False` to raise an error instead.
+
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:11, 16.95it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1431.97it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  2.18it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:12<00:00,  3.12s/it]Loading pipeline components...: 100%|██████████| 6/6 [00:12<00:00,  2.11s/it]
+[runner] EDITOR FAILED: sd_inpaint: FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 717, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 816, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/scripts/evaluate.py", line 257, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/tmp/DiffShield/scripts/evaluate.py", line 223, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 731, in run
+    raise RuntimeError(f"editors failed (other editors completed): {sorted(failed_editors)}")
+RuntimeError: editors failed (other editors completed): ['ip2p', 'ipadapter_faceid', 'sd15_img2img', 'sd_inpaint']
+[jobs] eval_v2_final_P: start
+[runner] 950 jobs, 950 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 28.66it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  71%|███████▏  | 140/196 [00:00<00:00, 1397.49it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1475.97it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.49it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.02it/s]
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/scripts/evaluate.py", line 257, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/tmp/DiffShield/scripts/evaluate.py", line 223, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 699, in run
+    self._purify_stage(todo)
+    ~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 770, in _purify_stage
+    img = _open_rgb(self.protected_path(m, iid))
+                    ~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 10055 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+[jobs] eval_v2_final_M: start
+[runner] 20 jobs, 20 to do (0 already complete)
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 14.85it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  60%|██████    | 118/196 [00:00<00:00, 1177.44it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1407.33it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.27it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.25it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  20%|██        | 120/590 [00:00<00:00, 1061.94it/s]Loading weights:  38%|███▊      | 227/590 [00:00<00:00, 1038.57it/s]Loading weights:  56%|█████▌    | 331/590 [00:00<00:00, 703.61it/s] Loading weights:  70%|██████▉   | 411/590 [00:00<00:00, 574.52it/s]Loading weights:  81%|████████  | 476/590 [00:00<00:00, 569.91it/s]Loading weights:  95%|█████████▌| 561/590 [00:00<00:00, 638.03it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 691.04it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 24.89it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  80%|████████  | 157/196 [00:00<00:00, 1567.90it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1734.40it/s]
+Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.32it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.82it/s]
+{
+  "run": {
+    "jobs": 20,
+    "executed": 20,
+    "rows": 60
+  },
+  "summary": [
+    {
+      "method": "v2_final",
+      "purifier": "none",
+      "editor": "ipadapter_faceid",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.6345440735419591,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.7076366186141967,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_final",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.12187069617211814,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6119290073712667,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}
+[jobs] eval_v2_final_H_sdxl: start
+[runner] 50 jobs, 50 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/7 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/517 [00:00<?, ?it/s][A
+Loading weights:   0%|          | 2/517 [00:03<17:03,  1.99s/it][A
+Loading weights:  26%|██▋       | 136/517 [00:04<00:08, 45.95it/s][A
+Loading weights:  36%|███▌      | 184/517 [00:05<00:07, 45.74it/s][A
+Loading weights:  41%|████      | 213/517 [00:05<00:06, 47.79it/s][A
+Loading weights:  45%|████▌     | 233/517 [00:06<00:06, 42.80it/s][A
+Loading weights:  48%|████▊     | 248/517 [00:06<00:06, 42.41it/s][A
+Loading weights:  51%|█████     | 264/517 [00:07<00:06, 41.81it/s][A
+Loading weights:  53%|█████▎    | 273/517 [00:07<00:05, 44.13it/s][A
+Loading weights:  54%|█████▍    | 281/517 [00:07<00:05, 41.11it/s][A
+Loading weights:  57%|█████▋    | 296/517 [00:07<00:05, 42.37it/s][A
+Loading weights:  58%|█████▊    | 302/517 [00:08<00:05, 42.36it/s][A
+Loading weights:  60%|██████    | 312/517 [00:08<00:05, 40.01it/s][A
+Loading weights:  63%|██████▎   | 328/517 [00:08<00:04, 41.05it/s][A
+Loading weights:  64%|██████▍   | 333/517 [00:08<00:04, 41.58it/s][A
+Loading weights:  67%|██████▋   | 344/517 [00:09<00:04, 41.10it/s][A
+Loading weights:  70%|██████▉   | 360/517 [00:09<00:03, 42.68it/s][A
+Loading weights:  71%|███████   | 365/517 [00:09<00:03, 42.90it/s][A
+Loading weights:  73%|███████▎  | 376/517 [00:09<00:03, 40.13it/s][A
+Loading weights:  76%|███████▌  | 392/517 [00:10<00:02, 42.32it/s][A
+Loading weights:  77%|███████▋  | 397/517 [00:10<00:02, 40.11it/s][A
+Loading weights:  79%|███████▉  | 408/517 [00:10<00:02, 38.99it/s][A
+Loading weights:  82%|████████▏ | 424/517 [00:11<00:02, 39.73it/s][A
+Loading weights:  85%|████████▌ | 440/517 [00:11<00:01, 39.62it/s][A
+Loading weights:  88%|████████▊ | 456/517 [00:11<00:01, 40.03it/s][A
+Loading weights:  91%|█████████▏| 472/517 [00:12<00:01, 44.27it/s][A
+Loading weights:  92%|█████████▏| 477/517 [00:12<00:00, 44.75it/s][A
+Loading weights:  94%|█████████▍| 488/517 [00:12<00:00, 41.93it/s][A
+Loading weights:  97%|█████████▋| 504/517 [00:12<00:00, 44.66it/s][ALoading weights: 100%|██████████| 517/517 [00:12<00:00, 40.06it/s]
+Loading pipeline components...:  14%|█▍        | 1/7 [00:13<01:18, 13.16s/it]Loading pipeline components...:  29%|██▊       | 2/7 [00:13<00:27,  5.53s/it]Loading pipeline components...:  71%|███████▏  | 5/7 [00:47<00:19,  9.80s/it]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:03<05:26,  1.68s/it][A
+Loading weights:  86%|████████▌ | 168/196 [00:03<00:00, 67.75it/s][ALoading weights: 100%|██████████| 196/196 [00:03<00:00, 51.75it/s]
+Loading pipeline components...:  86%|████████▌ | 6/7 [00:51<00:08,  8.33s/it]Loading pipeline components...: 100%|██████████| 7/7 [00:52<00:00,  6.15s/it]Loading pipeline components...: 100%|██████████| 7/7 [00:52<00:00,  7.43s/it]
+[runner] EDITOR FAILED: sdxl_img2img: FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 717, in run
+    self._process(editor, j)
+    ~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 816, in _process
+    x_path = self.input_path(job)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 668, in input_path
+    return self.protected_path(job.method, job.image_id) if job.purifier == "none" \
+           ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 659, in protected_path
+    raise FileNotFoundError(f"protected image for {image_id} not found in {d}")
+FileNotFoundError: protected image for 10457 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+
+Traceback (most recent call last):
+  File "/kaggle/tmp/DiffShield/scripts/evaluate.py", line 257, in run_jobs_file
+    rc = run_job(ns, job_cfg, argv, shared)
+  File "/kaggle/tmp/DiffShield/scripts/evaluate.py", line 223, in run_job
+    res = runner.run(jobs)
+  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 731, in run
+    raise RuntimeError(f"editors failed (other editors completed): {sorted(failed_editors)}")
+RuntimeError: editors failed (other editors completed): ['sdxl_img2img']

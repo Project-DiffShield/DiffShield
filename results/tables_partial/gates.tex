@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{lcccc}
+\toprule
+gate & what & verdict & rule (operationalisation) & notes \\
+\midrule
+E3 & v1 under purification (decision rule for Phase 5) & NOT RUN & mean relative PSR drop of v1 over jpeg\_q75,jpeg\_q50,downup\_0.5,vae\_rt,diffpure\_0.1,diffpure\_0.2 (SD1.5 s0.55): >= 50\% collapses -> continue with Phase 5; < 20\% barely drops -> recommend skipping Phase 5 and ask the user; in between -> ask the user. The cut-offs are analyst proposals (the handoff gives none). & only 0 of 6 core purifiers available \\
+E4 & v2\_cheap vs v1 under cheap purifiers & NOT RUN & PSR(v2\_cheap) >= 2 x PSR(v1) under jpeg\_q75,jpeg\_q50,downup\_0.5,vae\_rt (SD1.5 s0.55) with PSNR >= 38. Point estimate decides; the paired ratio CI is shown. Degenerate if v1 PSR >= 0.5 (doubling impossible), trivial if < 0.02. & invisibility of v2\_cheap not available (no inv\_psnr) \\
+E5 & v2\_main: held-out DiffPure t*=0.1 vs no purifier & NOT RUN & PSR under diffpure\_0.1 >= 0.5 x PSR without purifier (SD1.5 s0.55, same images). Point estimate decides; 'robust' if the paired ratio CI lower bound also >= the fraction. &  \\
+E6 & v2\_antipure vs v2\_main (anti-purification terms) & NOT RUN & go if the paired PSR gain under higher-t* DiffPure has a 95\% CI above 0; 'no gain (within CI)' otherwise (handoff Phase 5: drop it if gains are within the CI). &  \\
+INV & Invisibility & PASS & PSNR >= 38 and SSIM >= 0.95 (per image); human 2AFC accuracy not far above 50\%. & human 2AFC result not available (E10 not run) \\
+\bottomrule
+\end{tabular}
+\caption{Gate evaluation (reported honestly; a missed gate is reported, not changed)}
+\label{tab:gates}
+\par\footnotesize Gate values are the handoff's suggestions. E3 cut-offs and purifier sets are analyst choices stated in the rule column; change them with --gate\_param. 'DEGENERATE' = the doubling rule is meaningless (V2\_PLAN R20): ask the user.
+\end{table}
