@@ -490,8 +490,8 @@ jobs:
     accelerator: gpu_t4x2
     params:
       smoke: false
-      prev_root: ""            # /kaggle/input/<S06 output>; needs S06/results/prot_v2_final_test and S06/optuna/...
-      final_yaml: "{prev_root}/S06/optuna/v2_final/final_candidate.yaml"
+      prev_root: ""            # /kaggle/input/<S06 output>; needs S06/results/prot_v2_final_test (the v2_final protected photos)
+      final_yaml: ""           # the tuned config is in the bundle (config/parts/final.yaml); do not point this at the S06 output
       ae_minutes: 60
     smoke_params: {ae_minutes: 1}
     steps:
