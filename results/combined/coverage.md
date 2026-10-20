@@ -1,13 +1,17 @@
 # Coverage of combined results
 
-Rows after de-duplication: 18480 (dropped 0 duplicates, 0 duplicate keys with differing ArcFace sim).
+Rows after de-duplication: 24720 (dropped 0 duplicates, 0 duplicate keys with differing ArcFace sim).
 
-Cells: 56; methods: clean, v1, v2_final, v2_main; splits: messy, test.
+Cells: 72; methods: clean, eps8, noise_gauss_psnr, noise_uniform, v1, v2_final, v2_main; splits: messy, test.
 
 | split | method | purifier | editor | images | seeds | strengths | prompts | face rate | LPIPS filled |
 |---|---|---|---|---|---|---|---|---|---|
 | messy | clean | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | clean | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | noise_gauss_psnr | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | noise_gauss_psnr | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | noise_uniform | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | noise_uniform | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | v1 | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.65 |
 | messy | v1 | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | v2_final | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
@@ -19,6 +23,18 @@ Cells: 56; methods: clean, v1, v2_final, v2_main; splits: messy, test.
 | test | clean | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 0.00 |
 | test | clean | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
 | test | clean | none | sdxl_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | eps8 | diffpure_0.1 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 0.00 |
+| test | eps8 | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | eps8 | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | eps8 | none | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | noise_gauss_psnr | none | ip2p | 100 | 1,2,3 | - | 3 | 0.92 | 0.00 |
+| test | noise_gauss_psnr | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | noise_gauss_psnr | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 0.00 |
+| test | noise_gauss_psnr | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
+| test | noise_uniform | none | ip2p | 100 | 1,2,3 | - | 3 | 0.93 | 0.00 |
+| test | noise_uniform | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | noise_uniform | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 0.00 |
+| test | noise_uniform | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
 | test | v1 | diffpure_0.05 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |
 | test | v1 | diffpure_0.1 | ip2p | 100 | 1,2,3 | - | 3 | 0.93 | 1.00 |
 | test | v1 | diffpure_0.1 | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |

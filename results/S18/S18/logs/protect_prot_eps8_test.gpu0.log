@@ -1,0 +1,87 @@
+[10:36:39] run prot_eps8_test method=eps8 device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[10:36:39] 50 images in this shard (100 total), 0 already done
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s]Loading weights: 100%|██████████| 196/196 [00:00<00:00, 2460.60it/s]
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 7276.60it/s]
+[transformers] [1mCLIPVisionModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████| 197/197 [00:00<00:00, 2774.88it/s]
+[transformers] [1mCLIPTextModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.pre_layrnorm.weight                               | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+visual_projection.weight                                       | UNEXPECTED |  | 
+vision_model.pre_layrnorm.bias                                 | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.embeddings.class_embedding                        | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Downloading: "https://download.pytorch.org/models/vgg16-397923af.pth" to /root/.cache/torch/hub/checkpoints/vgg16-397923af.pth
+  0%|          | 0.00/528M [00:00<?, ?B/s]  1%|          | 6.38M/528M [00:00<00:08, 66.8MB/s]  5%|▍         | 24.4M/528M [00:00<00:03, 138MB/s]   8%|▊         | 43.5M/528M [00:00<00:03, 166MB/s] 12%|█▏        | 62.4M/528M [00:00<00:02, 178MB/s] 15%|█▌        | 81.1M/528M [00:00<00:02, 184MB/s] 19%|█▉        | 99.9M/528M [00:00<00:02, 188MB/s] 22%|██▏       | 119M/528M [00:00<00:02, 191MB/s]  26%|██▌       | 138M/528M [00:00<00:02, 193MB/s] 30%|██▉       | 157M/528M [00:00<00:01, 195MB/s] 33%|███▎      | 175M/528M [00:01<00:01, 195MB/s] 37%|███▋      | 194M/528M [00:01<00:01, 194MB/s] 40%|████      | 213M/528M [00:01<00:01, 194MB/s] 44%|████▍     | 231M/528M [00:01<00:01, 194MB/s] 47%|████▋     | 250M/528M [00:01<00:01, 195MB/s] 51%|█████     | 269M/528M [00:01<00:01, 195MB/s] 54%|█████▍    | 287M/528M [00:01<00:01, 195MB/s] 58%|█████▊    | 306M/528M [00:01<00:01, 195MB/s] 62%|██████▏   | 325M/528M [00:01<00:01, 195MB/s] 65%|██████▌   | 344M/528M [00:01<00:00, 197MB/s] 69%|██████▉   | 363M/528M [00:02<00:00, 198MB/s] 72%|███████▏  | 382M/528M [00:02<00:00, 189MB/s] 76%|███████▌  | 400M/528M [00:02<00:00, 184MB/s] 79%|███████▉  | 418M/528M [00:02<00:00, 181MB/s] 83%|████████▎ | 436M/528M [00:02<00:00, 179MB/s] 86%|████████▌ | 453M/528M [00:02<00:00, 178MB/s] 89%|████████▉ | 470M/528M [00:02<00:00, 176MB/s] 92%|█████████▏| 486M/528M [00:02<00:00, 176MB/s] 95%|█████████▌| 503M/528M [00:02<00:00, 176MB/s] 99%|█████████▉| 523M/528M [00:02<00:00, 185MB/s]100%|██████████| 528M/528M [00:02<00:00, 186MB/s]
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[11:09:07] [5/50] 11106 psnr=35.89 ssim=0.8752 gpu_s=381.9
+[11:41:05] [10/50] 130 psnr=36.92 ssim=0.9343 gpu_s=365.7
+[12:13:08] [15/50] 16383 psnr=34.19 ssim=0.7741 gpu_s=396.5
+[12:45:45] [20/50] 21783 psnr=33.76 ssim=0.7854 gpu_s=399.4
+[13:17:10] [25/50] 25516 psnr=34.13 ssim=0.8325 gpu_s=394.6
+[13:48:23] [30/50] 3272 psnr=37.04 ssim=0.9378 gpu_s=371.6
+[14:20:53] [35/50] 4489 psnr=36.31 ssim=0.9144 gpu_s=365.2
+[14:52:42] [40/50] 5443 psnr=36.41 ssim=0.9149 gpu_s=380.3
+[15:24:28] [45/50] 7551 psnr=36.19 ssim=0.8950 gpu_s=379.8
+[15:56:31] [50/50] 986 psnr=37.38 ssim=0.9428 gpu_s=372.8
+[15:56:31] done

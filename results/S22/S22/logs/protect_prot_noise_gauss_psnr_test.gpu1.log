@@ -1,0 +1,19 @@
+[13:32:40] run prot_noise_gauss_psnr_test method=noise_gauss_psnr device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[13:32:40] 50 images in this shard (100 total), 0 already done
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[13:32:47] [5/50] 11318 psnr=41.89 ssim=0.9666 gpu_s=0.1
+[13:32:50] [10/50] 13117 psnr=41.92 ssim=0.9609 gpu_s=0.0
+[13:32:53] [15/50] 18621 psnr=41.84 ssim=0.9637 gpu_s=0.1
+[13:32:56] [20/50] 22085 psnr=41.88 ssim=0.9614 gpu_s=0.0
+[13:33:00] [25/50] 25877 psnr=41.87 ssim=0.9600 gpu_s=0.1
+[13:33:03] [30/50] 3463 psnr=42.08 ssim=0.9587 gpu_s=0.1
+[13:33:06] [35/50] 4535 psnr=41.92 ssim=0.9567 gpu_s=0.1
+[13:33:09] [40/50] 5464 psnr=41.87 ssim=0.9619 gpu_s=0.0
+[13:33:12] [45/50] 7603 psnr=41.90 ssim=0.9687 gpu_s=0.0
+[13:33:15] [50/50] 9954 psnr=41.95 ssim=0.9569 gpu_s=0.1
+[13:33:15] done

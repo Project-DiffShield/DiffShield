@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S22/eval_jobs.e1.g1.yaml --shard 1/2

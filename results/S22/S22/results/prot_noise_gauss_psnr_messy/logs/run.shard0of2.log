@@ -1,0 +1,5 @@
+[13:33:21] run prot_noise_gauss_psnr_messy method=noise_gauss_psnr device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[13:33:21] 10 images in this shard (20 total), 0 already done
+[13:33:28] [5/10] 23397 psnr=41.89 ssim=0.9567 gpu_s=0.1
+[13:33:31] [10/10] 8790 psnr=41.88 ssim=0.9631 gpu_s=0.0
+[13:33:31] done

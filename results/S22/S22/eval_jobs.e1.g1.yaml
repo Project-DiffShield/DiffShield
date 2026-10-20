@@ -1,0 +1,23 @@
+defaults:
+  set: []
+  config: /kaggle/working/S22/cfg/config.yaml
+  cache_dir: /kaggle/working/S22/cache
+  no_generate_clean: true
+  parsing_dir: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+jobs:
+- name: eval_noise_H
+  tier: H
+  method: noise_uniform,noise_gauss_psnr
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S22/data/test
+  protected_dir: /kaggle/working/S22/results/prot_{method}_test/images
+  out: /kaggle/working/S22/results/eval_noise_H
+- name: eval_noise_M
+  tier: M
+  method: noise_uniform,noise_gauss_psnr
+  split: messy
+  split_file: /kaggle/tmp/DiffShield/data/splits/messy.txt
+  source_dir: /kaggle/working/S22/data/messy
+  protected_dir: /kaggle/working/S22/results/prot_{method}_messy/images
+  out: /kaggle/working/S22/results/eval_noise_M

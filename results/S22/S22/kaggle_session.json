@@ -1,0 +1,70 @@
+{
+  "job_id": "S22",
+  "run_id": "S22",
+  "session_seconds": 9778.073591470718,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 37.3
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.5
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 47.5
+    },
+    "protect_prot_noise_uniform_test": {
+      "rc": 0,
+      "seconds": 50.0
+    },
+    "merge_prot_noise_uniform_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "protect_prot_noise_uniform_messy": {
+      "rc": 0,
+      "seconds": 15.0
+    },
+    "merge_prot_noise_uniform_messy": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_noise_gauss_psnr_test": {
+      "rc": 0,
+      "seconds": 40.0
+    },
+    "merge_prot_noise_gauss_psnr_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_noise_gauss_psnr_messy": {
+      "rc": 0,
+      "seconds": 15.0
+    },
+    "merge_prot_noise_gauss_psnr_messy": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "e1": {
+      "rc": 0,
+      "seconds": 9565.3
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

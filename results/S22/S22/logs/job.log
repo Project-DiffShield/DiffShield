@@ -1,0 +1,44 @@
+[13:30:01] S22: start: S22 noise controls (uniform at eps=4, Gaussian matched to v1's PSNR; CPU protection) -> E1 edits (H, M) | gpus=2 smoke=False n_images=None iters=None resume=None
+[13:30:01] S22: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[13:30:38] S22: step install: rc=0 (37s)
+[13:30:38] S22: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[13:30:44] S22: step check_env: rc=0 (5s)
+[13:30:44] S22: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[13:30:44] S22: step resolve_splits: rc=0 (0s)
+[13:30:44] S22: config: using config/parts/final.yaml from the bundle
+[13:30:44] S22: step make_config: rc=0 (0s)
+[13:30:44] S22: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S22/data --splits test messy --no_cache
+[13:31:31] S22: step prepare_data: rc=0 (48s)
+[13:31:31] S22: [protect_prot_noise_uniform_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S22/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_noise_uniform_test --output_root /kaggle/working/S22/results --checkpoint_every 5 --split test --shard 0/2
+[13:31:31] S22: [protect_prot_noise_uniform_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S22/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_noise_uniform_test --output_root /kaggle/working/S22/results --checkpoint_every 5 --split test --shard 1/2
+[13:32:21] S22: [protect_prot_noise_uniform_test] protect_prot_noise_uniform_test.gpu0.log exited 0; tail: ['[13:32:16] [45/50] 7551 psnr=40.64 ssim=0.9434 gpu_s=0.0', '[13:32:19] [50/50] 986 psnr=40.77 ssim=0.9570 gpu_s=0.0', '[13:32:19] done']
+[13:32:21] S22: [protect_prot_noise_uniform_test] protect_prot_noise_uniform_test.gpu1.log exited 0; tail: ['[13:32:16] [45/50] 7603 psnr=40.72 ssim=0.9594 gpu_s=0.0', '[13:32:19] [50/50] 9954 psnr=40.85 ssim=0.9448 gpu_s=0.0', '[13:32:19] done']
+[13:32:21] S22: step protect_prot_noise_uniform_test: rc=0 (50s)
+[13:32:21] S22: [merge_prot_noise_uniform_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S22/results/prot_noise_uniform_test
+[13:32:22] S22: step merge_prot_noise_uniform_test: rc=0 (1s)
+[13:32:22] S22: [protect_prot_noise_uniform_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S22/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_noise_uniform_messy --output_root /kaggle/working/S22/results --checkpoint_every 5 --split messy --shard 0/2
+[13:32:22] S22: [protect_prot_noise_uniform_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_uniform --input_dir /kaggle/working/S22/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_noise_uniform_messy --output_root /kaggle/working/S22/results --checkpoint_every 5 --split messy --shard 1/2
+[13:32:37] S22: [protect_prot_noise_uniform_messy] protect_prot_noise_uniform_messy.gpu0.log exited 0; tail: ['[13:32:31] [5/10] 23397 psnr=40.89 ssim=0.9463 gpu_s=0.0', '[13:32:34] [10/10] 8790 psnr=40.72 ssim=0.9524 gpu_s=0.0', '[13:32:34] done']
+[13:32:37] S22: [protect_prot_noise_uniform_messy] protect_prot_noise_uniform_messy.gpu1.log exited 0; tail: ['[13:32:31] [5/10] 23465 psnr=40.71 ssim=0.9475 gpu_s=0.0', '[13:32:34] [10/10] 9918 psnr=40.72 ssim=0.9447 gpu_s=0.0', '[13:32:34] done']
+[13:32:37] S22: step protect_prot_noise_uniform_messy: rc=0 (15s)
+[13:32:37] S22: [merge_prot_noise_uniform_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S22/results/prot_noise_uniform_messy
+[13:32:38] S22: step merge_prot_noise_uniform_messy: rc=0 (1s)
+[13:32:38] S22: [protect_prot_noise_gauss_psnr_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_gauss_psnr --input_dir /kaggle/working/S22/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_noise_gauss_psnr_test --output_root /kaggle/working/S22/results --checkpoint_every 5 --split test --set baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv --shard 0/2
+[13:32:38] S22: [protect_prot_noise_gauss_psnr_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_gauss_psnr --input_dir /kaggle/working/S22/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_noise_gauss_psnr_test --output_root /kaggle/working/S22/results --checkpoint_every 5 --split test --set baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv --shard 1/2
+[13:33:18] S22: [protect_prot_noise_gauss_psnr_test] protect_prot_noise_gauss_psnr_test.gpu0.log exited 0; tail: ['[13:33:13] [45/50] 7551 psnr=41.83 ssim=0.9563 gpu_s=0.1', '[13:33:16] [50/50] 986 psnr=41.91 ssim=0.9666 gpu_s=0.1', '[13:33:16] done']
+[13:33:18] S22: [protect_prot_noise_gauss_psnr_test] protect_prot_noise_gauss_psnr_test.gpu1.log exited 0; tail: ['[13:33:12] [45/50] 7603 psnr=41.90 ssim=0.9687 gpu_s=0.0', '[13:33:15] [50/50] 9954 psnr=41.95 ssim=0.9569 gpu_s=0.1', '[13:33:15] done']
+[13:33:18] S22: step protect_prot_noise_gauss_psnr_test: rc=0 (40s)
+[13:33:18] S22: [merge_prot_noise_gauss_psnr_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S22/results/prot_noise_gauss_psnr_test
+[13:33:18] S22: step merge_prot_noise_gauss_psnr_test: rc=0 (1s)
+[13:33:18] S22: [protect_prot_noise_gauss_psnr_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_gauss_psnr --input_dir /kaggle/working/S22/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_noise_gauss_psnr_messy --output_root /kaggle/working/S22/results --checkpoint_every 5 --split messy --set baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv --shard 0/2
+[13:33:18] S22: [protect_prot_noise_gauss_psnr_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S22/cfg/config.yaml --method noise_gauss_psnr --input_dir /kaggle/working/S22/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_noise_gauss_psnr_messy --output_root /kaggle/working/S22/results --checkpoint_every 5 --split messy --set baselines.noise_gauss_psnr.psnr_csv=data/v1_ref/stage1_per_image_metrics.csv --shard 1/2
+[13:33:33] S22: [protect_prot_noise_gauss_psnr_messy] protect_prot_noise_gauss_psnr_messy.gpu0.log exited 0; tail: ['[13:33:28] [5/10] 23397 psnr=41.89 ssim=0.9567 gpu_s=0.1', '[13:33:31] [10/10] 8790 psnr=41.88 ssim=0.9631 gpu_s=0.0', '[13:33:31] done']
+[13:33:33] S22: [protect_prot_noise_gauss_psnr_messy] protect_prot_noise_gauss_psnr_messy.gpu1.log exited 0; tail: ['[13:33:28] [5/10] 23465 psnr=41.87 ssim=0.9593 gpu_s=0.1', '[13:33:31] [10/10] 9918 psnr=41.88 ssim=0.9571 gpu_s=0.1', '[13:33:31] done']
+[13:33:33] S22: step protect_prot_noise_gauss_psnr_messy: rc=0 (15s)
+[13:33:33] S22: [merge_prot_noise_gauss_psnr_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S22/results/prot_noise_gauss_psnr_messy
+[13:33:34] S22: step merge_prot_noise_gauss_psnr_messy: rc=0 (1s)
+[13:33:34] S22: [e1] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S22/eval_jobs.e1.g0.yaml --shard 0/2
+[13:33:34] S22: [e1] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S22/eval_jobs.e1.g1.yaml --shard 1/2
+[16:05:19] S22: [e1] e1.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[16:12:59] S22: [e1] e1.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[16:12:59] S22: step e1: rc=0 (9565s)

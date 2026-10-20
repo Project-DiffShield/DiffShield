@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S18/cfg/config.yaml --method eps8 --input_dir /kaggle/working/S18/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_eps8_test --output_root /kaggle/working/S18/results --checkpoint_every 5 --split test --shard 1/2

@@ -1,0 +1,12 @@
+{
+  "eval_noise_H": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 8731.498979568481
+  },
+  "eval_noise_M": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 365.5857720375061
+  }
+}

@@ -1,0 +1,13 @@
+[10:36:39] run prot_eps8_test method=eps8 device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[10:36:39] 50 images in this shard (100 total), 0 already done
+[11:10:25] [5/50] 11318 psnr=36.00 ssim=0.9175 gpu_s=387.7
+[11:42:12] [10/50] 13117 psnr=35.25 ssim=0.8755 gpu_s=379.9
+[12:14:19] [15/50] 18621 psnr=33.55 ssim=0.8339 gpu_s=383.4
+[12:46:35] [20/50] 22085 psnr=36.09 ssim=0.9071 gpu_s=401.0
+[13:19:05] [25/50] 25877 psnr=36.59 ssim=0.9046 gpu_s=394.8
+[13:50:58] [30/50] 3463 psnr=38.78 ssim=0.9433 gpu_s=372.7
+[14:23:20] [35/50] 4535 psnr=37.30 ssim=0.9131 gpu_s=366.8
+[14:55:17] [40/50] 5464 psnr=35.42 ssim=0.8998 gpu_s=398.5
+[15:27:17] [45/50] 7603 psnr=34.62 ssim=0.8855 gpu_s=398.9
+[15:58:45] [50/50] 9954 psnr=36.20 ssim=0.8910 gpu_s=364.7
+[15:58:46] done

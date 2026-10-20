@@ -398,6 +398,36 @@
       "face_detected_without_sim": 0
     },
     {
+      "file": "results\\S18\\S18\\results\\eval_eps8_E9\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 600,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S18\\S18\\results\\eval_eps8_E9\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 600,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S18\\S18\\results\\prot_eps8_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S18\\S18\\results\\prot_eps8_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S18\\S18\\results\\prot_eps8_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
       "file": "results\\S19\\S19\\results\\eval_v1_P\\metrics.shard0.csv",
       "kind": "edit",
       "rows": 2700,
@@ -420,28 +450,124 @@
       "kind": "edit",
       "rows": 2400,
       "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\eval_noise_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\eval_noise_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\eval_noise_M\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 120,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\eval_noise_M\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 120,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_gauss_psnr_messy\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_gauss_psnr_messy\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_gauss_psnr_messy\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_gauss_psnr_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_gauss_psnr_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_gauss_psnr_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_uniform_messy\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_uniform_messy\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_uniform_messy\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_uniform_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_uniform_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S22\\S22\\results\\prot_noise_uniform_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
     }
   ],
   "rejected": [],
   "unzipped": [],
   "warnings": [],
   "edits": {
-    "rows_in": 18480,
-    "rows_out": 18480,
+    "rows_in": 24720,
+    "rows_out": 24720,
     "duplicates_dropped": 0,
     "conflicts": 0,
     "lpips_filled_from_cache": 512,
-    "n_cells": 56,
-    "lpips_missing": 7768
+    "n_cells": 72,
+    "lpips_missing": 14008
   },
   "plan": {
     "expected_cells": 229,
-    "missing_cells": 167
+    "missing_cells": 147
   },
   "protect": {
-    "rows_in": 982,
-    "rows_out": 490,
-    "duplicates_dropped": 492
+    "rows_in": 1662,
+    "rows_out": 830,
+    "duplicates_dropped": 832
   },
   "thresholds_from_job": "results\\S07\\S07\\results\\thresholds\\psr_thresholds.json",
   "thresholds": {
