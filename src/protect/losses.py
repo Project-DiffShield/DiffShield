@@ -122,3 +122,35 @@ class SingleVis:
 
     def __call__(self, xp: torch.Tensor, state) -> torch.Tensor:
         return l_vis(self.m, xp, state)
+
+
+class TargetVis:
+    """Target-steered encoder loss (PhotoGuard / Mist idea, here inside the purifier-EoT loop).
+
+    The terms above only push the latent AWAY from the clean latent (L_vis, unbounded, no direction). This one pulls
+    the latent of the purified protected image TOWARD a fixed destructive target latent, so the editor starts from a
+    latent it paints garbage from:
+
+        value = - w_tgt * MSE(enc(P(x+delta)), z_target)  +  w_dev * MSE(enc(P(x+delta)), z_clean)       (MAXIMISED, weight alpha)
+
+    kind: 'zero'  z_target = 0 (PhotoGuard's 'zero latent' target); 'gray'  z_target = enc(mid-gray image).
+    Unscaled latent means, like L_vis, so alpha keeps the same scale convention. Same interface as SingleVis.
+    """
+
+    def __init__(self, models: SDModels, kind: str = "zero", w_tgt: float = 1.0, w_dev: float = 0.0):
+        if kind not in ("zero", "gray"):
+            raise ValueError("target kind must be 'zero' or 'gray'")
+        self.m, self.kind, self.w_tgt, self.w_dev = models, kind, float(w_tgt), float(w_dev)
+
+    def prepare(self, x: torch.Tensor):
+        with torch.no_grad():
+            z_clean = self.m.encode_mean(x, scaled=False)
+            z_t = torch.zeros_like(z_clean) if self.kind == "zero" else self.m.encode_mean(torch.zeros_like(x), scaled=False)
+        return {"z_clean": z_clean, "z_t": z_t}
+
+    def __call__(self, xp: torch.Tensor, state) -> torch.Tensor:
+        e = self.m.encode_mean(xp, scaled=False)
+        v = -self.w_tgt * F.mse_loss(e, state["z_t"])
+        if self.w_dev:
+            v = v + self.w_dev * F.mse_loss(e, state["z_clean"])
+        return v

@@ -124,6 +124,9 @@ eval:
       - {splits: [test], methods: [clean, v1, v2_main, v2_final], purifiers: *pf, cells: [*c_fid]}
       - {splits: [test], methods: [v1, v2_final], purifiers: *pi, cells: [*c_ip2p]}
       - {splits: [test], methods: [v2_antipure], purifiers: [none], cells: [*c_fid]}      # E6 "FaceID none"
+    SCREEN:                                             # S24 / S25: method screening on the VAL split (20 photos); never test
+      - {splits: [val], methods: [clean, v1, v2_cheap, v2_main, photoguard, mist, v2_tgt_zero, v2_tgt_zero_hi, v2_tgt_gray],
+         purifiers: [none, jpeg_q75, diffpure_0.1], cells: [*c_sd15r]}
     AP:                                                 # S07 / S20: single-term antipure ablation on the VAL split (selection of the antipure terms; never test)
       - {splits: [val], methods: [clean, v2_antipure], purifiers: [jpeg_q75, vae_rt, diffpure_0.1], cells: [*c_sd15r]}
     A:                                                  # phase ablation (v2_main is the "both" arm)

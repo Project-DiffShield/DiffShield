@@ -213,3 +213,34 @@ def test_term_scales_calibration_roundtrip():
     assert params_from_cfg(cfg).loss_norm == sc
     (_, info2), _ = run(cfg)
     assert info2["linf_u8"] <= 4
+
+
+def test_target_vis_pulls_the_latent_toward_the_target_not_just_away():
+    from src.protect.losses import TargetVis
+
+    cfg = base_cfg(iters=12)
+    cfg["budget"].update(random_start="uniform_half", step_255=1.0)
+    cfg["loss"].update(alpha=1.0, eta=0.0, beta=0.0, gamma=0.0)
+    cfg["purifiers_train"] = []
+    m = make_models()
+    x = make_image()
+    p = params_from_cfg(cfg)
+    mix = build_mixture(cfg, m)
+    for kind in ("zero", "gray"):
+        vis = TargetVis(m, kind)
+        st = vis.prepare(x)
+        d0 = float(torch.nn.functional.mse_loss(m.encode_mean(x, scaled=False), st["z_t"]))
+        xa, info = pgd_protect(x, m, mix, p, vis=vis, sem=None, seed=0)
+        d1 = float(torch.nn.functional.mse_loss(m.encode_mean(xa, scaled=False), st["z_t"]))
+        assert d1 < d0, (kind, d0, d1)                     # closer to the target after PGD
+        assert info["terms"]["vis"][-1] > info["terms"]["vis"][0]   # the logged value (-MSE) went up
+        assert info["linf_u8"] <= 4
+
+
+def test_target_presets_resolve_and_use_the_target_loss():
+    from src.protect.v2_registry import resolve_cfg
+
+    for name in ("v2_tgt_zero", "v2_tgt_zero_hi", "v2_tgt_gray"):
+        c = resolve_cfg(name, {})
+        assert c["loss"]["target"]["kind"] in ("zero", "gray") and c["loss"]["eta"] == 0.0
+        assert c["budget"]["step_255"] == 1.0           # eps comes from config.yaml (4)

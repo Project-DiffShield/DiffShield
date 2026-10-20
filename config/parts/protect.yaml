@@ -83,6 +83,30 @@ methods:
     purifiers_train: []
     loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.2699475469647097, lambda_id: 0.0}
     eot: {k_draws: 4}
+  # Target-steered variants (2026-10-20): v2_cheap's cleanups in the loop (jpeg, down-up, VAE round trip; no UNet term, cheap)
+  # but L_vis is replaced by "pull the latent toward a destructive target" (PhotoGuard / Mist idea) instead of "move away
+  # from the clean latent". Screened on the VALIDATION photos only (S24 / S25); never tuned on test.
+  v2_tgt_zero:
+    budget: {step_255: 1.0}
+    purifiers_train: [jpeg, downup, vae_roundtrip]
+    purifier_train_probs: {jpeg: 0.35, downup: 0.35, vae_roundtrip: 0.3}
+    loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0,
+           target: {kind: zero, w_tgt: 1.0, w_dev: 0.0}}
+    eot: {k_draws: 4}
+  v2_tgt_zero_hi:
+    budget: {step_255: 1.0}
+    purifiers_train: [jpeg, downup, vae_roundtrip]
+    purifier_train_probs: {jpeg: 0.35, downup: 0.35, vae_roundtrip: 0.3}
+    loss: {alpha: 1.0, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0,
+           target: {kind: zero, w_tgt: 1.0, w_dev: 0.0}}
+    eot: {k_draws: 4}
+  v2_tgt_gray:
+    budget: {step_255: 1.0}
+    purifiers_train: [jpeg, downup, vae_roundtrip]
+    purifier_train_probs: {jpeg: 0.35, downup: 0.35, vae_roundtrip: 0.3}
+    loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0,
+           target: {kind: gray, w_tgt: 1.0, w_dev: 0.0}}
+    eot: {k_draws: 4}
   # Hand-set starting point for v2_final (before Optuna). Tuned values arrive as methods.v2_final in
   # config/parts/final.yaml and are layered on top of this by the registry.
   v2_final_default:

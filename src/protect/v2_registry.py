@@ -29,7 +29,7 @@ import torch
 from .pgd import params_from_cfg, pgd_protect
 
 PRESETS = ("v2_cheap", "v2_main", "v2_antipure", "v2_final", "abl_vis_only", "abl_den_only",
-           "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8")
+           "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8", "v2_tgt_zero", "v2_tgt_zero_hi", "v2_tgt_gray")
 _CHAIN = {
     "v2_final": ["v2_final_default", "v2_final"],
     "eps2": ["v2_final_default", "v2_final", "eps2"],
@@ -118,6 +118,11 @@ class V2Protector:
                 extra = {k: M.get_sdxl_vae({"models": cfg.get("models"), "runtime": cfg.get("runtime")}, self.device)
                          for k in ens.get("vaes", ["sdxl_vae_fp16"])}
             self.vis = EnsembleVis(self.models, extra, ens.get("weights") or None)
+        elif (cfg.get("loss") or {}).get("target"):
+            from .losses import TargetVis
+
+            t = cfg["loss"]["target"]
+            self.vis = TargetVis(self.models, t.get("kind", "zero"), t.get("w_tgt", 1.0), t.get("w_dev", 0.0))
         else:
             self.vis = SingleVis(self.models)
 

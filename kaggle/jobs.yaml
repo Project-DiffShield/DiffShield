@@ -593,6 +593,55 @@ jobs:
                purifier: "jpeg_q75,vae_rt,diffpure_0.1", protected_dir: "{s07_results}/prot_ap_both_val/images"}
             - {name: eval_clean_val, tier: AP, method: clean, split: val, editor: sd15_img2img,
                purifier: "jpeg_q75,vae_rt,diffpure_0.1"}
+  # ---------------------------------------------------------------------------------------------- S24 / S25 (screening on VAL)
+  S24:
+    title: S24 screening on the 20 VALIDATION photos - reference methods (clean, v1, v2_main, PhotoGuard, Mist) with SD1.5 s0.55 under none / jpeg_q75 / diffpure_0.1
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [val]}}
+      - name: fetch_mist_target
+        run: ["{py}", "-c", "import os,sys,urllib.request as u; p=sys.argv[2]; os.makedirs(os.path.dirname(p),exist_ok=True); u.urlretrieve(sys.argv[1],p); print('saved',p,os.path.getsize(p))",
+              "https://raw.githubusercontent.com/psyker-team/mist/99f5f3c455022bef77ef25ba440a4289ea472d25/MIST.png",
+              "{out}/assets/MIST.png"]
+      - {macro: protect, with: {method: v1, split: val}}
+      - {macro: protect, with: {method: mist, split: val, extra: ["--set", "baselines.mist.target_image={out}/assets/MIST.png"]}}
+      - {macro: protect, with: {method: photoguard, split: val}}
+      - {macro: protect, with: {method: v2_main, split: val}}
+      - macro: evaluate
+        with:
+          name: screen_ref
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: scr_clean, tier: SCREEN, purifier: all, method: clean, split: val}
+            - {name: scr_v1, tier: SCREEN, purifier: all, method: v1, split: val}
+            - {name: scr_mist, tier: SCREEN, purifier: all, method: mist, split: val}
+            - {name: scr_photoguard, tier: SCREEN, purifier: all, method: photoguard, split: val}
+            - {name: scr_v2_main, tier: SCREEN, purifier: all, method: v2_main, split: val}
+
+  S25:
+    title: S25 screening on the 20 VALIDATION photos - target-steered variants vs their control v2_cheap (SD1.5 s0.55 under none / jpeg_q75 / diffpure_0.1)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [val]}}
+      - {macro: protect, with: {method: v2_cheap, split: val}}
+      - {macro: protect, with: {method: v2_tgt_zero, split: val}}
+      - {macro: protect, with: {method: v2_tgt_zero_hi, split: val}}
+      - {macro: protect, with: {method: v2_tgt_gray, split: val}}
+      - macro: evaluate
+        with:
+          name: screen_cand
+          defs: {no_generate_clean: false}
+          jobs:
+            - {name: scr_clean_b, tier: SCREEN, purifier: all, method: clean, split: val}
+            - {name: scr_v2_cheap, tier: SCREEN, purifier: all, method: v2_cheap, split: val}
+            - {name: scr_v2_tgt_zero, tier: SCREEN, purifier: all, method: v2_tgt_zero, split: val}
+            - {name: scr_v2_tgt_zero_hi, tier: SCREEN, purifier: all, method: v2_tgt_zero_hi, split: val}
+            - {name: scr_v2_tgt_gray, tier: SCREEN, purifier: all, method: v2_tgt_gray, split: val}
+
   # ---------------------------------------------------------------------------------------------- S17 / S18
   S17:
     title: S17 E9 eps=2 (100 photos, protect then edits); the tuned config/parts/final.yaml is in the bundle   [eps=6 is S23]
