@@ -383,13 +383,13 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test]}}
-      - {macro: protect, with: {method: abl_vis_only, split: test, extra: ["--limit", "50"]}}
-      - {macro: protect, with: {method: abl_den_only, split: test, extra: ["--limit", "50"]}}
+      - {macro: protect, with: {method: abl_vis_only, split: test}}
+      - {macro: protect, with: {method: abl_den_only, split: test}}
       - macro: evaluate
         with:
           name: e7a
           jobs:
-            - {name: eval_abl_vis_den_A, tier: A, purifier: all, method: "abl_vis_only,abl_den_only", split: test, limit: 50}
+            - {name: eval_abl_vis_den_A, tier: A, purifier: all, method: "abl_vis_only,abl_den_only", split: test}
 
   # ---------------------------------------------------------------------------------------------- S12
   S12:
@@ -448,19 +448,27 @@ jobs:
 
   # ---------------------------------------------------------------------------------------------- S14
   S14:
-    title: S14 protect abl_no_sem + abl_no_pur -> E7b edits; noise controls (CPU) -> E1 edits
+    title: S14 protect abl_no_sem + abl_no_pur (100 photos) -> E7b edits   [noise controls moved to S22]
     accelerator: gpu_t4x2
     params: {smoke: false, final_yaml: ""}
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test, messy]}}
-      - {macro: protect, with: {method: abl_no_sem, split: test, extra: ["--limit", "50"]}}
-      - {macro: protect, with: {method: abl_no_pur, split: test, extra: ["--limit", "50"]}}
+      - {macro: protect, with: {method: abl_no_sem, split: test}}
+      - {macro: protect, with: {method: abl_no_pur, split: test}}
       - macro: evaluate
         with:
           name: e7b
           jobs:
-            - {name: eval_abl_nosem_nopur_A, tier: A, purifier: all, method: "abl_no_sem,abl_no_pur", split: test, limit: 50}
+            - {name: eval_abl_nosem_nopur_A, tier: A, purifier: all, method: "abl_no_sem,abl_no_pur", split: test}
+
+  S22:
+    title: S22 noise controls (uniform at eps=4, Gaussian matched to v1's PSNR; CPU protection) -> E1 edits (H, M)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test, messy]}}
       - {macro: protect, with: {method: noise_uniform, split: test}}
       - {macro: protect, with: {method: noise_uniform, split: messy}}
       - macro: protect
@@ -587,24 +595,32 @@ jobs:
                purifier: "jpeg_q75,vae_rt,diffpure_0.1"}
   # ---------------------------------------------------------------------------------------------- S17 / S18
   S17:
-    title: S17 E9 eps=2 then eps=6 (protect + edits); needs the tuned config/parts/final.yaml in the bundle (B3) or final_yaml
+    title: S17 E9 eps=2 (100 photos, protect then edits); the tuned config/parts/final.yaml is in the bundle   [eps=6 is S23]
     accelerator: gpu_t4x2
     params: {smoke: false, final_yaml: ""}
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test]}}
-      - {macro: protect, with: {method: eps2, split: test, extra: ["--limit", "50"]}}
+      - {macro: protect, with: {method: eps2, split: test}}
       - macro: evaluate
         with:
           name: e9_eps2
           jobs:
-            - {name: eval_eps2_E9, tier: E9, purifier: all, method: eps2, split: test, limit: 50}
-      - {macro: protect, with: {method: eps6, split: test, extra: ["--limit", "50"]}}
+            - {name: eval_eps2_E9, tier: E9, purifier: all, method: eps2, split: test}
+
+  S23:
+    title: S23 E9 eps=6 (100 photos, protect then edits)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: eps6, split: test}}
       - macro: evaluate
         with:
           name: e9_eps6
           jobs:
-            - {name: eval_eps6_E9, tier: E9, purifier: all, method: eps6, split: test, limit: 50}
+            - {name: eval_eps6_E9, tier: E9, purifier: all, method: eps6, split: test}
 
   S18:
     title: S18 E9 eps=8 (protect + edits); needs config/parts/final.yaml in the bundle (B3) or final_yaml
@@ -613,9 +629,9 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [test]}}
-      - {macro: protect, with: {method: eps8, split: test, extra: ["--limit", "50"]}}
+      - {macro: protect, with: {method: eps8, split: test}}
       - macro: evaluate
         with:
           name: e9_eps8
           jobs:
-            - {name: eval_eps8_E9, tier: E9, purifier: all, method: eps8, split: test, limit: 50}
+            - {name: eval_eps8_E9, tier: E9, purifier: all, method: eps8, split: test}
