@@ -1,7 +1,9 @@
+> SUPERSEDED on 2026-10-20 by `docs/EVAL_PLAN_FINAL.md` section G (new deadline, n = 100 jobs, sessions S22/S23 added). Dataset `diffshield-code-v7`, git hash `b72e5ff`.
+
 # Final launch sheet (written 2026-10-15 ~21:45 IST; deadline 16:30 on 2026-10-16)
 
-Use ONLY the dataset `diffshield-code-v6` (bundle `kaggle/dist/B6/diffshield-code-0dd64f2.zip`, git hash `0dd64f2`, tuned `config/parts/final.yaml` included). Older datasets (v2..v5) contain jobs that
-silently write empty purifier results or lack the tuned config. Every notebook: import `kaggle/job_runner.ipynb`; inputs = `diffshield-code-v6` +
+Use ONLY the dataset `diffshield-code-v7` (bundle `kaggle/dist/B7/diffshield-code-b72e5ff.zip`, git hash `b72e5ff`, tuned `config/parts/final.yaml` included). Older datasets (v2..v5) contain jobs that
+silently write empty purifier results or lack the tuned config. Every notebook: import `kaggle/job_runner.ipynb`; inputs = `diffshield-code-v7` +
 `ipythonx/celebamaskhq` (+ the extra inputs named below); accelerator GPU T4 x2; Internet ON; `RESUME_FROM = None`; **Save & Run All**.
 In the first log lines check `git_hash` equals the one the coordinator announced. Two GPU sessions at a time per account.
 No session may be launched after ~22:30 (it must end by ~09:00 to leave the day for analysis). Sessions stop starting new work after 11 h.

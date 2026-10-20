@@ -89,7 +89,7 @@ Decision rules after the data arrives (state the outcome honestly either way):
 ## F. Schedule (IST)
 | When | What |
 |---|---|
-| Tue 20 Oct 15:30-17:30 | create dataset `diffshield-code-v7`, share with acct3-5, launch wave 1 (table in G). Nothing may launch after ~18:00 (it must end by ~05:00) |
+| Tue 20 Oct 15:30-17:30 | create dataset `diffshield-code-v7` from `kaggle/dist/B7/diffshield-code-b72e5ff.zip` (git hash `b72e5ff`), share with acct3-5, launch wave 1 (table in G). Nothing may launch after ~18:00 (it must end by ~05:00) |
 | Tue 20 Oct night | wave 1 runs (sessions end 23:00-04:00). Locally: nothing blocks; prepare report text and figures code |
 | Wed 21 Oct 06:00-10:00 | download wave 1 zips as they finish; ingest; integrity checks (D); first full tables; list gaps and failures |
 | Wed 21 Oct 10:00-18:00 | wave 2 = re-runs and gaps only (each <= 8 h); human study sessions; failure-case analysis; report drafting |
