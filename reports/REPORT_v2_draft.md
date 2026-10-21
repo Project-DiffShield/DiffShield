@@ -91,7 +91,7 @@ Gates (as defined in the plan): E3 "barely drops" by the raw-PSR rule (this rule
 `v2_antipure` minus v1: +4.7 [0.0, +8.7] under the VAE round trip and +5.0 [0.0, +10.0] under DiffPure 0.1 (borderline CIs), nothing elsewhere; 13 of 100 photos violate SSIM 0.95. Not recommended without a stronger structure penalty.
 
 ### 5.7 Epsilon sweep (E9) and the adaptive attacker (E8)
-Budget is the main lever: PSR 17.3% at 2/255 (45.3 dB), 29.4% at 4/255 (`v2_final`, 40.5 dB), 37.7% at 8/255 (36.0 dB, fails invisibility on 96 of 100 photos); under JPEG 75 the gain flattens (16.7%, 16.3%, 21.0%). Figure `results/figures/psr_vs_psnr.png`. **[PENDING: 6/255 (S23) not run.]**
+Budget is the main lever: PSR 17.3% at 2/255 (45.3 dB), 29.4% at 4/255 (`v2_final`, 40.5 dB), 37.7% at 8/255 (36.0 dB, fails invisibility on 96 of 100 photos); under JPEG 75 the gain flattens (about 17%, 16% and 21%, read from the figure; exact values in `results/tables/e9.md`). Figure `results/figures/psr_vs_psnr.png`. **[PENDING: 6/255 (S23) not run.]**
 Adaptive attacker (autoencoder purifier, 120 other photos, 35,496 steps, validation PSNR of its output vs the clean photo 45.1 dB): PSR under it: clean 9.3%, v1 11.0% (net +1.7 [-1.0, +4.7]), `v2_final` 10.7% (net +1.3 [-1.0, +3.7]). The protection is removed. The attacker is weak by construction (a lower bound on the damage).
 
 ### 5.8 Target-steered variants (new)
