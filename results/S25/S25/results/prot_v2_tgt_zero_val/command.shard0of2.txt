@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_zero --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_zero_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 0/2

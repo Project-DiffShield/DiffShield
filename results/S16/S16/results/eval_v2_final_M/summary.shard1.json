@@ -6,9 +6,9 @@
     "strength": "0.55",
     "n_images": 10,
     "n_edits": 30,
-    "mean_arcface_sim": 0.6345440735419591,
+    "mean_arcface_sim": 0.639267020424207,
     "no_face_rate": 0.0,
-    "mean_clip_i": 0.7076366186141967,
+    "mean_clip_i": 0.7186644494533538,
     "mean_edit_lpips": NaN
   },
   {
@@ -18,9 +18,9 @@
     "strength": "0.55",
     "n_images": 10,
     "n_edits": 30,
-    "mean_arcface_sim": 0.12187069617211814,
+    "mean_arcface_sim": 0.1340706046515455,
     "no_face_rate": 0.0,
-    "mean_clip_i": 0.6119290073712667,
+    "mean_clip_i": 0.6183764050404231,
     "mean_edit_lpips": NaN
   }
 ]

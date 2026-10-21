@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_photoguard_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 1/2

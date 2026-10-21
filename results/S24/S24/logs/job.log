@@ -1,0 +1,46 @@
+[13:53:33] S24: start: S24 screening on the 20 VALIDATION photos - reference methods (clean, v1, v2_main, PhotoGuard, Mist) with SD1.5 s0.55 under none / jpeg_q75 / diffpure_0.1 | gpus=2 smoke=False n_images=None iters=None resume=None
+[13:53:33] S24: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[13:54:15] S24: step install: rc=0 (42s)
+[13:54:15] S24: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[13:54:23] S24: step check_env: rc=0 (8s)
+[13:54:23] S24: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[13:54:23] S24: step resolve_splits: rc=0 (0s)
+[13:54:23] S24: config: using config/parts/final.yaml from the bundle
+[13:54:23] S24: step make_config: rc=0 (0s)
+[13:54:23] S24: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S24/data --splits val --no_cache
+[13:54:32] S24: step prepare_data: rc=0 (9s)
+[13:54:32] S24: [fetch_mist_target] /usr/bin/python3 -c import os,sys,urllib.request as u; p=sys.argv[2]; os.makedirs(os.path.dirname(p),exist_ok=True); u.urlretrieve(sys.argv[1],p); print('saved',p,os.path.getsize(p)) https://raw.githubusercontent.com/psyker-team/mist/99f5f3c455022bef77ef25ba440a4289ea472d25/MIST.png /kaggle/working/S24/assets/MIST.png
+[13:54:32] S24: step fetch_mist_target: rc=0 (0s)
+[13:54:32] S24: [protect_prot_v1_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method v1 --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v1_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 0/2
+[13:54:32] S24: [protect_prot_v1_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method v1 --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v1_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 1/2
+[14:03:27] S24: [protect_prot_v1_val] protect_prot_v1_val.gpu1.log exited 0; tail: ['Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)', '[14:03:23] [10/10] 9312 psnr=42.28 ssim=0.9766 gpu_s=45.2', '[14:03:23] done']
+[14:03:32] S24: [protect_prot_v1_val] protect_prot_v1_val.gpu0.log exited 0; tail: ['Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)', '[14:03:30] [10/10] 862 psnr=42.38 ssim=0.9807 gpu_s=45.7', '[14:03:30] done']
+[14:03:32] S24: step protect_prot_v1_val: rc=0 (540s)
+[14:03:32] S24: [merge_prot_v1_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S24/results/prot_v1_val
+[14:03:33] S24: step merge_prot_v1_val: rc=0 (1s)
+[14:03:33] S24: [protect_prot_mist_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method mist --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_mist_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --set baselines.mist.target_image=/kaggle/working/S24/assets/MIST.png --shard 0/2
+[14:03:33] S24: [protect_prot_mist_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method mist --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_mist_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --set baselines.mist.target_image=/kaggle/working/S24/assets/MIST.png --shard 1/2
+[14:13:28] S24: [protect_prot_mist_val] protect_prot_mist_val.gpu1.log exited 0; tail: ['[14:08:48] [5/10] 2582 psnr=37.72 ssim=0.9101 gpu_s=54.3', '[14:13:22] [10/10] 9312 psnr=37.89 ssim=0.9207 gpu_s=54.5', '[14:13:22] done']
+[14:13:33] S24: [protect_prot_mist_val] protect_prot_mist_val.gpu0.log exited 0; tail: ['[14:08:52] [5/10] 23056 psnr=37.76 ssim=0.9273 gpu_s=54.8', '[14:13:28] [10/10] 862 psnr=37.78 ssim=0.9331 gpu_s=54.7', '[14:13:28] done']
+[14:13:33] S24: step protect_prot_mist_val: rc=0 (600s)
+[14:13:33] S24: [merge_prot_mist_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S24/results/prot_mist_val
+[14:13:34] S24: step merge_prot_mist_val: rc=0 (1s)
+[14:13:34] S24: [protect_prot_photoguard_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_photoguard_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 0/2
+[14:13:34] S24: [protect_prot_photoguard_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_photoguard_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 1/2
+[14:52:04] S24: [protect_prot_photoguard_val] protect_prot_photoguard_val.gpu1.log exited 0; tail: ['[14:32:54] [5/10] 2582 psnr=37.14 ssim=0.8969 gpu_s=228.4', '[14:51:59] [10/10] 9312 psnr=37.11 ssim=0.9041 gpu_s=228.5', '[14:51:59] done']
+[14:52:44] S24: [protect_prot_photoguard_val] protect_prot_photoguard_val.gpu0.log exited 0; tail: ['[14:33:16] [5/10] 23056 psnr=36.83 ssim=0.9091 gpu_s=232.5', '[14:52:41] [10/10] 862 psnr=36.85 ssim=0.9180 gpu_s=232.7', '[14:52:41] done']
+[14:52:44] S24: step protect_prot_photoguard_val: rc=0 (2350s)
+[14:52:44] S24: [merge_prot_photoguard_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S24/results/prot_photoguard_val
+[14:52:44] S24: step merge_prot_photoguard_val: rc=0 (1s)
+[14:52:44] S24: [protect_prot_v2_main_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method v2_main --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_main_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 0/2
+[14:52:44] S24: [protect_prot_v2_main_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S24/cfg/config.yaml --method v2_main --input_dir /kaggle/working/S24/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_main_val --output_root /kaggle/working/S24/results --checkpoint_every 5 --split val --shard 1/2
+[15:33:19] S24: [protect_prot_v2_main_val] protect_prot_v2_main_val.gpu1.log exited 0; tail: ['[15:12:53] [5/10] 2582 psnr=41.50 ssim=0.9736 gpu_s=236.9', '[15:33:15] [10/10] 9312 psnr=41.37 ssim=0.9767 gpu_s=237.8', '[15:33:15] done']
+[15:33:59] S24: [protect_prot_v2_main_val] protect_prot_v2_main_val.gpu0.log exited 0; tail: ['[15:13:43] [5/10] 23056 psnr=41.16 ssim=0.9809 gpu_s=252.8', '[15:33:55] [10/10] 862 psnr=41.64 ssim=0.9814 gpu_s=237.9', '[15:33:55] done']
+[15:33:59] S24: step protect_prot_v2_main_val: rc=0 (2475s)
+[15:33:59] S24: [merge_prot_v2_main_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S24/results/prot_v2_main_val
+[15:34:00] S24: step merge_prot_v2_main_val: rc=0 (1s)
+[15:34:00] S24: [screen_ref] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S24/eval_jobs.screen_ref.g0.yaml --shard 0/2
+[15:34:00] S24: [screen_ref] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S24/eval_jobs.screen_ref.g1.yaml --shard 1/2
+[15:58:10] S24: [screen_ref] screen_ref.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[15:58:25] S24: [screen_ref] screen_ref.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[15:58:25] S24: step screen_ref: rc=0 (1465s)

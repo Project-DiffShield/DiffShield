@@ -1,0 +1,70 @@
+{
+  "job_id": "S25",
+  "run_id": "S25",
+  "session_seconds": 6841.024013996124,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 35.1
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.5
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 12.9
+    },
+    "protect_prot_v2_cheap_val": {
+      "rc": 0,
+      "seconds": 1340.0
+    },
+    "merge_prot_v2_cheap_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_tgt_zero_val": {
+      "rc": 0,
+      "seconds": 1285.0
+    },
+    "merge_prot_v2_tgt_zero_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_tgt_zero_hi_val": {
+      "rc": 0,
+      "seconds": 1290.0
+    },
+    "merge_prot_v2_tgt_zero_hi_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_tgt_gray_val": {
+      "rc": 0,
+      "seconds": 1290.0
+    },
+    "merge_prot_v2_tgt_gray_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "screen_cand": {
+      "rc": 0,
+      "seconds": 1580.1
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

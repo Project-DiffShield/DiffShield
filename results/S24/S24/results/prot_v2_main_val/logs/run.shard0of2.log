@@ -1,0 +1,5 @@
+[14:52:47] run prot_v2_main_val method=v2_main device=cuda backend=real shard=(0, 2) git=801245d dirty=False
+[14:52:47] 10 images in this shard (20 total), 0 already done
+[15:13:43] [5/10] 23056 psnr=41.16 ssim=0.9809 gpu_s=252.8
+[15:33:55] [10/10] 862 psnr=41.64 ssim=0.9814 gpu_s=237.9
+[15:33:55] done

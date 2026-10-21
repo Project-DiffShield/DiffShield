@@ -1,0 +1,74 @@
+{
+  "job_id": "S24",
+  "run_id": "S24",
+  "session_seconds": 7492.086643695831,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 41.6
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 8.4
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 8.9
+    },
+    "fetch_mist_target": {
+      "rc": 0,
+      "seconds": 0.4
+    },
+    "protect_prot_v1_val": {
+      "rc": 0,
+      "seconds": 540.0
+    },
+    "merge_prot_v1_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_mist_val": {
+      "rc": 0,
+      "seconds": 600.0
+    },
+    "merge_prot_mist_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_photoguard_val": {
+      "rc": 0,
+      "seconds": 2350.1
+    },
+    "merge_prot_photoguard_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "protect_prot_v2_main_val": {
+      "rc": 0,
+      "seconds": 2475.1
+    },
+    "merge_prot_v2_main_val": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "screen_ref": {
+      "rc": 0,
+      "seconds": 1465.1
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

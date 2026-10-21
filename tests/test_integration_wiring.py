@@ -88,7 +88,7 @@ def test_final_yaml_layer_is_picked_up(tmp_path, repo_root):
     assert p8.cfg["loss"]["beta"] == 0.0 and p8.cfg["budget"]["eps_255"] == 8
 
 
-@pytest.mark.parametrize("name", ["v2_tgt_zero", "v2_tgt_zero_hi", "v2_tgt_gray"])
+@pytest.mark.parametrize("name", ["v2_tgt_zero", "v2_tgt_zero_mid", "v2_tgt_zero_hi", "v2_tgt_gray"])
 def test_target_presets_dispatch_with_real_config(name, repo_root):
     cfg = load_config(repo_root / "config" / "config.yaml", method=name)
     p = build_protector(name, cfg, "cpu")

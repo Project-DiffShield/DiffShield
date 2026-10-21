@@ -18,7 +18,7 @@
   "n_sources_with_face": 100,
   "computed_by": "src.eval.analysis.thresholds_from_embeddings",
   "pooled": 0.1034364047631,
-  "n_source_embeddings_merged": 120,
-  "n_edit_embeddings_merged": 2820,
+  "n_source_embeddings_merged": 130,
+  "n_edit_embeddings_merged": 2880,
   "restricted_to": "test split image ids"
 }

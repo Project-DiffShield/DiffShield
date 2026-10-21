@@ -1,0 +1,27 @@
+{
+  "scr_clean": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 376.6050946712494
+  },
+  "scr_v1": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 266.74823570251465
+  },
+  "scr_mist": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 267.40891909599304
+  },
+  "scr_photoguard": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 266.55070781707764
+  },
+  "scr_v2_main": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 267.32877492904663
+  }
+}

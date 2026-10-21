@@ -1,22 +1,22 @@
 {
   "eval_v2_final_H": {
-    "state": "failed",
-    "error": "RuntimeError(\"editors failed (other editors completed): ['ip2p', 'ipadapter_faceid', 'sd15_img2img', 'sd_inpaint']\")",
-    "seconds": 93.07974743843079
+    "state": "done",
+    "rc": 0,
+    "seconds": 4401.429558753967
   },
   "eval_v2_final_P": {
-    "state": "failed",
-    "error": "FileNotFoundError('protected image for 10001 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images')",
-    "seconds": 3.21766996383667
+    "state": "done",
+    "rc": 0,
+    "seconds": 9300.803984880447
   },
   "eval_v2_final_M": {
     "state": "done",
     "rc": 0,
-    "seconds": 187.22877550125122
+    "seconds": 237.26269507408142
   },
   "eval_v2_final_H_sdxl": {
-    "state": "failed",
-    "error": "RuntimeError(\"editors failed (other editors completed): ['sdxl_img2img']\")",
-    "seconds": 137.86996865272522
+    "state": "done",
+    "rc": 0,
+    "seconds": 2450.108498811722
   }
 }

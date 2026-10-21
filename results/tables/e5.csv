@@ -1,0 +1,11 @@
+method,purifier,PSR (no purifier),PSR (purified),ratio purified/none [95% CI],minus v1 under same purifier [95% CI],p,gate
+v2_main,diffpure_0.1,0.24,0.28,"1.15 [1.00, 1.32]","+0.02 [-0.02, +0.06]",0.125,PASS (robust)
+v2_main,diffpure_0.2,0.24,0.33,"1.37 [1.18, 1.61]","+0.02 [-0.03, +0.06]",0.547,info
+v2_main,diffpure_0.3,0.24,0.36,"1.49 [1.29, 1.74]","+0.00 [-0.04, +0.05]",0.885,info
+v2_main,gridpure,not run,not run,not run,not run,,not run
+v2_main,restore_swin2sr,0.24,0.18,"0.74 [0.59, 0.88]","+0.03 [-0.00, +0.06]",0.065,info
+v2_final,diffpure_0.1,0.29,0.30,"1.01 [0.86, 1.16]","+0.03 [-0.02, +0.09]",0.154,PASS (robust)
+v2_final,diffpure_0.2,0.29,0.35,"1.19 [1.04, 1.35]","+0.03 [-0.02, +0.09]",0.203,info
+v2_final,diffpure_0.3,0.29,0.41,"1.40 [1.24, 1.59]","+0.05 [+0.00, +0.11]",0.039,info
+v2_final,gridpure,not run,not run,not run,not run,,not run
+v2_final,restore_swin2sr,0.29,0.16,"0.55 [0.44, 0.67]","+0.01 [-0.02, +0.04]",0.682,info

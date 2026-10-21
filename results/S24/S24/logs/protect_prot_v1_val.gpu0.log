@@ -1,0 +1,137 @@
+[13:54:36] run prot_v1_val method=v1 device=cuda backend=real shard=(0, 2) git=801245d dirty=False
+[13:54:36] 10 images in this shard (20 total), 0 already done
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/200 [00:00<?, ?it/s]Loading weights: 100%|██████████| 200/200 [00:00<00:00, 10497.83it/s]
+[transformers] [1mCLIPVisionModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                          | Status     |  | 
+-------------------------------------------------------------+------------+--+-
+text_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+text_projection.weight                                       | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+text_model.final_layer_norm.bias                             | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+text_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+logit_scale                                                  | UNEXPECTED |  | 
+text_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+text_model.final_layer_norm.weight                           | UNEXPECTED |  | 
+text_model.embeddings.token_embedding.weight                 | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights: 100%|██████████| 197/197 [00:00<00:00, 10548.81it/s]
+[transformers] [1mCLIPTextModelWithProjection LOAD REPORT[0m from: openai/clip-vit-base-patch32
+Key                                                            | Status     |  | 
+---------------------------------------------------------------+------------+--+-
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.weight | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.out_proj.bias   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.bias          | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc2.bias              | UNEXPECTED |  | 
+vision_model.embeddings.class_embedding                        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm1.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.weight            | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.v_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.weight   | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.layer_norm2.weight        | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.mlp.fc1.bias              | UNEXPECTED |  | 
+vision_model.embeddings.patch_embedding.weight                 | UNEXPECTED |  | 
+vision_model.pre_layrnorm.weight                               | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.q_proj.bias     | UNEXPECTED |  | 
+vision_model.encoder.layers.{0...11}.self_attn.k_proj.bias     | UNEXPECTED |  | 
+vision_model.embeddings.position_embedding.weight              | UNEXPECTED |  | 
+vision_model.post_layernorm.bias                               | UNEXPECTED |  | 
+logit_scale                                                    | UNEXPECTED |  | 
+visual_projection.weight                                       | UNEXPECTED |  | 
+vision_model.pre_layrnorm.bias                                 | UNEXPECTED |  | 
+vision_model.post_layernorm.weight                             | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Iter   0: Total -1.0879 | L_vis 1.0978 | L_sem 0.7960 (cos_sim=0.2040) | L_str 0.0110
+Iter  10: Total -0.5806 | L_vis 5.1789 | L_sem 0.7924 (cos_sim=0.2076) | L_str 0.0209
+Iter  20: Total +0.1323 | L_vis 5.5559 | L_sem 0.7904 (cos_sim=0.2096) | L_str 0.0108
+Iter  30: Total +0.9286 | L_vis 10.8992 | L_sem 0.7845 (cos_sim=0.2155) | L_str 0.0216
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Downloading: "https://download.pytorch.org/models/vgg16-397923af.pth" to /root/.cache/torch/hub/checkpoints/vgg16-397923af.pth
+  0%|          | 0.00/528M [00:00<?, ?B/s]  2%|▏         | 8.12M/528M [00:00<00:06, 85.1MB/s]  5%|▍         | 24.6M/528M [00:00<00:03, 136MB/s]   8%|▊         | 40.2M/528M [00:00<00:03, 149MB/s] 11%|█         | 56.6M/528M [00:00<00:03, 157MB/s] 14%|█▍        | 73.5M/528M [00:00<00:02, 164MB/s] 17%|█▋        | 90.1M/528M [00:00<00:02, 168MB/s] 20%|██        | 108M/528M [00:00<00:02, 174MB/s]  24%|██▎       | 125M/528M [00:00<00:02, 174MB/s] 27%|██▋       | 142M/528M [00:00<00:02, 175MB/s] 30%|███       | 159M/528M [00:01<00:02, 176MB/s] 33%|███▎      | 176M/528M [00:01<00:02, 177MB/s] 37%|███▋      | 193M/528M [00:01<00:01, 177MB/s] 40%|███▉      | 210M/528M [00:01<00:01, 177MB/s] 43%|████▎     | 227M/528M [00:01<00:01, 177MB/s] 46%|████▌     | 244M/528M [00:01<00:01, 177MB/s] 49%|████▉     | 261M/528M [00:01<00:01, 176MB/s] 53%|█████▎    | 278M/528M [00:01<00:01, 176MB/s] 56%|█████▌    | 295M/528M [00:01<00:01, 176MB/s] 59%|█████▉    | 312M/528M [00:01<00:01, 176MB/s] 62%|██████▏   | 328M/528M [00:02<00:01, 176MB/s] 65%|██████▌   | 346M/528M [00:02<00:01, 177MB/s] 69%|██████▊   | 363M/528M [00:02<00:00, 177MB/s] 72%|███████▏  | 380M/528M [00:02<00:00, 178MB/s] 75%|███████▌  | 397M/528M [00:02<00:00, 177MB/s] 78%|███████▊  | 414M/528M [00:02<00:00, 179MB/s] 82%|████████▏ | 431M/528M [00:02<00:00, 178MB/s] 85%|████████▍ | 448M/528M [00:02<00:00, 177MB/s] 88%|████████▊ | 465M/528M [00:02<00:00, 177MB/s] 91%|█████████▏| 482M/528M [00:02<00:00, 177MB/s] 95%|█████████▍| 500M/528M [00:03<00:00, 178MB/s] 98%|█████████▊| 517M/528M [00:03<00:00, 179MB/s]100%|██████████| 528M/528M [00:03<00:00, 175MB/s]
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+Iter   0: Total -1.4160 | L_vis 1.9335 | L_sem 0.8132 (cos_sim=0.1868) | L_str 0.0199
+Iter  10: Total -0.3570 | L_vis 3.4620 | L_sem 0.7971 (cos_sim=0.2029) | L_str 0.0095
+Iter  20: Total -0.1816 | L_vis 7.3579 | L_sem 0.7943 (cos_sim=0.2057) | L_str 0.0240
+Iter  30: Total +2.3621 | L_vis 14.5479 | L_sem 0.7622 (cos_sim=0.2378) | L_str 0.0145
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.0681 | L_vis 2.0636 | L_sem 0.8167 (cos_sim=0.1833) | L_str 0.0147
+Iter  10: Total +0.8014 | L_vis 11.5217 | L_sem 0.7866 (cos_sim=0.2134) | L_str 0.0264
+Iter  20: Total +0.7286 | L_vis 8.6225 | L_sem 0.8001 (cos_sim=0.1999) | L_str 0.0145
+Iter  30: Total +2.3939 | L_vis 17.2349 | L_sem 0.7694 (cos_sim=0.2306) | L_str 0.0258
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -3.3622 | L_vis 5.2739 | L_sem 0.8301 (cos_sim=0.1699) | L_str 0.0667
+Iter  10: Total -1.7723 | L_vis 5.0188 | L_sem 0.8143 (cos_sim=0.1857) | L_str 0.0395
+Iter  20: Total +0.2284 | L_vis 7.8868 | L_sem 0.8158 (cos_sim=0.1842) | L_str 0.0192
+Iter  30: Total +1.3526 | L_vis 11.5074 | L_sem 0.8151 (cos_sim=0.1849) | L_str 0.0168
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.3801 | L_vis 1.2406 | L_sem 0.8353 (cos_sim=0.1647) | L_str 0.0159
+Iter  10: Total -0.8859 | L_vis 2.3224 | L_sem 0.8111 (cos_sim=0.1889) | L_str 0.0129
+Iter  20: Total +1.1900 | L_vis 9.7003 | L_sem 0.6860 (cos_sim=0.3140) | L_str 0.0134
+Iter  30: Total +1.6621 | L_vis 12.0417 | L_sem 0.6596 (cos_sim=0.3404) | L_str 0.0164
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[13:59:38] [5/10] 23056 psnr=42.04 ssim=0.9813 gpu_s=45.9
+Iter   0: Total -1.8996 | L_vis 1.3596 | L_sem 0.8046 (cos_sim=0.1954) | L_str 0.0255
+Iter  10: Total -0.5818 | L_vis 4.2696 | L_sem 0.7929 (cos_sim=0.2071) | L_str 0.0168
+Iter  20: Total -0.1086 | L_vis 5.0744 | L_sem 0.7929 (cos_sim=0.2071) | L_str 0.0126
+Iter  30: Total -0.1448 | L_vis 5.3555 | L_sem 0.7926 (cos_sim=0.2074) | L_str 0.0145
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.4552 | L_vis 2.0420 | L_sem 0.7951 (cos_sim=0.2049) | L_str 0.0213
+Iter  10: Total -0.5535 | L_vis 3.1820 | L_sem 0.8025 (cos_sim=0.1975) | L_str 0.0114
+Iter  20: Total +0.0764 | L_vis 7.6755 | L_sem 0.7841 (cos_sim=0.2159) | L_str 0.0213
+Iter  30: Total +1.0254 | L_vis 9.2502 | L_sem 0.7785 (cos_sim=0.2215) | L_str 0.0127
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.0306 | L_vis 1.5974 | L_sem 0.8010 (cos_sim=0.1990) | L_str 0.0122
+Iter  10: Total -0.4162 | L_vis 8.2440 | L_sem 0.7628 (cos_sim=0.2372) | L_str 0.0323
+Iter  20: Total -0.9372 | L_vis 3.4415 | L_sem 0.7986 (cos_sim=0.2014) | L_str 0.0189
+Iter  30: Total +0.4776 | L_vis 7.6056 | L_sem 0.7883 (cos_sim=0.2117) | L_str 0.0143
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.5526 | L_vis 0.9610 | L_sem 0.7998 (cos_sim=0.2002) | L_str 0.0180
+Iter  10: Total -0.0124 | L_vis 7.0912 | L_sem 0.8049 (cos_sim=0.1951) | L_str 0.0198
+Iter  20: Total +2.9237 | L_vis 16.7012 | L_sem 0.7635 (cos_sim=0.2365) | L_str 0.0148
+Iter  30: Total -0.8697 | L_vis 8.4728 | L_sem 0.8050 (cos_sim=0.1950) | L_str 0.0402
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+Iter   0: Total -1.2135 | L_vis 0.9436 | L_sem 0.8013 (cos_sim=0.1987) | L_str 0.0123
+Iter  10: Total -0.2842 | L_vis 3.4983 | L_sem 0.7620 (cos_sim=0.2380) | L_str 0.0089
+Iter  20: Total -0.8213 | L_vis 3.6270 | L_sem 0.7841 (cos_sim=0.2159) | L_str 0.0181
+Iter  30: Total +0.1225 | L_vis 8.7127 | L_sem 0.7564 (cos_sim=0.2436) | L_str 0.0256
+
+Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)
+[14:03:30] [10/10] 862 psnr=42.38 ssim=0.9807 gpu_s=45.7
+[14:03:30] done

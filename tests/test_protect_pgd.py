@@ -240,7 +240,7 @@ def test_target_vis_pulls_the_latent_toward_the_target_not_just_away():
 def test_target_presets_resolve_and_use_the_target_loss():
     from src.protect.v2_registry import resolve_cfg
 
-    for name in ("v2_tgt_zero", "v2_tgt_zero_hi", "v2_tgt_gray"):
+    for name in ("v2_tgt_zero", "v2_tgt_zero_mid", "v2_tgt_zero_hi", "v2_tgt_gray"):
         c = resolve_cfg(name, {})
         assert c["loss"]["target"]["kind"] in ("zero", "gray") and c["loss"]["eta"] == 0.0
         assert c["budget"]["step_255"] == 1.0           # eps comes from config.yaml (4)

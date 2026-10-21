@@ -1,0 +1,6 @@
+method,none,jpeg_q50,vae_rt,diffpure_0.1,diffpure_0.2
+L_vis only,"0.25 [0.20, 0.31]","0.19 [0.14, 0.25]","0.26 [0.20, 0.32]","0.30 [0.24, 0.37]","0.31 [0.25, 0.38]"
+L_den only,"0.12 [0.08, 0.17]","0.12 [0.08, 0.16]","0.12 [0.08, 0.16]","0.14 [0.10, 0.19]","0.21 [0.16, 0.26]"
+"both, no L_sem",not run,not run,not run,not run,not run
+"both, no purifier in loop",not run,not run,not run,not run,not run
+v2 + one-step SD purifier + L_den (E5),"0.24 [0.20, 0.29]","0.18 [0.13, 0.23]","0.25 [0.19, 0.32]","0.28 [0.22, 0.34]","0.33 [0.27, 0.40]"

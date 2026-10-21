@@ -1,6 +1,0 @@
-{
-  "ip2p": "FileNotFoundError: protected image for 10001 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images",
-  "ipadapter_faceid": "FileNotFoundError: protected image for 10001 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images",
-  "sd15_img2img": "FileNotFoundError: protected image for 10001 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images",
-  "sd_inpaint": "FileNotFoundError: protected image for 10001 not found in /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images"
-}

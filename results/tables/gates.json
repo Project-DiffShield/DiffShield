@@ -1,0 +1,544 @@
+{
+  "E3": {
+    "id": "E3",
+    "title": "v1 under purification (decision rule for Phase 5)",
+    "rule": "mean relative PSR drop of v1 over jpeg_q75,jpeg_q50,downup_0.5,vae_rt,diffpure_0.1,diffpure_0.2 (SD1.5 s0.55): >= 50% collapses -> continue with Phase 5; < 20% barely drops -> recommend skipping Phase 5 and ask the user; in between -> ask the user. The cut-offs are analyst proposals (the handoff gives none).",
+    "verdict": "BARELY DROPS (recommend skipping Phase 5; ask the user)",
+    "rows": [
+      {
+        "purifier": "jpeg_q90",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.21666666666666665,
+        "psr_lo": 0.16333333333333333,
+        "psr_hi": 0.27,
+        "diff": -0.023333333333333338,
+        "diff_lo": -0.057777777777777796,
+        "diff_hi": 0.012222222222222214,
+        "p": 0.08945346775138369,
+        "rel_drop": 0.09722222222222221,
+        "n_pairs": 100,
+        "core": false
+      },
+      {
+        "purifier": "jpeg_q75",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.15,
+        "psr_lo": 0.10333333333333336,
+        "psr_hi": 0.2,
+        "diff": -0.09000000000000002,
+        "diff_lo": -0.12666666666666668,
+        "diff_hi": -0.05222222222222223,
+        "p": 1.391128770621088e-05,
+        "rel_drop": 0.3749999999999999,
+        "n_pairs": 100,
+        "core": true
+      },
+      {
+        "purifier": "jpeg_q50",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.16666666666666663,
+        "psr_lo": 0.12,
+        "psr_hi": 0.21666666666666662,
+        "diff": -0.07333333333333333,
+        "diff_lo": -0.11333333333333334,
+        "diff_hi": -0.03222222222222222,
+        "p": 0.00019788458980623828,
+        "rel_drop": 0.3055555555555556,
+        "n_pairs": 100,
+        "core": true
+      },
+      {
+        "purifier": "jpeg_other",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.15333333333333335,
+        "psr_lo": 0.10999999999999999,
+        "psr_hi": 0.2,
+        "diff": -0.08666666666666666,
+        "diff_lo": -0.12558333333333313,
+        "diff_hi": -0.046666666666666676,
+        "p": 2.631543338816608e-05,
+        "rel_drop": 0.36111111111111094,
+        "n_pairs": 100,
+        "core": false
+      },
+      {
+        "purifier": "downup_0.5",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.09666666666666666,
+        "psr_lo": 0.06333333333333332,
+        "psr_hi": 0.13666666666666663,
+        "diff": -0.1433333333333333,
+        "diff_lo": -0.1788888888888889,
+        "diff_hi": -0.10777777777777779,
+        "p": 4.961984445078775e-10,
+        "rel_drop": 0.5972222222222221,
+        "n_pairs": 100,
+        "core": true
+      },
+      {
+        "purifier": "downup_other",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.09333333333333332,
+        "psr_lo": 0.05999999999999999,
+        "psr_hi": 0.13,
+        "diff": -0.14666666666666667,
+        "diff_lo": -0.1822222222222222,
+        "diff_hi": -0.11222222222222221,
+        "p": 3.167873990255864e-10,
+        "rel_drop": 0.6111111111111112,
+        "n_pairs": 100,
+        "core": false
+      },
+      {
+        "purifier": "vae_rt",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.22,
+        "psr_lo": 0.16666666666666663,
+        "psr_hi": 0.27666666666666667,
+        "diff": -0.020000000000000004,
+        "diff_lo": -0.05333333333333334,
+        "diff_hi": 0.015555555555555546,
+        "p": 0.10802219990055403,
+        "rel_drop": 0.08333333333333315,
+        "n_pairs": 100,
+        "core": true
+      },
+      {
+        "purifier": "diffpure_0.05",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.23666666666666664,
+        "psr_lo": 0.18000000000000005,
+        "psr_hi": 0.29666666666666663,
+        "diff": -0.003333333333333337,
+        "diff_lo": -0.04222222222222223,
+        "diff_hi": 0.035555555555555556,
+        "p": 0.7092240058989914,
+        "rel_drop": 0.01388888888888884,
+        "n_pairs": 100,
+        "core": false
+      },
+      {
+        "purifier": "diffpure_0.1",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.2633333333333333,
+        "psr_lo": 0.20666666666666664,
+        "psr_hi": 0.3233333333333333,
+        "diff": 0.02333333333333333,
+        "diff_lo": -0.01555555555555556,
+        "diff_hi": 0.062222222222222213,
+        "p": 0.5143897389903805,
+        "rel_drop": -0.09722222222222232,
+        "n_pairs": 100,
+        "core": true
+      },
+      {
+        "purifier": "diffpure_0.2",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.31666666666666665,
+        "psr_lo": 0.2533333333333333,
+        "psr_hi": 0.3833333333333333,
+        "diff": 0.07666666666666666,
+        "diff_lo": 0.03333333333333332,
+        "diff_hi": 0.12333333333333332,
+        "p": 0.006484761879995779,
+        "rel_drop": -0.31944444444444464,
+        "n_pairs": 100,
+        "core": true
+      },
+      {
+        "purifier": "diffpure_0.3",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.36,
+        "psr_lo": 0.2966666666666667,
+        "psr_hi": 0.42341666666666555,
+        "diff": 0.12,
+        "diff_lo": 0.07777777777777777,
+        "diff_hi": 0.16444444444444442,
+        "p": 3.7216678911691393e-06,
+        "rel_drop": -0.5000000000000002,
+        "n_pairs": 100,
+        "core": false
+      },
+      {
+        "purifier": "restore_swin2sr",
+        "psr_none": 0.23999999999999996,
+        "psr": 0.15333333333333335,
+        "psr_lo": 0.10666666666666666,
+        "psr_hi": 0.2033333333333333,
+        "diff": -0.08666666666666668,
+        "diff_lo": -0.12111111111111111,
+        "diff_hi": -0.05333333333333333,
+        "p": 3.6033146555846173e-06,
+        "rel_drop": 0.36111111111111094,
+        "n_pairs": 100,
+        "core": false
+      }
+    ],
+    "notes": [
+      "mean relative PSR drop over 6 core purifiers = 0.16"
+    ]
+  },
+  "E4": {
+    "id": "E4",
+    "title": "v2_cheap vs v1 under cheap purifiers",
+    "rule": "PSR(v2_cheap) >= 2 x PSR(v1) under jpeg_q75,jpeg_q50,downup_0.5,vae_rt (SD1.5 s0.55) with PSNR >= 38. Point estimate decides; the paired ratio CI is shown. Degenerate if v1 PSR >= 0.5 (doubling impossible), trivial if < 0.02.",
+    "verdict": "FAIL",
+    "rows": [
+      {
+        "purifier": "jpeg_q75",
+        "primary": true,
+        "psr_new": 0.16666666666666663,
+        "psr_v1": 0.15,
+        "ratio": 1.111111111111111,
+        "ratio_lo": 0.8947088465845465,
+        "ratio_hi": 1.3846153846153846,
+        "diff": 0.016666666666666663,
+        "diff_lo": -0.016666666666666666,
+        "diff_hi": 0.05,
+        "p": 0.4035257260910947,
+        "status": "FAIL"
+      },
+      {
+        "purifier": "jpeg_q50",
+        "primary": true,
+        "psr_new": 0.1733333333333333,
+        "psr_v1": 0.16666666666666663,
+        "ratio": 1.04,
+        "ratio_lo": 0.8478260869565218,
+        "ratio_hi": 1.2888888888888885,
+        "diff": 0.006666666666666665,
+        "diff_lo": -0.026666666666666665,
+        "diff_hi": 0.04333333333333333,
+        "p": 0.6646116295410063,
+        "status": "FAIL"
+      },
+      {
+        "purifier": "downup_0.5",
+        "primary": true,
+        "psr_new": 0.1433333333333333,
+        "psr_v1": 0.09666666666666666,
+        "ratio": 1.482758620689655,
+        "ratio_lo": 1.1290322580645162,
+        "ratio_hi": 1.9565217391304348,
+        "diff": 0.04666666666666666,
+        "diff_lo": 0.013333333333333332,
+        "diff_hi": 0.08,
+        "p": 0.008739396887972097,
+        "status": "FAIL"
+      },
+      {
+        "purifier": "vae_rt",
+        "primary": true,
+        "psr_new": 0.21333333333333332,
+        "psr_v1": 0.22,
+        "ratio": 0.9696969696969696,
+        "ratio_lo": 0.8076923076923077,
+        "ratio_hi": 1.1568697478991599,
+        "diff": -0.006666666666666666,
+        "diff_lo": -0.04666666666666666,
+        "diff_hi": 0.03000000000000001,
+        "p": 0.9139281043129456,
+        "status": "FAIL"
+      },
+      {
+        "purifier": "jpeg_other",
+        "primary": false,
+        "psr_new": 0.17,
+        "psr_v1": 0.15333333333333335,
+        "ratio": 1.108695652173913,
+        "ratio_lo": 0.9183673469387755,
+        "ratio_hi": 1.3658536585365855,
+        "diff": 0.016666666666666666,
+        "diff_lo": -0.013333333333333332,
+        "diff_hi": 0.05,
+        "p": 0.3457785861511603,
+        "status": "FAIL"
+      },
+      {
+        "purifier": "downup_other",
+        "primary": false,
+        "psr_new": 0.11333333333333334,
+        "psr_v1": 0.09333333333333332,
+        "ratio": 1.2142857142857144,
+        "ratio_lo": 0.8888095238095242,
+        "ratio_hi": 1.6666666666666667,
+        "diff": 0.02,
+        "diff_lo": -0.010000000000000002,
+        "diff_hi": 0.05333333333333333,
+        "p": 0.2156538132347242,
+        "status": "FAIL"
+      }
+    ],
+    "notes": [
+      "v2_cheap PSNR mean 41.58 dB over 100 images; 0 below 38"
+    ]
+  },
+  "E5": {
+    "id": "E5",
+    "title": "v2_main: held-out DiffPure t*=0.1 vs no purifier",
+    "rule": "PSR under diffpure_0.1 >= 0.5 x PSR without purifier (SD1.5 s0.55, same images). Point estimate decides; 'robust' if the paired ratio CI lower bound also >= the fraction.",
+    "verdict": "PASS (robust)",
+    "rows": [
+      {
+        "method": "v2_main",
+        "purifier": "diffpure_0.1",
+        "psr_none": 0.2433333333333333,
+        "psr": 0.27999999999999997,
+        "ratio": 1.1506849315068493,
+        "ratio_lo": 0.9957969783658143,
+        "ratio_hi": 1.3173913043478258,
+        "status": "PASS (robust)",
+        "primary": true
+      },
+      {
+        "method": "v2_main",
+        "purifier": "diffpure_0.2",
+        "psr_none": 0.2433333333333333,
+        "psr": 0.33333333333333337,
+        "ratio": 1.3698630136986303,
+        "ratio_lo": 1.1785605841526892,
+        "ratio_hi": 1.6130653266331658,
+        "status": "info",
+        "primary": false
+      },
+      {
+        "method": "v2_main",
+        "purifier": "diffpure_0.3",
+        "psr_none": 0.2433333333333333,
+        "psr": 0.36333333333333345,
+        "ratio": 1.4931506849315075,
+        "ratio_lo": 1.2908331789122578,
+        "ratio_hi": 1.7391362164662343,
+        "status": "info",
+        "primary": false
+      },
+      {
+        "method": "v2_main",
+        "purifier": "gridpure",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_main",
+        "purifier": "restore_swin2sr",
+        "psr_none": 0.2433333333333333,
+        "psr": 0.18,
+        "ratio": 0.7397260273972603,
+        "ratio_lo": 0.5940594059405939,
+        "ratio_hi": 0.88173624288425,
+        "status": "info",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "diffpure_0.1",
+        "psr_none": 0.29444444444444445,
+        "psr": 0.29666666666666663,
+        "ratio": 1.0075471698113205,
+        "ratio_lo": 0.8619343442362655,
+        "ratio_hi": 1.160284122682497,
+        "status": "PASS (robust)",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "diffpure_0.2",
+        "psr_none": 0.29444444444444445,
+        "psr": 0.35,
+        "ratio": 1.1886792452830188,
+        "ratio_lo": 1.0393700787401579,
+        "ratio_hi": 1.3544315605516721,
+        "status": "info",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "diffpure_0.3",
+        "psr_none": 0.29444444444444445,
+        "psr": 0.41333333333333344,
+        "ratio": 1.4037735849056607,
+        "ratio_lo": 1.2393341070651385,
+        "ratio_hi": 1.594488188976378,
+        "status": "info",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "gridpure",
+        "psr_none": null,
+        "psr": null,
+        "ratio": NaN,
+        "ratio_lo": NaN,
+        "ratio_hi": NaN,
+        "status": "not run",
+        "primary": false
+      },
+      {
+        "method": "v2_final",
+        "purifier": "restore_swin2sr",
+        "psr_none": 0.29444444444444445,
+        "psr": 0.16333333333333333,
+        "ratio": 0.5547169811320755,
+        "ratio_lo": 0.43724696356275305,
+        "ratio_hi": 0.6705918220946916,
+        "status": "info",
+        "primary": false
+      }
+    ],
+    "notes": []
+  },
+  "E6": {
+    "id": "E6",
+    "title": "v2_antipure vs v2_main (anti-purification terms)",
+    "rule": "go if the paired PSR gain under higher-t* DiffPure has a 95% CI above 0; 'no gain (within CI)' otherwise (handoff Phase 5: drop it if gains are within the CI).",
+    "verdict": "GO (gain on 1 of 3 purifiers)",
+    "rows": [
+      {
+        "purifier": "diffpure_0.1",
+        "psr_new": 0.3133333333333333,
+        "psr_ref": 0.27999999999999997,
+        "diff": 0.03333333333333334,
+        "diff_lo": -0.016666666666666673,
+        "diff_hi": 0.08666666666666666,
+        "p": 0.3692589806643263,
+        "status": "no gain (within CI)"
+      },
+      {
+        "purifier": "diffpure_0.2",
+        "psr_new": 0.3466666666666666,
+        "psr_ref": 0.33333333333333337,
+        "diff": 0.013333333333333334,
+        "diff_lo": -0.03333333333333333,
+        "diff_hi": 0.06000000000000001,
+        "p": 0.6247582922312175,
+        "status": "no gain (within CI)"
+      },
+      {
+        "purifier": "diffpure_0.3",
+        "psr_new": 0.43000000000000005,
+        "psr_ref": 0.36333333333333345,
+        "diff": 0.06666666666666667,
+        "diff_lo": 0.023333333333333334,
+        "diff_hi": 0.11,
+        "p": 0.013707676472838062,
+        "status": "gain"
+      }
+    ],
+    "notes": []
+  },
+  "INV": {
+    "id": "INV",
+    "title": "Invisibility",
+    "rule": "PSNR >= 38 and SSIM >= 0.95 (per image); human 2AFC accuracy not far above 50%.",
+    "verdict": "FAIL/MARGINAL (see rows)",
+    "rows": [
+      {
+        "method": "abl_den_only",
+        "n": 100,
+        "psnr": 50.75664745959214,
+        "ssim": 0.9951330292932581,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "abl_vis_only",
+        "n": 100,
+        "psnr": 41.73192601625829,
+        "ssim": 0.9781075156549204,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "eps2",
+        "n": 100,
+        "psnr": 45.340541087545944,
+        "ssim": 0.9835786165230228,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "eps8",
+        "n": 100,
+        "psnr": 35.97703838118549,
+        "ssim": 0.8957758349118479,
+        "n_below_psnr": 98,
+        "n_below_ssim": 96,
+        "status": "FAIL"
+      },
+      {
+        "method": "noise_gauss_psnr",
+        "n": 100,
+        "psnr": 41.912666115358995,
+        "ssim": 0.9622875835948895,
+        "n_below_psnr": 0,
+        "n_below_ssim": 3,
+        "status": "MARGINAL"
+      },
+      {
+        "method": "noise_uniform",
+        "n": 100,
+        "psnr": 40.79675389193977,
+        "ssim": 0.9517849673098397,
+        "n_below_psnr": 0,
+        "n_below_ssim": 43,
+        "status": "MARGINAL"
+      },
+      {
+        "method": "v1",
+        "n": 100,
+        "psnr": 42.42276912441344,
+        "ssim": 0.9762665727558505,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "v2_antipure",
+        "n": 100,
+        "psnr": 41.17624400030162,
+        "ssim": 0.9699868826296237,
+        "n_below_psnr": 0,
+        "n_below_ssim": 13,
+        "status": "MARGINAL"
+      },
+      {
+        "method": "v2_cheap",
+        "n": 100,
+        "psnr": 41.577348796382836,
+        "ssim": 0.9790079819343086,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "v2_final",
+        "n": 100,
+        "psnr": 40.46002221347775,
+        "ssim": 0.9548967698668939,
+        "n_below_psnr": 0,
+        "n_below_ssim": 29,
+        "status": "MARGINAL"
+      },
+      {
+        "method": "v2_main",
+        "n": 100,
+        "psnr": 41.72293537074832,
+        "ssim": 0.9784151444173068,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      }
+    ],
+    "notes": [
+      "human 2AFC result not available (E10 not run)"
+    ]
+  }
+}

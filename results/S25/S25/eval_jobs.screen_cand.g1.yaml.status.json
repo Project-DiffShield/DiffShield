@@ -1,0 +1,27 @@
+{
+  "scr_clean_b": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 410.1430320739746
+  },
+  "scr_v2_cheap": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 290.03470253944397
+  },
+  "scr_v2_tgt_zero": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 289.74974250793457
+  },
+  "scr_v2_tgt_zero_hi": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 289.24808502197266
+  },
+  "scr_v2_tgt_gray": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 289.9737710952759
+  }
+}

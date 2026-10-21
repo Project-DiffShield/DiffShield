@@ -29,7 +29,7 @@ import torch
 from .pgd import params_from_cfg, pgd_protect
 
 PRESETS = ("v2_cheap", "v2_main", "v2_antipure", "v2_final", "abl_vis_only", "abl_den_only",
-           "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8", "v2_tgt_zero", "v2_tgt_zero_hi", "v2_tgt_gray")
+           "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8", "v2_tgt_zero", "v2_tgt_zero_mid", "v2_tgt_zero_hi", "v2_tgt_gray")
 _CHAIN = {
     "v2_final": ["v2_final_default", "v2_final"],
     "eps2": ["v2_final_default", "v2_final", "eps2"],

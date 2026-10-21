@@ -642,6 +642,49 @@ jobs:
             - {name: scr_v2_tgt_zero_hi, tier: SCREEN, purifier: all, method: v2_tgt_zero_hi, split: val}
             - {name: scr_v2_tgt_gray, tier: SCREEN, purifier: all, method: v2_tgt_gray, split: val}
 
+  # ---------------------------------------------------------------------------------------------- S26-S28 (target-steered family on test)
+  S26:
+    title: S26 target-steered v2_tgt_zero_hi on the 100 test photos (protect then SD1.5 + FaceID edits and 7 purifiers)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_tgt_zero_hi, split: test}}
+      - macro: evaluate
+        with:
+          name: tgt_v2_tgt_zero_hi
+          jobs:
+            - {name: eval_v2_tgt_zero_hi_TGT, tier: TGT, purifier: all, method: v2_tgt_zero_hi, split: test}
+
+  S27:
+    title: S27 target-steered v2_tgt_zero on the 100 test photos (protect then SD1.5 + FaceID edits and 7 purifiers)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_tgt_zero, split: test}}
+      - macro: evaluate
+        with:
+          name: tgt_v2_tgt_zero
+          jobs:
+            - {name: eval_v2_tgt_zero_TGT, tier: TGT, purifier: all, method: v2_tgt_zero, split: test}
+
+  S28:
+    title: S28 target-steered v2_tgt_zero_mid on the 100 test photos (protect then SD1.5 + FaceID edits and 7 purifiers)
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_tgt_zero_mid, split: test}}
+      - macro: evaluate
+        with:
+          name: tgt_v2_tgt_zero_mid
+          jobs:
+            - {name: eval_v2_tgt_zero_mid_TGT, tier: TGT, purifier: all, method: v2_tgt_zero_mid, split: test}
+
   # ---------------------------------------------------------------------------------------------- S17 / S18
   S17:
     title: S17 E9 eps=2 (100 photos, protect then edits); the tuned config/parts/final.yaml is in the bundle   [eps=6 is S23]

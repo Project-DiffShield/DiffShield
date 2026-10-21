@@ -1,0 +1,302 @@
+[jobs] scr_clean_b: start
+[runner] 30 jobs, 30 to do (0 already complete)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  3%|▎         | 8748/281857 [00:00<00:03, 87473.62KB/s]  7%|▋         | 20172/281857 [00:00<00:02, 103213.94KB/s] 11%|█         | 31521/281857 [00:00<00:02, 107904.54KB/s] 15%|█▌        | 43375/281857 [00:00<00:02, 112101.74KB/s] 19%|█▉        | 54797/281857 [00:00<00:02, 112861.83KB/s] 24%|██▎       | 66749/281857 [00:00<00:01, 115120.24KB/s] 28%|██▊       | 78832/281857 [00:00<00:01, 116986.00KB/s] 32%|███▏      | 90674/281857 [00:00<00:01, 117441.20KB/s] 36%|███▋      | 102465/281857 [00:00<00:01, 117583.31KB/s] 41%|████      | 114278/281857 [00:01<00:01, 117749.60KB/s] 45%|████▍     | 126232/281857 [00:01<00:01, 118295.40KB/s] 49%|████▉     | 138301/281857 [00:01<00:01, 119017.65KB/s] 53%|█████▎    | 150203/281857 [00:01<00:01, 118297.24KB/s] 58%|█████▊    | 162257/281857 [00:01<00:01, 118966.51KB/s] 62%|██████▏   | 174155/281857 [00:01<00:00, 116035.39KB/s] 66%|██████▌   | 185775/281857 [00:01<00:00, 115460.53KB/s] 70%|███████   | 197736/281857 [00:01<00:00, 116685.65KB/s] 74%|███████▍  | 209415/281857 [00:01<00:00, 116707.82KB/s] 79%|███████▊  | 221320/281857 [00:01<00:00, 117402.97KB/s] 83%|████████▎ | 233246/281857 [00:02<00:00, 117953.13KB/s] 87%|████████▋ | 245293/281857 [00:02<00:00, 118702.27KB/s] 91%|█████████▏| 257308/281857 [00:02<00:00, 119134.38KB/s] 96%|█████████▌| 269261/281857 [00:02<00:00, 119251.26KB/s]100%|█████████▉| 281275/281857 [00:02<00:00, 119516.54KB/s]100%|██████████| 281857/281857 [00:02<00:00, 116602.96KB/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 114.17it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 113.50it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:03,  1.62it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:10, 19.34it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1229.28it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.29it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:01<00:01,  2.32it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.82it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.89it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  83%|████████▎ | 163/196 [00:00<00:00, 1588.11it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1654.24it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 10.09it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  5.74it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  2.70it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.23it/s]
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  25%|██▍       | 147/590 [00:00<00:00, 1469.13it/s]Loading weights:  50%|████▉     | 294/590 [00:00<00:00, 1269.05it/s]Loading weights:  72%|███████▏  | 423/590 [00:00<00:00, 784.74it/s] Loading weights:  88%|████████▊ | 517/590 [00:00<00:00, 633.41it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 766.52it/s]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+{
+  "run": {
+    "jobs": 30,
+    "executed": 30,
+    "rows": 90
+  },
+  "summary": [
+    {
+      "method": "clean",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.261328114879628,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6608108739058176,
+      "mean_edit_lpips": 0.13141179308295245
+    },
+    {
+      "method": "clean",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.29527832319339115,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6657423138618468,
+      "mean_edit_lpips": 0.14764210283756254
+    },
+    {
+      "method": "clean",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.273277410119772,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6598987599213919,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}
+[jobs] scr_v2_cheap: start
+[runner] 30 jobs, 30 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  97%|█████████▋| 191/196 [00:00<00:00, 1902.18it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1910.28it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  9.51it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00, 10.88it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.98it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.78it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2424.09it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 14.87it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00, 10.11it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.26it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.13it/s]
+{
+  "run": {
+    "jobs": 30,
+    "executed": 30,
+    "rows": 90
+  },
+  "summary": [
+    {
+      "method": "v2_cheap",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.2235036834608763,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6355704963207245,
+      "mean_edit_lpips": 0.3565760562817255
+    },
+    {
+      "method": "v2_cheap",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.249701986896495,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.653511354327202,
+      "mean_edit_lpips": 0.31659039904673897
+    },
+    {
+      "method": "v2_cheap",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.24174546487629409,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6299605419238409,
+      "mean_edit_lpips": 0.34936270515123996
+    }
+  ]
+}
+[jobs] scr_v2_tgt_zero: start
+[runner] 30 jobs, 30 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  93%|█████████▎| 183/196 [00:00<00:00, 1785.21it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1856.69it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 11.14it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00, 11.20it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.61it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.48it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  79%|███████▉  | 155/196 [00:00<00:00, 1549.52it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1925.48it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 13.50it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00, 10.40it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.62it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.50it/s]
+{
+  "run": {
+    "jobs": 30,
+    "executed": 30,
+    "rows": 90
+  },
+  "summary": [
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.14018062961598232,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.587170124053955,
+      "mean_edit_lpips": 0.38552472641070684
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.24948866267999006,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6396126051743825,
+      "mean_edit_lpips": 0.242305988073349
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.14837660019596413,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.5898895680904388,
+      "mean_edit_lpips": 0.3965054099758466
+    }
+  ]
+}
+[jobs] scr_v2_tgt_zero_hi: start
+[runner] 30 jobs, 30 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2082.20it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 14.36it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00, 13.08it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  5.38it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.42it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2122.56it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 12.62it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  9.85it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.49it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.32it/s]
+{
+  "run": {
+    "jobs": 30,
+    "executed": 30,
+    "rows": 90
+  },
+  "summary": [
+    {
+      "method": "v2_tgt_zero_hi",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.1269303522383173,
+      "no_face_rate": 0.03333333333333333,
+      "mean_clip_i": 0.559475393096606,
+      "mean_edit_lpips": 0.4705073068539301
+    },
+    {
+      "method": "v2_tgt_zero_hi",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.21591121964156623,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6212035715579987,
+      "mean_edit_lpips": 0.30240757316350936
+    },
+    {
+      "method": "v2_tgt_zero_hi",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.11561299047122398,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.5656145731608073,
+      "mean_edit_lpips": 0.4700773437817891
+    }
+  ]
+}
+[jobs] scr_v2_tgt_gray: start
+[runner] 30 jobs, 30 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2038.49it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 12.05it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00, 12.92it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  5.99it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.98it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2081.12it/s]
+Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00, 11.59it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:00<00:00,  9.85it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  5.49it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.30it/s]
+{
+  "run": {
+    "jobs": 30,
+    "executed": 30,
+    "rows": 90
+  },
+  "summary": [
+    {
+      "method": "v2_tgt_gray",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.15644836233307918,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.5952340235312781,
+      "mean_edit_lpips": 0.38133697807788847
+    },
+    {
+      "method": "v2_tgt_gray",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.24154180400073527,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.640732725461324,
+      "mean_edit_lpips": 0.24823253403107323
+    },
+    {
+      "method": "v2_tgt_gray",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 10,
+      "n_edits": 30,
+      "mean_arcface_sim": 0.14517328737614055,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.5907323827346166,
+      "mean_edit_lpips": 0.3977946132421493
+    }
+  ]
+}

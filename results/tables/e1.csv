@@ -1,0 +1,15 @@
+comparison (A vs B),purifier,editor,pairs,PSR A,PSR B,PSR A-B [95% CI],p (PSR),sim A-B [95% CI],p (sim),images A>B
+noise_uniform vs clean,none,SD1.5 s0.3,100,0.00,0.00,"+0.00 [+0.00, +0.00]",1.000,"-0.008 [-0.011, -0.004]",<0.001,0.00
+noise_uniform vs clean,none,SD1.5 s0.55,100,0.15,0.14,"+0.01 [-0.01, +0.03]",0.362,"-0.010 [-0.013, -0.006]",<0.001,0.23
+noise_uniform vs clean,none,SD1.5 s0.75,100,0.83,0.84,"-0.01 [-0.05, +0.03]",0.770,"-0.001 [-0.007, +0.005]",0.970,0.15
+noise_uniform vs clean,none,SDXL s0.55,0,not run,not run,not run,,not run,,
+noise_uniform vs clean,none,InstructPix2Pix,100,0.08,0.18,"-0.10 [-0.16, -0.06]",<0.001,"+0.048 [+0.022, +0.075]",<0.001,0.03
+noise_uniform vs clean,none,SD inpaint (keep-face),100,0.00,0.00,"+0.00 [+0.00, +0.00]",1.000,"-0.002 [-0.003, -0.001]",<0.001,0.00
+noise_uniform vs clean,none,IP-Adapter FaceID,100,0.00,0.00,"+0.00 [+0.00, +0.01]",1.000,"-0.003 [-0.006, +0.001]",0.291,0.01
+noise_gauss_psnr vs clean,none,SD1.5 s0.3,100,0.00,0.00,"+0.00 [+0.00, +0.00]",1.000,"-0.009 [-0.013, -0.006]",<0.001,0.00
+noise_gauss_psnr vs clean,none,SD1.5 s0.55,100,0.15,0.14,"+0.01 [-0.01, +0.03]",0.560,"-0.008 [-0.012, -0.005]",<0.001,0.19
+noise_gauss_psnr vs clean,none,SD1.5 s0.75,100,0.83,0.84,"-0.01 [-0.05, +0.03]",0.550,"-0.002 [-0.008, +0.003]",0.762,0.14
+noise_gauss_psnr vs clean,none,SDXL s0.55,0,not run,not run,not run,,not run,,
+noise_gauss_psnr vs clean,none,InstructPix2Pix,100,0.09,0.18,"-0.09 [-0.14, -0.05]",<0.001,"+0.049 [+0.023, +0.076]",<0.001,0.03
+noise_gauss_psnr vs clean,none,SD inpaint (keep-face),100,0.00,0.00,"+0.00 [+0.00, +0.00]",1.000,"-0.001 [-0.002, -0.000]",0.001,0.00
+noise_gauss_psnr vs clean,none,IP-Adapter FaceID,100,0.00,0.00,"+0.00 [+0.00, +0.00]",1.000,"-0.002 [-0.005, +0.001]",0.789,0.00

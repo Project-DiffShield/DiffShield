@@ -100,6 +100,13 @@ methods:
     loss: {alpha: 1.0, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0,
            target: {kind: zero, w_tgt: 1.0, w_dev: 0.0}}
     eot: {k_draws: 4}
+  v2_tgt_zero_mid:                       # declared interpolation between v2_tgt_zero (alpha 0.27) and v2_tgt_zero_hi (alpha 1.0); not screened on val
+    budget: {step_255: 1.0}
+    purifiers_train: [jpeg, downup, vae_roundtrip]
+    purifier_train_probs: {jpeg: 0.35, downup: 0.35, vae_roundtrip: 0.3}
+    loss: {alpha: 0.55, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0,
+           target: {kind: zero, w_tgt: 1.0, w_dev: 0.0}}
+    eot: {k_draws: 4}
   v2_tgt_gray:
     budget: {step_255: 1.0}
     purifiers_train: [jpeg, downup, vae_roundtrip]

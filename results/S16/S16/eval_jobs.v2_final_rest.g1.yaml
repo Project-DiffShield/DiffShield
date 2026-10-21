@@ -10,7 +10,7 @@ jobs:
   method: v2_final
   split: test
   editor: sd15_img2img,ip2p,sd_inpaint,ipadapter_faceid
-  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output//S06/results/prot_v2_final_test/images
   split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
   source_dir: /kaggle/working/S16/data/test
   out: /kaggle/working/S16/results/eval_v2_final_H
@@ -19,7 +19,7 @@ jobs:
   purifier: all
   method: v2_final
   split: test
-  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output//S06/results/prot_v2_final_test/images
   split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
   source_dir: /kaggle/working/S16/data/test
   out: /kaggle/working/S16/results/eval_v2_final_P
@@ -36,7 +36,7 @@ jobs:
   method: v2_final
   split: test
   editor: sdxl_img2img
-  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results/prot_v2_final_test/images
+  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output//S06/results/prot_v2_final_test/images
   split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
   source_dir: /kaggle/working/S16/data/test
   out: /kaggle/working/S16/results/eval_v2_final_H_sdxl

@@ -1,0 +1,5 @@
+[13:45:52] run prot_v2_cheap_val method=v2_cheap device=cuda backend=real shard=(0, 2) git=801245d dirty=False
+[13:45:52] 10 images in this shard (20 total), 0 already done
+[13:57:22] [5/10] 23056 psnr=41.47 ssim=0.9838 gpu_s=131.2
+[14:08:03] [10/10] 862 psnr=42.14 ssim=0.9841 gpu_s=137.9
+[14:08:03] done

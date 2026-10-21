@@ -1,28 +1,28 @@
-[10:29:11] S16: start: S16 v2_final edits from the S06 protected images - Tier H (no SDXL), SDXL (H), Tier P, FaceID-P, IP2P-P, messy (M) | gpus=2 smoke=False n_images=None iters=None resume=None
-[10:29:11] S16: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
-[10:29:51] S16: step install: rc=0 (40s)
-[10:29:51] S16: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
-[10:29:58] S16: step check_env: rc=0 (8s)
-[10:29:58] S16: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
-[10:29:58] S16: step resolve_splits: rc=0 (0s)
-[10:29:58] S16: config: using config/parts/final.yaml from the bundle
-[10:29:58] S16: step make_config: rc=0 (0s)
-[10:29:58] S16: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S16/data --splits test messy --no_cache
-[10:30:45] S16: step prepare_data: rc=0 (47s)
-[10:30:45] S16: set v2final_results = /kaggle/input/datasets/cootot123/diffshield-06-output/S06/S06/results
-[10:30:45] S16: step v2final_src_prev: rc=0 (0s)
-[10:30:45] S16: step v2final_src_local: skipped (condition)
-[10:30:45] S16: step protect_prot_v2_final_test: skipped (condition)
-[10:30:45] S16: step merge_prot_v2_final_test: skipped (condition)
-[10:30:45] S16: [protect_prot_v2_final_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S16/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S16/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v2_final_messy --output_root /kaggle/working/S16/results --checkpoint_every 5 --split messy --shard 0/2
-[10:30:45] S16: [protect_prot_v2_final_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S16/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S16/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v2_final_messy --output_root /kaggle/working/S16/results --checkpoint_every 5 --split messy --shard 1/2
-[11:31:25] S16: [protect_prot_v2_final_messy] protect_prot_v2_final_messy.gpu0.log exited 0; tail: ['[11:01:41] [5/10] 23397 psnr=40.17 ssim=0.9468 gpu_s=351.5', '[11:31:17] [10/10] 8790 psnr=38.73 ssim=0.9342 gpu_s=359.7', '[11:31:17] done']
-[11:34:30] S16: [protect_prot_v2_final_messy] protect_prot_v2_final_messy.gpu1.log exited 0; tail: ['[11:03:20] [5/10] 23465 psnr=39.74 ssim=0.9438 gpu_s=377.0', '[11:34:27] [10/10] 9918 psnr=40.55 ssim=0.9513 gpu_s=357.7', '[11:34:27] done']
-[11:34:30] S16: step protect_prot_v2_final_messy: rc=0 (3825s)
-[11:34:30] S16: [merge_prot_v2_final_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S16/results/prot_v2_final_messy
-[11:34:31] S16: step merge_prot_v2_final_messy: rc=0 (1s)
-[11:34:31] S16: [v2_final_rest] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S16/eval_jobs.v2_final_rest.g0.yaml --shard 0/2
-[11:34:31] S16: [v2_final_rest] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S16/eval_jobs.v2_final_rest.g1.yaml --shard 1/2
-[11:41:41] S16: [v2_final_rest] v2_final_rest.gpu0.log exited 1; tail: ['  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 731, in run', '    raise RuntimeError(f"editors failed (other editors completed): {sorted(failed_editors)}")', "RuntimeError: editors failed (other editors completed): ['sdxl_img2img']"]
-[11:41:41] S16: [v2_final_rest] v2_final_rest.gpu1.log exited 1; tail: ['  File "/kaggle/tmp/DiffShield/src/eval/edit_runner.py", line 731, in run', '    raise RuntimeError(f"editors failed (other editors completed): {sorted(failed_editors)}")', "RuntimeError: editors failed (other editors completed): ['sdxl_img2img']"]
-[11:41:41] S16: step v2_final_rest: rc=1 (430s)
+[12:21:22] S16: start: S16 v2_final edits from the S06 protected images - Tier H (no SDXL), SDXL (H), Tier P, FaceID-P, IP2P-P, messy (M) | gpus=2 smoke=False n_images=None iters=None resume=None
+[12:21:22] S16: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[12:22:01] S16: step install: rc=0 (39s)
+[12:22:01] S16: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[12:22:07] S16: step check_env: rc=0 (6s)
+[12:22:07] S16: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[12:22:07] S16: step resolve_splits: rc=0 (0s)
+[12:22:07] S16: config: using config/parts/final.yaml from the bundle
+[12:22:07] S16: step make_config: rc=0 (0s)
+[12:22:07] S16: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S16/data --splits test messy --no_cache
+[12:22:32] S16: step prepare_data: rc=0 (25s)
+[12:22:32] S16: set v2final_results = /kaggle/input/datasets/cootot123/diffshield-06-output//S06/results
+[12:22:32] S16: step v2final_src_prev: rc=0 (0s)
+[12:22:32] S16: step v2final_src_local: skipped (condition)
+[12:22:32] S16: step protect_prot_v2_final_test: skipped (condition)
+[12:22:32] S16: step merge_prot_v2_final_test: skipped (condition)
+[12:22:32] S16: [protect_prot_v2_final_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S16/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S16/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v2_final_messy --output_root /kaggle/working/S16/results --checkpoint_every 5 --split messy --shard 0/2
+[12:22:32] S16: [protect_prot_v2_final_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S16/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S16/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_v2_final_messy --output_root /kaggle/working/S16/results --checkpoint_every 5 --split messy --shard 1/2
+[13:25:57] S16: [protect_prot_v2_final_messy] protect_prot_v2_final_messy.gpu1.log exited 0; tail: ['[12:54:49] [5/10] 23465 psnr=39.72 ssim=0.9427 gpu_s=376.5', '[13:25:52] [10/10] 9918 psnr=40.54 ssim=0.9508 gpu_s=357.3', '[13:25:52] done']
+[13:26:02] S16: [protect_prot_v2_final_messy] protect_prot_v2_final_messy.gpu0.log exited 0; tail: ['[12:54:50] [5/10] 23397 psnr=40.11 ssim=0.9461 gpu_s=369.8', '[13:25:57] [10/10] 8790 psnr=38.65 ssim=0.9330 gpu_s=378.3', '[13:25:57] done']
+[13:26:02] S16: step protect_prot_v2_final_messy: rc=0 (3810s)
+[13:26:02] S16: [merge_prot_v2_final_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S16/results/prot_v2_final_messy
+[13:26:02] S16: step merge_prot_v2_final_messy: rc=0 (1s)
+[13:26:02] S16: [v2_final_rest] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S16/eval_jobs.v2_final_rest.g0.yaml --shard 0/2
+[13:26:02] S16: [v2_final_rest] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S16/eval_jobs.v2_final_rest.g1.yaml --shard 1/2
+[17:56:28] S16: [v2_final_rest] v2_final_rest.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[17:59:18] S16: [v2_final_rest] v2_final_rest.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[17:59:18] S16: step v2_final_rest: rc=0 (16396s)

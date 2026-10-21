@@ -1,0 +1,14 @@
+[
+  {
+    "method": "v2_final",
+    "purifier": "none",
+    "editor": "sdxl_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.31204124545057615,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7006924231847128,
+    "mean_edit_lpips": NaN
+  }
+]

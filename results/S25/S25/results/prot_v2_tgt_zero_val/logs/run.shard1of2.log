@@ -1,0 +1,5 @@
+[14:08:12] run prot_v2_tgt_zero_val method=v2_tgt_zero device=cuda backend=real shard=(1, 2) git=801245d dirty=False
+[14:08:12] 10 images in this shard (20 total), 0 already done
+[14:18:49] [5/10] 2582 psnr=41.91 ssim=0.9790 gpu_s=124.8
+[14:29:19] [10/10] 9312 psnr=41.78 ssim=0.9786 gpu_s=129.3
+[14:29:19] done

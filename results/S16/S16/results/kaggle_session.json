@@ -1,16 +1,16 @@
 {
   "job_id": "S16",
   "run_id": "S16",
-  "session_seconds": 4350.588752031326,
+  "session_seconds": 20275.782374620438,
   "n_gpus": 2,
   "steps": {
     "install": {
       "rc": 0,
-      "seconds": 39.9
+      "seconds": 38.8
     },
     "check_env": {
       "rc": 0,
-      "seconds": 7.9
+      "seconds": 5.7
     },
     "resolve_splits": {
       "rc": 0,
@@ -22,7 +22,7 @@
     },
     "prepare_data": {
       "rc": 0,
-      "seconds": 46.8
+      "seconds": 24.9
     },
     "v2final_src_prev": {
       "rc": 0,
@@ -30,24 +30,22 @@
     },
     "protect_prot_v2_final_messy": {
       "rc": 0,
-      "seconds": 3825.1
+      "seconds": 3810.1
     },
     "merge_prot_v2_final_messy": {
       "rc": 0,
-      "seconds": 0.8
+      "seconds": 0.7
     },
     "v2_final_rest": {
-      "rc": 1,
-      "seconds": 430.0
+      "rc": 0,
+      "seconds": 16395.5
     }
   },
   "params": {
     "smoke": false,
-    "prev_root": "/kaggle/input/datasets/cootot123/diffshield-06-output/S06",
+    "prev_root": "/kaggle/input/datasets/cootot123/diffshield-06-output/",
     "final_yaml": ""
   },
-  "ok": false,
-  "failed_steps": [
-    "v2_final_rest"
-  ]
+  "ok": true,
+  "failed_steps": []
 }

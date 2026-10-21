@@ -1,0 +1,18 @@
+\begin{table}[t]
+\centering
+\small
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lccccccc}
+\toprule
+eps (x/255) & method & PSNR dB [95\% CI] & SSIM & PSR SD1.5 none & PSR SD1.5 jpeg\_q75 & PSR SD1.5 diffpure\_0.1 & PSR FaceID none \\
+\midrule
+2 & eps2 & 45.34 [45.29, 45.39] & 0.984 & 0.17 [0.12, 0.23] & 0.17 [0.12, 0.22] & 0.20 [0.15, 0.26] & 0.00 [0.00, 0.00] \\
+4 & v2\_final & 40.46 [40.35, 40.57] & 0.955 & 0.29 [0.24, 0.35] & 0.16 [0.12, 0.21] & 0.30 [0.23, 0.36] & 0.00 [0.00, 0.01] \\
+8 & eps8 & 35.98 [35.74, 36.20] & 0.896 & 0.38 [0.31, 0.45] & 0.21 [0.16, 0.27] & 0.40 [0.34, 0.46] & 0.00 [0.00, 0.01] \\
+\bottomrule
+\end{tabular}
+}
+\caption{E9: epsilon sweep (invisibility vs robustness); eps=4 is v2\_final}
+\label{tab:e9}
+\par\footnotesize n images per cell: 100; edit seeds per image: 3; prompts per image: up to 3. Mean with 95\% percentile-bootstrap CI over images (10000 resamples, seed 2026); seeds and prompts are averaged within each image first. PSR = share of edits with no detected face or ArcFace sim to the source below the per-editor threshold (95th percentile of impostor sim of the E0 clean edits): ip2p 0.108, ipadapter\_faceid 0.108, sd15\_img2img 0.101, sd\_inpaint 0.110, sdxl\_img2img 0.104, pooled 0.103. 'not run' = no rows for the cell. A cell with fewer images than the largest cell shows (n=...). Plot PSR against PSNR with scripts/make\_figures.py (psr\_vs\_psnr). Epsilon on the standard 0-255 scale.
+\end{table}

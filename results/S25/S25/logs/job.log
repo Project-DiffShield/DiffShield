@@ -1,0 +1,44 @@
+[13:44:55] S25: start: S25 screening on the 20 VALIDATION photos - target-steered variants vs their control v2_cheap (SD1.5 s0.55 under none / jpeg_q75 / diffpure_0.1) | gpus=2 smoke=False n_images=None iters=None resume=None
+[13:44:55] S25: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[13:45:31] S25: step install: rc=0 (35s)
+[13:45:31] S25: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[13:45:36] S25: step check_env: rc=0 (5s)
+[13:45:36] S25: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[13:45:36] S25: step resolve_splits: rc=0 (0s)
+[13:45:36] S25: config: using config/parts/final.yaml from the bundle
+[13:45:36] S25: step make_config: rc=0 (0s)
+[13:45:36] S25: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S25/data --splits val --no_cache
+[13:45:49] S25: step prepare_data: rc=0 (13s)
+[13:45:49] S25: [protect_prot_v2_cheap_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_cheap --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_cheap_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 0/2
+[13:45:49] S25: [protect_prot_v2_cheap_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_cheap --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_cheap_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 1/2
+[14:07:49] S25: [protect_prot_v2_cheap_val] protect_prot_v2_cheap_val.gpu1.log exited 0; tail: ['[13:57:13] [5/10] 2582 psnr=41.28 ssim=0.9747 gpu_s=124.8', '[14:07:45] [10/10] 9312 psnr=41.20 ssim=0.9752 gpu_s=129.7', '[14:07:45] done']
+[14:08:09] S25: [protect_prot_v2_cheap_val] protect_prot_v2_cheap_val.gpu0.log exited 0; tail: ['[13:57:22] [5/10] 23056 psnr=41.47 ssim=0.9838 gpu_s=131.2', '[14:08:03] [10/10] 862 psnr=42.14 ssim=0.9841 gpu_s=137.9', '[14:08:03] done']
+[14:08:09] S25: step protect_prot_v2_cheap_val: rc=0 (1340s)
+[14:08:09] S25: [merge_prot_v2_cheap_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S25/results/prot_v2_cheap_val
+[14:08:10] S25: step merge_prot_v2_cheap_val: rc=0 (1s)
+[14:08:10] S25: [protect_prot_v2_tgt_zero_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_zero --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_zero_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 0/2
+[14:08:10] S25: [protect_prot_v2_tgt_zero_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_zero --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_zero_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 1/2
+[14:29:25] S25: [protect_prot_v2_tgt_zero_val] protect_prot_v2_tgt_zero_val.gpu1.log exited 0; tail: ['[14:18:49] [5/10] 2582 psnr=41.91 ssim=0.9790 gpu_s=124.8', '[14:29:19] [10/10] 9312 psnr=41.78 ssim=0.9786 gpu_s=129.3', '[14:29:19] done']
+[14:29:35] S25: [protect_prot_v2_tgt_zero_val] protect_prot_v2_tgt_zero_val.gpu0.log exited 0; tail: ['[14:18:52] [5/10] 23056 psnr=41.44 ssim=0.9857 gpu_s=130.3', '[14:29:33] [10/10] 862 psnr=42.23 ssim=0.9881 gpu_s=137.9', '[14:29:33] done']
+[14:29:35] S25: step protect_prot_v2_tgt_zero_val: rc=0 (1285s)
+[14:29:35] S25: [merge_prot_v2_tgt_zero_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S25/results/prot_v2_tgt_zero_val
+[14:29:35] S25: step merge_prot_v2_tgt_zero_val: rc=0 (1s)
+[14:29:35] S25: [protect_prot_v2_tgt_zero_hi_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_zero_hi --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_zero_hi_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 0/2
+[14:29:35] S25: [protect_prot_v2_tgt_zero_hi_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_zero_hi --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_zero_hi_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 1/2
+[14:50:55] S25: [protect_prot_v2_tgt_zero_hi_val] protect_prot_v2_tgt_zero_hi_val.gpu1.log exited 0; tail: ['[14:40:18] [5/10] 2582 psnr=40.05 ssim=0.9575 gpu_s=124.8', '[14:50:50] [10/10] 9312 psnr=40.03 ssim=0.9600 gpu_s=129.5', '[14:50:50] done']
+[14:51:05] S25: [protect_prot_v2_tgt_zero_hi_val] protect_prot_v2_tgt_zero_hi_val.gpu0.log exited 0; tail: ['[14:40:18] [5/10] 23056 psnr=39.88 ssim=0.9702 gpu_s=130.7', '[14:51:00] [10/10] 862 psnr=40.18 ssim=0.9723 gpu_s=138.2', '[14:51:00] done']
+[14:51:05] S25: step protect_prot_v2_tgt_zero_hi_val: rc=0 (1290s)
+[14:51:05] S25: [merge_prot_v2_tgt_zero_hi_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S25/results/prot_v2_tgt_zero_hi_val
+[14:51:06] S25: step merge_prot_v2_tgt_zero_hi_val: rc=0 (1s)
+[14:51:06] S25: [protect_prot_v2_tgt_gray_val] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_gray --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_gray_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 0/2
+[14:51:06] S25: [protect_prot_v2_tgt_gray_val] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S25/cfg/config.yaml --method v2_tgt_gray --input_dir /kaggle/working/S25/data/val --list /kaggle/tmp/DiffShield/data/splits/val.txt --run_id prot_v2_tgt_gray_val --output_root /kaggle/working/S25/results --checkpoint_every 5 --split val --shard 1/2
+[15:12:26] S25: [protect_prot_v2_tgt_gray_val] protect_prot_v2_tgt_gray_val.gpu1.log exited 0; tail: ['[15:01:49] [5/10] 2582 psnr=41.46 ssim=0.9786 gpu_s=125.0', '[15:12:20] [10/10] 9312 psnr=41.66 ssim=0.9801 gpu_s=129.5', '[15:12:20] done']
+[15:12:36] S25: [protect_prot_v2_tgt_gray_val] protect_prot_v2_tgt_gray_val.gpu0.log exited 0; tail: ['[15:01:50] [5/10] 23056 psnr=41.39 ssim=0.9853 gpu_s=130.7', '[15:12:32] [10/10] 862 psnr=42.03 ssim=0.9860 gpu_s=138.2', '[15:12:32] done']
+[15:12:36] S25: step protect_prot_v2_tgt_gray_val: rc=0 (1290s)
+[15:12:36] S25: [merge_prot_v2_tgt_gray_val] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S25/results/prot_v2_tgt_gray_val
+[15:12:36] S25: step merge_prot_v2_tgt_gray_val: rc=0 (1s)
+[15:12:36] S25: [screen_cand] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S25/eval_jobs.screen_cand.g0.yaml --shard 0/2
+[15:12:36] S25: [screen_cand] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S25/eval_jobs.screen_cand.g1.yaml --shard 1/2
+[15:38:52] S25: [screen_cand] screen_cand.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[15:38:57] S25: [screen_cand] screen_cand.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[15:38:57] S25: step screen_cand: rc=0 (1580s)
