@@ -1,0 +1,17 @@
+{
+  "image": "results/S06/S06/data/test/10001.png",
+  "method_requested": "v2_final",
+  "method_used": "v1 (tiny dry run)",
+  "editor": "sd15_img2img",
+  "strength": 0.55,
+  "prompt": "a person in a suit",
+  "edit_generator_seed": 565367052,
+  "dry_run": true,
+  "psnr": 43.57007056321282,
+  "ssim": 0.9959108253534704,
+  "max_abs_gray_level_change": 4,
+  "arcface_sim_to_source": {
+    "clean": 0.9758952260017395,
+    "protected": 0.9758688807487488
+  }
+}
