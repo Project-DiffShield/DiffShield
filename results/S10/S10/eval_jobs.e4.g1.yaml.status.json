@@ -1,0 +1,17 @@
+{
+  "eval_v2_cheap_H": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 8448.384151220322
+  },
+  "eval_v2_cheap_P": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 5368.965039491653
+  },
+  "e0_clean_P": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 7237.411958456039
+  }
+}

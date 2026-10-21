@@ -1,0 +1,23 @@
+[10:26:25] S10: start: S10 protect v2_cheap (test) -> E4 edits (H, P) + E0 clean purifier tier (P) | gpus=2 smoke=False n_images=None iters=None resume=None
+[10:26:25] S10: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[10:26:58] S10: step install: rc=0 (33s)
+[10:26:58] S10: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[10:27:02] S10: step check_env: rc=0 (4s)
+[10:27:02] S10: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[10:27:02] S10: step resolve_splits: rc=0 (0s)
+[10:27:02] S10: config: using config/parts/final.yaml from the bundle
+[10:27:02] S10: step make_config: rc=0 (0s)
+[10:27:02] S10: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S10/data --splits test --no_cache
+[10:27:29] S10: step prepare_data: rc=0 (27s)
+[10:27:29] S10: [protect_prot_v2_cheap_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S10/cfg/config.yaml --method v2_cheap --input_dir /kaggle/working/S10/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_cheap_test --output_root /kaggle/working/S10/results --checkpoint_every 5 --split test --shard 0/2
+[10:27:29] S10: [protect_prot_v2_cheap_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S10/cfg/config.yaml --method v2_cheap --input_dir /kaggle/working/S10/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_cheap_test --output_root /kaggle/working/S10/results --checkpoint_every 5 --split test --shard 1/2
+[12:03:04] S10: [protect_prot_v2_cheap_test] protect_prot_v2_cheap_test.gpu0.log exited 0; tail: ['[11:53:27] [45/50] 7551 psnr=41.29 ssim=0.9740 gpu_s=106.4', '[12:02:57] [50/50] 986 psnr=41.39 ssim=0.9824 gpu_s=107.5', '[12:02:57] done']
+[12:06:09] S10: [protect_prot_v2_cheap_test] protect_prot_v2_cheap_test.gpu1.log exited 0; tail: ['[11:56:18] [45/50] 7603 psnr=42.16 ssim=0.9848 gpu_s=126.6', '[12:06:07] [50/50] 9954 psnr=42.53 ssim=0.9775 gpu_s=113.5', '[12:06:07] done']
+[12:06:09] S10: step protect_prot_v2_cheap_test: rc=0 (5920s)
+[12:06:09] S10: [merge_prot_v2_cheap_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S10/results/prot_v2_cheap_test
+[12:06:10] S10: step merge_prot_v2_cheap_test: rc=0 (1s)
+[12:06:10] S10: [e4] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S10/eval_jobs.e4.g0.yaml --shard 0/2
+[12:06:10] S10: [e4] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S10/eval_jobs.e4.g1.yaml --shard 1/2
+[17:46:40] S10: [e4] e4.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[17:57:10] S10: [e4] e4.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[17:57:10] S10: step e4: rc=0 (21061s)

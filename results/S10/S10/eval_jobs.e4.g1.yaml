@@ -1,0 +1,32 @@
+defaults:
+  no_generate_clean: false
+  set: []
+  config: /kaggle/working/S10/cfg/config.yaml
+  cache_dir: /kaggle/working/S10/cache
+  parsing_dir: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+jobs:
+- name: eval_v2_cheap_H
+  tier: H
+  method: v2_cheap
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S10/data/test
+  protected_dir: /kaggle/working/S10/results/prot_{method}_test/images
+  out: /kaggle/working/S10/results/eval_v2_cheap_H
+- name: eval_v2_cheap_P
+  tier: P
+  purifier: all
+  method: v2_cheap
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S10/data/test
+  protected_dir: /kaggle/working/S10/results/prot_{method}_test/images
+  out: /kaggle/working/S10/results/eval_v2_cheap_P
+- name: e0_clean_P
+  tier: P
+  purifier: all
+  method: clean
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S10/data/test
+  out: /kaggle/working/S10/results/e0_clean_P

@@ -1,0 +1,13 @@
+[10:27:32] run prot_v2_cheap_test method=v2_cheap device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[10:27:32] 50 images in this shard (100 total), 0 already done
+[10:38:11] [5/50] 11106 psnr=41.54 ssim=0.9721 gpu_s=122.4
+[10:47:56] [10/50] 130 psnr=40.97 ssim=0.9805 gpu_s=107.4
+[10:57:11] [15/50] 16383 psnr=42.48 ssim=0.9756 gpu_s=117.4
+[11:06:56] [20/50] 21783 psnr=41.56 ssim=0.9690 gpu_s=117.4
+[11:16:14] [25/50] 25516 psnr=41.28 ssim=0.9745 gpu_s=110.4
+[11:25:46] [30/50] 3272 psnr=40.74 ssim=0.9780 gpu_s=121.8
+[11:34:54] [35/50] 4489 psnr=41.22 ssim=0.9763 gpu_s=115.6
+[11:44:13] [40/50] 5443 psnr=40.95 ssim=0.9772 gpu_s=105.2
+[11:53:27] [45/50] 7551 psnr=41.29 ssim=0.9740 gpu_s=106.4
+[12:02:57] [50/50] 986 psnr=41.39 ssim=0.9824 gpu_s=107.5
+[12:02:57] done

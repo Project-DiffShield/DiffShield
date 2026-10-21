@@ -332,6 +332,60 @@
       "face_detected_without_sim": 0
     },
     {
+      "file": "results\\S10\\S10\\results\\e0_clean_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\e0_clean_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\eval_v2_cheap_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1200,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\eval_v2_cheap_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1200,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\eval_v2_cheap_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1800,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\eval_v2_cheap_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1800,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\prot_v2_cheap_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\prot_v2_cheap_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S10\\S10\\results\\prot_v2_cheap_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
       "file": "results\\S11\\S11\\results\\eval_abl_vis_den_A\\metrics.shard0.csv",
       "kind": "edit",
       "rows": 2400,
@@ -732,22 +786,22 @@
   "unzipped": [],
   "warnings": [],
   "edits": {
-    "rows_in": 36420,
-    "rows_out": 36420,
+    "rows_in": 47220,
+    "rows_out": 47220,
     "duplicates_dropped": 0,
     "conflicts": 0,
     "lpips_filled_from_cache": 512,
-    "n_cells": 111,
+    "n_cells": 143,
     "lpips_missing": 25708
   },
   "plan": {
     "expected_cells": 233,
-    "missing_cells": 112
+    "missing_cells": 78
   },
   "protect": {
-    "rows_in": 2902,
-    "rows_out": 1350,
-    "duplicates_dropped": 1552
+    "rows_in": 3102,
+    "rows_out": 1450,
+    "duplicates_dropped": 1652
   },
   "thresholds_from_job": "results\\S07\\S07\\results\\thresholds\\psr_thresholds.json",
   "thresholds": {

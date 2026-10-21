@@ -1,8 +1,8 @@
 # Coverage of combined results
 
-Rows after de-duplication: 36420 (dropped 0 duplicates, 0 duplicate keys with differing ArcFace sim).
+Rows after de-duplication: 47220 (dropped 0 duplicates, 0 duplicate keys with differing ArcFace sim).
 
-Cells: 111; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, noise_gauss_psnr, noise_uniform, v1, v2_antipure, v2_final, v2_main; splits: messy, test.
+Cells: 143; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, noise_gauss_psnr, noise_uniform, v1, v2_antipure, v2_cheap, v2_final, v2_main; splits: messy, test.
 
 | split | method | purifier | editor | images | seeds | strengths | prompts | face rate | LPIPS filled |
 |---|---|---|---|---|---|---|---|---|---|
@@ -36,11 +36,27 @@ Cells: 111; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, noise_gauss_
 | test | abl_vis_only | vae_rt | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 0.00 |
 | test | clean | adaptive_ae | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | clean | adaptive_ae | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | clean | diffpure_0.05 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | diffpure_0.1 | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | diffpure_0.1 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | diffpure_0.2 | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | diffpure_0.2 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | diffpure_0.3 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | downup_0.5 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | downup_other | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | jpeg_other | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | jpeg_q50 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | jpeg_q75 | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | jpeg_q90 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |
 | test | clean | none | ip2p | 100 | 1,2,3 | - | 3 | 0.82 | 0.00 |
 | test | clean | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | clean | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 0.00 |
 | test | clean | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
 | test | clean | none | sdxl_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | clean | restore_swin2sr | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | vae_rt | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | clean | vae_rt | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
 | test | eps2 | diffpure_0.1 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | eps2 | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | eps2 | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
@@ -95,6 +111,22 @@ Cells: 111; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, noise_gauss_
 | test | v2_antipure | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | v2_antipure | restore_swin2sr | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | v2_antipure | vae_rt | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 0.00 |
+| test | v2_cheap | diffpure_0.05 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |
+| test | v2_cheap | diffpure_0.1 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |
+| test | v2_cheap | diffpure_0.2 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | diffpure_0.3 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | downup_0.5 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |
+| test | v2_cheap | downup_other | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | jpeg_other | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | jpeg_q50 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |
+| test | v2_cheap | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | jpeg_q90 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | none | ip2p | 100 | 1,2,3 | - | 3 | 0.87 | 1.00 |
+| test | v2_cheap | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 1.00 |
+| test | v2_cheap | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | restore_swin2sr | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
+| test | v2_cheap | vae_rt | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 1.00 |
 | test | v2_final | adaptive_ae | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | v2_final | adaptive_ae | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | v2_main | diffpure_0.05 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |

@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S10/cfg/config.yaml --method v2_cheap --input_dir /kaggle/working/S10/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_cheap_test --output_root /kaggle/working/S10/results --checkpoint_every 5 --split test --shard 1/2
