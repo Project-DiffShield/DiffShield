@@ -1,0 +1,17 @@
+{
+  "eval_ae_clean": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 994.0210213661194
+  },
+  "eval_ae_v1": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 948.5611262321472
+  },
+  "eval_ae_v2_final": {
+    "state": "done",
+    "rc": 0,
+    "seconds": 955.0144810676575
+  }
+}

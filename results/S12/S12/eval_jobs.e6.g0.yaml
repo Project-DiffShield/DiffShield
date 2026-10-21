@@ -1,0 +1,16 @@
+defaults:
+  set: []
+  config: /kaggle/working/S12/cfg/config.yaml
+  cache_dir: /kaggle/working/S12/cache
+  no_generate_clean: true
+  parsing_dir: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+jobs:
+- name: eval_v2_antipure_P
+  tier: P
+  purifier: all
+  method: v2_antipure
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S12/data/test
+  protected_dir: /kaggle/working/S12/results/prot_{method}_test/images
+  out: /kaggle/working/S12/results/eval_v2_antipure_P

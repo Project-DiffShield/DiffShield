@@ -1,0 +1,165 @@
+[jobs] eval_ae_clean: start
+[runner] 100 jobs, 100 to do (0 already complete)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  3%|▎         | 8451/281857 [00:00<00:03, 84501.62KB/s]  6%|▋         | 17686/281857 [00:00<00:02, 89108.43KB/s] 10%|█         | 28581/281857 [00:00<00:02, 98162.26KB/s] 14%|█▎        | 38681/281857 [00:00<00:02, 99277.56KB/s] 17%|█▋        | 49212/281857 [00:00<00:02, 101451.18KB/s] 21%|██        | 59528/281857 [00:00<00:02, 102019.27KB/s] 25%|██▍       | 70089/281857 [00:00<00:02, 103192.00KB/s] 29%|██▉       | 81435/281857 [00:00<00:01, 106458.38KB/s] 33%|███▎      | 92216/281857 [00:00<00:01, 106869.77KB/s] 37%|███▋      | 103484/281857 [00:01<00:01, 108660.43KB/s] 41%|████      | 114729/281857 [00:01<00:01, 109818.94KB/s] 45%|████▍     | 125711/281857 [00:01<00:01, 109650.15KB/s] 49%|████▊     | 136897/281857 [00:01<00:01, 110316.80KB/s] 53%|█████▎    | 148144/281857 [00:01<00:01, 110966.04KB/s] 56%|█████▋    | 159241/281857 [00:01<00:01, 109997.30KB/s] 60%|██████    | 170319/281857 [00:01<00:01, 110230.68KB/s] 64%|██████▍   | 181344/281857 [00:01<00:00, 108540.06KB/s] 68%|██████▊   | 192560/281857 [00:01<00:00, 109610.76KB/s] 72%|███████▏  | 203952/281857 [00:01<00:00, 110890.25KB/s] 76%|███████▋  | 215099/281857 [00:02<00:00, 111060.54KB/s] 80%|████████  | 226398/281857 [00:02<00:00, 111635.72KB/s] 84%|████████▍ | 237685/281857 [00:02<00:00, 112001.00KB/s] 88%|████████▊ | 248888/281857 [00:02<00:00, 111730.21KB/s] 92%|█████████▏| 260063/281857 [00:02<00:00, 110219.28KB/s] 96%|█████████▌| 271091/281857 [00:02<00:00, 101299.99KB/s]100%|█████████▉| 281360/281857 [00:02<00:00, 99242.32KB/s] 100%|██████████| 281857/281857 [00:02<00:00, 106060.73KB/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  3.35it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  74%|███████▍  | 145/196 [00:00<00:00, 1448.73it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1471.68it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  3.72it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  4.11it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:02<00:00,  1.44it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.62it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:03<00:00,  1.96it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  27%|██▋       | 162/590 [00:00<00:00, 1498.07it/s]Loading weights:  53%|█████▎    | 312/590 [00:00<00:00, 908.70it/s] Loading weights:  70%|███████   | 415/590 [00:00<00:00, 666.17it/s]Loading weights:  84%|████████▍ | 497/590 [00:00<00:00, 635.82it/s]Loading weights:  96%|█████████▌| 566/590 [00:00<00:00, 646.66it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 720.77it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  94%|█████████▍| 184/196 [00:00<00:00, 1802.29it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1897.61it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 13.96it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.70it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.13it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.50it/s]
+{
+  "run": {
+    "jobs": 100,
+    "executed": 100,
+    "rows": 300
+  },
+  "summary": [
+    {
+      "method": "clean",
+      "purifier": "adaptive_ae",
+      "editor": "ipadapter_faceid",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.6979995373884836,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.7557651591300965,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "clean",
+      "purifier": "adaptive_ae",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.22880427299688258,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.6658444013198218,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}
+[jobs] eval_ae_v1: start
+[runner] 100 jobs, 100 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   6%|▌         | 11/196 [00:00<00:01, 109.73it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1765.77it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 18.60it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  4.53it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.89it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.40it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  54%|█████▎    | 105/196 [00:00<00:00, 1049.39it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1596.73it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 16.54it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  4.16it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.45it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.91it/s]
+{
+  "run": {
+    "jobs": 100,
+    "executed": 100,
+    "rows": 300
+  },
+  "summary": [
+    {
+      "method": "v1",
+      "purifier": "adaptive_ae",
+      "editor": "ipadapter_faceid",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.6967588833967844,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.7517906963825226,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v1",
+      "purifier": "adaptive_ae",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.22828625372610983,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.6661716045935948,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}
+[jobs] eval_ae_v2_final: start
+[runner] 100 jobs, 100 to do (0 already complete)
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  85%|████████▍ | 166/196 [00:00<00:00, 1659.66it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1932.57it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 19.96it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  4.88it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.05it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.64it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  92%|█████████▏| 181/196 [00:00<00:00, 1787.47it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1887.60it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 17.08it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  5.96it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  5.87it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:00<00:00,  6.53it/s]
+{
+  "run": {
+    "jobs": 100,
+    "executed": 100,
+    "rows": 300
+  },
+  "summary": [
+    {
+      "method": "v2_final",
+      "purifier": "adaptive_ae",
+      "editor": "ipadapter_faceid",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.6995783205827079,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.752069252928098,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_final",
+      "purifier": "adaptive_ae",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.2218148587954541,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.6588610289494197,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}

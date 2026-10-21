@@ -1,0 +1,24 @@
+[13:01:59] run prot_abl_den_only_test method=abl_den_only device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[13:01:59] 50 images in this shard (100 total), 0 already done
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s]Loading weights: 100%|██████████| 196/196 [00:00<00:00, 2421.50it/s]
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[13:16:13] [5/50] 11318 psnr=50.09 ssim=0.9959 gpu_s=166.2
+[13:30:20] [10/50] 13117 psnr=50.54 ssim=0.9949 gpu_s=168.4
+[13:44:33] [15/50] 18621 psnr=50.01 ssim=0.9954 gpu_s=168.0
+[13:58:19] [20/50] 22085 psnr=50.20 ssim=0.9953 gpu_s=164.3
+[14:12:18] [25/50] 25877 psnr=50.30 ssim=0.9950 gpu_s=175.2
+[14:26:30] [30/50] 3463 psnr=50.69 ssim=0.9946 gpu_s=171.7
+[14:41:03] [35/50] 4535 psnr=50.58 ssim=0.9947 gpu_s=174.4
+[14:55:17] [40/50] 5464 psnr=49.89 ssim=0.9953 gpu_s=166.9
+[15:09:29] [45/50] 7603 psnr=50.87 ssim=0.9963 gpu_s=175.6
+[15:23:16] [50/50] 9954 psnr=50.50 ssim=0.9942 gpu_s=164.1
+[15:23:16] done

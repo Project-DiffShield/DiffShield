@@ -1,0 +1,34 @@
+defaults:
+  set:
+  - adaptive_ae.weights_path=/kaggle/working/S15/adaptive_ae/ae_final.pt
+  config: /kaggle/working/S15/cfg/config.yaml
+  cache_dir: /kaggle/working/S15/cache
+  no_generate_clean: true
+  parsing_dir: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+jobs:
+- name: eval_ae_clean
+  tier: E8
+  purifier: all
+  method: clean
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S15/data/test
+  out: /kaggle/working/S15/results/eval_ae_clean
+- name: eval_ae_v1
+  tier: E8
+  purifier: all
+  method: v1
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S15/data/test
+  protected_dir: /kaggle/working/S15/results/prot_{method}_test/images
+  out: /kaggle/working/S15/results/eval_ae_v1
+- name: eval_ae_v2_final
+  tier: E8
+  purifier: all
+  method: v2_final
+  split: test
+  protected_dir: /kaggle/input/datasets/cootot123/diffshield-06-output//S06/results/prot_v2_final_test/images
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S15/data/test
+  out: /kaggle/working/S15/results/eval_ae_v2_final

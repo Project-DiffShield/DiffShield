@@ -1,0 +1,98 @@
+[jobs] eval_eps2_E9: start
+[runner] 200 jobs, 200 to do (0 already complete)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  1%|          | 3499/281857 [00:00<00:07, 34987.78KB/s]  4%|▍         | 12623/281857 [00:00<00:03, 67940.05KB/s]  7%|▋         | 19413/281857 [00:00<00:04, 64568.97KB/s]  9%|▉         | 25886/281857 [00:00<00:04, 54908.38KB/s] 11%|█         | 31551/281857 [00:00<00:05, 46539.72KB/s] 13%|█▎        | 36446/281857 [00:00<00:05, 42917.21KB/s] 15%|█▍        | 40898/281857 [00:00<00:06, 39438.65KB/s] 16%|█▌        | 44953/281857 [00:01<00:06, 37394.34KB/s] 17%|█▋        | 48755/281857 [00:01<00:06, 36331.43KB/s] 19%|█▊        | 52419/281857 [00:01<00:06, 32945.30KB/s] 20%|█▉        | 55758/281857 [00:01<00:07, 30149.99KB/s] 21%|██        | 58814/281857 [00:01<00:07, 28618.34KB/s] 22%|██▏       | 61696/281857 [00:01<00:07, 27945.34KB/s] 23%|██▎       | 64497/281857 [00:01<00:07, 27691.96KB/s] 24%|██▍       | 67267/281857 [00:01<00:07, 26989.63KB/s] 25%|██▍       | 69991/281857 [00:01<00:07, 27057.30KB/s] 26%|██▌       | 72815/281857 [00:02<00:07, 27366.55KB/s] 27%|██▋       | 75599/281857 [00:02<00:07, 27501.12KB/s] 28%|██▊       | 78493/281857 [00:02<00:07, 27915.29KB/s] 29%|██▉       | 81499/281857 [00:02<00:07, 28542.60KB/s] 30%|██▉       | 84502/281857 [00:02<00:06, 28899.24KB/s] 31%|███       | 87693/281857 [00:02<00:06, 29702.49KB/s] 32%|███▏      | 90863/281857 [00:02<00:06, 30191.24KB/s] 33%|███▎      | 93981/281857 [00:02<00:06, 30448.79KB/s] 35%|███▍      | 97284/281857 [00:02<00:05, 31085.32KB/s] 36%|███▌      | 100694/281857 [00:02<00:05, 31834.53KB/s] 37%|███▋      | 104240/281857 [00:03<00:05, 32909.86KB/s] 38%|███▊      | 107813/281857 [00:03<00:05, 33669.44KB/s] 40%|███▉      | 111458/281857 [00:03<00:04, 34445.79KB/s] 41%|████      | 115151/281857 [00:03<00:04, 35091.40KB/s] 42%|████▏     | 118661/281857 [00:03<00:04, 33424.43KB/s] 43%|████▎     | 122020/281857 [00:03<00:05, 30841.52KB/s] 44%|████▍     | 125150/281857 [00:03<00:05, 28670.42KB/s] 45%|████▌     | 128068/281857 [00:03<00:05, 25762.73KB/s] 46%|████▋     | 130718/281857 [00:04<00:06, 24120.22KB/s] 47%|████▋     | 133185/281857 [00:04<00:06, 23293.96KB/s] 48%|████▊     | 135548/281857 [00:04<00:06, 22865.43KB/s] 49%|████▉     | 137854/281857 [00:04<00:06, 22755.73KB/s] 50%|████▉     | 140142/281857 [00:04<00:06, 21767.11KB/s] 50%|█████     | 142329/281857 [00:04<00:06, 19970.00KB/s] 51%|█████     | 144351/281857 [00:04<00:07, 19337.34KB/s] 52%|█████▏    | 146300/281857 [00:04<00:07, 19041.10KB/s] 53%|█████▎    | 148212/281857 [00:04<00:07, 19022.71KB/s] 53%|█████▎    | 150124/281857 [00:05<00:06, 19004.74KB/s] 54%|█████▍    | 152152/281857 [00:05<00:06, 19366.51KB/s] 55%|█████▍    | 154221/281857 [00:05<00:06, 19748.81KB/s] 55%|█████▌    | 156307/281857 [00:05<00:06, 20070.06KB/s] 56%|█████▌    | 158511/281857 [00:05<00:06, 20457.85KB/s] 57%|█████▋    | 160779/281857 [00:05<00:05, 21020.10KB/s] 58%|█████▊    | 162884/281857 [00:05<00:05, 20731.12KB/s] 59%|█████▊    | 164960/281857 [00:05<00:06, 19292.83KB/s] 59%|█████▉    | 166909/281857 [00:05<00:06, 18728.42KB/s] 60%|█████▉    | 168797/281857 [00:05<00:06, 18513.81KB/s] 61%|██████    | 170658/281857 [00:06<00:06, 18341.58KB/s] 61%|██████    | 172499/281857 [00:06<00:06, 16031.71KB/s] 62%|██████▏   | 174153/281857 [00:06<00:09, 11625.08KB/s] 62%|██████▏   | 175511/281857 [00:06<00:12, 8487.31KB/s]  63%|██████▎   | 176599/281857 [00:06<00:13, 7742.82KB/s] 63%|██████▎   | 177537/281857 [00:07<00:13, 7585.44KB/s] 63%|██████▎   | 178405/281857 [00:07<00:13, 7582.50KB/s] 64%|██████▎   | 179240/281857 [00:07<00:15, 6518.62KB/s] 64%|██████▍   | 179957/281857 [00:07<00:16, 6134.95KB/s] 64%|██████▍   | 180612/281857 [00:07<00:16, 6052.12KB/s] 64%|██████▍   | 181262/281857 [00:07<00:16, 6130.73KB/s] 65%|██████▍   | 181972/281857 [00:07<00:15, 6360.47KB/s] 65%|██████▍   | 182767/281857 [00:07<00:14, 6749.27KB/s] 65%|██████▌   | 183605/281857 [00:08<00:13, 7167.05KB/s] 65%|██████▌   | 184512/281857 [00:08<00:12, 7680.40KB/s] 66%|██████▌   | 185476/281857 [00:08<00:11, 8225.92KB/s] 66%|██████▌   | 186442/281857 [00:08<00:11, 8590.35KB/s] 67%|██████▋   | 187497/281857 [00:08<00:10, 9158.86KB/s] 67%|██████▋   | 188592/281857 [00:08<00:09, 9683.25KB/s] 67%|██████▋   | 189569/281857 [00:08<00:09, 9388.68KB/s] 68%|██████▊   | 190516/281857 [00:08<00:09, 9277.12KB/s] 68%|██████▊   | 191449/281857 [00:08<00:09, 9270.24KB/s] 68%|██████▊   | 192472/281857 [00:08<00:09, 9523.59KB/s] 69%|██████▊   | 193582/281857 [00:09<00:08, 9921.69KB/s] 69%|██████▉   | 194737/281857 [00:09<00:08, 10324.17KB/s] 70%|██████▉   | 195975/281857 [00:09<00:07, 10922.18KB/s] 70%|██████▉   | 197070/281857 [00:09<00:08, 10396.58KB/s] 70%|███████   | 198117/281857 [00:09<00:09, 9102.62KB/s]  71%|███████   | 199059/281857 [00:09<00:09, 8561.49KB/s] 71%|███████   | 199940/281857 [00:09<00:09, 8464.46KB/s] 71%|███████▏  | 200831/281857 [00:09<00:09, 8565.06KB/s] 72%|███████▏  | 201773/281857 [00:09<00:09, 8800.57KB/s] 72%|███████▏  | 202779/281857 [00:10<00:08, 9132.89KB/s] 72%|███████▏  | 203857/281857 [00:10<00:08, 9584.41KB/s] 73%|███████▎  | 204980/281857 [00:10<00:07, 10018.87KB/s] 73%|███████▎  | 206186/281857 [00:10<00:07, 10588.79KB/s] 74%|███████▎  | 207456/281857 [00:10<00:06, 11203.98KB/s] 74%|███████▍  | 208726/281857 [00:10<00:06, 11628.14KB/s] 75%|███████▍  | 210087/281857 [00:10<00:05, 12175.55KB/s] 75%|███████▌  | 211518/281857 [00:10<00:05, 12809.00KB/s] 75%|███████▌  | 212802/281857 [00:10<00:05, 12453.83KB/s] 76%|███████▌  | 214052/281857 [00:11<00:05, 11617.57KB/s] 76%|███████▋  | 215227/281857 [00:11<00:05, 11599.37KB/s] 77%|███████▋  | 216445/281857 [00:11<00:05, 11761.86KB/s] 77%|███████▋  | 217731/281857 [00:11<00:05, 11924.78KB/s] 78%|███████▊  | 219073/281857 [00:11<00:05, 12357.84KB/s] 78%|███████▊  | 220474/281857 [00:11<00:04, 12837.78KB/s] 79%|███████▊  | 221952/281857 [00:11<00:04, 13389.87KB/s] 79%|███████▉  | 223488/281857 [00:11<00:04, 13972.71KB/s] 80%|███████▉  | 225042/281857 [00:11<00:03, 14436.68KB/s] 80%|████████  | 226663/281857 [00:11<00:03, 14918.78KB/s] 81%|████████  | 228424/281857 [00:12<00:03, 15662.63KB/s] 82%|████████▏ | 230217/281857 [00:12<00:03, 16334.70KB/s] 82%|████████▏ | 232074/281857 [00:12<00:02, 16950.72KB/s] 83%|████████▎ | 233990/281857 [00:12<00:02, 17584.16KB/s] 84%|████████▎ | 235930/281857 [00:12<00:02, 18096.50KB/s] 84%|████████▍ | 237813/281857 [00:12<00:02, 18270.50KB/s] 85%|████████▌ | 239783/281857 [00:12<00:02, 18696.97KB/s] 86%|████████▌ | 241890/281857 [00:12<00:02, 19394.61KB/s] 87%|████████▋ | 243939/281857 [00:12<00:01, 19637.48KB/s] 87%|████████▋ | 245903/281857 [00:12<00:01, 18221.22KB/s] 88%|████████▊ | 247746/281857 [00:13<00:01, 17420.32KB/s] 89%|████████▊ | 249507/281857 [00:13<00:01, 17358.41KB/s] 89%|████████▉ | 251325/281857 [00:13<00:01, 17552.69KB/s] 90%|████████▉ | 253134/281857 [00:13<00:01, 17657.54KB/s] 90%|█████████ | 254975/281857 [00:13<00:01, 17784.42KB/s] 91%|█████████ | 256981/281857 [00:13<00:01, 18416.13KB/s] 92%|█████████▏| 258998/281857 [00:13<00:01, 18877.20KB/s] 93%|█████████▎| 261122/281857 [00:13<00:01, 19467.40KB/s] 93%|█████████▎| 263072/281857 [00:13<00:01, 17924.51KB/s] 94%|█████████▍| 264890/281857 [00:14<00:00, 17085.67KB/s] 95%|█████████▍| 266621/281857 [00:14<00:00, 16772.83KB/s] 95%|█████████▌| 268313/281857 [00:14<00:00, 16753.96KB/s] 96%|█████████▌| 270025/281857 [00:14<00:00, 16857.13KB/s] 96%|█████████▋| 271796/281857 [00:14<00:00, 17052.38KB/s] 97%|█████████▋| 273508/281857 [00:14<00:00, 14029.95KB/s] 98%|█████████▊| 275001/281857 [00:14<00:00, 10185.71KB/s] 98%|█████████▊| 276220/281857 [00:15<00:00, 8565.20KB/s]  98%|█████████▊| 277244/281857 [00:15<00:00, 6695.81KB/s] 99%|█████████▊| 278074/281857 [00:15<00:00, 6300.88KB/s] 99%|█████████▉| 278809/281857 [00:15<00:00, 6193.03KB/s] 99%|█████████▉| 279498/281857 [00:15<00:00, 5304.20KB/s] 99%|█████████▉| 280085/281857 [00:15<00:00, 5056.73KB/s]100%|█████████▉| 280625/281857 [00:16<00:00, 5045.63KB/s]100%|█████████▉| 281215/281857 [00:16<00:00, 5235.77KB/s]100%|██████████| 281857/281857 [00:16<00:00, 17301.87KB/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 136.90it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:01,  3.35it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  27%|██▋       | 53/196 [00:00<00:00, 529.82it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1367.30it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  5.69it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:02<00:01,  1.36it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:02<00:00,  1.80it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.28it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  46%|████▌     | 90/196 [00:00<00:00, 894.17it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1589.50it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 14.86it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  2.84it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.80it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  26%|██▋       | 155/590 [00:00<00:00, 1392.83it/s]Loading weights:  50%|█████     | 295/590 [00:00<00:00, 892.15it/s] Loading weights:  67%|██████▋   | 394/590 [00:00<00:00, 813.45it/s]Loading weights:  81%|████████▏ | 480/590 [00:00<00:00, 778.56it/s]Loading weights:  97%|█████████▋| 575/590 [00:00<00:00, 818.85it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 868.95it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  95%|█████████▍| 186/196 [00:00<00:00, 1859.62it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1945.06it/s]
+Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 14.52it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.38it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.46it/s]
+{
+  "run": {
+    "jobs": 200,
+    "executed": 200,
+    "rows": 600
+  },
+  "summary": [
+    {
+      "method": "eps2",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.17756620288205643,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6378766665856044,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "eps2",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.20811456842425585,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.6523908231655757,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "eps2",
+      "purifier": "none",
+      "editor": "ipadapter_faceid",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.6861801987886428,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.7417824933926265,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "eps2",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.1911771100355933,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.6325417606035869,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}

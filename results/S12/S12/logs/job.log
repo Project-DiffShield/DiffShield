@@ -1,0 +1,23 @@
+[11:17:14] S12: start: S12 protect v2_antipure (test) -> E6 edits (tier P incl. FaceID none) | gpus=2 smoke=False n_images=None iters=None resume=None
+[11:17:14] S12: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[11:17:48] S12: step install: rc=0 (34s)
+[11:17:48] S12: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[11:17:53] S12: step check_env: rc=0 (5s)
+[11:17:53] S12: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[11:17:53] S12: step resolve_splits: rc=0 (0s)
+[11:17:53] S12: config: using config/parts/final.yaml from the bundle
+[11:17:53] S12: step make_config: rc=0 (0s)
+[11:17:53] S12: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S12/data --splits test --no_cache
+[11:20:34] S12: step prepare_data: rc=0 (161s)
+[11:20:34] S12: [protect_prot_v2_antipure_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S12/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S12/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_antipure_test --output_root /kaggle/working/S12/results --checkpoint_every 5 --split test --shard 0/2
+[11:20:34] S12: [protect_prot_v2_antipure_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S12/cfg/config.yaml --method v2_antipure --input_dir /kaggle/working/S12/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_antipure_test --output_root /kaggle/working/S12/results --checkpoint_every 5 --split test --shard 1/2
+[15:40:09] S12: [protect_prot_v2_antipure_test] protect_prot_v2_antipure_test.gpu1.log exited 0; tail: ['[15:14:53] [45/50] 7603 psnr=39.62 ssim=0.9602 gpu_s=322.7', '[15:40:05] [50/50] 9954 psnr=42.01 ssim=0.9705 gpu_s=289.4', '[15:40:05] done']
+[15:44:54] S12: [protect_prot_v2_antipure_test] protect_prot_v2_antipure_test.gpu0.log exited 0; tail: ['[15:18:23] [45/50] 7551 psnr=41.91 ssim=0.9732 gpu_s=312.6', '[15:44:48] [50/50] 986 psnr=41.67 ssim=0.9832 gpu_s=305.3', '[15:44:48] done']
+[15:44:54] S12: step protect_prot_v2_antipure_test: rc=0 (15860s)
+[15:44:54] S12: [merge_prot_v2_antipure_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S12/results/prot_v2_antipure_test
+[15:44:55] S12: step merge_prot_v2_antipure_test: rc=0 (1s)
+[15:44:55] S12: [e6] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S12/eval_jobs.e6.g0.yaml --shard 0/2
+[15:44:55] S12: [e6] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S12/eval_jobs.e6.g1.yaml --shard 1/2
+[17:20:40] S12: [e6] e6.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[17:23:30] S12: [e6] e6.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[17:23:30] S12: step e6: rc=0 (5915s)

@@ -1,0 +1,54 @@
+{
+  "job_id": "S11",
+  "run_id": "S11",
+  "session_seconds": 27276.55662226677,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 37.1
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 7.8
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 39.4
+    },
+    "protect_prot_abl_vis_only_test": {
+      "rc": 0,
+      "seconds": 8910.2
+    },
+    "merge_prot_abl_vis_only_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "protect_prot_abl_den_only_test": {
+      "rc": 0,
+      "seconds": 8485.2
+    },
+    "merge_prot_abl_den_only_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "e7a": {
+      "rc": 0,
+      "seconds": 9795.3
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

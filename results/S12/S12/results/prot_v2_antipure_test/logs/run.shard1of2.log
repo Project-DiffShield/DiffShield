@@ -1,0 +1,13 @@
+[11:20:37] run prot_v2_antipure_test method=v2_antipure device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[11:20:37] 50 images in this shard (100 total), 0 already done
+[11:48:16] [5/50] 11318 psnr=40.59 ssim=0.9749 gpu_s=312.5
+[12:13:47] [10/50] 13117 psnr=40.57 ssim=0.9620 gpu_s=305.0
+[12:39:38] [15/50] 18621 psnr=39.26 ssim=0.9485 gpu_s=308.1
+[13:05:38] [20/50] 22085 psnr=40.74 ssim=0.9692 gpu_s=325.4
+[13:31:50] [25/50] 25877 psnr=41.79 ssim=0.9764 gpu_s=319.3
+[13:57:26] [30/50] 3463 psnr=43.58 ssim=0.9854 gpu_s=297.4
+[14:23:31] [35/50] 4535 psnr=41.93 ssim=0.9729 gpu_s=291.8
+[14:49:10] [40/50] 5464 psnr=41.06 ssim=0.9726 gpu_s=322.6
+[15:14:53] [45/50] 7603 psnr=39.62 ssim=0.9602 gpu_s=322.7
+[15:40:05] [50/50] 9954 psnr=42.01 ssim=0.9705 gpu_s=289.4
+[15:40:05] done

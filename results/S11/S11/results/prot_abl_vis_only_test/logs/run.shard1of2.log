@@ -1,0 +1,13 @@
+[10:33:30] run prot_abl_vis_only_test method=abl_vis_only device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[10:33:30] 50 images in this shard (100 total), 0 already done
+[10:49:53] [5/50] 11318 psnr=40.84 ssim=0.9796 gpu_s=180.0
+[11:04:53] [10/50] 13117 psnr=41.92 ssim=0.9753 gpu_s=178.0
+[11:19:31] [15/50] 18621 psnr=41.52 ssim=0.9780 gpu_s=175.4
+[11:33:54] [20/50] 22085 psnr=41.74 ssim=0.9790 gpu_s=170.9
+[11:48:07] [25/50] 25877 psnr=41.83 ssim=0.9770 gpu_s=166.0
+[12:02:35] [30/50] 3463 psnr=42.22 ssim=0.9769 gpu_s=183.2
+[12:17:27] [35/50] 4535 psnr=41.82 ssim=0.9707 gpu_s=169.1
+[12:31:51] [40/50] 5464 psnr=41.38 ssim=0.9770 gpu_s=182.7
+[12:46:48] [45/50] 7603 psnr=41.87 ssim=0.9819 gpu_s=181.1
+[13:01:52] [50/50] 9954 psnr=42.13 ssim=0.9730 gpu_s=170.8
+[13:01:52] done

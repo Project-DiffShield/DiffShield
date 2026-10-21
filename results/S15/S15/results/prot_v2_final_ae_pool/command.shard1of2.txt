@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S15/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S15/data/ae_pool --list /kaggle/tmp/DiffShield/data/splits/ae_pool.txt --run_id prot_v2_final_ae_pool --output_root /kaggle/working/S15/results --checkpoint_every 5 --split ae_pool --set methods.v2_final.eot.k_draws=2 --shard 1/2

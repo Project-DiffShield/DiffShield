@@ -1,0 +1,13 @@
+[10:57:03] run prot_eps2_test method=eps2 device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[10:57:03] 50 images in this shard (100 total), 0 already done
+[11:32:36] [5/50] 11318 psnr=45.06 ssim=0.9850 gpu_s=409.7
+[12:06:05] [10/50] 13117 psnr=45.15 ssim=0.9825 gpu_s=399.8
+[12:39:55] [15/50] 18621 psnr=44.76 ssim=0.9831 gpu_s=403.8
+[13:13:50] [20/50] 22085 psnr=45.08 ssim=0.9830 gpu_s=422.4
+[13:48:06] [25/50] 25877 psnr=45.15 ssim=0.9827 gpu_s=415.9
+[14:21:36] [30/50] 3463 psnr=46.63 ssim=0.9879 gpu_s=391.8
+[14:55:40] [35/50] 4535 psnr=45.37 ssim=0.9820 gpu_s=386.0
+[15:29:17] [40/50] 5464 psnr=45.17 ssim=0.9837 gpu_s=420.1
+[16:02:59] [45/50] 7603 psnr=45.23 ssim=0.9866 gpu_s=419.8
+[16:36:06] [50/50] 9954 psnr=45.25 ssim=0.9809 gpu_s=383.4
+[16:36:06] done

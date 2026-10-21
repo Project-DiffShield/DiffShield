@@ -1,0 +1,26 @@
+[
+  {
+    "method": "clean",
+    "purifier": "adaptive_ae",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.7072436797618866,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7559052554766336,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "clean",
+    "purifier": "adaptive_ae",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.23535895207894403,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.6496858847141266,
+    "mean_edit_lpips": NaN
+  }
+]

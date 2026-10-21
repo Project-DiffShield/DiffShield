@@ -1,0 +1,23 @@
+[10:55:31] S17: start: S17 E9 eps=2 (100 photos, protect then edits); the tuned config/parts/final.yaml is in the bundle   [eps=6 is S23] | gpus=2 smoke=False n_images=None iters=None resume=None
+[10:55:31] S17: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[10:56:17] S17: step install: rc=0 (46s)
+[10:56:17] S17: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[10:56:22] S17: step check_env: rc=0 (6s)
+[10:56:22] S17: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[10:56:22] S17: step resolve_splits: rc=0 (0s)
+[10:56:22] S17: config: using config/parts/final.yaml from the bundle
+[10:56:22] S17: step make_config: rc=0 (0s)
+[10:56:22] S17: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S17/data --splits test --no_cache
+[10:56:59] S17: step prepare_data: rc=0 (37s)
+[10:56:59] S17: [protect_prot_eps2_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S17/cfg/config.yaml --method eps2 --input_dir /kaggle/working/S17/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_eps2_test --output_root /kaggle/working/S17/results --checkpoint_every 5 --split test --shard 0/2
+[10:56:59] S17: [protect_prot_eps2_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S17/cfg/config.yaml --method eps2 --input_dir /kaggle/working/S17/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_eps2_test --output_root /kaggle/working/S17/results --checkpoint_every 5 --split test --shard 1/2
+[16:12:10] S17: [protect_prot_eps2_test] protect_prot_eps2_test.gpu0.log exited 0; tail: ['[15:40:31] [45/50] 7551 psnr=44.94 ssim=0.9812 gpu_s=374.3', '[16:12:04] [50/50] 986 psnr=45.88 ssim=0.9889 gpu_s=366.8', '[16:12:05] done']
+[16:36:10] S17: [protect_prot_eps2_test] protect_prot_eps2_test.gpu1.log exited 0; tail: ['[16:02:59] [45/50] 7603 psnr=45.23 ssim=0.9866 gpu_s=419.8', '[16:36:06] [50/50] 9954 psnr=45.25 ssim=0.9809 gpu_s=383.4', '[16:36:06] done']
+[16:36:10] S17: step protect_prot_eps2_test: rc=0 (20351s)
+[16:36:10] S17: [merge_prot_eps2_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S17/results/prot_eps2_test
+[16:36:10] S17: step merge_prot_eps2_test: rc=0 (1s)
+[16:36:10] S17: [e9_eps2] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S17/eval_jobs.e9_eps2.g0.yaml --shard 0/2
+[16:36:10] S17: [e9_eps2] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S17/eval_jobs.e9_eps2.g1.yaml --shard 1/2
+[17:06:51] S17: [e9_eps2] e9_eps2.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[17:09:26] S17: [e9_eps2] e9_eps2.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[17:09:26] S17: step e9_eps2: rc=0 (1995s)

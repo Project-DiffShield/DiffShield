@@ -1,0 +1,15 @@
+[12:27:22] run prot_v2_final_ae_pool method=v2_final device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[12:27:22] 60 images in this shard (120 total), 0 already done
+[12:44:40] [5/60] 11701 psnr=40.71 ssim=0.9614 gpu_s=189.9
+[13:01:20] [10/60] 13637 psnr=40.60 ssim=0.9546 gpu_s=204.7
+[13:17:43] [15/60] 16397 psnr=42.13 ssim=0.9785 gpu_s=200.1
+[13:34:25] [20/60] 18901 psnr=40.89 ssim=0.9477 gpu_s=193.8
+[13:50:41] [25/60] 21285 psnr=41.07 ssim=0.9700 gpu_s=186.1
+[14:06:34] [30/60] 23125 psnr=40.85 ssim=0.9584 gpu_s=184.9
+[14:22:57] [35/60] 26860 psnr=42.00 ssim=0.9703 gpu_s=193.9
+[14:38:57] [40/60] 3258 psnr=41.14 ssim=0.9718 gpu_s=200.3
+[14:55:34] [45/60] 4510 psnr=41.35 ssim=0.9674 gpu_s=203.1
+[15:11:09] [50/60] 6442 psnr=40.48 ssim=0.9657 gpu_s=195.4
+[15:27:33] [55/60] 8154 psnr=40.51 ssim=0.9600 gpu_s=192.8
+[15:44:24] [60/60] 9904 psnr=39.81 ssim=0.9439 gpu_s=196.6
+[15:44:24] done

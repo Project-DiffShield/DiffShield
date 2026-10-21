@@ -1,0 +1,68 @@
+{
+  "job_id": "S15",
+  "run_id": "S15",
+  "session_seconds": 20932.66552209854,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 31.9
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.2
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 52.7
+    },
+    "v2final_src_prev": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "protect_prot_v2_final_ae_pool": {
+      "rc": 0,
+      "seconds": 11830.3
+    },
+    "merge_prot_v2_final_ae_pool": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "protect_prot_v1_test": {
+      "rc": 0,
+      "seconds": 2505.1
+    },
+    "merge_prot_v1_test": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "restore_ae_ckpt": {
+      "rc": 0,
+      "seconds": 0.1
+    },
+    "train_ae": {
+      "rc": 0,
+      "seconds": 3607.0
+    },
+    "e8": {
+      "rc": 0,
+      "seconds": 2900.1
+    }
+  },
+  "params": {
+    "smoke": false,
+    "prev_root": "/kaggle/input/datasets/cootot123/diffshield-06-output/",
+    "final_yaml": "",
+    "ae_minutes": 60
+  },
+  "ok": true,
+  "failed_steps": []
+}

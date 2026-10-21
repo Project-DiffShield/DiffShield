@@ -332,6 +332,156 @@
       "face_detected_without_sim": 0
     },
     {
+      "file": "results\\S11\\S11\\results\\eval_abl_vis_den_A\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\eval_abl_vis_den_A\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\prot_abl_den_only_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\prot_abl_den_only_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\prot_abl_den_only_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\prot_abl_vis_only_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\prot_abl_vis_only_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S11\\S11\\results\\prot_abl_vis_only_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S12\\S12\\results\\eval_v2_antipure_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1950,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S12\\S12\\results\\eval_v2_antipure_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1950,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S12\\S12\\results\\prot_v2_antipure_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S12\\S12\\results\\prot_v2_antipure_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S12\\S12\\results\\prot_v2_antipure_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\eval_ae_clean\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 300,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\eval_ae_clean\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 300,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\eval_ae_v1\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 300,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\eval_ae_v1\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 300,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\eval_ae_v2_final\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 300,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\eval_ae_v2_final\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 300,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\prot_v1_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\prot_v1_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\prot_v1_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\prot_v2_final_ae_pool\\metrics.csv",
+      "kind": "protect",
+      "rows": 120,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\prot_v2_final_ae_pool\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S15\\S15\\results\\prot_v2_final_ae_pool\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
       "file": "results\\S16\\S16\\results\\eval_v2_final_H\\metrics.shard0.csv",
       "kind": "edit",
       "rows": 0,
@@ -395,6 +545,36 @@
       "file": "results\\S16\\S16\\results\\prot_v2_final_messy\\metrics.shard1of2.csv",
       "kind": "protect",
       "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S17\\S17\\results\\eval_eps2_E9\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 600,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S17\\S17\\results\\eval_eps2_E9\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 600,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S17\\S17\\results\\prot_eps2_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S17\\S17\\results\\prot_eps2_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S17\\S17\\results\\prot_eps2_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
       "face_detected_without_sim": 0
     },
     {
@@ -552,22 +732,22 @@
   "unzipped": [],
   "warnings": [],
   "edits": {
-    "rows_in": 24720,
-    "rows_out": 24720,
+    "rows_in": 36420,
+    "rows_out": 36420,
     "duplicates_dropped": 0,
     "conflicts": 0,
     "lpips_filled_from_cache": 512,
-    "n_cells": 72,
-    "lpips_missing": 14008
+    "n_cells": 111,
+    "lpips_missing": 25708
   },
   "plan": {
-    "expected_cells": 229,
-    "missing_cells": 147
+    "expected_cells": 233,
+    "missing_cells": 112
   },
   "protect": {
-    "rows_in": 1662,
-    "rows_out": 830,
-    "duplicates_dropped": 832
+    "rows_in": 2902,
+    "rows_out": 1350,
+    "duplicates_dropped": 1552
   },
   "thresholds_from_job": "results\\S07\\S07\\results\\thresholds\\psr_thresholds.json",
   "thresholds": {

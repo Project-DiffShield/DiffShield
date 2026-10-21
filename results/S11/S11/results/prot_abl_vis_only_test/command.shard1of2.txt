@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S11/cfg/config.yaml --method abl_vis_only --input_dir /kaggle/working/S11/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_abl_vis_only_test --output_root /kaggle/working/S11/results --checkpoint_every 5 --split test --shard 1/2

@@ -1,0 +1,30 @@
+[10:32:01] S11: start: S11 protect abl_vis_only + abl_den_only (test) -> E7a edits (tier A) | gpus=2 smoke=False n_images=None iters=None resume=None
+[10:32:01] S11: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[10:32:39] S11: step install: rc=0 (37s)
+[10:32:39] S11: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[10:32:46] S11: step check_env: rc=0 (8s)
+[10:32:46] S11: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[10:32:46] S11: step resolve_splits: rc=0 (0s)
+[10:32:46] S11: config: using config/parts/final.yaml from the bundle
+[10:32:46] S11: step make_config: rc=0 (0s)
+[10:32:46] S11: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S11/data --splits test --no_cache
+[10:33:26] S11: step prepare_data: rc=0 (39s)
+[10:33:26] S11: [protect_prot_abl_vis_only_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S11/cfg/config.yaml --method abl_vis_only --input_dir /kaggle/working/S11/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_abl_vis_only_test --output_root /kaggle/working/S11/results --checkpoint_every 5 --split test --shard 0/2
+[10:33:26] S11: [protect_prot_abl_vis_only_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S11/cfg/config.yaml --method abl_vis_only --input_dir /kaggle/working/S11/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_abl_vis_only_test --output_root /kaggle/working/S11/results --checkpoint_every 5 --split test --shard 1/2
+[12:49:06] S11: [protect_prot_abl_vis_only_test] protect_prot_abl_vis_only_test.gpu0.log exited 0; tail: ['[12:35:59] [45/50] 7551 psnr=41.28 ssim=0.9710 gpu_s=163.0', '[12:49:01] [50/50] 986 psnr=41.30 ssim=0.9796 gpu_s=163.6', '[12:49:01] done']
+[13:01:56] S11: [protect_prot_abl_vis_only_test] protect_prot_abl_vis_only_test.gpu1.log exited 0; tail: ['[12:46:48] [45/50] 7603 psnr=41.87 ssim=0.9819 gpu_s=181.1', '[13:01:52] [50/50] 9954 psnr=42.13 ssim=0.9730 gpu_s=170.8', '[13:01:52] done']
+[13:01:56] S11: step protect_prot_abl_vis_only_test: rc=0 (8910s)
+[13:01:56] S11: [merge_prot_abl_vis_only_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S11/results/prot_abl_vis_only_test
+[13:01:57] S11: step merge_prot_abl_vis_only_test: rc=0 (1s)
+[13:01:57] S11: [protect_prot_abl_den_only_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S11/cfg/config.yaml --method abl_den_only --input_dir /kaggle/working/S11/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_abl_den_only_test --output_root /kaggle/working/S11/results --checkpoint_every 5 --split test --shard 0/2
+[13:01:57] S11: [protect_prot_abl_den_only_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S11/cfg/config.yaml --method abl_den_only --input_dir /kaggle/working/S11/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_abl_den_only_test --output_root /kaggle/working/S11/results --checkpoint_every 5 --split test --shard 1/2
+[15:12:02] S11: [protect_prot_abl_den_only_test] protect_prot_abl_den_only_test.gpu0.log exited 0; tail: ['[14:58:46] [45/50] 7551 psnr=49.64 ssim=0.9944 gpu_s=146.7', '[15:11:58] [50/50] 986 psnr=50.39 ssim=0.9958 gpu_s=156.3', '[15:11:58] done']
+[15:23:22] S11: [protect_prot_abl_den_only_test] protect_prot_abl_den_only_test.gpu1.log exited 0; tail: ['[15:09:29] [45/50] 7603 psnr=50.87 ssim=0.9963 gpu_s=175.6', '[15:23:16] [50/50] 9954 psnr=50.50 ssim=0.9942 gpu_s=164.1', '[15:23:16] done']
+[15:23:22] S11: step protect_prot_abl_den_only_test: rc=0 (8485s)
+[15:23:22] S11: [merge_prot_abl_den_only_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S11/results/prot_abl_den_only_test
+[15:23:23] S11: step merge_prot_abl_den_only_test: rc=0 (1s)
+[15:23:23] S11: [e7a] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S11/eval_jobs.e7a.g0.yaml --shard 0/2
+[15:23:23] S11: [e7a] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S11/eval_jobs.e7a.g1.yaml --shard 1/2
+[17:49:48] S11: [e7a] e7a.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[18:06:38] S11: [e7a] e7a.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[18:06:38] S11: step e7a: rc=0 (9795s)

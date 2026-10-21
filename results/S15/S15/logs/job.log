@@ -1,0 +1,39 @@
+[12:25:50] S15: start: S15 E8 adaptive attacker - protect AE pool with v2_final (K=2) + v1 on test -> train AE (1 h) -> edits | gpus=2 smoke=False n_images=None iters=None resume=None
+[12:25:50] S15: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[12:26:22] S15: step install: rc=0 (32s)
+[12:26:22] S15: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[12:26:27] S15: step check_env: rc=0 (4s)
+[12:26:27] S15: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[12:26:27] S15: step resolve_splits: rc=0 (0s)
+[12:26:27] S15: config: using config/parts/final.yaml from the bundle
+[12:26:27] S15: step make_config: rc=0 (0s)
+[12:26:27] S15: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S15/data --splits test ae_pool --no_cache
+[12:27:19] S15: step prepare_data: rc=0 (53s)
+[12:27:19] S15: set v2final_results = /kaggle/input/datasets/cootot123/diffshield-06-output//S06/results
+[12:27:19] S15: step v2final_src_prev: rc=0 (0s)
+[12:27:19] S15: step v2final_src_local: skipped (condition)
+[12:27:19] S15: step protect_prot_v2_final_test: skipped (condition)
+[12:27:19] S15: step merge_prot_v2_final_test: skipped (condition)
+[12:27:19] S15: [protect_prot_v2_final_ae_pool] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S15/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S15/data/ae_pool --list /kaggle/tmp/DiffShield/data/splits/ae_pool.txt --run_id prot_v2_final_ae_pool --output_root /kaggle/working/S15/results --checkpoint_every 5 --split ae_pool --set methods.v2_final.eot.k_draws=2 --shard 0/2
+[12:27:19] S15: [protect_prot_v2_final_ae_pool] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S15/cfg/config.yaml --method v2_final --input_dir /kaggle/working/S15/data/ae_pool --list /kaggle/tmp/DiffShield/data/splits/ae_pool.txt --run_id prot_v2_final_ae_pool --output_root /kaggle/working/S15/results --checkpoint_every 5 --split ae_pool --set methods.v2_final.eot.k_draws=2 --shard 1/2
+[15:39:25] S15: [protect_prot_v2_final_ae_pool] protect_prot_v2_final_ae_pool.gpu1.log exited 0; tail: ['[15:23:49] [55/60] 825 psnr=41.05 ssim=0.9612 gpu_s=193.7', '[15:39:21] [60/60] 9969 psnr=40.42 ssim=0.9496 gpu_s=205.8', '[15:39:21] done']
+[15:44:30] S15: [protect_prot_v2_final_ae_pool] protect_prot_v2_final_ae_pool.gpu0.log exited 0; tail: ['[15:27:33] [55/60] 8154 psnr=40.51 ssim=0.9600 gpu_s=192.8', '[15:44:24] [60/60] 9904 psnr=39.81 ssim=0.9439 gpu_s=196.6', '[15:44:24] done']
+[15:44:30] S15: step protect_prot_v2_final_ae_pool: rc=0 (11830s)
+[15:44:30] S15: [merge_prot_v2_final_ae_pool] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S15/results/prot_v2_final_ae_pool
+[15:44:30] S15: step merge_prot_v2_final_ae_pool: rc=0 (1s)
+[15:44:30] S15: [protect_prot_v1_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S15/cfg/config.yaml --method v1 --input_dir /kaggle/working/S15/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v1_test --output_root /kaggle/working/S15/results --checkpoint_every 5 --split test --shard 0/2
+[15:44:30] S15: [protect_prot_v1_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S15/cfg/config.yaml --method v1 --input_dir /kaggle/working/S15/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v1_test --output_root /kaggle/working/S15/results --checkpoint_every 5 --split test --shard 1/2
+[16:24:50] S15: [protect_prot_v1_test] protect_prot_v1_test.gpu1.log exited 0; tail: ['Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)', '[16:24:49] [50/50] 9954 psnr=42.68 ssim=0.9704 gpu_s=47.8', '[16:24:49] done']
+[16:26:15] S15: [protect_prot_v1_test] protect_prot_v1_test.gpu0.log exited 0; tail: ['Final L∞ norm of perturbation: 0.031373 (limit: 0.031373)', '[16:26:13] [50/50] 986 psnr=42.05 ssim=0.9772 gpu_s=50.5', '[16:26:13] done']
+[16:26:15] S15: step protect_prot_v1_test: rc=0 (2505s)
+[16:26:15] S15: [merge_prot_v1_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S15/results/prot_v1_test
+[16:26:16] S15: step merge_prot_v1_test: rc=0 (1s)
+[16:26:16] S15: [restore_ae_ckpt] /usr/bin/python3 -c import os, shutil; os.makedirs('/kaggle/working/S15/adaptive_ae', exist_ok=True); s = os.path.join('None', 'adaptive_ae'); shutil.copytree(s, '/kaggle/working/S15/adaptive_ae', dirs_exist_ok=True) if os.path.isdir(s) else None
+[16:26:16] S15: step restore_ae_ckpt: rc=0 (0s)
+[16:26:16] S15: [train_ae] /usr/bin/python3 scripts/train_adaptive_ae.py --protected_dir /kaggle/working/S15/results/prot_v2_final_ae_pool/images --clean_dir /kaggle/working/S15/data/ae_pool --out /kaggle/working/S15/adaptive_ae/ae_final.pt --minutes 60 --resume
+[17:26:23] S15: step train_ae: rc=0 (3607s)
+[17:26:23] S15: [e8] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S15/eval_jobs.e8.g0.yaml --shard 0/2
+[17:26:23] S15: [e8] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S15/eval_jobs.e8.g1.yaml --shard 1/2
+[18:12:58] S15: [e8] e8.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[18:14:43] S15: [e8] e8.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[18:14:43] S15: step e8: rc=0 (2900s)

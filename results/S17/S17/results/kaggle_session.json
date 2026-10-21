@@ -1,0 +1,46 @@
+{
+  "job_id": "S17",
+  "run_id": "S17",
+  "session_seconds": 22434.898270845413,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 45.9
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.8
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 36.9
+    },
+    "protect_prot_eps2_test": {
+      "rc": 0,
+      "seconds": 20350.6
+    },
+    "merge_prot_eps2_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "e9_eps2": {
+      "rc": 0,
+      "seconds": 1995.1
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}
