@@ -1,0 +1,30 @@
+[20:58:13] S13: start: S13 protect PhotoGuard (test+messy) -> E2 edits (H, M, P)   [Mist moved to S21 so that neither session can pass 11 h] | gpus=2 smoke=False n_images=None iters=None resume=None
+[20:58:13] S13: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[20:58:45] S13: step install: rc=0 (33s)
+[20:58:45] S13: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[20:58:50] S13: step check_env: rc=0 (4s)
+[20:58:50] S13: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[20:58:50] S13: step resolve_splits: rc=0 (0s)
+[20:58:50] S13: config: using config/parts/final.yaml from the bundle
+[20:58:50] S13: step make_config: rc=0 (0s)
+[20:58:50] S13: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S13/data --splits test messy --no_cache
+[21:01:25] S13: step prepare_data: rc=0 (155s)
+[21:01:25] S13: [protect_prot_photoguard_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S13/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S13/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_photoguard_test --output_root /kaggle/working/S13/results --checkpoint_every 5 --split test --shard 0/2
+[21:01:25] S13: [protect_prot_photoguard_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S13/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S13/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_photoguard_test --output_root /kaggle/working/S13/results --checkpoint_every 5 --split test --shard 1/2
+[00:06:40] S13: [protect_prot_photoguard_test] protect_prot_photoguard_test.gpu1.log exited 0; tail: ['[23:48:07] [45/50] 7603 psnr=37.03 ssim=0.9166 gpu_s=221.0', '[00:06:34] [50/50] 9954 psnr=37.30 ssim=0.8883 gpu_s=220.9', '[00:06:34] done']
+[00:25:26] S13: [protect_prot_photoguard_test] protect_prot_photoguard_test.gpu0.log exited 0; tail: ['[00:05:02] [45/50] 7551 psnr=37.14 ssim=0.8989 gpu_s=243.6', '[00:25:23] [50/50] 986 psnr=37.01 ssim=0.9155 gpu_s=243.6', '[00:25:23] done']
+[00:25:26] S13: step protect_prot_photoguard_test: rc=0 (12240s)
+[00:25:26] S13: [merge_prot_photoguard_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S13/results/prot_photoguard_test
+[00:25:26] S13: step merge_prot_photoguard_test: rc=0 (1s)
+[00:25:26] S13: [protect_prot_photoguard_messy] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S13/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S13/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_photoguard_messy --output_root /kaggle/working/S13/results --checkpoint_every 5 --split messy --shard 0/2
+[00:25:26] S13: [protect_prot_photoguard_messy] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S13/cfg/config.yaml --method photoguard --input_dir /kaggle/working/S13/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_photoguard_messy --output_root /kaggle/working/S13/results --checkpoint_every 5 --split messy --shard 1/2
+[01:02:36] S13: [protect_prot_photoguard_messy] protect_prot_photoguard_messy.gpu1.log exited 0; tail: ['[00:44:04] [5/10] 23465 psnr=37.05 ssim=0.8982 gpu_s=221.0', '[01:02:32] [10/10] 9918 psnr=37.22 ssim=0.8978 gpu_s=221.0', '[01:02:32] done']
+[01:06:26] S13: [protect_prot_photoguard_messy] protect_prot_photoguard_messy.gpu0.log exited 0; tail: ['[00:46:03] [5/10] 23397 psnr=37.33 ssim=0.9033 gpu_s=243.6', '[01:06:24] [10/10] 8790 psnr=37.14 ssim=0.9093 gpu_s=243.8', '[01:06:24] done']
+[01:06:26] S13: step protect_prot_photoguard_messy: rc=0 (2460s)
+[01:06:26] S13: [merge_prot_photoguard_messy] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S13/results/prot_photoguard_messy
+[01:06:27] S13: step merge_prot_photoguard_messy: rc=0 (1s)
+[01:06:27] S13: [e2_pg] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S13/eval_jobs.e2_pg.g0.yaml --shard 0/2
+[01:06:27] S13: [e2_pg] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S13/eval_jobs.e2_pg.g1.yaml --shard 1/2
+[03:45:57] S13: [e2_pg] e2_pg.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[03:57:37] S13: [e2_pg] e2_pg.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[03:57:37] S13: step e2_pg: rc=0 (10270s)

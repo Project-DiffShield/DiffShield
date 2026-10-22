@@ -5,8 +5,8 @@
 | clean (E0) | 0.22 [0.21, 0.24] | 0.23 [0.21, 0.24] | 0.22 [0.21, 0.24] | 0.24 [0.23, 0.26] | 0.23 [0.21, 0.24] | 0.21 [0.20, 0.23] | 0.19 [0.18, 0.21] |
 | uniform noise (E1) | 0.21 [0.20, 0.23] | not run | not run | not run | not run | not run | not run |
 | Gaussian noise, PSNR-matched (E1) | 0.21 [0.20, 0.23] | not run | not run | not run | not run | not run | not run |
-| PhotoGuard encoder attack (E2, reimpl.) | not run | not run | not run | not run | not run | not run | not run |
-| Mist-style (E2, reimpl.) | not run | not run | not run | not run | not run | not run | not run |
+| PhotoGuard encoder attack (E2, reimpl.) | 0.04 [0.04, 0.05] | 0.20 [0.18, 0.21] | 0.20 [0.19, 0.22] | 0.22 [0.21, 0.24] | 0.09 [0.07, 0.10] | 0.07 [0.06, 0.08] | not run |
+| Mist-style (E2, reimpl.) | 0.08 [0.07, 0.09] | 0.19 [0.18, 0.21] | 0.21 [0.19, 0.22] | 0.22 [0.21, 0.24] | 0.09 [0.08, 0.10] | 0.08 [0.07, 0.09] | not run |
 | v1 (E3) | 0.18 [0.16, 0.19] | 0.21 [0.19, 0.22] | 0.21 [0.19, 0.22] | 0.23 [0.22, 0.25] | 0.18 [0.16, 0.19] | 0.17 [0.15, 0.18] | 0.15 [0.14, 0.16] |
 | v2 cheap purifiers (E4) | 0.18 [0.17, 0.20] | 0.20 [0.19, 0.22] | 0.21 [0.19, 0.23] | 0.23 [0.21, 0.24] | 0.18 [0.17, 0.20] | 0.17 [0.16, 0.19] | 0.16 [0.15, 0.18] |
 | v2 + one-step SD purifier + L_den (E5) | 0.18 [0.17, 0.19] | 0.20 [0.18, 0.22] | 0.21 [0.19, 0.22] | 0.22 [0.21, 0.24] | 0.18 [0.16, 0.19] | 0.16 [0.15, 0.18] | 0.15 [0.14, 0.17] |

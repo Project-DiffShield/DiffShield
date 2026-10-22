@@ -1,0 +1,26 @@
+[
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 10,
+    "n_edits": 30,
+    "mean_arcface_sim": 0.499426095932722,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.6535064816474915,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 10,
+    "n_edits": 30,
+    "mean_arcface_sim": 0.05987387043423951,
+    "no_face_rate": 0.06666666666666667,
+    "mean_clip_i": 0.5831349511941274,
+    "mean_edit_lpips": NaN
+  }
+]

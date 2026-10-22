@@ -16,6 +16,34 @@
 | v1 vs noise_gauss_psnr | none | InstructPix2Pix | 100 | 0.09 | 0.09 | +0.00 [-0.03, +0.03] | 1.000 | -0.074 [-0.107, -0.042] | <0.001 | 0.11 |
 | v1 vs noise_gauss_psnr | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.013 [-0.015, -0.012] | <0.001 | 0.00 |
 | v1 vs noise_gauss_psnr | none | IP-Adapter FaceID | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.039 [-0.048, -0.032] | <0.001 | 0.00 |
+| photoguard vs noise_uniform | none | SD1.5 s0.3 | 100 | 0.17 | 0.00 | +0.17 [+0.12, +0.22] | <0.001 | -0.317 [-0.332, -0.302] | <0.001 | 0.33 |
+| photoguard vs noise_uniform | none | SD1.5 s0.55 | 100 | 0.81 | 0.15 | +0.66 [+0.61, +0.71] | <0.001 | -0.169 [-0.181, -0.157] | <0.001 | 0.99 |
+| photoguard vs noise_uniform | none | SD1.5 s0.75 | 100 | 0.96 | 0.83 | +0.12 [+0.08, +0.17] | <0.001 | -0.035 [-0.046, -0.024] | <0.001 | 0.34 |
+| photoguard vs noise_uniform | none | SDXL s0.55 | 0 | not run | not run | not run |  | not run |  |  |
+| photoguard vs noise_uniform | none | InstructPix2Pix | 100 | 0.72 | 0.08 | +0.64 [+0.56, +0.72] | <0.001 | -0.628 [-0.697, -0.555] | <0.001 | 0.80 |
+| photoguard vs noise_uniform | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.066 [-0.071, -0.061] | <0.001 | 0.00 |
+| photoguard vs noise_uniform | none | IP-Adapter FaceID | 100 | 0.03 | 0.00 | +0.02 [+0.00, +0.05] | 0.125 | -0.197 [-0.223, -0.173] | <0.001 | 0.04 |
+| photoguard vs noise_gauss_psnr | none | SD1.5 s0.3 | 100 | 0.17 | 0.00 | +0.17 [+0.12, +0.22] | <0.001 | -0.315 [-0.330, -0.300] | <0.001 | 0.33 |
+| photoguard vs noise_gauss_psnr | none | SD1.5 s0.55 | 100 | 0.81 | 0.15 | +0.66 [+0.62, +0.71] | <0.001 | -0.170 [-0.183, -0.158] | <0.001 | 0.99 |
+| photoguard vs noise_gauss_psnr | none | SD1.5 s0.75 | 100 | 0.96 | 0.83 | +0.13 [+0.08, +0.17] | <0.001 | -0.035 [-0.046, -0.024] | <0.001 | 0.35 |
+| photoguard vs noise_gauss_psnr | none | SDXL s0.55 | 0 | not run | not run | not run |  | not run |  |  |
+| photoguard vs noise_gauss_psnr | none | InstructPix2Pix | 100 | 0.72 | 0.09 | +0.63 [+0.55, +0.71] | <0.001 | -0.622 [-0.689, -0.550] | <0.001 | 0.80 |
+| photoguard vs noise_gauss_psnr | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.067 [-0.072, -0.062] | <0.001 | 0.00 |
+| photoguard vs noise_gauss_psnr | none | IP-Adapter FaceID | 100 | 0.03 | 0.00 | +0.03 [+0.01, +0.05] | 0.062 | -0.198 [-0.224, -0.173] | <0.001 | 0.05 |
+| mist vs noise_uniform | none | SD1.5 s0.3 | 100 | 0.05 | 0.00 | +0.05 [+0.02, +0.08] | 0.002 | -0.227 [-0.243, -0.212] | <0.001 | 0.10 |
+| mist vs noise_uniform | none | SD1.5 s0.55 | 100 | 0.63 | 0.15 | +0.48 [+0.43, +0.53] | <0.001 | -0.130 [-0.141, -0.120] | <0.001 | 0.99 |
+| mist vs noise_uniform | none | SD1.5 s0.75 | 100 | 0.94 | 0.83 | +0.11 [+0.06, +0.16] | <0.001 | -0.028 [-0.038, -0.018] | <0.001 | 0.29 |
+| mist vs noise_uniform | none | SDXL s0.55 | 0 | not run | not run | not run |  | not run |  |  |
+| mist vs noise_uniform | none | InstructPix2Pix | 100 | 0.04 | 0.08 | -0.03 [-0.07, +0.00] | 0.087 | -0.074 [-0.104, -0.042] | <0.001 | 0.06 |
+| mist vs noise_uniform | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.097 [-0.104, -0.090] | <0.001 | 0.00 |
+| mist vs noise_uniform | none | IP-Adapter FaceID | 100 | 0.04 | 0.00 | +0.03 [+0.01, +0.06] | 0.008 | -0.189 [-0.215, -0.164] | <0.001 | 0.08 |
+| mist vs noise_gauss_psnr | none | SD1.5 s0.3 | 100 | 0.05 | 0.00 | +0.05 [+0.02, +0.08] | 0.002 | -0.226 [-0.241, -0.210] | <0.001 | 0.10 |
+| mist vs noise_gauss_psnr | none | SD1.5 s0.55 | 100 | 0.63 | 0.15 | +0.48 [+0.43, +0.53] | <0.001 | -0.132 [-0.142, -0.121] | <0.001 | 0.98 |
+| mist vs noise_gauss_psnr | none | SD1.5 s0.75 | 100 | 0.94 | 0.83 | +0.11 [+0.06, +0.16] | <0.001 | -0.028 [-0.037, -0.018] | <0.001 | 0.31 |
+| mist vs noise_gauss_psnr | none | SDXL s0.55 | 0 | not run | not run | not run |  | not run |  |  |
+| mist vs noise_gauss_psnr | none | InstructPix2Pix | 100 | 0.04 | 0.09 | -0.04 [-0.09, -0.00] | 0.038 | -0.068 [-0.100, -0.034] | <0.001 | 0.06 |
+| mist vs noise_gauss_psnr | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.098 [-0.104, -0.091] | <0.001 | 0.00 |
+| mist vs noise_gauss_psnr | none | IP-Adapter FaceID | 100 | 0.04 | 0.00 | +0.04 [+0.01, +0.06] | 0.008 | -0.190 [-0.216, -0.164] | <0.001 | 0.08 |
 | v2_cheap vs noise_uniform | none | SD1.5 s0.3 | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.038 [-0.046, -0.030] | <0.001 | 0.00 |
 | v2_cheap vs noise_uniform | none | SD1.5 s0.55 | 100 | 0.22 | 0.15 | +0.08 [+0.05, +0.10] | <0.001 | -0.028 [-0.034, -0.023] | <0.001 | 0.49 |
 | v2_cheap vs noise_uniform | none | SD1.5 s0.75 | 100 | 0.85 | 0.83 | +0.01 [-0.04, +0.06] | 0.838 | -0.003 [-0.012, +0.005] | 0.570 | 0.20 |

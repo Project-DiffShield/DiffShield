@@ -20,7 +20,7 @@ REPO = Path(__file__).resolve().parents[1]
 STYLE = {"clean": ("#999999", "o"), "noise_uniform": ("#E69F00", "X"), "noise_gauss_psnr": ("#E69F00", "P"), "v1": ("#D55E00", "D"),
          "v2_main": ("#0072B2", "s"), "v2_cheap": ("#56B4E9", "s"), "v2_final": ("#CC79A7", "^"), "v2_antipure": ("#CC79A7", "v"),
          "v2_tgt_zero": ("#009E73", "o"), "v2_tgt_zero_mid": ("#009E73", "*"), "v2_tgt_zero_hi": ("#009E73", "h"),
-         "eps2": ("#999999", "<"), "eps8": ("#999999", ">")}
+         "eps2": ("#999999", "<"), "eps8": ("#999999", ">"), "photoguard": ("#000000", "p"), "mist": ("#7f7f7f", "H")}
 
 
 def main(argv=None) -> int:

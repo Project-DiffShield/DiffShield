@@ -30,5 +30,19 @@
 | v2_final vs v1 | none | InstructPix2Pix | 100 | 0.03 | 0.09 | -0.06 [-0.09, -0.03] | 0.002 | +0.062 [+0.039, +0.088] | <0.001 | 0.02 |
 | v2_final vs v1 | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.007 [-0.009, -0.005] | <0.001 | 0.00 |
 | v2_final vs v1 | none | IP-Adapter FaceID | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.01] | 1.000 | -0.008 [-0.013, -0.002] | <0.001 | 0.01 |
+| photoguard vs v1 | none | SD1.5 s0.3 | 100 | 0.17 | 0.00 | +0.17 [+0.12, +0.22] | <0.001 | -0.274 [-0.289, -0.259] | <0.001 | 0.33 |
+| photoguard vs v1 | none | SD1.5 s0.55 | 100 | 0.81 | 0.24 | +0.57 [+0.52, +0.62] | <0.001 | -0.133 [-0.144, -0.122] | <0.001 | 0.97 |
+| photoguard vs v1 | none | SD1.5 s0.75 | 100 | 0.96 | 0.85 | +0.10 [+0.06, +0.15] | <0.001 | -0.032 [-0.042, -0.023] | <0.001 | 0.29 |
+| photoguard vs v1 | none | SDXL s0.55 | 100 | 0.03 | 0.02 | +0.01 [-0.02, +0.03] | 0.781 | -0.022 [-0.027, -0.016] | <0.001 | 0.05 |
+| photoguard vs v1 | none | InstructPix2Pix | 100 | 0.72 | 0.09 | +0.63 [+0.54, +0.71] | <0.001 | -0.547 [-0.625, -0.467] | <0.001 | 0.80 |
+| photoguard vs v1 | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.054 [-0.058, -0.049] | <0.001 | 0.00 |
+| photoguard vs v1 | none | IP-Adapter FaceID | 100 | 0.03 | 0.00 | +0.03 [+0.01, +0.05] | 0.062 | -0.158 [-0.182, -0.136] | <0.001 | 0.05 |
+| mist vs v1 | none | SD1.5 s0.3 | 100 | 0.05 | 0.00 | +0.05 [+0.02, +0.08] | 0.002 | -0.185 [-0.199, -0.171] | <0.001 | 0.10 |
+| mist vs v1 | none | SD1.5 s0.55 | 100 | 0.63 | 0.24 | +0.39 [+0.34, +0.44] | <0.001 | -0.095 [-0.104, -0.085] | <0.001 | 0.91 |
+| mist vs v1 | none | SD1.5 s0.75 | 100 | 0.94 | 0.85 | +0.09 [+0.04, +0.14] | 0.001 | -0.026 [-0.035, -0.017] | <0.001 | 0.23 |
+| mist vs v1 | none | SDXL s0.55 | 0 | not run | not run | not run |  | not run |  |  |
+| mist vs v1 | none | InstructPix2Pix | 100 | 0.04 | 0.09 | -0.05 [-0.09, -0.01] | 0.037 | +0.007 [-0.018, +0.034] | 0.613 | 0.03 |
+| mist vs v1 | none | SD inpaint (keep-face) | 100 | 0.00 | 0.00 | +0.00 [+0.00, +0.00] | 1.000 | -0.085 [-0.091, -0.078] | <0.001 | 0.00 |
+| mist vs v1 | none | IP-Adapter FaceID | 100 | 0.04 | 0.00 | +0.04 [+0.01, +0.06] | 0.008 | -0.150 [-0.175, -0.127] | <0.001 | 0.08 |
 
 n images per cell: 100; edit seeds per image: 3; prompts per image: up to 3. Mean with 95% percentile-bootstrap CI over images (10000 resamples, seed 2026); seeds and prompts are averaged within each image first. PSR = share of edits with no detected face or ArcFace sim to the source below the per-editor threshold (95th percentile of impostor sim of the E0 clean edits): ip2p 0.108, ipadapter_faceid 0.108, sd15_img2img 0.101, sd_inpaint 0.110, sdxl_img2img 0.104, pooled 0.103. 'not run' = no rows for the cell. A cell with fewer images than the largest cell shows (n=...). Paired differences A-B on the same images (aligned by image_id): mean per-image difference with paired image-bootstrap CI and two-sided Wilcoxon signed-rank p, NOT corrected for the number of comparisons in this table. PSR A-B > 0 means A protects more; sim A-B < 0 means A removes more identity (ArcFace sim, 1 = same person).

@@ -1,0 +1,5 @@
+[00:25:29] run prot_photoguard_messy method=photoguard device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[00:25:29] 10 images in this shard (20 total), 0 already done
+[00:46:03] [5/10] 23397 psnr=37.33 ssim=0.9033 gpu_s=243.6
+[01:06:24] [10/10] 8790 psnr=37.14 ssim=0.9093 gpu_s=243.8
+[01:06:24] done

@@ -1,0 +1,5 @@
+[21:53:13] run prot_mist_messy method=mist device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[21:53:13] 10 images in this shard (20 total), 0 already done
+[21:58:34] [5/10] 23397 psnr=38.07 ssim=0.9170 gpu_s=60.4
+[22:03:35] [10/10] 8790 psnr=37.94 ssim=0.9238 gpu_s=60.0
+[22:03:35] done

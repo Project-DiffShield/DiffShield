@@ -1,0 +1,24 @@
+[21:01:28] run prot_photoguard_test method=photoguard device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[21:01:28] 50 images in this shard (100 total), 0 already done
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Downloading: "https://download.pytorch.org/models/vgg16-397923af.pth" to /root/.cache/torch/hub/checkpoints/vgg16-397923af.pth
+  0%|          | 0.00/528M [00:00<?, ?B/s]  4%|▍         | 23.2M/528M [00:00<00:02, 243MB/s]  9%|▉         | 48.5M/528M [00:00<00:01, 255MB/s] 14%|█▍        | 73.8M/528M [00:00<00:01, 259MB/s] 19%|█▉        | 99.1M/528M [00:00<00:01, 262MB/s] 24%|██▎       | 125M/528M [00:00<00:01, 264MB/s]  28%|██▊       | 150M/528M [00:00<00:01, 264MB/s] 33%|███▎      | 176M/528M [00:00<00:01, 265MB/s] 38%|███▊      | 201M/528M [00:00<00:01, 265MB/s] 43%|████▎     | 226M/528M [00:00<00:01, 264MB/s] 48%|████▊     | 252M/528M [00:01<00:01, 265MB/s] 53%|█████▎    | 277M/528M [00:01<00:01, 262MB/s] 57%|█████▋    | 302M/528M [00:01<00:00, 258MB/s] 62%|██████▏   | 327M/528M [00:01<00:00, 259MB/s] 67%|██████▋   | 352M/528M [00:01<00:00, 261MB/s] 72%|███████▏  | 378M/528M [00:01<00:00, 263MB/s] 76%|███████▋  | 403M/528M [00:01<00:00, 263MB/s] 81%|████████▏ | 429M/528M [00:01<00:00, 265MB/s] 86%|████████▌ | 454M/528M [00:01<00:00, 265MB/s] 91%|█████████ | 480M/528M [00:01<00:00, 265MB/s] 96%|█████████▌| 505M/528M [00:02<00:00, 266MB/s]100%|██████████| 528M/528M [00:02<00:00, 263MB/s]
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[21:20:30] [5/50] 11318 psnr=36.99 ssim=0.9167 gpu_s=221.0
+[21:38:57] [10/50] 13117 psnr=37.03 ssim=0.8999 gpu_s=220.9
+[21:57:25] [15/50] 18621 psnr=37.04 ssim=0.9094 gpu_s=221.0
+[22:15:52] [20/50] 22085 psnr=37.10 ssim=0.9099 gpu_s=220.9
+[22:34:20] [25/50] 25877 psnr=37.17 ssim=0.9036 gpu_s=220.9
+[22:52:47] [30/50] 3463 psnr=37.46 ssim=0.8791 gpu_s=221.0
+[23:11:14] [35/50] 4535 psnr=37.30 ssim=0.8962 gpu_s=220.9
+[23:29:40] [40/50] 5464 psnr=37.07 ssim=0.9097 gpu_s=220.8
+[23:48:07] [45/50] 7603 psnr=37.03 ssim=0.9166 gpu_s=221.0
+[00:06:34] [50/50] 9954 psnr=37.30 ssim=0.8883 gpu_s=220.9
+[00:06:34] done

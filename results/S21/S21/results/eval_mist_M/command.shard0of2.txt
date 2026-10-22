@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S21/eval_jobs.e2_mist.g0.yaml --shard 0/2

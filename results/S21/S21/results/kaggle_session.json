@@ -1,0 +1,58 @@
+{
+  "job_id": "S21",
+  "run_id": "S21",
+  "session_seconds": 11878.354803323746,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 33.5
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.0
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 172.7
+    },
+    "fetch_mist_target": {
+      "rc": 0,
+      "seconds": 0.5
+    },
+    "protect_prot_mist_test": {
+      "rc": 0,
+      "seconds": 3050.1
+    },
+    "merge_prot_mist_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "protect_prot_mist_messy": {
+      "rc": 0,
+      "seconds": 630.0
+    },
+    "merge_prot_mist_messy": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "e2_mist": {
+      "rc": 0,
+      "seconds": 7985.3
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

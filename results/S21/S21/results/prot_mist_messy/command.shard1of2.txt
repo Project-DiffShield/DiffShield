@@ -1,0 +1,1 @@
+/usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S21/cfg/config.yaml --method mist --input_dir /kaggle/working/S21/data/messy --list /kaggle/tmp/DiffShield/data/splits/messy.txt --run_id prot_mist_messy --output_root /kaggle/working/S21/results --checkpoint_every 5 --split messy --set baselines.mist.target_image=/kaggle/working/S21/assets/MIST.png --shard 1/2

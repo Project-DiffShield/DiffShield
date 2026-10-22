@@ -1,0 +1,13 @@
+[21:02:23] run prot_mist_test method=mist device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[21:02:23] 50 images in this shard (100 total), 0 already done
+[21:08:22] [5/50] 11106 psnr=38.22 ssim=0.9158 gpu_s=59.3
+[21:13:20] [10/50] 130 psnr=37.65 ssim=0.9249 gpu_s=59.3
+[21:18:18] [15/50] 16383 psnr=38.50 ssim=0.8880 gpu_s=58.9
+[21:23:17] [20/50] 21783 psnr=38.21 ssim=0.9118 gpu_s=59.2
+[21:28:16] [25/50] 25516 psnr=38.07 ssim=0.9217 gpu_s=59.2
+[21:33:14] [30/50] 3272 psnr=37.82 ssim=0.9335 gpu_s=59.1
+[21:38:12] [35/50] 4489 psnr=38.14 ssim=0.9282 gpu_s=59.1
+[21:43:10] [40/50] 5443 psnr=37.94 ssim=0.9270 gpu_s=59.0
+[21:48:07] [45/50] 7551 psnr=38.27 ssim=0.9221 gpu_s=58.9
+[21:53:07] [50/50] 986 psnr=37.86 ssim=0.9307 gpu_s=60.2
+[21:53:07] done

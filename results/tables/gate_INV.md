@@ -8,8 +8,10 @@ Rule: PSNR >= 38 and SSIM >= 0.95 (per image); human 2AFC accuracy not far above
 | abl_vis_only | 100 | 41.73 | 0.98 | 0 | 0 | PASS |
 | eps2 | 100 | 45.34 | 0.98 | 0 | 0 | PASS |
 | eps8 | 100 | 35.98 | 0.90 | 98 | 96 | FAIL |
+| mist | 100 | 38.00 | 0.92 | 50 | 100 | FAIL |
 | noise_gauss_psnr | 100 | 41.91 | 0.96 | 0 | 3 | MARGINAL |
 | noise_uniform | 100 | 40.80 | 0.95 | 0 | 43 | MARGINAL |
+| photoguard | 100 | 37.15 | 0.91 | 100 | 100 | FAIL |
 | v1 | 100 | 42.42 | 0.98 | 0 | 0 | PASS |
 | v2_antipure | 100 | 41.18 | 0.97 | 0 | 13 | MARGINAL |
 | v2_cheap | 100 | 41.58 | 0.98 | 0 | 0 | PASS |

@@ -1,0 +1,86 @@
+[
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "ip2p",
+    "strength": "",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.28552324863576745,
+    "no_face_rate": 0.26666666666666666,
+    "mean_clip_i": 0.5257334285974502,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "ipadapter_faceid",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.4856152610604962,
+    "no_face_rate": 0.02666666666666667,
+    "mean_clip_i": 0.6136745512485504,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.3",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.19761725160603716,
+    "no_face_rate": 0.02666666666666667,
+    "mean_clip_i": 0.5766100414594014,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 450,
+    "mean_arcface_sim": 0.036006137438700514,
+    "no_face_rate": 0.08666666666666667,
+    "mean_clip_i": 0.5040727619992361,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "sd15_img2img",
+    "strength": "0.75",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": -0.0038945572025552073,
+    "no_face_rate": 0.22,
+    "mean_clip_i": 0.46463900446891776,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "sd_inpaint",
+    "strength": "1",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.8876926600933075,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7610949063301088,
+    "mean_edit_lpips": NaN
+  },
+  {
+    "method": "photoguard",
+    "purifier": "none",
+    "editor": "sdxl_img2img",
+    "strength": "0.55",
+    "n_images": 50,
+    "n_edits": 150,
+    "mean_arcface_sim": 0.3126921556408827,
+    "no_face_rate": 0.0,
+    "mean_clip_i": 0.7228244825204213,
+    "mean_edit_lpips": NaN
+  }
+]

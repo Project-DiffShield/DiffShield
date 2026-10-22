@@ -1,17 +1,21 @@
 # Coverage of combined results
 
-Rows after de-duplication: 68640 (dropped 180 duplicates, 0 duplicate keys with differing ArcFace sim).
+Rows after de-duplication: 76980 (dropped 180 duplicates, 0 duplicate keys with differing ArcFace sim).
 
-Cells: 220; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, mist, noise_gauss_psnr, noise_uniform, photoguard, v1, v2_antipure, v2_cheap, v2_final, v2_main, v2_tgt_gray, v2_tgt_zero, v2_tgt_zero_hi, v2_tgt_zero_mid; splits: messy, test, val.
+Cells: 243; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, mist, noise_gauss_psnr, noise_uniform, photoguard, v1, v2_antipure, v2_cheap, v2_final, v2_main, v2_tgt_gray, v2_tgt_zero, v2_tgt_zero_hi, v2_tgt_zero_mid; splits: messy, test, val.
 
 | split | method | purifier | editor | images | seeds | strengths | prompts | face rate | LPIPS filled |
 |---|---|---|---|---|---|---|---|---|---|
 | messy | clean | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | clean | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | mist | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | mist | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 0.85 | 0.00 |
 | messy | noise_gauss_psnr | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | noise_gauss_psnr | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | noise_uniform | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | noise_uniform | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| messy | photoguard | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 0.98 | 0.00 |
+| messy | photoguard | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 0.87 | 0.00 |
 | messy | v1 | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.65 |
 | messy | v1 | none | sd15_img2img | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | messy | v2_final | none | ipadapter_faceid | 20 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
@@ -65,6 +69,15 @@ Cells: 220; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, mist, noise_
 | test | eps8 | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | eps8 | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | eps8 | none | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | mist | diffpure_0.1 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.97 | 0.00 |
+| test | mist | downup_0.5 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | mist | jpeg_q50 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | mist | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | mist | none | ip2p | 100 | 1,2,3 | - | 3 | 0.96 | 0.00 |
+| test | mist | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 0.98 | 0.00 |
+| test | mist | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.93 | 0.00 |
+| test | mist | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
+| test | mist | vae_rt | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.95 | 0.00 |
 | test | noise_gauss_psnr | none | ip2p | 100 | 1,2,3 | - | 3 | 0.92 | 0.00 |
 | test | noise_gauss_psnr | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | noise_gauss_psnr | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 0.00 |
@@ -73,6 +86,16 @@ Cells: 220; methods: abl_den_only, abl_vis_only, clean, eps2, eps8, mist, noise_
 | test | noise_uniform | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | noise_uniform | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.99 | 0.00 |
 | test | noise_uniform | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
+| test | photoguard | diffpure_0.1 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 0.00 |
+| test | photoguard | downup_0.5 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | photoguard | jpeg_q50 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | photoguard | jpeg_q75 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | photoguard | none | ip2p | 100 | 1,2,3 | - | 3 | 0.71 | 0.00 |
+| test | photoguard | none | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 0.00 |
+| test | photoguard | none | sd15_img2img | 100 | 1,2,3 | 0.3,0.55,0.75 | 3 | 0.90 | 0.00 |
+| test | photoguard | none | sd_inpaint | 100 | 1,2,3 | 1 | 3 | 1.00 | 0.00 |
+| test | photoguard | none | sdxl_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
+| test | photoguard | vae_rt | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 0.00 |
 | test | v1 | adaptive_ae | ipadapter_faceid | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | v1 | adaptive_ae | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 1.00 | 0.00 |
 | test | v1 | diffpure_0.05 | sd15_img2img | 100 | 1,2,3 | 0.55 | 3 | 0.99 | 1.00 |

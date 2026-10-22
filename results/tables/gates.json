@@ -474,6 +474,15 @@
         "status": "FAIL"
       },
       {
+        "method": "mist",
+        "n": 100,
+        "psnr": 38.000565578165386,
+        "ssim": 0.92286457538978,
+        "n_below_psnr": 50,
+        "n_below_ssim": 100,
+        "status": "FAIL"
+      },
+      {
         "method": "noise_gauss_psnr",
         "n": 100,
         "psnr": 41.912666115358995,
@@ -490,6 +499,15 @@
         "n_below_psnr": 0,
         "n_below_ssim": 43,
         "status": "MARGINAL"
+      },
+      {
+        "method": "photoguard",
+        "n": 100,
+        "psnr": 37.15282048086433,
+        "ssim": 0.9061440695685211,
+        "n_below_psnr": 100,
+        "n_below_ssim": 100,
+        "status": "FAIL"
       },
       {
         "method": "v1",

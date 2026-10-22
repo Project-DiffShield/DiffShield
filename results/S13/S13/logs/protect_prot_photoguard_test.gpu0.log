@@ -1,0 +1,22 @@
+[21:01:28] run prot_photoguard_test method=photoguard device=cuda backend=real shard=(0, 2) git=b72e5ff dirty=False
+[21:01:28] 50 images in this shard (100 total), 0 already done
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Setting up [LPIPS] perceptual loss: trunk [vgg], v[0.1], spatial [off]
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading model from: /usr/local/lib/python3.13/dist-packages/lpips/weights/v0.1/vgg.pth
+[21:22:17] [5/50] 11106 psnr=37.09 ssim=0.8890 gpu_s=243.6
+[21:42:38] [10/50] 130 psnr=37.05 ssim=0.9138 gpu_s=243.6
+[22:02:58] [15/50] 16383 psnr=37.68 ssim=0.8627 gpu_s=243.6
+[22:23:19] [20/50] 21783 psnr=37.32 ssim=0.8910 gpu_s=243.6
+[22:43:40] [25/50] 25516 psnr=37.04 ssim=0.9010 gpu_s=243.7
+[23:04:01] [30/50] 3272 psnr=36.86 ssim=0.9153 gpu_s=243.7
+[23:24:21] [35/50] 4489 psnr=37.03 ssim=0.9067 gpu_s=243.7
+[23:44:42] [40/50] 5443 psnr=37.13 ssim=0.9115 gpu_s=243.6
+[00:05:02] [45/50] 7551 psnr=37.14 ssim=0.8989 gpu_s=243.6
+[00:25:23] [50/50] 986 psnr=37.01 ssim=0.9155 gpu_s=243.6
+[00:25:23] done

@@ -1,0 +1,12 @@
+{
+  "total_gpu_seconds": 2273.016057762992,
+  "edit_seconds": 2182.701078326003,
+  "purify_seconds": 90.31497943698923,
+  "n_rows": 750,
+  "per_edit_mean_s": 2.9102681044346705,
+  "edit_seconds_by_editor": {
+    "sd15_img2img": 2182.701078326003
+  },
+  "gpu_name": "Tesla T4",
+  "note": "wall-clock around edit/purify calls (cuda-synchronised); excludes model load and scoring"
+}

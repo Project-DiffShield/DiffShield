@@ -1,0 +1,32 @@
+defaults:
+  set: []
+  config: /kaggle/working/S21/cfg/config.yaml
+  cache_dir: /kaggle/working/S21/cache
+  no_generate_clean: true
+  parsing_dir: /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ/CelebAMask-HQ-mask-anno
+jobs:
+- name: eval_mist_H
+  tier: H
+  method: mist
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S21/data/test
+  protected_dir: /kaggle/working/S21/results/prot_{method}_test/images
+  out: /kaggle/working/S21/results/eval_mist_H
+- name: eval_mist_M
+  tier: M
+  method: mist
+  split: messy
+  split_file: /kaggle/tmp/DiffShield/data/splits/messy.txt
+  source_dir: /kaggle/working/S21/data/messy
+  protected_dir: /kaggle/working/S21/results/prot_{method}_messy/images
+  out: /kaggle/working/S21/results/eval_mist_M
+- name: eval_mist_P
+  tier: P
+  purifier: all
+  method: mist
+  split: test
+  split_file: /kaggle/tmp/DiffShield/data/splits/test.txt
+  source_dir: /kaggle/working/S21/data/test
+  protected_dir: /kaggle/working/S21/results/prot_{method}_test/images
+  out: /kaggle/working/S21/results/eval_mist_P

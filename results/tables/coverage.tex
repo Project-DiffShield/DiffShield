@@ -8,10 +8,14 @@ split & method & purifier & editor & strengths & n\_images & n\_rows & seeds & n
 \midrule
 messy & clean & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
 messy & clean & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & mist & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & mist & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 0.85 \\
 messy & noise\_gauss\_psnr & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
 messy & noise\_gauss\_psnr & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
 messy & noise\_uniform & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
 messy & noise\_uniform & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
+messy & photoguard & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 0.98 \\
+messy & photoguard & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 0.87 \\
 messy & v1 & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
 messy & v1 & none & sd15\_img2img & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
 messy & v2\_final & none & ipadapter\_faceid & 0.55 & 20 & 60 & 1,2,3 & 3 & 1.00 \\
@@ -65,6 +69,15 @@ test & eps8 & diffpure\_0.1 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.9
 test & eps8 & jpeg\_q75 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
 test & eps8 & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
 test & eps8 & none & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & mist & diffpure\_0.1 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.97 \\
+test & mist & downup\_0.5 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & mist & jpeg\_q50 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & mist & jpeg\_q75 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & mist & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.96 \\
+test & mist & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.98 \\
+test & mist & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.93 \\
+test & mist & none & sd\_inpaint & 1 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & mist & vae\_rt & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.95 \\
 test & noise\_gauss\_psnr & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.92 \\
 test & noise\_gauss\_psnr & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
 test & noise\_gauss\_psnr & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.99 \\
@@ -73,6 +86,16 @@ test & noise\_uniform & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.93 \\
 test & noise\_uniform & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
 test & noise\_uniform & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.99 \\
 test & noise\_uniform & none & sd\_inpaint & 1 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & photoguard & diffpure\_0.1 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.99 \\
+test & photoguard & downup\_0.5 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & photoguard & jpeg\_q50 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & photoguard & jpeg\_q75 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & photoguard & none & ip2p & - & 100 & 300 & 1,2,3 & 3 & 0.71 \\
+test & photoguard & none & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.99 \\
+test & photoguard & none & sd15\_img2img & 0.3,0.55,0.75 & 100 & 1500 & 1,2,3 & 3 & 0.90 \\
+test & photoguard & none & sd\_inpaint & 1 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & photoguard & none & sdxl\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
+test & photoguard & vae\_rt & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.99 \\
 test & v1 & adaptive\_ae & ipadapter\_faceid & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
 test & v1 & adaptive\_ae & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 1.00 \\
 test & v1 & diffpure\_0.05 & sd15\_img2img & 0.55 & 100 & 300 & 1,2,3 & 3 & 0.99 \\

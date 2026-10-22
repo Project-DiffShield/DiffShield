@@ -1,8 +1,8 @@
 method,SD1.5 s0.3,SD1.5 s0.55,SD1.5 s0.75,SDXL s0.55,InstructPix2Pix,SD inpaint (keep-face),IP-Adapter FaceID
 uniform noise (E1),n/a,n/a,n/a,not run,n/a,n/a,n/a
 "Gaussian noise, PSNR-matched (E1)",n/a,n/a,n/a,not run,n/a,n/a,n/a
-"PhotoGuard encoder attack (E2, reimpl.)",not run,not run,not run,not run,not run,not run,not run
-"Mist-style (E2, reimpl.)",not run,not run,not run,not run,not run,not run,not run
+"PhotoGuard encoder attack (E2, reimpl.)",n/a,n/a,n/a,n/a,n/a,n/a,n/a
+"Mist-style (E2, reimpl.)",n/a,n/a,n/a,not run,n/a,n/a,n/a
 v1 (E3),n/a,n/a,n/a,n/a,"0.40 [0.38, 0.42]",n/a,"0.34 [0.32, 0.36]"
 v2 cheap purifiers (E4),"0.35 [0.34, 0.35]","0.35 [0.34, 0.36]","0.32 [0.31, 0.34]",not run,"0.38 [0.37, 0.40]","0.27 [0.26, 0.28]","0.34 [0.32, 0.35]"
 v2 + one-step SD purifier + L_den (E5),n/a,n/a,n/a,not run,n/a,n/a,n/a

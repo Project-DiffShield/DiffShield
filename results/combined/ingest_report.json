@@ -464,6 +464,78 @@
       "face_detected_without_sim": 0
     },
     {
+      "file": "results\\S13\\S13\\results\\eval_pg_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1350,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\eval_pg_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1350,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\eval_pg_M\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\eval_pg_M\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\eval_pg_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 750,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\eval_pg_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 750,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\prot_photoguard_messy\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\prot_photoguard_messy\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\prot_photoguard_messy\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\prot_photoguard_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\prot_photoguard_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S13\\S13\\results\\prot_photoguard_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
       "file": "results\\S15\\S15\\results\\eval_ae_clean\\metrics.shard0.csv",
       "kind": "edit",
       "rows": 300,
@@ -683,6 +755,78 @@
       "file": "results\\S19\\S19\\results\\eval_v2_main_P\\metrics.shard1.csv",
       "kind": "edit",
       "rows": 2400,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\eval_mist_H\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 1200,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\eval_mist_H\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 1200,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\eval_mist_M\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\eval_mist_M\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 60,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\eval_mist_P\\metrics.shard0.csv",
+      "kind": "edit",
+      "rows": 750,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\eval_mist_P\\metrics.shard1.csv",
+      "kind": "edit",
+      "rows": 750,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\prot_mist_messy\\metrics.csv",
+      "kind": "protect",
+      "rows": 20,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\prot_mist_messy\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\prot_mist_messy\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 10,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\prot_mist_test\\metrics.csv",
+      "kind": "protect",
+      "rows": 100,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\prot_mist_test\\metrics.shard0of2.csv",
+      "kind": "protect",
+      "rows": 50,
+      "face_detected_without_sim": 0
+    },
+    {
+      "file": "results\\S21\\S21\\results\\prot_mist_test\\metrics.shard1of2.csv",
+      "kind": "protect",
+      "rows": 50,
       "face_detected_without_sim": 0
     },
     {
@@ -1140,22 +1284,22 @@
   "unzipped": [],
   "warnings": [],
   "edits": {
-    "rows_in": 68820,
-    "rows_out": 68640,
+    "rows_in": 77160,
+    "rows_out": 76980,
     "duplicates_dropped": 180,
     "conflicts": 0,
     "lpips_filled_from_cache": 512,
-    "n_cells": 220,
-    "lpips_missing": 45568
+    "n_cells": 243,
+    "lpips_missing": 53908
   },
   "plan": {
     "expected_cells": 266,
-    "missing_cells": 53
+    "missing_cells": 26
   },
   "protect": {
-    "rows_in": 4022,
-    "rows_out": 1910,
-    "duplicates_dropped": 2112
+    "rows_in": 4502,
+    "rows_out": 2150,
+    "duplicates_dropped": 2352
   },
   "thresholds_from_job": "results\\S07\\S07\\results\\thresholds\\psr_thresholds.json",
   "thresholds": {

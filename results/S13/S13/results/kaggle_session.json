@@ -1,0 +1,54 @@
+{
+  "job_id": "S13",
+  "run_id": "S13",
+  "session_seconds": 25164.499792814255,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 32.8
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.3
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 155.4
+    },
+    "protect_prot_photoguard_test": {
+      "rc": 0,
+      "seconds": 12240.3
+    },
+    "merge_prot_photoguard_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "protect_prot_photoguard_messy": {
+      "rc": 0,
+      "seconds": 2460.1
+    },
+    "merge_prot_photoguard_messy": {
+      "rc": 0,
+      "seconds": 0.6
+    },
+    "e2_pg": {
+      "rc": 0,
+      "seconds": 10270.3
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

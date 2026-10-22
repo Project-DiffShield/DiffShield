@@ -1,0 +1,13 @@
+[21:01:28] run prot_photoguard_test method=photoguard device=cuda backend=real shard=(1, 2) git=b72e5ff dirty=False
+[21:01:28] 50 images in this shard (100 total), 0 already done
+[21:20:30] [5/50] 11318 psnr=36.99 ssim=0.9167 gpu_s=221.0
+[21:38:57] [10/50] 13117 psnr=37.03 ssim=0.8999 gpu_s=220.9
+[21:57:25] [15/50] 18621 psnr=37.04 ssim=0.9094 gpu_s=221.0
+[22:15:52] [20/50] 22085 psnr=37.10 ssim=0.9099 gpu_s=220.9
+[22:34:20] [25/50] 25877 psnr=37.17 ssim=0.9036 gpu_s=220.9
+[22:52:47] [30/50] 3463 psnr=37.46 ssim=0.8791 gpu_s=221.0
+[23:11:14] [35/50] 4535 psnr=37.30 ssim=0.8962 gpu_s=220.9
+[23:29:40] [40/50] 5464 psnr=37.07 ssim=0.9097 gpu_s=220.8
+[23:48:07] [45/50] 7603 psnr=37.03 ssim=0.9166 gpu_s=221.0
+[00:06:34] [50/50] 9954 psnr=37.30 ssim=0.8883 gpu_s=220.9
+[00:06:34] done
