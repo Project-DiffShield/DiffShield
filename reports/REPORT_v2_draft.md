@@ -1,6 +1,6 @@
 # DiffShield v2: protecting face photos from diffusion-model edits (draft)
 
-Status: FINAL DRAFT 2026-10-22 (all planned sessions that were run have been analysed; the experiments marked "not run" were cut for time). Every number below is copied from the generated tables (`results/tables/`, `results/tables/final_readout.md`) or from the run logs named in brackets; nothing is estimated. Items in **[PENDING ...]** are experiments still running or not yet analysed. Face images are CelebA-HQ derivatives, used for research only; none are published here.
+Status: FINAL DRAFT 2026-10-22 (all planned sessions that were run have been analysed; the experiments marked "not run" were cut for time). Every number below is copied from the generated tables (`results/tables/`, `results/tables/final_readout.md`) or from the run logs named in brackets; nothing is estimated. Experiments that were planned but not run are marked "not run". Face images are CelebA-HQ derivatives, used for research only; none are published here.
 
 ## 1. Summary (fill the last bullets after S26-S28)
 
