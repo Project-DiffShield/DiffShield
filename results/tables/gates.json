@@ -535,6 +535,33 @@
         "n_below_psnr": 0,
         "n_below_ssim": 0,
         "status": "PASS"
+      },
+      {
+        "method": "v2_tgt_zero",
+        "n": 100,
+        "psnr": 42.158231677905384,
+        "ssim": 0.9822476509526313,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
+      },
+      {
+        "method": "v2_tgt_zero_hi",
+        "n": 100,
+        "psnr": 40.052220544202385,
+        "ssim": 0.9628369980288073,
+        "n_below_psnr": 0,
+        "n_below_ssim": 4,
+        "status": "MARGINAL"
+      },
+      {
+        "method": "v2_tgt_zero_mid",
+        "n": 100,
+        "psnr": 40.90651622385356,
+        "ssim": 0.9728110759924776,
+        "n_below_psnr": 0,
+        "n_below_ssim": 0,
+        "status": "PASS"
       }
     ],
     "notes": [

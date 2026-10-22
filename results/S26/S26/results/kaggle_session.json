@@ -1,0 +1,46 @@
+{
+  "job_id": "S26",
+  "run_id": "S26",
+  "session_seconds": 11954.096631526947,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 41.2
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 5.6
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 56.0
+    },
+    "protect_prot_v2_tgt_zero_hi_test": {
+      "rc": 0,
+      "seconds": 6075.2
+    },
+    "merge_prot_v2_tgt_zero_hi_test": {
+      "rc": 0,
+      "seconds": 0.9
+    },
+    "tgt_v2_tgt_zero_hi": {
+      "rc": 0,
+      "seconds": 5775.2
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

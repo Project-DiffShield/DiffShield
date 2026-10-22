@@ -1,0 +1,23 @@
+[17:52:47] S28: start: S28 target-steered v2_tgt_zero_mid on the 100 test photos (protect then SD1.5 + FaceID edits and 7 purifiers) | gpus=2 smoke=False n_images=None iters=None resume=None
+[17:52:47] S28: pip_install: /usr/bin/python3 -m pip install -q diffusers==0.40.0 transformers==5.16.1 accelerate==1.14.0 huggingface_hub==1.29.0 kornia==0.8.3 lpips==0.1.4 kneed==0.8.6 scikit-image==0.25.2 scikit-learn==1.6.1 pandas==2.3.3 pyyaml==6.0.3 tqdm==4.67.3 optuna==5.0.0 insightface==0.7.3 onnxruntime-gpu==1.22.0 opencv-python-headless==4.14.0.94
+[17:53:19] S28: step install: rc=0 (32s)
+[17:53:19] S28: [check_env] /usr/bin/python3 scripts/check_env.py --allow_mismatch
+[17:53:23] S28: step check_env: rc=0 (4s)
+[17:53:23] S28: splits: using frozen splits in the bundle (/kaggle/tmp/DiffShield/data/splits)
+[17:53:23] S28: step resolve_splits: rc=0 (0s)
+[17:53:23] S28: config: using config/parts/final.yaml from the bundle
+[17:53:23] S28: step make_config: rc=0 (0s)
+[17:53:23] S28: [prepare_data] /usr/bin/python3 scripts/prepare_data.py --celebahq_root /kaggle/input/datasets/ipythonx/celebamaskhq/CelebAMask-HQ --splits_dir /kaggle/tmp/DiffShield/data/splits --out_dir /kaggle/working/S28/data --splits test --no_cache
+[17:56:16] S28: step prepare_data: rc=0 (173s)
+[17:56:16] S28: [protect_prot_v2_tgt_zero_mid_test] gpu0: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S28/cfg/config.yaml --method v2_tgt_zero_mid --input_dir /kaggle/working/S28/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_tgt_zero_mid_test --output_root /kaggle/working/S28/results --checkpoint_every 5 --split test --shard 0/2
+[17:56:16] S28: [protect_prot_v2_tgt_zero_mid_test] gpu1: /usr/bin/python3 scripts/run_protect.py --config /kaggle/working/S28/cfg/config.yaml --method v2_tgt_zero_mid --input_dir /kaggle/working/S28/data/test --list /kaggle/tmp/DiffShield/data/splits/test.txt --run_id prot_v2_tgt_zero_mid_test --output_root /kaggle/working/S28/results --checkpoint_every 5 --split test --shard 1/2
+[19:33:06] S28: [protect_prot_v2_tgt_zero_mid_test] protect_prot_v2_tgt_zero_mid_test.gpu1.log exited 0; tail: ['[19:23:26] [45/50] 7603 psnr=41.61 ssim=0.9822 gpu_s=123.7', '[19:33:01] [50/50] 9954 psnr=41.78 ssim=0.9707 gpu_s=111.3', '[19:33:02] done']
+[19:34:16] S28: [protect_prot_v2_tgt_zero_mid_test] protect_prot_v2_tgt_zero_mid_test.gpu0.log exited 0; tail: ['[19:24:27] [45/50] 7551 psnr=40.89 ssim=0.9687 gpu_s=108.7', '[19:34:10] [50/50] 986 psnr=40.67 ssim=0.9785 gpu_s=109.9', '[19:34:11] done']
+[19:34:16] S28: step protect_prot_v2_tgt_zero_mid_test: rc=0 (5880s)
+[19:34:16] S28: [merge_prot_v2_tgt_zero_mid_test] /usr/bin/python3 scripts/merge_shards.py --run_dir /kaggle/working/S28/results/prot_v2_tgt_zero_mid_test
+[19:34:16] S28: step merge_prot_v2_tgt_zero_mid_test: rc=0 (1s)
+[19:34:16] S28: [tgt_v2_tgt_zero_mid] gpu0: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S28/eval_jobs.tgt_v2_tgt_zero_mid.g0.yaml --shard 0/2
+[19:34:16] S28: [tgt_v2_tgt_zero_mid] gpu1: /usr/bin/python3 scripts/evaluate.py --jobs_file /kaggle/working/S28/eval_jobs.tgt_v2_tgt_zero_mid.g1.yaml --shard 1/2
+[21:06:07] S28: [tgt_v2_tgt_zero_mid] tgt_v2_tgt_zero_mid.gpu1.log exited 0; tail: ['    }', '  ]', '}']
+[21:07:07] S28: [tgt_v2_tgt_zero_mid] tgt_v2_tgt_zero_mid.gpu0.log exited 0; tail: ['    }', '  ]', '}']
+[21:07:07] S28: step tgt_v2_tgt_zero_mid: rc=0 (5570s)

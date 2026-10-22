@@ -15,5 +15,8 @@ Rule: PSNR >= 38 and SSIM >= 0.95 (per image); human 2AFC accuracy not far above
 | v2_cheap | 100 | 41.58 | 0.98 | 0 | 0 | PASS |
 | v2_final | 100 | 40.46 | 0.95 | 0 | 29 | MARGINAL |
 | v2_main | 100 | 41.72 | 0.98 | 0 | 0 | PASS |
+| v2_tgt_zero | 100 | 42.16 | 0.98 | 0 | 0 | PASS |
+| v2_tgt_zero_hi | 100 | 40.05 | 0.96 | 0 | 4 | MARGINAL |
+| v2_tgt_zero_mid | 100 | 40.91 | 0.97 | 0 | 0 | PASS |
 
 - human 2AFC result not available (E10 not run)

@@ -13,7 +13,7 @@ Status: DRAFT written 2026-10-21 night. Every number below is copied from the ge
   - The encoder-shift term accounts for the whole effect (ablation `vis_only` 25.3%); the denoiser-only term gives no protection (12.3%) and the anti-purification terms give small, borderline gains at a visibility cost.
   - The effect survives held-out DiffPure (net +10 to +16 points over clean photos at t* = 0.05-0.3) and is reduced by JPEG and resizing (v1: net +4.7 under JPEG 75, +0.0 under down-up 0.5; v2_main restores +5.7 under down-up).
   - **v2_final** (tuned, antipure on): 29.4%, +5.4 points over v1 [+2.4, +8.6], but it fails the invisibility rule on 29 of 100 photos (SSIM below 0.95).
-  - **Target-steered variants** (new, section 5.8): on the 20 validation photos `v2_tgt_zero_hi` reaches PSR 46.7% vs 15.0% for v1 while staying near 40 dB. **[PENDING S26-S28: test-photo numbers.]**
+  - **Target-steered variants** (new; sections 3 and 5.8), 100 test photos: `v2_tgt_zero_mid` reaches **PSR 49.7%** (net +35.8 points over clean [+31.4, +40.4]; **+25.7 over v1 [+21.8, +29.8]**) with **0 of 100 photos violating the invisibility rule** (PSNR 40.91, min 39.75; SSIM 0.9728, min 0.9615). `v2_tgt_zero` (weaker): 41.8%, +17.8 over v1 [+14.1, +21.7], 0 violations, PSNR 42.16. `v2_tgt_zero_hi` (strongest): 52.8%, +28.8 over v1 [+23.8, +33.8], 4 of 100 photos below SSIM 0.95. The gain survives cleanups: net over clean photos +13 to +48 points under the VAE round trip and DiffPure 0.1-0.3; weaker under JPEG (net +5 to +16) and down-up (+5 to +9). The weights were not tuned on test, but which variant is called "best" is read off the test table (post hoc, among three declared variants; all three are reported).
   - **An adaptive attacker removes the protection** (a weak autoencoder purifier trained on 120 other photos: v1 24.0% -> 11.0%, v2_final 29.4% -> 10.7%, clean 9.3%).
   - **No protection** against the identity-conditioned editor (IP-Adapter FaceID, 0.0-0.3%), the inpainting editor (0%), SDXL (about 2%) or at strength 0.3 (0%); at strength 0.75 clean edits already destroy identity (84%).
 
@@ -55,6 +55,9 @@ n = 70: PSNR 41.986 +- 0.416 [41.890, 42.082], SSIM 0.9754 +- 0.0054, LPIPS 0.23
 | v2_cheap | 100 | 41.58 (40.28) | 0.9790 (0.9694) | 0 | 0 |
 | v2_antipure | 100 | 41.18 (38.91) | 0.9700 (0.9235) | 0 | 13 |
 | **v2_final** | 100 | 40.46 (38.76) | 0.9549 (0.9197) | 0 | **29** |
+| v2_tgt_zero | 100 | 42.16 (40.58) | 0.9822 (0.9728) | 0 | 0 |
+| v2_tgt_zero_mid | 100 | 40.91 (39.75) | 0.9728 (0.9615) | 0 | 0 |
+| v2_tgt_zero_hi | 100 | 40.05 (39.14) | 0.9628 (0.9459) | 0 | 4 |
 | eps2 | 100 | 45.34 (44.86) | 0.9836 (0.9628) | 0 | 0 |
 | **eps8** | 100 | 35.98 (33.33) | 0.8958 (0.7724) | **98** | **96** |
 | uniform noise | 100 | 40.80 (40.72) | 0.9518 (0.9257) | 0 | 43 |
@@ -70,16 +73,16 @@ PSR 13.9% (clean), 14.9% (uniform noise, +1.0 [-1.0, +3.1]), 14.7% (Gaussian, +0
 ### 5.4 Protection under cleanup (E3, E4, E5)
 Net protection = PSR of the method minus PSR of clean photos under the same cleanup (paired, 100 photos). Full table: `results/tables/final_readout.md`.
 
-| cleanup | clean PSR | v1 net | v2_main net | v2_cheap net | v2_final net |
-|---|---|---|---|---|---|
-| none | 0.139 | +0.101* | +0.104* | +0.086* | +0.156* |
-| JPEG q75 | 0.103 | +0.047* | +0.080* | +0.063* | +0.060* |
-| JPEG q50 | 0.130 | +0.037* | +0.050* | +0.043* | +0.023 |
-| down-up 0.5 | 0.097 | +0.000 | +0.057* | +0.047* | +0.047* |
-| VAE round trip | 0.123 | +0.097* | +0.127* | +0.090* | +0.150* |
-| DiffPure 0.1 | 0.133 | +0.130* | +0.147* | +0.133* | +0.163* |
-| DiffPure 0.2 | 0.217 | +0.100* | +0.117* | +0.097* | +0.133* |
-| DiffPure 0.3 | 0.260 | +0.100* | +0.103* | +0.087* | +0.153* |
+| cleanup | clean PSR | v1 net | v2_main net | v2_cheap net | v2_final net | tgt_zero net | tgt_zero_mid net | tgt_zero_hi net |
+|---|---|---|---|---|---|---|---|---|
+| none | 0.139 | +0.101* | +0.104* | +0.086* | +0.156* | +0.279* | +0.358* | +0.389* |
+| JPEG q75 | 0.103 | +0.047* | +0.080* | +0.063* | +0.060* | +0.107* | +0.130* | +0.163* |
+| JPEG q50 | 0.130 | +0.037* | +0.050* | +0.043* | +0.023 | +0.050* | +0.073* | +0.083* |
+| down-up 0.5 | 0.097 | +0.000 | +0.057* | +0.047* | +0.047* | +0.047* | +0.093* | +0.093* |
+| VAE round trip | 0.123 | +0.097* | +0.127* | +0.090* | +0.150* | +0.310* | +0.400* | +0.410* |
+| DiffPure 0.1 | 0.133 | +0.130* | +0.147* | +0.133* | +0.163* | +0.310* | +0.383* | +0.477* |
+| DiffPure 0.2 | 0.217 | +0.100* | +0.117* | +0.097* | +0.133* | +0.260* | +0.353* | +0.383* |
+| DiffPure 0.3 | 0.260 | +0.100* | +0.103* | +0.087* | +0.153* | +0.237* | +0.340* | +0.403* |
 
 (* = 95% CI excludes 0.) Reading: the effect survives DiffPure at every strength tried; JPEG and resizing shrink it; v1 loses it entirely under down-up 0.5 and the cleanup-aware variants keep +4.7 to +5.7 points there. Paired v2_main minus v1 is supported only under down-up 0.5 (+5.7 [+3.0, +8.7]) and down-up (other) (+3.0 [+0.3, +6.3]). v2_final minus v1: +5.4 [+2.4, +8.7] without cleanup, +4.7 under down-up 0.5, +5.3 under the VAE round trip, +5.3 [+0.3, +10.7] under DiffPure 0.3; within noise elsewhere.
 Gates (as defined in the plan): E3 "barely drops" by the raw-PSR rule (this rule ignores that cleanups also change clean photos, which is why we report net protection); **E4 FAIL** (the doubling rule fails: v1 already survives most cleanups); **E5 PASS** (v2_main PSR under DiffPure 0.1 is 0.280 vs 0.5 x 0.243); E6 GO on 1 of 3 purifiers; invisibility FAIL for v2_final.
@@ -95,7 +98,7 @@ Budget is the main lever: PSR 17.3% at 2/255 (45.3 dB), 29.4% at 4/255 (`v2_fina
 Adaptive attacker (autoencoder purifier, 120 other photos, 35,496 steps, validation PSNR of its output vs the clean photo 45.1 dB): PSR under it: clean 9.3%, v1 11.0% (net +1.7 [-1.0, +4.7]), `v2_final` 10.7% (net +1.3 [-1.0, +3.7]). The protection is removed. The attacker is weak by construction (a lower bound on the damage).
 
 ### 5.8 Target-steered variants (new)
-Validation photos only (n = 20, 3 seeds; clean 8.3%, v1 15.0%): 
+**Screening on the 20 validation photos** (3 seeds; clean 8.3%, v1 15.0%): 
 
 | method | PSNR mean (min) | SSIM mean (min) | photos failing the rule | PSR none | vs v1 | PSR JPEG 75 | vs v1 | PSR DiffPure 0.1 | vs v1 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -106,7 +109,24 @@ Validation photos only (n = 20, 3 seeds; clean 8.3%, v1 15.0%):
 | PhotoGuard (1000 it.) | 37.14 (36.91) | 0.9040 (0.8235) | 20 of 20 | 73.3% | +58.3* | 15.0% | +1.7 | 63.3% | +43.3* |
 | Mist | 37.97 (37.57) | 0.9206 (0.8421) | 20 of 20 | 60.0% | +45.0* | 11.7% | -1.7 | 56.7% | +36.7* |
 
-n = 20 is a screening sample; confidence intervals are wide (see `results/S24`, `results/S25`). The control `v2_cheap` (same cleanups, no target term) does not gain, so the gain comes from the target term. **[PENDING S26-S28: the same variants on the 100 test photos with the full cleanup list and FaceID; replace this paragraph with the test numbers and report all three variants whatever the outcome.]**
+n = 20 was a screening sample (wide intervals, `results/S24`, `results/S25`). The control `v2_cheap` (same cleanups, no target term) does not gain, so the gain comes from the target term.
+
+**Test photos (n = 100, 3 seeds; S26, S27, S28).** SD1.5, strength 0.55. Cell = PSR; in brackets the paired difference to **v1** under the same cleanup, 95% CI over photos (* = excludes 0). Full table with net protection over clean photos: `results/tables/final_readout.md`.
+
+| method | none | JPEG 75 | JPEG 50 | down-up 0.5 | VAE round trip | DiffPure 0.1 | DiffPure 0.2 | DiffPure 0.3 |
+|---|---|---|---|---|---|---|---|---|
+| clean | 0.139 | 0.103 | 0.130 | 0.097 | 0.123 | 0.133 | 0.217 | 0.260 |
+| v1 | 0.240 | 0.150 | 0.167 | 0.097 | 0.220 | 0.263 | 0.317 | 0.360 |
+| v2_tgt_zero | 0.418 (+0.178 [+0.141,+0.217]*) | 0.210 (+0.060*) | 0.180 (+0.013) | 0.143 (+0.047*) | 0.433 (+0.213*) | 0.443 (+0.180*) | 0.477 (+0.160*) | 0.497 (+0.137*) |
+| **v2_tgt_zero_mid** | **0.497 (+0.257 [+0.218,+0.298]*)** | 0.233 (+0.083*) | 0.203 (+0.037*) | 0.190 (+0.093*) | 0.523 (+0.303*) | 0.517 (+0.253*) | 0.570 (+0.253*) | 0.600 (+0.240*) |
+| v2_tgt_zero_hi | 0.528 (+0.288 [+0.238,+0.338]*) | 0.267 (+0.117*) | 0.213 (+0.047*) | 0.190 (+0.093*) | 0.533 (+0.313*) | 0.610 (+0.347*) | 0.600 (+0.283*) | 0.663 (+0.303*) |
+
+Reading:
+- The effect is about **twice v1's** without cleanup (0.497 vs 0.240), under down-up 0.5 (0.190 vs 0.097), under DiffPure 0.1 (0.517 vs 0.263) and about 2.4 times under the VAE round trip (0.523 vs 0.220); under JPEG 75 it is 1.6 times (0.233 vs 0.150) and under JPEG 50 about 1.2 times. JPEG remains the weakest point.
+- `v2_tgt_zero_mid` is the strongest variant that satisfies the invisibility rule on all 100 test photos; `v2_tgt_zero_hi` is stronger but 4 photos fall below SSIM 0.95. The monotone order (zero < mid < hi) with the target weight is the dose-response we expected.
+- Other editors (no cleanup): SD1.5 strength 0.75: PSR 0.910 / 0.900 / 0.897 vs clean 0.840 (+0.070, +0.060, +0.057, all CIs exclude 0); IP-Adapter FaceID: 0.007 / 0.020 / 0.020 vs clean 0.000 (tiny: +0.020 [+0.003, +0.043] for `mid`); SD1.5 strength 0.3: 0.000 / 0.000 / 0.007. The identity-conditioned and masked editors are still not meaningfully protected. InstructPix2Pix, inpainting and SDXL were not run for these variants.
+- **Not tested:** the adaptive attacker (section 5.7) was run for v1 and `v2_final` only; we have no evidence that the target-steered variants survive it, and the earlier result suggests they may not.
+- **Comparison with existing tools on test:** **[PENDING S13 (PhotoGuard, first 40 test photos); Mist on test not run.]** On the 20 validation photos PhotoGuard reached 73.3% and Mist 60.0% but both visibly alter the photo (every photo fails the invisibility rule); the target-steered variants reach 35-47% on the same validation photos at 40-42 dB.
 
 ## 6. Failure cases (see `results/figures/failure_gallery.png`, `before_after.png`, `failure_cases.csv`; the images contain real faces and stay local)
 - Strength 0.3: no edit is protected (0%); strength 0.75: identity is already destroyed for clean photos (84%), so no gain can be measured.
@@ -117,7 +137,7 @@ n = 20 is a screening sample; confidence intervals are wide (see `results/S24`, 
 - Visual check: in the before/after panel the protected edits often keep the person's hair, pose and facial structure; some `v2_final` edits show texture artifacts in hair and background. A recognition score below a threshold is not the same as a person no longer being recognisable. No human study was run.
 
 ## 7. Limitations (all real)
-DPM-Solver++ sampler for all editors (not v1's); the DiffPure-style cleanup is built on SD1.5, not the original DiffPure; GrIDPure unavailable, IMPRESS and InstantID not run; 40 PGD iterations, K = 4; Optuna 16 trials on 10 validation photos with a proxy objective and a 20-photo confirm, where the proxy's best trial (0.10) did not hold up (0.05) and the tuned configuration is not separable from the hand-set one (0.067 vs 0.042); the training identity loss was not evaluated; a single CLIP model; same-person de-duplication used ArcFace similarity >= 0.5 (unverified threshold) and the splitter's face detector missed 38 of 100 test faces (fixed for evaluation by padding the image; de-duplication of the test list was not repeated); the adaptive attacker is weak; edit-LPIPS is computed only for the headline setting (CPU cost) **[PENDING]**; v1's Phase 2 outputs were lost (its 0.46 LPIPS can only be quoted); the PSR threshold comes from ArcFace similarity between different people and is the project's operational definition of "not the same person".
+DPM-Solver++ sampler for all editors (not v1's); the DiffPure-style cleanup is built on SD1.5, not the original DiffPure; GrIDPure unavailable, IMPRESS and InstantID not run; 40 PGD iterations, K = 4; Optuna 16 trials on 10 validation photos with a proxy objective and a 20-photo confirm, where the proxy's best trial (0.10) did not hold up (0.05) and the tuned configuration is not separable from the hand-set one (0.067 vs 0.042); the training identity loss was not evaluated; a single CLIP model; same-person de-duplication used ArcFace similarity >= 0.5 (unverified threshold) and the splitter's face detector missed 38 of 100 test faces (fixed for evaluation by padding the image; de-duplication of the test list was not repeated); the adaptive attacker is weak and was not run against the target-steered variants; the choice of the "best" target-steered variant is read from the test table (post hoc among three declared variants); PhotoGuard and Mist were run on the validation photos only (Mist on test not run; PhotoGuard on test **[PENDING]**); edit-LPIPS is computed only for the headline setting (CPU cost) **[PENDING]**; v1's Phase 2 outputs were lost (its 0.46 LPIPS can only be quoted); the PSR threshold comes from ArcFace similarity between different people and is the project's operational definition of "not the same person".
 
 ## 8. Reproducibility
 Config `config/config.yaml` + `config/parts/*.yaml`; bundles built from commits (hash printed in every Kaggle log); results under `results/` (CSV/JSON/logs committed, images never); pipeline: `scripts/ingest_results.py`, `scripts/make_tables.py`, `scripts/make_figures.py`, `scripts/readout_final.py`; 377 CPU tests; `requirements.txt` pinned to the Kaggle image of 2026-10-14. See `README.md`.

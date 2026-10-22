@@ -1,0 +1,46 @@
+{
+  "job_id": "S28",
+  "run_id": "S28",
+  "session_seconds": 11659.59120798111,
+  "n_gpus": 2,
+  "steps": {
+    "install": {
+      "rc": 0,
+      "seconds": 31.7
+    },
+    "check_env": {
+      "rc": 0,
+      "seconds": 4.3
+    },
+    "resolve_splits": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "make_config": {
+      "rc": 0,
+      "seconds": 0.0
+    },
+    "prepare_data": {
+      "rc": 0,
+      "seconds": 172.6
+    },
+    "protect_prot_v2_tgt_zero_mid_test": {
+      "rc": 0,
+      "seconds": 5880.2
+    },
+    "merge_prot_v2_tgt_zero_mid_test": {
+      "rc": 0,
+      "seconds": 0.7
+    },
+    "tgt_v2_tgt_zero_mid": {
+      "rc": 0,
+      "seconds": 5570.2
+    }
+  },
+  "params": {
+    "smoke": false,
+    "final_yaml": ""
+  },
+  "ok": true,
+  "failed_steps": []
+}

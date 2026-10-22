@@ -1,4 +1,39 @@
 {
+  "psr_vs_psnr": {
+    "files": [
+      "psr_vs_psnr.png",
+      "psr_vs_psnr.pdf"
+    ],
+    "synthetic": false
+  },
+  "psr_by_purifier": {
+    "files": [
+      "psr_by_purifier.png",
+      "psr_by_purifier.pdf"
+    ],
+    "synthetic": false
+  },
+  "per_editor": {
+    "files": [
+      "per_editor.png",
+      "per_editor.pdf"
+    ],
+    "synthetic": false
+  },
+  "ablation": {
+    "files": [
+      "ablation.png",
+      "ablation.pdf"
+    ],
+    "synthetic": false
+  },
+  "sim_distributions": {
+    "files": [
+      "sim_distributions.png",
+      "sim_distributions.pdf"
+    ],
+    "synthetic": false
+  },
   "before_after": {
     "files": [
       "before_after.png",
@@ -17,5 +52,15 @@
       "failure_gallery.pdf"
     ],
     "synthetic": false
+  },
+  "optuna_history": {
+    "files": [
+      "optuna_history.png",
+      "optuna_history.pdf"
+    ],
+    "synthetic": false
+  },
+  "human_study": {
+    "skipped": "no human-study summary (E10 not run)"
   }
 }

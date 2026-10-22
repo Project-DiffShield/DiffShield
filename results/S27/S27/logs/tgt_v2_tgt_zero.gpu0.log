@@ -1,0 +1,185 @@
+[jobs] eval_v2_tgt_zero_TGT: start
+[runner] 650 jobs, 650 to do (0 already complete)
+download_path: /root/.insightface/models/buffalo_l
+Downloading /root/.insightface/models/buffalo_l.zip from https://github.com/deepinsight/insightface/releases/download/v0.7/buffalo_l.zip...
+  0%|          | 0/281857 [00:00<?, ?KB/s]  2%|▏         | 6008/281857 [00:00<00:04, 60057.72KB/s]  5%|▌         | 14930/281857 [00:00<00:03, 77205.20KB/s]  9%|▊         | 24335/281857 [00:00<00:03, 84869.00KB/s] 12%|█▏        | 32823/281857 [00:00<00:02, 84868.98KB/s] 15%|█▍        | 41569/281857 [00:00<00:02, 85796.53KB/s] 18%|█▊        | 50716/281857 [00:00<00:02, 87722.70KB/s] 22%|██▏       | 60833/281857 [00:00<00:02, 92117.55KB/s] 25%|██▌       | 70876/281857 [00:00<00:02, 94759.86KB/s] 29%|██▊       | 80725/281857 [00:00<00:02, 95922.66KB/s] 32%|███▏      | 90757/281857 [00:01<00:01, 97277.54KB/s] 36%|███▌      | 100699/281857 [00:01<00:01, 97932.00KB/s] 39%|███▉      | 110493/281857 [00:01<00:01, 92610.96KB/s] 43%|████▎     | 120445/281857 [00:01<00:01, 94620.03KB/s] 46%|████▋     | 130415/281857 [00:01<00:01, 96111.82KB/s] 50%|████▉     | 140322/281857 [00:01<00:01, 96984.49KB/s] 53%|█████▎    | 150386/281857 [00:01<00:01, 98067.88KB/s] 57%|█████▋    | 160215/281857 [00:01<00:01, 87616.48KB/s] 60%|██████    | 170226/281857 [00:01<00:01, 91054.21KB/s] 64%|██████▍   | 180543/281857 [00:01<00:01, 94472.88KB/s] 67%|██████▋   | 190141/281857 [00:02<00:00, 94037.39KB/s] 71%|███████   | 200077/281857 [00:02<00:00, 95575.05KB/s] 75%|███████▍  | 210098/281857 [00:02<00:00, 96927.85KB/s] 78%|███████▊  | 220040/281857 [00:02<00:00, 97659.06KB/s] 82%|████████▏ | 229849/281857 [00:02<00:00, 93555.38KB/s] 85%|████████▍ | 239268/281857 [00:02<00:00, 90239.30KB/s] 89%|████████▊ | 249549/281857 [00:02<00:00, 93801.15KB/s] 92%|█████████▏| 259805/281857 [00:02<00:00, 96323.87KB/s] 96%|█████████▌| 269994/281857 [00:02<00:00, 97946.13KB/s] 99%|█████████▉| 280162/281857 [00:02<00:00, 99044.00KB/s]100%|██████████| 281857/281857 [00:03<00:00, 93776.73KB/s]
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/1k3d68.onnx landmark_3d_68
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/2d106det.onnx landmark_2d_106
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/det_10g.onnx detection [1, 3, '?', '?'] 127.5 128.0
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+model ignore: /root/.insightface/models/buffalo_l/genderage.onnx genderage
+Applied providers: ['CUDAExecutionProvider', 'CPUExecutionProvider'], with options: {'CPUExecutionProvider': {}, 'CUDAExecutionProvider': {'sdpa_kernel': '0', 'use_tf32': '1', 'fuse_conv_bias': '0', 'prefer_nhwc': '0', 'tunable_op_max_tuning_duration_ms': '0', 'enable_skip_layer_norm_strict_mode': '0', 'tunable_op_tuning_enable': '0', 'tunable_op_enable': '0', 'use_ep_level_unified_stream': '0', 'device_id': '0', 'has_user_compute_stream': '0', 'gpu_external_empty_cache': '0', 'cudnn_conv_algo_search': 'EXHAUSTIVE', 'cudnn_conv1d_pad_to_nc1d': '0', 'gpu_mem_limit': '18446744073709551615', 'gpu_external_alloc': '0', 'gpu_external_free': '0', 'arena_extend_strategy': 'kNextPowerOfTwo', 'do_copy_in_default_stream': '1', 'enable_cuda_graph': '0', 'user_compute_stream': '0', 'cudnn_conv_use_max_workspace': '1'}}
+find model: /root/.insightface/models/buffalo_l/w600k_r50.onnx recognition ['None', 3, 112, 112] 127.5 127.5
+set det-size: (640, 640)
+[faces] insightface buffalo_l providers=['CUDAExecutionProvider', 'CPUExecutionProvider']
+/usr/local/lib/python3.13/dist-packages/diffusers/utils/deprecation_utils.py:23: FutureWarning: `torch_dtype` is deprecated and will be removed in version 1.0.0. Please use `dtype` instead.
+  deprecate("torch_dtype", "1.0.0", _TORCH_DTYPE_DEPRECATION_MESSAGE)
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 13 files:   0%|          | 0/13 [00:00<?, ?it/s]Fetching 13 files: 100%|██████████| 13/13 [00:00<00:00, 365.32it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  4.40it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:01,  1.90it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:   1%|          | 2/196 [00:00<00:12, 15.76it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1122.69it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:02<00:00,  1.72it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:02<00:00,  2.26it/s]
+/usr/local/lib/python3.13/dist-packages/huggingface_hub/utils/_validators.py:205: UserWarning: The `local_dir_use_symlinks` argument is deprecated and ignored in `hf_hub_download`. Downloading to a local directory does not use symlinks anymore.
+  warnings.warn(
+/kaggle/tmp/DiffShield/src/eval/purify_attacks.py:155: UserWarning: The given NumPy array is not writable, and PyTorch does not support non-writable tensors. This means writing to this tensor will result in undefined behavior. You may want to copy the array to protect its data or make it writable before converting it to a tensor. This type of warning will be suppressed for the rest of this program. (Triggered internally at /pytorch/torch/csrc/utils/tensor_numpy.cpp:213.)
+  x = torch.from_numpy(arr).permute(2, 0, 1).unsqueeze(0).float() / 127.5 - 1.0
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:00,  7.41it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  5.75it/s]Loading pipeline components...:  67%|██████▋   | 4/6 [00:01<00:00,  2.08it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][A
+Loading weights:  80%|███████▉  | 156/196 [00:00<00:00, 1555.65it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 1581.12it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  2.61it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  3.53it/s]
+image_encoder is not loaded since `image_encoder_folder=None` passed. You will not be able to use `ip_adapter_image` when calling the pipeline with IP-Adapter.Use `ip_adapter_image_embeds` to pass pre-generated image embedding instead.
+There are modules in UNet2DConditionModel that should be kept in float32: []. Casting directly with `to()` can lead to inconsistent results; set `torch_dtype` in `from_pretrained()` instead to keep these modules in float32.
+No LoRA keys associated to CLIPTextModel found with the prefix='text_encoder'. This is safe to ignore if LoRA state dict didn't originally have any CLIPTextModel related params. You can also try specifying `prefix=None` to resolve the warning. Otherwise, open an issue if you think it's unexpected: https://github.com/huggingface/diffusers/issues/new
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:208: UserWarning: The parameter 'pretrained' is deprecated since 0.13 and may be removed in the future, please use 'weights' instead.
+  warnings.warn(
+/usr/local/lib/python3.13/dist-packages/torchvision/models/_utils.py:223: UserWarning: Arguments other than a weight enum or `None` for 'weights' are deprecated since 0.13 and may be removed in the future. The current behavior is equivalent to passing `weights=VGG16_Weights.IMAGENET1K_V1`. You can also use `weights=VGG16_Weights.DEFAULT` to get the most up-to-date weights.
+  warnings.warn(msg)
+Loading weights:   0%|          | 0/590 [00:00<?, ?it/s]Loading weights:  33%|███▎      | 193/590 [00:00<00:00, 1886.10it/s]Loading weights:  65%|██████▍   | 382/590 [00:00<00:00, 931.88it/s] Loading weights:  85%|████████▍ | 500/590 [00:00<00:00, 943.24it/s]Loading weights: 100%|██████████| 590/590 [00:00<00:00, 848.39it/s]
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00, 18.19it/s]
+Loading weights:   0%|          | 0/196 [00:00<?, ?it/s][ALoading weights: 100%|██████████| 196/196 [00:00<00:00, 2095.99it/s]
+Loading pipeline components...:  83%|████████▎ | 5/6 [00:01<00:00,  3.46it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.86it/s]
+{
+  "run": {
+    "jobs": 650,
+    "executed": 650,
+    "rows": 1950
+  },
+  "summary": [
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "diffpure_0.1",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.12328673853247887,
+      "no_face_rate": 0.013333333333333334,
+      "mean_clip_i": 0.5649777927001317,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "diffpure_0.2",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.11368320395859577,
+      "no_face_rate": 0.006666666666666667,
+      "mean_clip_i": 0.5685748956600826,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "diffpure_0.3",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.10628948192112145,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.5673256381352743,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "downup_0.5",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.21573860628840819,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6228692271312077,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "jpeg_q50",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.20436550288771588,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6218145749966303,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "jpeg_q75",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.19528018858283755,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.6137775015830994,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "none",
+      "editor": "ipadapter_faceid",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.6377969048420589,
+      "no_face_rate": 0.013333333333333334,
+      "mean_clip_i": 0.6936761810382208,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.3",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.4174638380606969,
+      "no_face_rate": 0.0,
+      "mean_clip_i": 0.7271308779716493,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 450,
+      "mean_arcface_sim": 0.13557672240022853,
+      "no_face_rate": 0.015555555555555555,
+      "mean_clip_i": 0.5660705474350187,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "none",
+      "editor": "sd15_img2img",
+      "strength": "0.75",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.023262309216273317,
+      "no_face_rate": 0.04,
+      "mean_clip_i": 0.49117418328921,
+      "mean_edit_lpips": NaN
+    },
+    {
+      "method": "v2_tgt_zero",
+      "purifier": "vae_rt",
+      "editor": "sd15_img2img",
+      "strength": "0.55",
+      "n_images": 50,
+      "n_edits": 150,
+      "mean_arcface_sim": 0.13068459988959752,
+      "no_face_rate": 0.013333333333333334,
+      "mean_clip_i": 0.5616167312860489,
+      "mean_edit_lpips": NaN
+    }
+  ]
+}

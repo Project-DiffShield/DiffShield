@@ -1,0 +1,13 @@
+[17:53:04] run prot_v2_tgt_zero_hi_test method=v2_tgt_zero_hi device=cuda backend=real shard=(1, 2) git=0b36407 dirty=False
+[17:53:04] 50 images in this shard (100 total), 0 already done
+[18:03:48] [5/50] 11318 psnr=39.57 ssim=0.9658 gpu_s=113.1
+[18:13:47] [10/50] 13117 psnr=39.91 ssim=0.9574 gpu_s=123.0
+[18:23:25] [15/50] 18621 psnr=40.22 ssim=0.9674 gpu_s=117.2
+[18:33:17] [20/50] 22085 psnr=40.35 ssim=0.9690 gpu_s=117.5
+[18:43:06] [25/50] 25877 psnr=40.35 ssim=0.9625 gpu_s=118.4
+[18:52:59] [30/50] 3463 psnr=40.22 ssim=0.9542 gpu_s=124.8
+[19:02:53] [35/50] 4535 psnr=40.33 ssim=0.9593 gpu_s=116.5
+[19:12:56] [40/50] 5464 psnr=39.66 ssim=0.9622 gpu_s=128.2
+[19:23:06] [45/50] 7603 psnr=40.56 ssim=0.9730 gpu_s=128.2
+[19:33:03] [50/50] 9954 psnr=40.62 ssim=0.9582 gpu_s=115.4
+[19:33:04] done
