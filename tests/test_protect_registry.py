@@ -102,3 +102,71 @@ def test_ablation_term_selection_reaches_the_loop():
     assert info["purifier_counts"]
     _, info = build_v2_protector("abl_no_pur", full_cfg(), "cpu", comps).protect(make_image(), 0)
     assert list(info["purifier_counts"]) == ["none"]
+
+
+# ---- Step 1 (docs/STEP1_PLAN.md 2.2): v2_next ---------------------------------------------------------------------
+def test_v2_next_defaults_reproduce_v2_tgt_zero_mid():
+    from src.protect.purifiers import build_mixture
+
+    c = full_cfg()
+    a, b = resolve_cfg("v2_tgt_zero_mid", c), resolve_cfg("v2_next", c)
+    la, lb = dict(a["loss"]), dict(b["loss"])
+    assert lb.pop("den_t_range") is None and "den_t_range" not in la
+    assert la == lb                                                      # alpha .55, beta, gamma, eta 0, target, ...
+    for key in ("budget", "eot", "protect"):
+        assert a[key] == b[key], key
+    assert b["loss"]["alpha"] == 0.55 and b["loss"]["eta"] == 0.0 and b["eot"]["k_draws"] == 4
+    assert b["budget"]["step_255"] == 1.0 and not b["protect"]["ensemble"]["enabled"]
+    assert not b["loss"]["anti_purify"]["enabled"]
+    assert b["purifiers_train"] == ["jpeg", "downup", "vae_roundtrip", "sd_onestep"]
+    pr = b["purifier_train_probs"]
+    assert pr == {"jpeg": 0.35, "downup": 0.35, "vae_roundtrip": 0.3, "sd_onestep": 0.0}
+    assert pr["sd_onestep"] == 0
+    # same drawn mixture, and sd_onestep is not even built
+    ma, mb = build_mixture(a, make_models()), build_mixture(b, make_models())
+    assert ma.names == mb.names == ["jpeg", "downup", "vae_roundtrip"] and "sd_onestep" not in mb.purifiers
+    assert torch.equal(ma.probs, mb.probs)
+    assert build_v2_protector("v2_next", c, "cpu").params == build_v2_protector("v2_tgt_zero_mid", c, "cpu").params
+
+
+def test_v2_next_does_not_build_sd_onestep_at_p0_and_does_at_p_gt_0(monkeypatch):
+    from src.protect import purifiers as P
+
+    built = []
+    real = P.build_purifier
+    monkeypatch.setattr(P, "build_purifier", lambda n, cfg, models: (built.append(n), real(n, cfg, models))[1])
+    P.build_mixture(resolve_cfg("v2_next", full_cfg()), make_models())
+    assert "sd_onestep" not in built and sorted(built) == ["downup", "jpeg", "vae_roundtrip"]
+    built.clear()
+    mix = P.build_mixture(resolve_cfg("v2_next", full_cfg(methods={"v2_next": {"p_onestep": 0.3}})), make_models())
+    assert "sd_onestep" in built and "sd_onestep" in mix.purifiers
+
+
+def test_p_onestep_knob_scales_the_other_probabilities():
+    from src.protect.v2_registry import probs_from_p_onestep
+
+    r = resolve_cfg("v2_next", full_cfg(methods={"v2_next": {"p_onestep": 0.3}}))
+    pr = r["purifier_train_probs"]
+    assert abs(sum(pr.values()) - 1.0) < 1e-12 and pr["sd_onestep"] == 0.3
+    assert abs(pr["jpeg"] - 0.245) < 1e-12 and abs(pr["downup"] - 0.245) < 1e-12 and abs(pr["vae_roundtrip"] - 0.21) < 1e-12
+    assert probs_from_p_onestep(1.0)["jpeg"] == 0.0
+    for bad in (-0.1, 1.1):
+        with pytest.raises(ValueError):
+            probs_from_p_onestep(bad)
+
+
+def test_v2_next_same_output_as_v2_tgt_zero_mid_and_tuned_layer():
+    comps = {"models": make_models(), "sem": TinySem()}
+    cfg = full_cfg()
+    cfg["protect"] = {"quantize": True}
+    x = make_image()
+    xa, _ = build_v2_protector("v2_tgt_zero_mid", cfg, "cpu", comps).protect(x, seed=3)
+    xb, info = build_v2_protector("v2_next", cfg, "cpu", comps).protect(x, seed=3)
+    assert torch.equal(xa, xb) and "sd_onestep" not in info["purifier_counts"]
+    # v2_next_tuned = v2_next + methods.v2_next_tuned (what tune_optuna writes to final_candidate.yaml)
+    tuned = {"methods": {"v2_next_tuned": {"p_onestep": 0.15, "loss": {"alpha": 1.0, "eta": 0.1, "den_t_range": [300, 700]}}}}
+    t = resolve_cfg("v2_next_tuned", full_cfg(**tuned))
+    assert t["loss"]["alpha"] == 1.0 and t["loss"]["gamma"] == 60.52658429696642 and t["loss"]["den_t_range"] == [300, 700]
+    assert t["purifier_train_probs"]["sd_onestep"] == 0.15 and t["method_name"] == "v2_next_tuned"
+    p = build_v2_protector("v2_next_tuned", full_cfg(**tuned), "cpu")
+    assert p.params.t_range == (300, 700) and p.params.den_reuse_aux is False

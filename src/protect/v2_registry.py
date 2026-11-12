@@ -29,9 +29,10 @@ import torch
 from .pgd import params_from_cfg, pgd_protect
 
 PRESETS = ("v2_cheap", "v2_main", "v2_antipure", "v2_final", "abl_vis_only", "abl_den_only",
-           "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8", "v2_tgt_zero", "v2_tgt_zero_mid", "v2_tgt_zero_hi", "v2_tgt_gray")
+           "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8", "v2_tgt_zero", "v2_tgt_zero_mid", "v2_tgt_zero_hi", "v2_tgt_gray", "v2_next")
 _CHAIN = {
     "v2_final": ["v2_final_default", "v2_final"],
+    "v2_next_tuned": ["v2_next", "v2_next_tuned"],   # methods.v2_next_tuned = tune_optuna final_candidate.yaml
     "eps2": ["v2_final_default", "v2_final", "eps2"],
     "eps6": ["v2_final_default", "v2_final", "eps6"],
     "eps8": ["v2_final_default", "v2_final", "eps8"],
@@ -72,6 +73,22 @@ def _part_file() -> dict:
         return {}
 
 
+ONESTEP_BASE_PROBS = {"jpeg": 0.35, "downup": 0.35, "vae_roundtrip": 0.30}
+
+
+def probs_from_p_onestep(p_onestep: float) -> dict:
+    """Training-mixture probabilities from the single knob ``p_onestep`` (v2_next):
+    jpeg : downup : vae_roundtrip = 0.35 : 0.35 : 0.30 scaled to 1 - p_onestep, sd_onestep = p_onestep.
+    p_onestep = 0 gives exactly {jpeg 0.35, downup 0.35, vae_roundtrip 0.3, sd_onestep 0.0}
+    (= v2_tgt_zero_mid's mixture; sd_onestep then is neither drawn nor built)."""
+    p = float(p_onestep)
+    if not 0.0 <= p <= 1.0:
+        raise ValueError(f"p_onestep must be in [0, 1], got {p_onestep!r}")
+    out = {k: v * (1.0 - p) for k, v in ONESTEP_BASE_PROBS.items()}
+    out["sd_onestep"] = p
+    return out
+
+
 def resolve_cfg(name: str, cfg) -> dict:
     """Merged config dict for preset ``name`` (see module doc)."""
     cfg = _as_dict(cfg)
@@ -86,6 +103,8 @@ def resolve_cfg(name: str, cfg) -> dict:
     for layer in chain:
         if layer in methods:
             out = deep_merge(out, methods[layer])
+    if out.get("p_onestep") is not None:       # v2_next: one knob drives the mixture (overrides purifier_train_probs)
+        out["purifier_train_probs"] = probs_from_p_onestep(out["p_onestep"])
     out["method_name"] = name
     return out
 

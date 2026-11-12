@@ -68,6 +68,10 @@ DEFAULT_SPEC = {
 PROTECTOR_COMPONENTS = None   # tests inject tiny stand-in models here (v2_registry `components`)
 IMAGE_SIZE = 512
 HAND_SET = {"alpha": 0.27, "eta": 0.27, "beta": 0.90, "gamma": 60.5, "antipure": False, "ap_w": 0.5}
+# Step-1 anchor = the current final method v2_tgt_zero_mid (== v2_next defaults; docs/STEP1_PLAN.md 2.3)
+V2NEXT_ANCHOR = {"alpha": 0.55, "beta": 0.9023875567667267, "gamma": 60.52658429696642, "den_on": False,
+                 "p_onestep": 0.0}
+DEN_T_CHOICES = {"50-300": [50, 300], "300-700": [300, 700]}
 PSNR_MIN, SSIM_MIN = 38.0, 0.95
 
 
@@ -102,6 +106,8 @@ def load_val_images(list_path: str, image_dir: str, n: int, size: int = 512):
     from PIL import Image
 
     names = [ln.strip() for ln in open(list_path, encoding="utf-8") if ln.strip() and not ln.startswith("#")]
+    if not n:        # 0 / None = every name in the list
+        n = len(names)
     out = []
     for nm in names[:n]:
         pth = Path(image_dir) / nm
@@ -152,7 +158,51 @@ def suggest(trial, tune_id: bool = False) -> dict:
     return p
 
 
+def suggest_v2next(trial) -> dict:
+    """Step-1 search space (docs/STEP1_PLAN.md 2.3): alpha, beta, gamma, optional denoiser term, one-step share."""
+    p = {
+        "alpha": trial.suggest_float("alpha", 0.1, 2.0, log=True),
+        "beta": trial.suggest_float("beta", 0.0, 1.5),
+        "gamma": trial.suggest_float("gamma", 20.0, 150.0, log=True),
+        "den_on": trial.suggest_categorical("den_on", [False, True]),
+    }
+    if p["den_on"]:
+        p["eta"] = trial.suggest_float("eta", 0.01, 1.0, log=True)
+        p["den_t"] = trial.suggest_categorical("den_t", list(DEN_T_CHOICES))
+    else:
+        p["eta"], p["den_t"] = 0.0, None
+    p["p_onestep"] = trial.suggest_categorical("p_onestep", [0.0, 0.15, 0.3])
+    p["antipure"], p["ap_w"], p["lambda_id"] = False, 0.5, 0.0
+    return p
+
+
+def complete_v2next(p: dict) -> dict:
+    """Fill the conditional / fixed entries of a v2next parameter dict (trial.params omits inactive ones)."""
+    q = dict(p)
+    q["den_on"] = bool(q.get("den_on", False))
+    if not q["den_on"]:
+        q["eta"], q["den_t"] = 0.0, None
+    q.setdefault("p_onestep", 0.0)
+    q.update(antipure=False, ap_w=0.5, lambda_id=0.0)
+    return q
+
+
+def is_v2next(p: dict) -> bool:
+    return "p_onestep" in p or "den_on" in p
+
+
 def params_to_override(p: dict, iters=None, k=None) -> dict:
+    if is_v2next(p):
+        p = complete_v2next(p)
+        ov = {"p_onestep": float(p["p_onestep"]),
+              "loss": {"alpha": p["alpha"], "eta": p["eta"], "beta": p["beta"], "gamma": p["gamma"],
+                       "lambda_id": 0.0, "den_t_range": (list(DEN_T_CHOICES[p["den_t"]]) if p["den_on"] else None),
+                       "anti_purify": {"enabled": False, "w_hf": 0.5, "w_mono": 0.5}}}
+        if iters is not None:
+            ov["budget"] = {"iters": int(iters)}
+        if k is not None:
+            ov["eot"] = {"k_draws": int(k)}
+        return ov
     ov = {"loss": {"alpha": p["alpha"], "eta": p["eta"], "beta": p["beta"], "gamma": p["gamma"],
                    "lambda_id": p.get("lambda_id", 0.0),
                    "anti_purify": {"enabled": bool(p["antipure"]), "w_hf": p["ap_w"], "w_mono": p["ap_w"]}}}
@@ -163,14 +213,16 @@ def params_to_override(p: dict, iters=None, k=None) -> dict:
     return ov
 
 
-def evaluate_params(p, *, cfg, images, device, study, score_fn, spec, iters, k, protector_cache=None):
-    """Protect all images with params p, score them. Returns dict with psr, psnr, ssim, per, time."""
+def evaluate_params(p, *, cfg, images, device, study, score_fn, spec, iters, k, protector_cache=None,
+                    base_method="v2_final"):
+    """Protect all images with params p, score them. Returns dict with psr, psnr, ssim, per, time
+    (psnr/ssim = means; psnr_min/ssim_min and the per-photo lists psnr_each/ssim_each too)."""
     from src.protect.v2_registry import build_v2_protector, deep_merge
 
     run_cfg = deep_merge(cfg, params_to_override(p, iters, k))
-    # the override must beat both the tuned layer and the default: pass it via methods.v2_final
-    run_cfg["methods"] = deep_merge(run_cfg.get("methods") or {}, {"v2_final": params_to_override(p, iters, k)})
-    prot = build_v2_protector("v2_final", run_cfg, device, PROTECTOR_COMPONENTS)
+    # the override must beat both the tuned layer and the default: pass it via methods.<base_method>
+    run_cfg["methods"] = deep_merge(run_cfg.get("methods") or {}, {base_method: params_to_override(p, iters, k)})
+    prot = build_v2_protector(base_method, run_cfg, device, PROTECTOR_COMPONENTS)
     sources, outs, psnrs, ssims, t0 = [], [], [], [], time.time()
     for name, im in images:
         x = pil_to_tensor(im, device)
@@ -184,11 +236,76 @@ def evaluate_params(p, *, cfg, images, device, study, score_fn, spec, iters, k, 
     sc = score_fn(sources, outs, spec=sp, device=device)
     return {"psr": float(sc["psr"]), "per": sc.get("per", {}), "psnr": sum(psnrs) / len(psnrs),
             "ssim": sum(ssims) / len(ssims), "psnr_min": min(psnrs), "ssim_min": min(ssims),
+            "psnr_each": list(psnrs), "ssim_each": list(ssims),
             "t_protect_s": t_prot, "t_total_s": time.time() - t0}
 
 
 def constraints(psnr: float, ssim: float):
     return [PSNR_MIN - psnr, SSIM_MIN - ssim]   # <= 0 means feasible
+
+
+def constraints_per_photo(psnrs, ssims):
+    """Every photo must pass: [38 - min PSNR, 0.95 - min SSIM] (<= 0 means feasible)."""
+    return [PSNR_MIN - min(psnrs), SSIM_MIN - min(ssims)]
+
+
+def trial_constraints(mode: str, res: dict):
+    if mode == "per_photo":
+        return constraints_per_photo(res["psnr_each"], res["ssim_each"])
+    return constraints(res["psnr"], res["ssim"])
+
+
+def n_violations(psnrs, ssims) -> int:
+    """Number of photos with PSNR < 38 or SSIM < 0.95."""
+    return sum(1 for a, b in zip(psnrs, ssims) if a < PSNR_MIN or b < SSIM_MIN)
+
+
+def parse_editors(items):
+    """['sd15_img2img:0.55', 'ipadapter_faceid'] -> [{'name','strength'}, {'name'}]"""
+    out = []
+    for it in items:
+        name, _, st = it.partition(":")
+        out.append({"name": name, "strength": float(st)} if st else {"name": name})
+    return out
+
+
+def build_spec(args) -> dict:
+    spec = dict(DEFAULT_SPEC, seeds=list(args.edit_seeds))
+    if getattr(args, "purifiers", None):
+        spec["purifiers"] = list(args.purifiers)
+    if getattr(args, "editors", None):
+        spec["editors"] = parse_editors(args.editors)
+    return spec
+
+
+def decide(results: dict, anchor_key: str) -> dict:
+    """Pre-registered decision rule (docs/STEP1_PLAN.md section 3): the best confirmed non-anchor candidate
+    replaces the current final method only if (a) zero per-photo invisibility violations on the confirm photos
+    and (b) its confirm PSR >= the anchor's confirm PSR. Otherwise the current final method stays."""
+    anchor = results.get(anchor_key)
+    cand = {k: v for k, v in results.items() if k != anchor_key}
+    summary = {k: {"psr": v["psr"], "n_violations": v.get("n_violations"), "params": v.get("params")}
+               for k, v in results.items()}
+    d = {"rule": "winner replaces the current final iff zero per-photo violations (PSNR<38 or SSIM<0.95) and "
+                 "confirm PSR >= anchor confirm PSR", "anchor_key": anchor_key,
+         "anchor_psr": None if anchor is None else anchor["psr"], "candidates": summary,
+         "accepted": False, "winner": None, "winner_psr": None, "reason": None}
+    if anchor is None:
+        d["reason"] = "anchor was not evaluated; current final method stays"
+        return d
+    ok = {k: v for k, v in cand.items() if v.get("n_violations") == 0}
+    if not ok:
+        d["reason"] = ("no confirmed candidate has zero per-photo invisibility violations; "
+                       "the re-tune did not beat the current final")
+        return d
+    best = max(ok, key=lambda k: ok[k]["psr"])
+    d["winner"], d["winner_psr"] = best, ok[best]["psr"]
+    if ok[best]["psr"] >= anchor["psr"]:
+        d["accepted"], d["reason"] = True, f"{best} has zero violations and psr >= anchor psr"
+    else:
+        d["reason"] = (f"best violation-free candidate {best} has psr below the anchor; "
+                       "the re-tune did not beat the current final")
+    return d
 
 
 class HarnessScorer:
@@ -282,18 +399,25 @@ def search(args, cfg, score_fn):
     import optuna
 
     study = make_study(args)
+    v2n = args.space == "v2next"
     if n_started(study) == 0:
-        study.enqueue_trial({**HAND_SET, **({"lambda_id": 0.0} if args.tune_id else {})}, skip_if_exists=True)
+        if v2n:
+            study.enqueue_trial(dict(V2NEXT_ANCHOR), skip_if_exists=True)
+        else:
+            study.enqueue_trial({**HAND_SET, **({"lambda_id": 0.0} if args.tune_id else {})}, skip_if_exists=True)
     images = load_val_images(args.val_list, args.image_dir, args.n_images, IMAGE_SIZE)
-    spec = dict(DEFAULT_SPEC, seeds=list(args.edit_seeds))
+    spec = build_spec(args)
 
     def objective(trial):
-        p = suggest(trial, args.tune_id)
+        p = suggest_v2next(trial) if v2n else suggest(trial, args.tune_id)
         res = evaluate_params(p, cfg=cfg, images=images, device=args.device, study=args.study,
-                              score_fn=score_fn, spec=spec, iters=args.iters, k=args.k_draws)
-        trial.set_user_attr("constraints", constraints(res["psnr"], res["ssim"]))
+                              score_fn=score_fn, spec=spec, iters=args.iters, k=args.k_draws,
+                              base_method=args.base_method)
+        trial.set_user_attr("constraints", trial_constraints(args.constraint, res))
         for k in ("psnr", "ssim", "psnr_min", "ssim_min", "t_protect_s", "t_total_s"):
             trial.set_user_attr(k, res[k])
+        trial.set_user_attr("psnr_each", res["psnr_each"])
+        trial.set_user_attr("ssim_each", res["ssim_each"])
         trial.set_user_attr("per", res["per"])
         trial.set_user_attr("worker", args.worker_id)
         trial.set_user_attr("feasible", all(c <= 0 for c in trial.user_attrs["constraints"]))
@@ -319,30 +443,59 @@ def feasible_complete(study):
 
 
 def confirm(args, cfg, score_fn, study):
-    """Re-run the top-k feasible trials and the hand-set default on the full val set with the final
-    protection settings; write results + a final.yaml candidate (NOT copied into config/parts)."""
+    """Re-run the top-k feasible trials and the hand-set default / anchor on the confirmation photos with the
+    final protection settings; write results + a final.yaml candidate (NOT copied into config/parts).
+    --space v2next: per-photo PSNR/SSIM are recorded, the pre-registered decision rule (``decide``) writes
+    decision.json and, only if the winner is accepted, final_candidate.yaml under methods.v2_next_tuned."""
+    import yaml
+
+    v2n = args.space == "v2next"
     out_dir = Path(args.out_dir) / args.study
     out_dir.mkdir(parents=True, exist_ok=True)
-    images = load_val_images(args.val_list, args.image_dir, args.confirm_images, IMAGE_SIZE)
-    spec = dict(DEFAULT_SPEC, seeds=list(args.edit_seeds))
+    images = load_val_images(args.confirm_list or args.val_list, args.image_dir, args.confirm_images, IMAGE_SIZE)
+    spec = build_spec(args)
     top = feasible_complete(study)[: args.confirm_top]
-    cands = [(f"trial_{t.number}", {**HAND_SET, **t.params}) for t in top]
+    norm = complete_v2next if v2n else (lambda q: q)
+    base = dict(V2NEXT_ANCHOR) if v2n else dict(HAND_SET)
+    cands = [(f"trial_{t.number}", norm({**base, **t.params})) for t in top]
     if not any(t.number == 0 for t in top):
-        cands.append(("hand_set", dict(HAND_SET)))
+        cands.append(("hand_set", norm(dict(base))))
     results = {}
     rfile = out_dir / "confirm.json"
     if rfile.exists():
         results = json.load(open(rfile))
+    names = [n for n, _ in images]
     for name, p in cands:
         if name in results:
             continue
         r = evaluate_params(p, cfg=cfg, images=images, device=args.device, study=args.study, score_fn=score_fn,
-                            spec=spec, iters=args.confirm_iters, k=args.confirm_k)
+                            spec=spec, iters=args.confirm_iters, k=args.confirm_k, base_method=args.base_method)
         r["params"] = p
-        r["feasible"] = r["psnr"] >= PSNR_MIN and r["ssim"] >= SSIM_MIN
+        r["per_photo"] = {n: {"psnr": a, "ssim": b} for n, a, b in zip(names, r["psnr_each"], r["ssim_each"])}
+        r["n_violations"] = n_violations(r["psnr_each"], r["ssim_each"])
+        r["feasible_mean"] = r["psnr"] >= PSNR_MIN and r["ssim"] >= SSIM_MIN
+        r["feasible_per_photo"] = r["n_violations"] == 0
+        r["feasible"] = r["feasible_per_photo"] if args.constraint == "per_photo" else r["feasible_mean"]
         results[name] = r
         json.dump(results, open(rfile, "w"), indent=1)
-        print(f"confirm {name}: psr={r['psr']:.4f} psnr={r['psnr']:.2f} ssim={r['ssim']:.4f} feasible={r['feasible']}")
+        print(f"confirm {name}: psr={r['psr']:.4f} psnr={r['psnr']:.2f} ssim={r['ssim']:.4f} feasible={r['feasible']} "
+              f"violations={r['n_violations']}")
+    if v2n:
+        anchor_p = complete_v2next(V2NEXT_ANCHOR)
+        anchor_key = next((k for k, v in results.items() if complete_v2next(v["params"]) == anchor_p), "hand_set")
+        dec = decide(results, anchor_key)
+        json.dump(dec, open(out_dir / "decision.json", "w"), indent=1)
+        if dec["accepted"]:
+            ov = params_to_override(results[dec["winner"]]["params"])
+            with open(out_dir / "final_candidate.yaml", "w", encoding="utf-8") as f:
+                f.write(f"# candidate (methods.v2_next_tuned): {dec['winner']}, confirmed on {len(images)} photos; "
+                        f"psr={dec['winner_psr']} vs anchor psr={dec['anchor_psr']}\n")
+                yaml.safe_dump({"methods": {"v2_next_tuned": ov}}, f, sort_keys=False)
+            print(f"decision: ACCEPT {dec['winner']} (psr {dec['winner_psr']:.4f} >= anchor {dec['anchor_psr']:.4f}); "
+                  f"wrote {out_dir / 'final_candidate.yaml'}")
+        else:
+            print(f"decision: KEEP current final ({dec['reason']})")
+        return results
     ok = {k: v for k, v in results.items() if v["feasible"]}
     if not ok:
         print("no confirmed candidate satisfies PSNR>=38 and SSIM>=0.95; no final.yaml candidate written")
@@ -350,8 +503,6 @@ def confirm(args, cfg, score_fn, study):
     best = max(ok, key=lambda k: ok[k]["psr"])
     p = ok[best]["params"]
     ov = params_to_override(p)
-    import yaml
-
     with open(out_dir / "final_candidate.yaml", "w", encoding="utf-8") as f:
         f.write(f"# candidate for config/parts/final.yaml ({best}; confirmed on {args.confirm_images} val images; "
                 f"hand-set psr={results.get('hand_set', results.get('trial_0', {})).get('psr')})\n")
@@ -370,7 +521,17 @@ def main(argv=None):
     ap.add_argument("--iters", type=int, default=20)
     ap.add_argument("--k-draws", type=int, default=2)
     ap.add_argument("--edit-seeds", type=int, nargs="+", default=[1])
-    ap.add_argument("--val-list", default="data/splits/val.txt")
+    ap.add_argument("--val-list", "--image-list", dest="val_list", default="data/splits/val.txt",
+                    help="photo list for the search (--n-images 0 = all names in it)")
+    ap.add_argument("--base-method", default=None,
+                    help="preset built and overridden (override goes into methods.<NAME>); default v2_final, "
+                         "or v2_next with --space v2next")
+    ap.add_argument("--space", choices=["v1final", "v2next"], default="v1final", help="search space")
+    ap.add_argument("--constraint", choices=["mean", "per_photo"], default="mean",
+                    help="PSNR>=38 / SSIM>=0.95 on the mean over photos (default) or on every photo")
+    ap.add_argument("--purifiers", nargs="+", default=None, help="override DEFAULT_SPEC purifiers (harness names)")
+    ap.add_argument("--editors", nargs="+", default=None, help="override DEFAULT_SPEC editors: name or name:strength")
+    ap.add_argument("--confirm-list", default=None, help="photo list for the confirm stage (default: --val-list)")
     ap.add_argument("--image-dir", default="data/images")
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--worker-id", default="w1")
@@ -381,7 +542,8 @@ def main(argv=None):
     ap.add_argument("--psr-threshold", type=float, default=None, help="ArcFace-sim PSR threshold from E0 (recommended)")
     ap.add_argument("--stub-score", action="store_true", help="plumbing test only: psr=0.0 stub scorer")
     ap.add_argument("--confirm-top", type=int, default=0, help=">0: run the confirmation stage instead of the search")
-    ap.add_argument("--confirm-images", type=int, default=20)
+    ap.add_argument("--confirm-images", type=int, default=None,
+                    help="default 20 (0 = all when --confirm-list is given)")
     ap.add_argument("--confirm-iters", type=int, default=None, help="default: resolved v2_final budget.iters")
     ap.add_argument("--confirm-k", type=int, default=None, help="default: resolved v2_final eot.k_draws")
     ap.add_argument("--out-dir", default="results/optuna")
@@ -389,6 +551,10 @@ def main(argv=None):
     args = ap.parse_args(argv)
     global IMAGE_SIZE
     IMAGE_SIZE = args.image_size
+    if args.base_method is None:
+        args.base_method = "v2_next" if args.space == "v2next" else "v2_final"
+    if args.confirm_images is None:
+        args.confirm_images = 0 if args.confirm_list else 20
 
     if args.storage.startswith("sqlite:///"):
         Path(args.storage[len("sqlite:///"):]).parent.mkdir(parents=True, exist_ok=True)

@@ -50,6 +50,7 @@ class PGDParams:
     w_mono: float = 0.5
     loss_scale: float = 1.0
     t_range: tuple = (50, 300)
+    den_reuse_aux: bool = True           # False when loss.den_t_range differs from the sd_onestep range
     quantize: bool = True
     loss_norm: dict = field(default_factory=dict)
 
@@ -59,6 +60,11 @@ def params_from_cfg(cfg: dict) -> PGDParams:
     ap = l.get("anti_purify") or {}
     os_ = ((cfg.get("purifier_train_params") or {}).get("sd_onestep")) or {}
     d = PGDParams()
+    os_range = (int(os_.get("t_min", 50)), int(os_.get("t_max", 300)))
+    den_rng = l.get("den_t_range")
+    t_range = tuple(int(v) for v in den_rng) if den_rng else os_range
+    if len(t_range) != 2 or t_range[0] > t_range[1]:
+        raise ValueError(f"loss.den_t_range must be [lo, hi] with lo <= hi, got {den_rng!r}")
     return PGDParams(
         eps_255=float(b.get("eps_255", d.eps_255)), step_255=float(b.get("step_255", d.step_255)),
         iters=int(b.get("iters", d.iters)), k_draws=int(e.get("k_draws", d.k_draws)),
@@ -68,7 +74,7 @@ def params_from_cfg(cfg: dict) -> PGDParams:
         lambda_id=float(l.get("lambda_id", 0.0)),
         w_hf=float(ap.get("w_hf", d.w_hf)), w_mono=float(ap.get("w_mono", d.w_mono)),
         loss_scale=float((cfg.get("runtime") or {}).get("loss_scale", d.loss_scale)),
-        t_range=(int(os_.get("t_min", 50)), int(os_.get("t_max", 300))),
+        t_range=t_range, den_reuse_aux=(t_range == os_range),
         quantize=bool((cfg.get("protect") or {}).get("quantize", True)),
         loss_norm=(dict(cfg.get("loss_norm") or {}) if l.get("normalize_terms") else {}),
     )
@@ -119,6 +125,7 @@ def pgd_protect(x: torch.Tensor, models: SDModels, mixture: PurifierMixture, par
 
     hist = {k: [] for k in ("vis", "den", "sem", "str", "id", "hf", "mono")}
     counts: dict = {}
+    den_reused = den_fresh = 0
     zero_fracs, nonfinite = [], 0
 
     for _ in range(p.iters):
@@ -160,7 +167,11 @@ def pgd_protect(x: torch.Tensor, models: SDModels, mixture: PurifierMixture, par
             if p.alpha:
                 add(p.alpha, "vis", vis(xp, z_state))
             if p.eta:
-                add(p.eta, "den", l_den(models, xp, gen, aux, p.t_range))
+                if aux is not None and p.den_reuse_aux:
+                    den_reused += 1
+                else:
+                    den_fresh += 1
+                add(p.eta, "den", l_den(models, xp, gen, aux, p.t_range, reuse_aux=p.den_reuse_aux))
             if p.beta and sem is not None:
                 add(-p.beta, "sem", sem.sem_loss(xp))
             if antipure is not None and aux is not None:
@@ -196,6 +207,7 @@ def pgd_protect(x: torch.Tensor, models: SDModels, mixture: PurifierMixture, par
         "terms_init": {k: v[0] for k, v in hist.items() if v},
         "terms_final": {k: v[-1] for k, v in hist.items() if v},
         "purifier_counts": counts,
+        "den_t_range": list(p.t_range), "den_aux_reused": den_reused, "den_fresh_passes": den_fresh,
         "zero_grad_frac_mean": sum(zero_fracs) / max(1, len(zero_fracs)),
         "nonfinite_draws": nonfinite,
         "time_s": time.perf_counter() - t0,

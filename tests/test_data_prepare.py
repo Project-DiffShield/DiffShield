@@ -2,6 +2,7 @@ import importlib.util
 import os
 import sys
 
+import pytest
 import numpy as np
 from PIL import Image
 
@@ -83,3 +84,24 @@ def test_main_end_to_end_no_cache(tmp_path):
     assert rc == 0
     assert (out / "manifest.csv").is_file() and (out / "messy_degradation.json").is_file()
     assert (out / "ae_pool" / "5.png").is_file()
+
+
+def test_tune_splits_plain_png_and_unknown_rejected(tmp_path):
+    root = tmp_path / "ds"
+    img = root / "CelebA-HQ-img"
+    make_jpgs(str(img), ["1.jpg", "2.jpg"])
+    (root / "CelebAMask-HQ-attribute-anno.txt").write_text("2\nA\n1.jpg 1\n2.jpg 1\n", encoding="utf-8")
+    sp = tmp_path / "splits"
+    sp.mkdir()
+    (sp / "tune_search.txt").write_text("1.jpg\n", encoding="utf-8")
+    (sp / "tune_confirm.txt").write_text("2.jpg\n", encoding="utf-8")
+    out = tmp_path / "out"
+    rc = PD.main(["--celebahq_root", str(root), "--splits_dir", str(sp), "--out_dir", str(out), "--no_cache",
+                  "--splits", "tune_search", "tune_confirm"])
+    assert rc == 0
+    got = np.asarray(Image.open(out / "tune_search" / "1.png"))
+    ref = np.asarray(Image.open(img / "1.jpg").convert("RGB").resize((512, 512), Image.BICUBIC))
+    assert np.array_equal(got, ref)            # no messy-style degradation
+    assert (out / "tune_confirm" / "2.png").is_file()
+    with pytest.raises(SystemExit):
+        PD.main(["--splits_dir", str(sp), "--out_dir", str(out), "--splits", "nonsense"])

@@ -114,6 +114,17 @@ methods:
     loss: {alpha: 0.2699475469647097, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0,
            target: {kind: gray, w_tgt: 1.0, w_dev: 0.0}}
     eot: {k_draws: 4}
+  # Step-1 re-tune base (docs/STEP1_PLAN.md 2.2). With the defaults below it reproduces v2_tgt_zero_mid exactly
+  # (same loss/budget/eot; p_onestep 0 => sd_onestep prob 0 => not drawn, not built). Knobs searched by
+  # scripts/tune_optuna.py --space v2next: loss.alpha/beta/gamma/eta, loss.den_t_range, p_onestep.
+  # p_onestep -> purifier_train_probs is derived in v2_registry.resolve_cfg (jpeg:downup:vae = .35:.35:.30 scaled to 1-p).
+  v2_next:
+    p_onestep: 0.0
+    budget: {step_255: 1.0}
+    purifiers_train: [jpeg, downup, vae_roundtrip, sd_onestep]
+    loss: {alpha: 0.55, beta: 0.9023875567667267, gamma: 60.52658429696642, eta: 0.0, lambda_id: 0.0, den_t_range: null,
+           target: {kind: zero, w_tgt: 1.0, w_dev: 0.0}}
+    eot: {k_draws: 4}
   # Hand-set starting point for v2_final (before Optuna). Tuned values arrive as methods.v2_final in
   # config/parts/final.yaml and are layered on top of this by the registry.
   v2_final_default:

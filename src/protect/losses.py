@@ -7,8 +7,9 @@ so L_vis, L_den are MAXIMISED, L_sem (1-cos) and L_str (1-SSIM) are MINIMISED, a
   L_vis  MSE between the VAE latent mean (UNSCALED, keeps v1's alpha scale) of the purified
          protected image and of the clean image (latent of the clean image computed once).
   L_den  MSE between true noise and the UNet's noise prediction on the noised latent of the purified
-         image, empty prompt, t ~ U[t_min, t_max]. If the drawn purifier is the one-step purifier its
-         own UNet pass is reused (aux), otherwise one extra UNet pass is made. Latents are SCALED
+         image, empty prompt, t ~ U[t_min, t_max] (``loss.den_t_range``; default = the sd_onestep range).
+         If the drawn purifier is the one-step purifier AND the ranges coincide its own UNet pass is
+         reused (aux), otherwise one extra UNet pass is made. Latents are SCALED
          (vae scaling factor from config) for the UNet (R1).
   L_sem  1 - cos(CLIP image embedding, text embedding of 'a potted plant'); optional (beta may be 0).
   L_str  1 - windowed SSIM(x, x_published), 11x11 Gaussian window sigma 1.5, fp32. It is computed on
@@ -31,9 +32,11 @@ def l_vis(models: SDModels, xp: torch.Tensor, z_clean: torch.Tensor) -> torch.Te
 
 
 def l_den(models: SDModels, xp: Optional[torch.Tensor], gen: torch.Generator, aux: Optional[dict] = None,
-          t_range: Sequence[int] = (50, 300)) -> torch.Tensor:
-    """Denoiser error. ``aux`` (from SDOneStepPurifier.forward_aux) is reused when given."""
-    if aux is not None:
+          t_range: Sequence[int] = (50, 300), reuse_aux: bool = True) -> torch.Tensor:
+    """Denoiser error. ``aux`` (from SDOneStepPurifier.forward_aux) is reused when given AND ``reuse_aux``
+    (the caller sets it False when the denoiser timestep range differs from the one-step purifier's, in
+    which case a fresh forward with t ~ U[t_range] on ``xp`` is made)."""
+    if aux is not None and reuse_aux:
         return F.mse_loss(aux["eps"], aux["noise"])
     z = models.encode_mean(xp, scaled=True)
     t = g_randint(t_range[0], t_range[1], gen, n=z.shape[0]).to(z.device)

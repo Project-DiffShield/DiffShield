@@ -244,3 +244,68 @@ def test_target_presets_resolve_and_use_the_target_loss():
         c = resolve_cfg(name, {})
         assert c["loss"]["target"]["kind"] in ("zero", "gray") and c["loss"]["eta"] == 0.0
         assert c["budget"]["step_255"] == 1.0           # eps comes from config.yaml (4)
+
+
+# ---- Step 1 (docs/STEP1_PLAN.md 2.1): decoupled denoiser timestep range ---------------------------------------
+def _den_cfg(den_t_range=None, iters=2, k=4):
+    cfg = base_cfg(iters=iters, k=k)
+    cfg["loss"].update(alpha=0.0, beta=0.0, eta=0.5)       # den-only so the counters are easy to read
+    cfg["purifier_train_params"] = {"sd_onestep": {"t_min": 50, "t_max": 300}}
+    if den_t_range is not None:
+        cfg["loss"]["den_t_range"] = den_t_range
+    return cfg
+
+
+def test_den_t_range_config_and_reuse_flag():
+    d = params_from_cfg(_den_cfg())
+    assert d.t_range == (50, 300) and d.den_reuse_aux is True                 # null -> old behaviour
+    e = params_from_cfg(_den_cfg([50, 300]))
+    assert e.t_range == (50, 300) and e.den_reuse_aux is True                 # equal to the one-step range -> reuse
+    f = params_from_cfg(_den_cfg([300, 700]))
+    assert f.t_range == (300, 700) and f.den_reuse_aux is False               # different -> always fresh
+    with pytest.raises(ValueError):
+        params_from_cfg(_den_cfg([700, 300]))
+
+
+def test_den_aux_reused_only_when_ranges_match_and_counted():
+    iters, k = 3, 4
+    (_, same), _ = run(_den_cfg(None, iters, k), sem=False)
+    n_os = same["purifier_counts"].get("sd_onestep", 0)
+    assert n_os > 0                                                          # the mixture drew the one-step purifier
+    assert same["den_aux_reused"] == n_os and same["den_aux_reused"] + same["den_fresh_passes"] == iters * k
+    assert same["den_t_range"] == [50, 300]
+    (_, eq), _ = run(_den_cfg([50, 300], iters, k), sem=False)
+    assert eq["den_aux_reused"] == eq["purifier_counts"]["sd_onestep"]
+    (_, diff), _ = run(_den_cfg([300, 700], iters, k), sem=False)
+    assert diff["den_aux_reused"] == 0 and diff["den_fresh_passes"] == iters * k   # always its own forward
+    assert diff["den_t_range"] == [300, 700]
+    (_, none), _ = run(_den_cfg(None, iters, k), sem=False, eta=0.0)
+    assert none["den_aux_reused"] == 0 and none["den_fresh_passes"] == 0           # no den term, nothing counted
+
+
+def test_l_den_reuse_aux_false_makes_a_fresh_forward_with_t_in_range(monkeypatch):
+    from src.protect.models import make_generator
+    from src.protect.purifiers import SDOneStepPurifier
+
+    m = make_models()
+    x = make_image().requires_grad_(True)
+    o = SDOneStepPurifier(m)
+    _, aux = o.forward_aux(x, make_generator(0))
+    seen = []
+    real = L.g_randint
+
+    def spy(lo, hi, gen, n=1):
+        t = real(lo, hi, gen, n=n)
+        seen.append((lo, hi, t.clone()))
+        return t
+
+    monkeypatch.setattr(L, "g_randint", spy)
+    reused = L.l_den(m, x, make_generator(1), aux, (300, 700), reuse_aux=True)
+    assert not seen and torch.allclose(reused, torch.nn.functional.mse_loss(aux["eps"], aux["noise"]))
+    for s in range(20):
+        fresh = L.l_den(m, x, make_generator(s), aux, (300, 700), reuse_aux=False)
+    assert len(seen) == 20
+    assert all((lo, hi) == (300, 700) and 300 <= int(t) <= 700 for lo, hi, t in seen)
+    assert not torch.allclose(fresh, torch.nn.functional.mse_loss(aux["eps"], aux["noise"]))
+    fresh.backward()
+    assert x.grad.abs().sum() > 0

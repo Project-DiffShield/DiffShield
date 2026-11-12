@@ -226,8 +226,13 @@ def build_mixture(cfg: dict, models: Optional[SDModels]) -> PurifierMixture:
     ``purifier_train_exclude`` (held-out names removed from the draw, default ['downup_heldout']).
     An empty ``purifiers_train`` gives an identity-only mixture (ablation abl_no_pur)."""
     names = list(cfg.get("purifiers_train") or [])
+    probs = cfg.get("purifier_train_probs")
+    # a purifier with probability 0 is never drawn (PurifierMixture drops it), so it is not built either
+    # (matters for sd_onestep when p_onestep = 0: nothing of it is instantiated)
+    if probs is not None:
+        names = [n for n in names if float(probs.get(n, 0.0)) > 0.0]
     purs = {n: build_purifier(n, cfg, models) for n in names}
-    return PurifierMixture(purs, cfg.get("purifier_train_probs"),
+    return PurifierMixture(purs, probs,
                            exclude=cfg.get("purifier_train_exclude", ["downup_heldout"]))
 
 

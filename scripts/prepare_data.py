@@ -3,7 +3,7 @@
 
     python scripts/prepare_data.py --celebahq_root /kaggle/input/<x> --splits_dir data/splits --out_dir /kaggle/working/data_v2
 
-For every file listed in data/splits/{test,messy,train,val,ae_pool}.txt:
+For every file listed in data/splits/{test,messy,train,val,ae_pool}.txt (and, only when asked via --splits, tune_search / tune_confirm.txt):
   * open the 1024 px CelebA-HQ jpg, resize to 512x512 with PIL BICUBIC (same resampling as v1), save LOSSLESS PNG
     (v1 re-saved its inputs as JPEG with PIL's default quality 75; v2 does not - all v1 numbers must be re-run on these PNGs
     for paired comparisons);
@@ -36,7 +36,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-SPLITS = ["test", "messy", "train", "val", "ae_pool"]
+SPLITS = ["test", "messy", "train", "val", "ae_pool"]          # default set (all must exist in --splits_dir)
+EXTRA_SPLITS = ["tune_search", "tune_confirm"]                 # opt-in via --splits; plain 512 px PNGs, no degradation
+KNOWN_SPLITS = SPLITS + EXTRA_SPLITS
 SIZE = 512
 MESSY_SCALE = (0.60, 0.85)
 MESSY_JPEG_Q = (50, 70)
@@ -140,12 +142,15 @@ def main(argv=None) -> int:
     ap.add_argument("--celebahq_root", default=None)
     ap.add_argument("--splits_dir", default=os.path.join(ROOT, "data", "splits"))
     ap.add_argument("--out_dir", required=True)
-    ap.add_argument("--splits", nargs="*", default=SPLITS)
+    ap.add_argument("--splits", nargs="*", default=SPLITS, help="any of: " + " ".join(KNOWN_SPLITS))
     ap.add_argument("--seed", type=int, default=2026)
     ap.add_argument("--cache_dir", default=None, help="default: <out_dir>/cache")
     ap.add_argument("--parsing_dir", default=None, help="CelebAMask-HQ-mask-anno dir (for inpaint masks)")
     ap.add_argument("--no_cache", action="store_true", help="only write the PNGs")
     a = ap.parse_args(argv)
+    bad = [x for x in a.splits if x not in KNOWN_SPLITS]
+    if bad:
+        ap.error(f"unknown split(s) {bad}; known: {KNOWN_SPLITS}")
 
     here = os.path.dirname(os.path.abspath(__file__))
     if here not in sys.path:

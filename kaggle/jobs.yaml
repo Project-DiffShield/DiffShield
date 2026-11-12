@@ -727,3 +727,73 @@ jobs:
           name: e9_eps8
           jobs:
             - {name: eval_eps8_E9, tier: E9, purifier: all, method: eps8, split: test}
+
+  # ================================================================================================
+  # Step 1 re-tune (docs/STEP1_PLAN.md, docs/TUNING_PROTOCOL.md): T01 picks the tuning photos, T02 searches, T03 confirms.
+  # Time limits below are planner guesses (UNVERIFIED) until a smoke run has been timed.
+  # ================================================================================================
+
+  T01:
+    title: T01 embed the CelebA-HQ pool (CLIP + ArcFace + attributes/pose) and select tune_search / tune_confirm by MMD-critic
+    accelerator: gpu_t4
+    params: {smoke: false, limit: 0, n_search: 28, n_confirm_protos: 8, n_confirm_crit: 4, n_random: 1000, n_cov_random: 200}
+    smoke_params: {limit: 600, n_search: 6, n_confirm_protos: 2, n_confirm_crit: 2, n_random: 50, n_cov_random: 20}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - name: prepare_pool_dir      # restores finished embedding chunks from an earlier session (RESUME_FROM)
+        run: ["{py}", -c, "import os, shutil; os.makedirs('{out}/pool', exist_ok=True); s = os.path.join('{resume_root}', 'pool'); shutil.copytree(s, '{out}/pool', dirs_exist_ok=True) if os.path.isdir(s) else None"]
+      - name: embed_pool
+        timeout_min: 480
+        allow_timeout: true
+        run: ["{py}", scripts/embed_pool.py, "{celebahq_args}", --out, "{out}/pool/pool_embeddings.npz", --work_dir,
+              "{out}/pool/chunks", --chunk, "2000", --limit, "{limit}", --config, "{cfg}"]
+      - name: select_tuning_photos   # reads only the frozen test/messy/ae_pool/v1_calib lists; writes the tune lists to {out}/splits
+        run: ["{py}", scripts/select_tuning_photos.py, --npz, "{out}/pool/pool_embeddings.npz", --splits_dir,
+              "{splits_dir}", --out_splits_dir, "{out}/splits", --report_dir, "{out}/reports",
+              --n_search, "{n_search}", --n_confirm_protos, "{n_confirm_protos}", --n_confirm_crit, "{n_confirm_crit}",
+              --n_random, "{n_random}", --n_cov_random, "{n_cov_random}", --force]
+
+  T02:
+    title: T02 Optuna search for v2_next on tune_search (per-photo invisibility constraint, 5 cleanups x 2 editors)
+    accelerator: gpu_t4x2
+    params: {smoke: false, tune_trials: 30, tune_images: 0, tune_iters: 20, tune_startup: 8, extra_args: []}
+    smoke_params: {tune_trials: 2, tune_images: 2, tune_iters: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [tune_search]}}
+      - name: prepare_optuna_dir      # restores the Optuna study from an earlier session (RESUME_FROM)
+        run: ["{py}", -c, "import os, shutil; os.makedirs('{out}/optuna', exist_ok=True); s = os.path.join('{resume_root}', 'optuna'); shutil.copytree(s, '{out}/optuna', dirs_exist_ok=True) if os.path.isdir(s) else None"]
+      - name: tune
+        workers: true
+        timeout_min: 600
+        allow_timeout: true
+        run: ["{py}", scripts/tune_optuna.py, --config, "{cfg}", --storage, "sqlite:///{out}/optuna/v2_next.db",
+              --study, v2_next, --base-method, v2_next, --space, v2next, --constraint, per_photo,
+              --image-list, "{splits_dir}/tune_search.txt", --image-dir, "{out}/data/tune_search",
+              --n-images, "{tune_images}", --iters, "{tune_iters}", --k-draws, "2", --edit-seeds, "1",
+              --purifiers, none, jpeg_q75, downup_0.5, vae_rt_sd15, diffpure_t0.2,
+              --editors, "sd15_img2img:0.55", ipadapter_faceid, --psr-threshold, "0.1005",
+              --n-trials, "{tune_trials}", --startup, "{tune_startup}", --out-dir, "{out}/optuna", --device, cuda,
+              "{extra_args}"]
+
+  T03:
+    title: T03 confirm the top 3 v2_next trials + the anchor on tune_confirm (full settings, edit seeds 1-3) and apply the decision rule
+    accelerator: gpu_t4x2
+    params: {smoke: false, confirm_top: 3, confirm_images: 0, extra_args: []}
+    smoke_params: {confirm_top: 1, confirm_images: 2, extra_args: ["--confirm-iters", "3", "--confirm-k", "1"]}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [tune_confirm]}}
+      - name: prepare_optuna_dir      # restores the T02 study (RESUME_FROM = the T02 output)
+        run: ["{py}", -c, "import os, shutil; os.makedirs('{out}/optuna', exist_ok=True); s = os.path.join('{resume_root}', 'optuna'); shutil.copytree(s, '{out}/optuna', dirs_exist_ok=True) if os.path.isdir(s) else None"]
+      - name: confirm
+        timeout_min: 600
+        allow_timeout: true
+        run: ["{py}", scripts/tune_optuna.py, --config, "{cfg}", --storage, "sqlite:///{out}/optuna/v2_next.db",
+              --study, v2_next, --base-method, v2_next, --space, v2next, --constraint, per_photo,
+              --confirm-top, "{confirm_top}", --confirm-list, "{splits_dir}/tune_confirm.txt",
+              --confirm-images, "{confirm_images}", --edit-seeds, "1", "2", "3",
+              --image-list, "{splits_dir}/tune_confirm.txt", --image-dir, "{out}/data/tune_confirm",
+              --purifiers, none, jpeg_q75, downup_0.5, vae_rt_sd15, diffpure_t0.2,
+              --editors, "sd15_img2img:0.55", ipadapter_faceid, --psr-threshold, "0.1005",
+              --out-dir, "{out}/optuna", --device, cuda, "{extra_args}"]

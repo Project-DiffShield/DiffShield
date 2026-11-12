@@ -13,6 +13,9 @@ data:
     val: data/splits/val.txt
     ae_pool: data/splits/ae_pool.txt
     meta: data/splits/splits_meta.json
+    tune_search: data/splits/tune_search.txt     # Step 1 tuning photos (scripts/select_tuning_photos.py, MMD-critic); never test photos
+    tune_confirm: data/splits/tune_confirm.txt
+    tune_meta: data/splits/tune_meta.json
   v1_calib_file: data/splits/v1_calib.txt        # 5319, 1715, 6385, 8932 - excluded from every v2 split
   v1_eval70_file: data/splits/v1_eval70.txt      # ALL 70 kept in test (paired v1 comparison) + 30 new
   identity:

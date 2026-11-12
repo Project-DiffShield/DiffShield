@@ -57,3 +57,17 @@ Notes
 - Pre-agreed fallback cut: the four ablations (S11, S14) and the epsilon sweep (S17, S18) are protected and edited on the **first 50 test images** (`--limit 50`) instead of 100, with the same K=4. Compare them with v2_main / v2_final restricted to the same 50 images (paired). Limitation to report: n = 50 for E7 and E9.
 - S06 no longer runs the Tier H edits of v2_final (S16 does), so S06 stays under the 11 h wall guard.
 - Quota is billed by wall-clock time (acct1: 1h43m used while about 1.6-1.7 h of 2-GPU sessions had run).
+
+## Step 1 re-tune sessions T01 / T02 / T03 (docs/STEP1_PLAN.md, docs/TUNING_PROTOCOL.md)
+Run in order. Time estimates are planner guesses (UNVERIFIED) until a smoke run has been timed. Smoke: `PARAMS = {"smoke": True}`.
+
+| Job | Accelerator | JOB_IDS / PARAMS | Attach as inputs | Smoke | Outputs to download (`<JOB>/...`) |
+|---|---|---|---|---|---|
+| T01 | GPU T4 (one GPU is enough) | `["T01"]` | code, celebamaskhq | first 600 images, small set sizes (6 + 2 + 2); its lists are throw-away | `splits/{tune_search,tune_confirm}.txt`, `splits/tune_meta.json`, `reports/selection_report.{json,md}`; `pool/pool_embeddings.npz` is derived features (keep private) |
+| T02 | GPU T4 x2 | `["T02"]` | code, celebamaskhq, optionally the previous T02 output | 2 trials, 2 photos, 3 iterations | `optuna/v2_next.db`, `optuna/v2_next/` (trials, per-trial results) |
+| T03 | GPU T4 x2 | `["T03"]` | code, celebamaskhq, **the T02 output** | confirm-top 1, 2 photos, 3 iterations | `optuna/v2_next/confirm.json`, `decision.json`, and only if accepted `final_candidate.yaml` |
+
+- T01 does not need the tune lists. After the full T01 the coordinator checks `selection_report.md`, copies the lists and `tune_meta.json` into `data/splits/`, commits them with `docs/TUNING_PROTOCOL.md` BEFORE any trial, then rebuilds the bundle.
+- T02 and T03 read `data/splits/tune_search.txt` / `tune_confirm.txt` from the bundle, so they fail (also in smoke mode) if the bundle was built before the lists were committed.
+- Resume: T01 restores finished embedding chunks and T02 restores the Optuna study from `RESUME_FROM = "/kaggle/input/<earlier output>"` (a T02 session ended by its 10 h timeout guard is resumed this way). T03 needs `RESUME_FROM` = the finished T02 output (it reads the study from there); candidates already in `confirm.json` are skipped.
+- Do not run two T02 sessions on copies of the same study DB unless you merge them deliberately; the job does not support merging.
