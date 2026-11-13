@@ -41,6 +41,27 @@ macros:
         eval_jobs: {defaults: <<defs>>, jobs: <<jobs>>}
         run: ["{py}", scripts/evaluate.py, --jobs_file, "{jobs_file}"]
 
+  facenet_setup:              # exploration X3-X5 only: FaceNet surrogate for L_id. Needs Internet ON (pip + vggface2 weights from the facenet-pytorch GitHub release). UNVERIFIED on Kaggle.
+    steps:
+      - name: install_facenet     # --no-deps: its metadata pins old torch/numpy/pillow; numpy, pillow, requests, tqdm, torchvision are already present
+        run: ["{py}", -m, pip, install, -q, --no-deps, facenet-pytorch]
+      - name: facenet_check       # fails before any GPU work if the package or the weights download is missing
+        run: ["{py}", -c, "import torch; from src.protect.face_loss import load_face_embedder; e = load_face_embedder(dict(face=dict(backend='facenet', pretrained='vggface2')), 'cpu'); v = e.embed(torch.zeros(1, 3, 512, 512)); print('facenet ok, embedding', tuple(v.shape))"]
+
+  explore:                    # exploration variant: protect tune_search with <<method>>, evaluate tier EXPL, write per-photo PSNR/SSIM
+    defaults: {method: v2_next}
+    steps:
+      - {macro: prep, with: {splits: [tune_search]}}
+      - {macro: protect, with: {method: <<method>>, split: tune_search, extra: ["--set", "budget.iters_cap={iters_cap}"]}}
+      - macro: evaluate
+        with:
+          name: expl_<<method>>
+          jobs:
+            - {name: eval_<<method>>_EXPL, tier: EXPL, purifier: all, method: <<method>>, split: tune_search}
+      - name: psnr_ssim_<<method>>      # per-photo PSNR/SSIM of the protected PNGs vs the clean photos (from the protect metrics.csv), written next to the eval results
+        run: ["{py}", scripts/explore_compare.py, --invis_from, "{results}/prot_<<method>>_tune_search", --invis_out,
+              "{results}/eval_<<method>>_EXPL/psnr_ssim.csv"]
+
 jobs:
 
   J00:
@@ -832,3 +853,65 @@ jobs:
               --purifiers, none, jpeg_q75, downup_0.5, vae_rt_sd15, diffpure_t0.2,
               --editors, "sd15_img2img:0.55", ipadapter_faceid, --psr-threshold, "0.1005",
               --out-dir, "{out}/optuna", --device, cuda, "{extra_args}"]
+
+  # ================================================================================================
+  # Exploration X0..X5 (docs/EXPLORATION.md): v2_next defaults + ONE change each, protected and evaluated on the 28 tune_search
+  # photos. One job per variant, independent of the others (same inputs as T04: code bundle + celebamaskhq; Internet ON).
+  # Runtimes are planner guesses (UNVERIFIED), see docs/EXPLORATION.md. NOT test-set results.
+  # ================================================================================================
+  X0:
+    title: X0 exploration base = v2_next unchanged (fresh baseline, 40 iters, K=4, eps 4) on tune_search, tier EXPL
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: explore, with: {method: v2_next}}
+
+  X1:
+    title: X1 exploration eps8 = v2_next with budget.eps_255 8 (step stays 1/255) on tune_search, tier EXPL
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: explore, with: {method: v2_x_eps8}}
+
+  X2:
+    title: X2 exploration it100 = v2_next with 100 PGD iterations on tune_search, tier EXPL
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: explore, with: {method: v2_x_it100}}
+
+  X3:
+    title: X3 exploration id_direct_a = v2_next + direct FaceNet identity loss on x+delta, lambda_id 2.0 (guess), tier EXPL. Internet ON (facenet-pytorch + weights).
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: facenet_setup}
+      - {macro: explore, with: {method: v2_x_id_direct_a}}
+
+  X4:
+    title: X4 exploration id_direct_b = v2_next + direct FaceNet identity loss on x+delta, lambda_id 10.0 (guess), tier EXPL. Internet ON.
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: facenet_setup}
+      - {macro: explore, with: {method: v2_x_id_direct_b}}
+
+  X5:
+    title: X5 exploration id_recon = v2_next + existing VAE-reconstruction identity loss (FaceNet), lambda_id 2.0 (guess), tier EXPL. Internet ON.
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: facenet_setup}
+      - {macro: explore, with: {method: v2_x_id_recon}}

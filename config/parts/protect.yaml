@@ -19,6 +19,7 @@ face:                            # L_id (loss.lambda_id > 0 only). Different net
   backend: facenet               # facenet (facenet-pytorch InceptionResnetV1, vggface2) | onnx2torch
   pretrained: vggface2
   bbox: null                     # (x0, y0, x1, y1) of the face on the clean image; null = central 60% crop
+  id_mode: recon                 # recon = cos(src, VAE-reconstruction of x+delta) (default, original behaviour) | direct = cos(src, x+delta itself, no VAE round trip)
 
 # training purifier details; merged with the root dict of the same name
 purifier_train_params:
@@ -145,3 +146,18 @@ methods:
   eps2: {budget: {eps_255: 2}}
   eps6: {budget: {eps_255: 6}}
   eps8: {budget: {eps_255: 8}}
+
+  # ---- Exploration set (docs/EXPLORATION.md, Kaggle jobs X0..X5): each = v2_next defaults + ONE change. Run on tune_search only.
+  v2_x_eps8:                             # X1: only the L-inf budget changes (step_255 stays 1.0). Changes the threat/visibility trade-off.
+    budget: {eps_255: 8}
+  v2_x_it100:                            # X2: 100 PGD iterations instead of 40
+    budget: {iters: 100}
+  v2_x_id_direct_a:                      # X3: identity loss straight on x+delta through FaceNet (not the eval ArcFace). lambda_id = 2.0 is a guess: UNVERIFIED
+    loss: {lambda_id: 2.0}
+    face: {id_mode: direct}
+  v2_x_id_direct_b:                      # X4: same with lambda_id = 10.0 (guess: UNVERIFIED)
+    loss: {lambda_id: 10.0}
+    face: {id_mode: direct}
+  v2_x_id_recon:                         # X5: existing VAE-reconstruction identity loss, lambda_id = 2.0 (guess: UNVERIFIED)
+    loss: {lambda_id: 2.0}
+    face: {id_mode: recon}

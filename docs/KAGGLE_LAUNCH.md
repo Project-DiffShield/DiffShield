@@ -84,3 +84,22 @@ Only after T03 accepted a winner: the coordinator copies T03's `final_candidate.
 - T05 does not re-protect. Why not `RESUME_FROM`: the runner looks for `<RESUME_FROM>/<JOB_ID>/results/<run_id>`, and the S28 output is laid out as `S28/results/prot_v2_tgt_zero_mid_test`; a plain RESUME_FROM would only work if the dataset folder were renamed `T05`, and the resumed protect step would then also re-check the config hash against today's code. Instead the step `restore_old_protected` searches `old_prot` recursively for the folder `prot_v2_tgt_zero_mid_test`, copies it (images, shard metrics CSVs, config) into `T05/results/`, aborts if fewer than 100 PNGs (5 in smoke) are present, and the HELD edits then read `images/<id>.png` from there. Upload: zip or folder of the S28 output (`S28_outputs.zip` unzipped is fine; only `S28/results/prot_v2_tgt_zero_mid_test/images` is needed, about 100 PNGs), dataset name e.g. `diffshield-s28-prot`. If the S28 images are unavailable, fall back: add a protect macro step for `v2_tgt_zero_mid` to T05 (cost below).
 - GPU time. Measured earlier: protection 116 s per photo on one T4, about 98 min for 100 photos on 2 T4; the TGT tier is 1950 rows at a mean 2.6 s per edit (about 85 min of summed edit time, about 42 min wall on 2 GPUs: UNVERIFIED arithmetic, assumes even sharding and no model-load overhead). T04 total: about 98 min protect plus the NEXT rows plus HELD rows. HELD cost (pixel DDPM purifier at t*=100/200, `docs/DIFFPURE_PIXEL_EVAL.md` planner estimate 5-10 s per photo and purifier, unmeasured): UNVERIFIED, so T04 is expected at roughly 3 to 4 h and T05 at under 1 h (both UNVERIFIED). Re-protecting the old method in T05 would add about 98 min.
 - The notebook is run with `Save & Run All`; finished rows are skipped on a rerun of the same session (per-row resume).
+
+
+## Exploration jobs X0..X5 (docs/EXPLORATION.md): exploration on the 28 `tune_search` photos, NOT test-set results
+Six independent jobs, one per variant (job id = variant id). Each can run on its own Kaggle account with the same inputs as T04. All are `gpu_t4x2`, **Internet ON**, protect step sharded over the 2 GPUs, then tier `EXPL` (sd15_img2img strength 0.55 and ipadapter_faceid; cleanups none, jpeg_q75, downup_0.5, vae_rt, diffpure_0.2; edit seeds 1 2 3). Smoke: `PARAMS = {"smoke": True}` (2 photos, 3 iterations; never report smoke numbers). Resumable per row like the other jobs. They do not need `config/parts/next_tuned.yaml` and do not change T03/T04.
+
+| Job | What it runs (preset) | Inputs to attach | JOB_IDS / extras | Outputs (`<JOB>/results/`) |
+|---|---|---|---|---|
+| X0 | base `v2_next` unchanged | code, celebamaskhq | `["X0"]` | `prot_v2_next_tune_search/`, `eval_v2_next_EXPL/` (edit rows `metrics*.csv`, `psnr_ssim.csv`) |
+| X1 | eps8: `v2_x_eps8` (eps 8/255, step 1/255) | same | `["X1"]` | `prot_v2_x_eps8_tune_search/`, `eval_v2_x_eps8_EXPL/` |
+| X2 | it100: `v2_x_it100` (100 iterations) | same | `["X2"]` | `prot_v2_x_it100_tune_search/`, `eval_v2_x_it100_EXPL/` |
+| X3 | id_direct_a: `v2_x_id_direct_a` (direct FaceNet identity loss, lambda_id 2.0, UNVERIFIED guess) | same | `["X3"]`; installs `facenet-pytorch --no-deps`, downloads vggface2 weights | `prot_v2_x_id_direct_a_tune_search/`, `eval_v2_x_id_direct_a_EXPL/` |
+| X4 | id_direct_b: `v2_x_id_direct_b` (direct, lambda_id 10.0, UNVERIFIED guess) | same | `["X4"]`; as X3 | `prot_v2_x_id_direct_b_tune_search/`, `eval_v2_x_id_direct_b_EXPL/` |
+| X5 | id_recon: `v2_x_id_recon` (VAE-reconstruction identity loss, lambda_id 2.0, UNVERIFIED guess) | same | `["X5"]`; as X3 | `prot_v2_x_id_recon_tune_search/`, `eval_v2_x_id_recon_EXPL/` |
+
+- Each job: setup, (X3-X5: `install_facenet`, then `facenet_check`, which fails before GPU work if the package or weights are unavailable), `prepare_data` for `tune_search`, protect (sharded) + merge, evaluate (sharded, tier `EXPL`), then `psnr_ssim_<preset>`, which writes per-photo PSNR/SSIM of the protected PNGs vs the clean photos to `eval_<preset>_EXPL/psnr_ssim.csv`.
+- `data/splits/tune_search.txt` must be in the bundle (as for T02).
+- Collect: unzip the outputs and run `py -3.11 scripts/explore_compare.py <dir of X0> <dir of X1> ... --out_dir results/explore` (any subset; X0 is needed for the paired difference). X1 (eps8) is not comparable with the others at equal invisibility.
+- Runtime per job (UNVERIFIED): about 1 to 1.5 h (X2 about 2 h); basis in `docs/EXPLORATION.md`.
+- Adopting any variant needs a fresh 100-photo test run; these jobs only screen.

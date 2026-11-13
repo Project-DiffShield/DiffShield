@@ -4,7 +4,7 @@ import pytest
 import torch
 import yaml
 
-from test_protect_fakes import TinySem, base_cfg, make_image, make_models  # noqa: F401
+from test_protect_fakes import TinyFace, TinySem, base_cfg, make_image, make_models  # noqa: F401
 
 from src.protect.pgd import to_u8
 from src.protect.v2_registry import PRESETS, build_v2_protector, deep_merge, resolve_cfg
@@ -76,8 +76,9 @@ def test_registry_works_with_minimal_cfg_via_part_file():
 @pytest.mark.parametrize("name", PRESETS)
 def test_protect_runs_for_every_preset_with_injected_components(name):
     m = make_models()
-    comps = {"models": m, "sem": TinySem(), "extra_vaes": {"sdxl_vae_fp16": make_models(seed=4).vae}}
-    cfg = full_cfg()
+    comps = {"models": m, "sem": TinySem(), "extra_vaes": {"sdxl_vae_fp16": make_models(seed=4).vae},
+             "face": TinyFace()}                                 # only used by the lambda_id > 0 exploration presets
+    cfg = full_cfg(budget={"iters_cap": 2})                      # v2_x_it100 fixes budget.iters = 100; the cap keeps the CPU test short
     cfg["protect"] = {"quantize": True}
     p = build_v2_protector(name, cfg, "cpu", comps)
     x = make_image()

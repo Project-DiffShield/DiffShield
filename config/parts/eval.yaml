@@ -142,6 +142,9 @@ eval:
       - {splits: [test], methods: [v2_next_tuned], purifiers: [none], cells: [*c_sd15, *c_fid]}
       - {splits: [test], methods: [v2_next_tuned],
          purifiers: [jpeg_q75, jpeg_q50, downup_0.5, vae_rt, diffpure_0.1, diffpure_0.2, diffpure_0.3], cells: [*c_sd15r]}
+    EXPL:                                               # docs/EXPLORATION.md (Kaggle jobs X0..X5): exploration variants on the tune_search photos (never test, never tune_confirm)
+      - {splits: [tune_search], methods: ["v2_next", "v2_x_*"], purifiers: [none, jpeg_q75, downup_0.5, vae_rt, diffpure_0.2],
+         cells: [*c_sd15r, *c_fid]}                     # sd15_img2img strength 0.55 + ipadapter_faceid; edit seeds = eval.seeds (1 2 3)
     AP:                                                 # S07 / S20: single-term antipure ablation on the VAL split (selection of the antipure terms; never test)
       - {splits: [val], methods: [clean, v2_antipure], purifiers: [jpeg_q75, vae_rt, diffpure_0.1], cells: [*c_sd15r]}
     A:                                                  # phase ablation (v2_main is the "both" arm)
