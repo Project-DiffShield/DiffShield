@@ -819,8 +819,8 @@ jobs:
     steps:
       - {macro: setup, with: {extras: [eval]}}
       - {macro: prep, with: {splits: [tune_confirm]}}
-      - name: prepare_optuna_dir      # restores the T02 study (RESUME_FROM = the T02 output)
-        run: ["{py}", -c, "import os, shutil; os.makedirs('{out}/optuna', exist_ok=True); s = os.path.join('{resume_root}', 'optuna'); shutil.copytree(s, '{out}/optuna', dirs_exist_ok=True) if os.path.isdir(s) else None"]
+      - name: prepare_optuna_dir      # restores the T02 study: found by searching /kaggle/input (or RESUME_FROM) for optuna/v2_next.db; fails if absent
+        run: ["{py}", -c, "import os, glob, shutil, sys; r = '{resume_root}'; c = sorted(glob.glob('/kaggle/input/**/optuna/v2_next.db', recursive=True) + glob.glob(r + '/**/optuna/v2_next.db', recursive=True)) if True else []; print('T02 study candidates:', c); sys.exit('T02 study (optuna/v2_next.db) not found under /kaggle/input: attach the T02 output as an input') if not c else None; src = os.path.dirname(c[0]); print('restoring', src); os.makedirs('{out}/optuna', exist_ok=True); shutil.copytree(src, '{out}/optuna', dirs_exist_ok=True)"]
       - name: confirm
         timeout_min: 600
         allow_timeout: true
