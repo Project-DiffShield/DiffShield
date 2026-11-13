@@ -52,19 +52,18 @@ criticisms, sha256 of both lists and of the embedding file) and the report are c
 * Search objective: mean PSR (threshold 0.1005, the existing 95th-percentile impostor value) over editors
   {sd15_img2img at strength 0.55, ipadapter_faceid} x cleanups {none, jpeg_q75, downup_0.5, vae_rt_sd15, diffpure_t0.2}, edit seed 1.
   Proxy protection during the search: 20 iterations, K = 2.
-* Search space (`--space v2next`): alpha log-uniform [0.1, 2.0]; beta uniform [0, 1.5]; gamma log-uniform [20, 150]; denoiser term
-  off, or on with eta log-uniform [0.01, 1.0] and timestep range {50-300, 300-700}; one-step purifier probability in
+* Search space (`--space v2next`): alpha log-uniform [0.1, 2.0]; beta uniform [0, 1.5]; gamma log-uniform [20, 150]; denoiser term`r`n  off, or on with eta log-uniform [0.01, 100] (wide on purpose: the size of L_den next to L_vis is not measured, UNVERIFIED) and timestep range {50-300, 0-600} (0-600 = the noise levels a strength-0.55 edit visits); one-step purifier probability in
   {0.0, 0.15, 0.3}; anti-purify off; identity weight 0. Anchor trial 0 = the current final method (alpha 0.55, beta 0.9024,
   gamma 60.53, denoiser off, one-step probability 0).
 * Held out from both training and tuning (reported at test only): jpeg_q_other, downup_other, restore_swin2sr, adaptive AE.
   DiffPure is NO LONGER held out (a one-step version may be used in training and diffpure_t0.2 is in the objective); reports must say so.
 * Constraint: every photo PSNR >= 38 dB and SSIM >= 0.95 (per photo, not mean).
 * Sampler: Optuna TPE, seed 2026, 8 random startup trials, constant liar, budget 30 trials (anchor = trial 0).
-* Confirm: top 3 feasible trials plus the anchor, full settings (40 iterations, K = 4), on `tune_confirm`, edit seeds 1-3.
+* Confirm: the top 3 feasible non-anchor trials, plus the best feasible trial that has BOTH the one-step cleaner (probability > 0) and the denoiser term on (if it is not already among them), plus the anchor; full settings (40 iterations, K = 4), on `tune_confirm`, edit seeds 1-3. The extra candidate gives a direct measured answer to "did DiffPure-in-training and the denoiser attack help?".
 * Decision rule: the best confirmed candidate replaces the current final method only if (a) there are zero per-photo
   invisibility violations on the confirm photos and (b) its confirm PSR >= the anchor's confirm PSR. Otherwise the current final
   method stays and the report says the re-tune did not beat it.
-* Afterwards, one run of the winner on the 100 test photos with the full evaluation (separate step, not part of the tuning).
+* Afterwards, one run of the winner on the 100 test photos with the full evaluation (separate step, not part of the tuning). Final adoption rule, written before any trial: the winner is adopted as the final method only if its test PSR beats the current method's on the same 100 photos with a paired bootstrap 95% interval whose lower bound is above 0; otherwise the current method stays, and the re-tune is reported as tried and not adopted. (The confirm set has only 12 photos, so the confirm rule alone would accept a chance winner about half the time when two methods are truly equal.)
 
 ## 3. Planned jobs and time estimates (UNVERIFIED)
 T01 (embed + select, one T4; planner guess 30-60 min), T02 (search, 2 x T4), T03 (confirm, 2 x T4). All times are planner guesses

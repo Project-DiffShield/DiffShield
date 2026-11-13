@@ -71,7 +71,9 @@ HAND_SET = {"alpha": 0.27, "eta": 0.27, "beta": 0.90, "gamma": 60.5, "antipure":
 # Step-1 anchor = the current final method v2_tgt_zero_mid (== v2_next defaults; docs/STEP1_PLAN.md 2.3)
 V2NEXT_ANCHOR = {"alpha": 0.55, "beta": 0.9023875567667267, "gamma": 60.52658429696642, "den_on": False,
                  "p_onestep": 0.0}
-DEN_T_CHOICES = {"50-300": [50, 300], "300-700": [300, 700]}
+# "50-300" = the one-step purifier's range (old behaviour); "0-600" = the noise levels an SD1.5 img2img edit at
+# strength 0.55 actually visits (it starts at about t = 0.55 * 1000 and denoises down to 0).
+DEN_T_CHOICES = {"50-300": [50, 300], "0-600": [0, 600]}
 PSNR_MIN, SSIM_MIN = 38.0, 0.95
 
 
@@ -167,7 +169,9 @@ def suggest_v2next(trial) -> dict:
         "den_on": trial.suggest_categorical("den_on", [False, True]),
     }
     if p["den_on"]:
-        p["eta"] = trial.suggest_float("eta", 0.01, 1.0, log=True)
+        # wide on purpose (4 decades): L_den is a small MSE next to L_vis, so a weight near 1 may have no effect.
+        # The magnitudes are not measured yet (UNVERIFIED); the range is a guess, not a result.
+        p["eta"] = trial.suggest_float("eta", 0.01, 100.0, log=True)
         p["den_t"] = trial.suggest_categorical("den_t", list(DEN_T_CHOICES))
     else:
         p["eta"], p["den_t"] = 0.0, None
@@ -454,7 +458,12 @@ def confirm(args, cfg, score_fn, study):
     out_dir.mkdir(parents=True, exist_ok=True)
     images = load_val_images(args.confirm_list or args.val_list, args.image_dir, args.confirm_images, IMAGE_SIZE)
     spec = build_spec(args)
-    top = feasible_complete(study)[: args.confirm_top]
+    feas = [t for t in feasible_complete(study) if not (v2n and t.number == 0)]   # v2next: the anchor is added below
+    top = feas[: args.confirm_top]
+    if v2n:   # one extra candidate: the best feasible trial with BOTH the one-step cleaner and the denoiser term on
+        both = [t for t in feas if t.params.get("den_on") and float(t.params.get("p_onestep", 0.0)) > 0.0]
+        if both and both[0] not in top:
+            top = top + [both[0]]
     norm = complete_v2next if v2n else (lambda q: q)
     base = dict(V2NEXT_ANCHOR) if v2n else dict(HAND_SET)
     cands = [(f"trial_{t.number}", norm({**base, **t.params})) for t in top]

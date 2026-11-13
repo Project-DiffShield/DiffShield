@@ -145,3 +145,9 @@ sd_onestep prob 0). Register it wherever `v2_registry.PRESETS` / `_CHAIN` need i
 4. Reviewer (Opus, coordinator): review diffs, run tests, commit on `v2/tuning` (no Claude trailer), build bundle.
 5. User: Kaggle T01 (smoke then full) -> coordinator checks report, commits lists -> rebuild bundle -> T02 smoke ->
    T02 full on as many accounts/GPUs as available -> T03.
+
+## Amendments (2026-11-13, before any tuning trial)
+* Photo lists: final pool excludes only test and messy (AE pool and calibration released); see reports/step1_selection/README.md.
+* Search space: eta log-uniform [0.01, 100] (was [0.01, 1]); denoiser timestep options {50-300, 0-600} (was {50-300, 300-700}); see docs/TUNING_PROTOCOL.md.
+* Confirm: top 3 non-anchor trials + best trial with both the one-step cleaner and the denoiser on + the anchor.
+* Final adoption also requires a paired-bootstrap win on the 100 test photos (see TUNING_PROTOCOL.md).

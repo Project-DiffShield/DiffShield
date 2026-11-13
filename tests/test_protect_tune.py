@@ -111,16 +111,16 @@ def test_v2next_overrides_are_valid_and_resolve(env):
     from src.protect.v2_registry import deep_merge, resolve_cfg
 
     cfg = T.load_cfg(str(env / "config" / "config.yaml"))
-    on = {"alpha": 1.0, "beta": 0.5, "gamma": 40.0, "den_on": True, "eta": 0.2, "den_t": "300-700", "p_onestep": 0.15}
+    on = {"alpha": 1.0, "beta": 0.5, "gamma": 40.0, "den_on": True, "eta": 0.2, "den_t": "0-600", "p_onestep": 0.15}
     off = {"alpha": 1.0, "beta": 0.5, "gamma": 40.0, "den_on": False, "p_onestep": 0.0}      # trial.params omit eta/den_t
     ov = T.params_to_override(on, 20, 2)
-    assert ov["p_onestep"] == 0.15 and ov["loss"]["den_t_range"] == [300, 700] and ov["loss"]["eta"] == 0.2
+    assert ov["p_onestep"] == 0.15 and ov["loss"]["den_t_range"] == [0, 600] and ov["loss"]["eta"] == 0.2
     assert ov["loss"]["lambda_id"] == 0.0 and ov["loss"]["anti_purify"]["enabled"] is False
     assert ov["budget"]["iters"] == 20 and ov["eot"]["k_draws"] == 2
     ov0 = T.params_to_override(off)
     assert ov0["loss"]["eta"] == 0.0 and ov0["loss"]["den_t_range"] is None and "budget" not in ov0
     r = resolve_cfg("v2_next", deep_merge(cfg, {"methods": {"v2_next": ov}}))
-    assert r["loss"]["alpha"] == 1.0 and r["loss"]["den_t_range"] == [300, 700]
+    assert r["loss"]["alpha"] == 1.0 and r["loss"]["den_t_range"] == [0, 600]
     assert r["purifier_train_probs"]["sd_onestep"] == 0.15 and abs(sum(r["purifier_train_probs"].values()) - 1) < 1e-12
     r0 = resolve_cfg("v2_next", deep_merge(cfg, {"methods": {"v2_next": ov0}}))
     assert r0["loss"]["den_t_range"] is None and r0["purifier_train_probs"]["sd_onestep"] == 0.0
@@ -140,7 +140,7 @@ def test_v2next_search_enqueues_anchor_and_respects_space(env):
         assert 0.1 <= q["alpha"] <= 2.0 and 0.0 <= q["beta"] <= 1.5 and 20 <= q["gamma"] <= 150
         assert q["p_onestep"] in (0.0, 0.15, 0.3) and "antipure" not in q
         if q["den_on"]:
-            assert 0.01 <= q["eta"] <= 1.0 and q["den_t"] in ("50-300", "300-700")
+            assert 0.01 <= q["eta"] <= 100.0 and q["den_t"] in ("50-300", "0-600")
         else:
             assert "eta" not in q and "den_t" not in q
         assert len(t.user_attrs["constraints"]) == 2 and len(t.user_attrs["psnr_each"]) == 2
