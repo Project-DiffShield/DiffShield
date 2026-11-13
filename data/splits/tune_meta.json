@@ -1,0 +1,163 @@
+{
+ "args": {
+  "npz": "/kaggle/working/T01/pool/pool_embeddings.npz",
+  "splits_dir": "/kaggle/tmp/DiffShield/data/splits",
+  "out_splits_dir": "/kaggle/working/T01/splits",
+  "report_dir": "/kaggle/working/T01/reports",
+  "n_search": 28,
+  "n_confirm_protos": 8,
+  "n_confirm_crit": 4,
+  "seed": 2026,
+  "n_random": 1000,
+  "n_cov_random": 200,
+  "bandwidth_n": 5000,
+  "id_thr": 0.5,
+  "crit_reg": 1.0,
+  "chunk": 1024,
+  "force": true
+ },
+ "npz_sha256": "9a531b495018db6a15d2f7200125b41167337efbac10bd77d0f91fbdb6cc88d4",
+ "pool": {
+  "n_npz": 30000,
+  "n_no_face": 2,
+  "n_excluded_names_in_npz": 244,
+  "n_excluded_names_missing_from_npz": 0,
+  "n_identity_leak_removed": 1840,
+  "n_pool": 27914
+ },
+ "identity_threshold": 0.5,
+ "identity_threshold_verified": false,
+ "bandwidth_clip": 0.9814478158950806,
+ "bandwidth_attr_pose": 8.822874069213867,
+ "selection_order": {
+  "tune_search": [
+   "2861.jpg",
+   "20834.jpg",
+   "28644.jpg",
+   "22451.jpg",
+   "14406.jpg",
+   "15854.jpg",
+   "18751.jpg",
+   "22329.jpg",
+   "25380.jpg",
+   "3274.jpg",
+   "8162.jpg",
+   "24249.jpg",
+   "8766.jpg",
+   "24778.jpg",
+   "6199.jpg",
+   "11245.jpg",
+   "19205.jpg",
+   "29944.jpg",
+   "29466.jpg",
+   "6118.jpg",
+   "10758.jpg",
+   "27380.jpg",
+   "26691.jpg",
+   "801.jpg",
+   "6506.jpg",
+   "21203.jpg",
+   "2674.jpg",
+   "9862.jpg"
+  ],
+  "tune_confirm": [
+   "20487.jpg",
+   "24938.jpg",
+   "8741.jpg",
+   "10132.jpg",
+   "6883.jpg",
+   "18710.jpg",
+   "241.jpg",
+   "24773.jpg",
+   "14935.jpg",
+   "10259.jpg",
+   "9445.jpg",
+   "24986.jpg"
+  ]
+ },
+ "confirm_prototypes": [
+  "20487.jpg",
+  "24938.jpg",
+  "8741.jpg",
+  "10132.jpg",
+  "6883.jpg",
+  "18710.jpg",
+  "241.jpg",
+  "24773.jpg"
+ ],
+ "confirm_criticisms": [
+  "14935.jpg",
+  "10259.jpg",
+  "9445.jpg",
+  "24986.jpg"
+ ],
+ "sha256": {
+  "tune_search": "0e14db7c4866cf098dd6bcfa56b6e03e4ac5fe132a4739eff973ef675601c83d",
+  "tune_confirm": "4646880293418e985d13e8ee30e473fcbbbca5f20196782f132c957c67e61c4f"
+ },
+ "counts": {
+  "tune_search": 28,
+  "tune_confirm": 12
+ },
+ "traces": {
+  "search_J": [
+   0.3489366895025743,
+   0.49309685634552025,
+   0.5422714092839513,
+   0.5623167524048991,
+   0.5746742534119001,
+   0.5824356991811179,
+   0.5876372083965897,
+   0.5918539390374957,
+   0.5944396943340009,
+   0.5965570950459005,
+   0.5982935525705634,
+   0.5998337075216744,
+   0.6009833267617606,
+   0.6021002370122458,
+   0.6029324761364999,
+   0.6036914790434815,
+   0.6043177387986989,
+   0.6048487244735369,
+   0.6054976734248851,
+   0.6059327490496123,
+   0.6062696609302755,
+   0.6067550698007886,
+   0.6070074558313187,
+   0.6072704846806385,
+   0.6075193860332493,
+   0.607737781628259,
+   0.6080113288371473,
+   0.6081446332327365
+  ],
+  "confirm_proto_J": [
+   0.3455613547224894,
+   0.5060043372712966,
+   0.5446080156970504,
+   0.5627915937833323,
+   0.5757335039669405,
+   0.5839031008041168,
+   0.5884846675542088,
+   0.592271105931818
+  ],
+  "confirm_criticisms": [
+   {
+    "abs_witness": 0.012179431670462315,
+    "logdet_gain": 0.0
+   },
+   {
+    "abs_witness": 0.0008073090254149262,
+    "logdet_gain": -0.2293503753384554
+   },
+   {
+    "abs_witness": 0.002180445126174213,
+    "logdet_gain": -0.33100043497492343
+   },
+   {
+    "abs_witness": 0.0006694319747120869,
+    "logdet_gain": -0.3744724599218972
+   }
+  ]
+ },
+ "reference": "Kim, Khanna, Koyejo, NeurIPS 2016 (MMD-critic)"
+}
