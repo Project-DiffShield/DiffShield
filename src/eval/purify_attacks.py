@@ -4,7 +4,8 @@ Contract (frozen): ``EvalPurifier.apply(img: PIL.Image, seed: int) -> PIL.Image`
 
 Registry names (canonical):
   none, jpeg_q90, jpeg_q75, jpeg_q50, jpeg_other, downup_0.5, downup_other, vae_rt,
-  diffpure_0.05, diffpure_0.1, diffpure_0.2, diffpure_0.3, restore_swin2sr, gridpure, adaptive_ae
+  diffpure_0.05, diffpure_0.1, diffpure_0.2, diffpure_0.3, restore_swin2sr, gridpure, adaptive_ae,
+  downup_256, diffpure_ddpm256_t100, diffpure_ddpm256_t200   (last three: DiffPure-STYLE pixel-space face DDPM, SD-independent)
 Aliases from config.yaml / the handoff (jpeg_q_other, vae_rt_sd15, diffpure_t0.1, ...) are resolved by
 ``canonical_name``.
 
@@ -280,6 +281,121 @@ class Swin2SRRestore(EvalPurifier):
         return {"model": self.model_id, "down_scale": self.down_scale}
 
 
+class DownUp256(EvalPurifier):
+    """Control for the pixel-DDPM cleanups: resize to a fixed ``size`` (default 256) and back, no diffusion. Separates the
+    effect of the 512->256->512 resize from the effect of the denoiser. Same resampling as the pixel DDPM."""
+
+    def __init__(self, name: str = "downup_256", size: int = 256, resample: str = "bicubic"):
+        self.name, self.size, self.resample = name, int(size), resample
+
+    def apply(self, img, seed):
+        img = img.convert("RGB")
+        rs = _pil_resample(self.resample)
+        return img.resize((self.size, self.size), rs).resize(img.size, rs)
+
+    def params(self):
+        return {"size": self.size, "resample": self.resample}
+
+
+class PixelDDPMPurifier(EvalPurifier):
+    """DiffPure-STYLE pixel-space face DDPM cleanup (NOT the official DiffPure checkpoint, whose URL is not
+    downloadable; the public Apache-2.0 ``google/ddpm-celebahq-256`` is used). Independent of Stable Diffusion 1.5.
+
+    img -> resize to 256 (``resample``) -> [-1,1] -> forward-noise to timestep ``t_star`` (of the scheduler's 1000) with
+    the scheduler's own alphas_cumprod -> reverse process to 0 -> clamp -> resize back to the input size (same resample).
+    ``steps`` = number of reverse UNet calls; None, or >= t_star, means the full ancestral DDPM chain (t_star calls).
+    A smaller ``steps`` uses an evenly strided timestep list with ``DDPMScheduler.step`` (strided ancestral sampling).
+    ``t_star == 0`` is exactly the pure resize round trip. Noise comes from a CPU generator seeded with ``seed``.
+    ``unet`` / ``scheduler`` can be injected (tests); otherwise lazy-loaded from ``model_id`` (fp16 on GPU, fp32 on
+    CPU) and ``NotAvailable`` is raised if that fails. The output is a 256-px result upsampled, so a resize confound
+    always exists: report the gap to ``downup_256``.
+    """
+    needs_gpu = True
+    _POOL: Dict[str, list] = {}      # share_key -> [unet, scheduler, refcount]
+
+    def __init__(self, name: str, model_id: str = "google/ddpm-celebahq-256", t_star: int = 100,
+                 steps: Optional[int] = None, size: int = 256, resample: str = "bicubic",
+                 revision: Optional[str] = None, unet=None, scheduler=None):
+        self.name, self.model_id, self.revision = name, model_id, revision
+        self.t_star, self.steps = int(t_star), (int(steps) if steps else None)
+        self.size, self.resample = int(size), resample
+        self.share_key = f"pixel_ddpm:{model_id}"
+        self.unet, self.scheduler, self.device = unet, scheduler, None
+        self._injected = unet is not None and scheduler is not None
+        if self._injected:
+            self.device = "cpu"
+
+    def load(self, device=None):
+        if self.unet is not None and self.scheduler is not None:
+            return self
+        import torch
+        self.device = _pick_device(device)
+        entry = PixelDDPMPurifier._POOL.get(self.share_key)
+        if entry is None:
+            try:
+                from diffusers import DDPMScheduler, UNet2DModel
+                dt = torch.float16 if self.device.startswith("cuda") else torch.float32
+                unet = UNet2DModel.from_pretrained(self.model_id, revision=self.revision, torch_dtype=dt).to(self.device).eval()
+                sched = DDPMScheduler.from_pretrained(self.model_id, revision=self.revision)
+            except Exception as e:
+                raise NotAvailable(f"pixel DDPM weights '{self.model_id}' could not be loaded: {e}")
+            entry = [unet, sched, 0]
+            PixelDDPMPurifier._POOL[self.share_key] = entry
+        entry[2] += 1
+        self.unet, self.scheduler = entry[0], entry[1]
+        return self
+
+    def _timesteps(self, t_top: int):
+        """Descending reverse timesteps, starting at t_top (= t_star - 1)."""
+        if self.steps is None or self.steps >= t_top + 1:
+            return list(range(t_top, -1, -1))
+        return sorted({int(round(v)) for v in np.linspace(0, t_top, self.steps)}, reverse=True)
+
+    def apply(self, img, seed):
+        import torch
+        from PIL import Image
+        self.load()
+        img = img.convert("RGB")
+        w, h = img.size
+        rs = _pil_resample(self.resample)
+        small = img.resize((self.size, self.size), rs)
+        if self.t_star <= 0:
+            return small.resize((w, h), rs)
+        dev = self.device
+        dt = next(self.unet.parameters()).dtype
+        sched = self.scheduler
+        n_train = int(sched.config.num_train_timesteps)
+        t_top = min(self.t_star, n_train) - 1
+        x0 = torch.from_numpy(np.asarray(small).copy()).permute(2, 0, 1).unsqueeze(0).float() / 127.5 - 1.0
+        g = torch.Generator(device="cpu").manual_seed(int(seed))
+        abar = sched.alphas_cumprod[t_top].float()
+        x = (abar.sqrt() * x0 + (1 - abar).sqrt() * torch.randn(x0.shape, generator=g)).to(dev)
+        ts = self._timesteps(t_top)
+        # DDPMScheduler.step takes the previous timestep from set_timesteps' list (or t-1 for the full chain)
+        sched.set_timesteps(timesteps=ts) if len(ts) < t_top + 1 else sched.set_timesteps(n_train)
+        with torch.no_grad():
+            for t in ts:
+                e = self.unet(x.to(dt), torch.tensor([t], device=dev)).sample.float()
+                x = sched.step(e, t, x, generator=g).prev_sample
+        y = ((x.float().clamp(-1, 1) + 1) * 127.5).round().clamp(0, 255)[0].permute(1, 2, 0).cpu().numpy().astype(np.uint8)
+        return Image.fromarray(y, mode="RGB").resize((w, h), rs)
+
+    def unload(self):
+        if self._injected or self.unet is None:
+            return
+        entry = PixelDDPMPurifier._POOL.get(self.share_key)
+        self.unet = self.scheduler = None
+        if entry is not None:
+            entry[2] -= 1
+            if entry[2] <= 0:
+                PixelDDPMPurifier._POOL.pop(self.share_key, None)
+                _free_cuda()
+
+    def params(self):
+        return {"model": self.model_id, "t_star": self.t_star, "steps": self.steps, "size": self.size,
+                "resample": self.resample, "kind": "DiffPure-style pixel-space face DDPM (not the official DiffPure)"}
+
+
 def _free_cuda():
     try:
         import gc
@@ -355,6 +471,21 @@ def _build_gridpure(name, cfg, device):
     return GridPurePurifier(_params(cfg, "gridpure"), device)
 
 
+def _build_downup256(name, cfg, device):
+    p = {"size": 256, "resample": "bicubic"}
+    p.update(_params(cfg, name))
+    return DownUp256(name, p["size"], p["resample"])
+
+
+def _build_pixel_ddpm(name, cfg, device):
+    p = {"model_id": "google/ddpm-celebahq-256", "revision": None, "t_star": int(name.rsplit("_t", 1)[1]),
+         "steps": None, "size": 256, "resample": "bicubic"}
+    p.update(_params(cfg, name))
+    inj = p.pop("_inject", None) or {}                       # tests only: {"unet": ..., "scheduler": ...}
+    return PixelDDPMPurifier(name, p["model_id"], p["t_star"], p["steps"], p["size"], p["resample"], p["revision"],
+                             unet=inj.get("unet"), scheduler=inj.get("scheduler"))
+
+
 _BUILDERS: Dict[str, Callable] = {"none": lambda n, c, d: NonePurifier()}
 for _n in ("jpeg_q90", "jpeg_q75", "jpeg_q50", "jpeg_other"):
     _BUILDERS[_n] = _build_jpeg
@@ -365,6 +496,9 @@ for _n in ("diffpure_0.05", "diffpure_0.1", "diffpure_0.2", "diffpure_0.3"):
     _BUILDERS[_n] = _build_diffpure
 _BUILDERS["restore_swin2sr"] = _build_swin
 _BUILDERS["gridpure"] = _build_gridpure
+_BUILDERS["downup_256"] = _build_downup256
+for _n in ("diffpure_ddpm256_t100", "diffpure_ddpm256_t200"):
+    _BUILDERS[_n] = _build_pixel_ddpm
 
 # Plug-ins resolved lazily by module name (src/eval/<name>.py must expose build_purifier(cfg, device)).
 _PLUGINS = {"adaptive_ae": "adaptive_ae"}

@@ -92,7 +92,11 @@ eval:
       repo_path: null                                   # clone of github.com/ZhengyueZhao/GrIDPure (guided_diffusion package)
       checkpoint: null                                  # path to 256x256_diffusion_uncond.pt (guided-diffusion); null => NotAvailable
       pure_model_url: "https://openaipublic.blob.core.windows.net/diffusion/jul-2021/256x256_diffusion_uncond.pt"
-    adaptive_ae: {}                                     # lazy: src/eval/adaptive_ae.py must expose build_purifier(cfg, device)
+    # DiffPure-STYLE pixel-space face DDPM (NOT the official DiffPure ckpt; 256x256 model; independent of SD1.5). UNVERIFIED: never loaded yet.
+    downup_256: {size: 256, resample: bicubic}          # control: 512->256->512 without diffusion; always report the gap to it
+    diffpure_ddpm256_t100: {model_id: "google/ddpm-celebahq-256", t_star: 100, steps: null}   # steps null => 100 ancestral DDPM steps; UNVERIFIED
+    diffpure_ddpm256_t200: {model_id: "google/ddpm-celebahq-256", t_star: 200, steps: null}   # UNVERIFIED
+    adaptive_ae: {}                                 # lazy: src/eval/adaptive_ae.py must expose build_purifier(cfg, device)
 
   # ---- Tiers (48h plan section 3). A rule = (methods x purifiers x cells). `methods` accept fnmatch patterns.
   # cell: {editor, strengths (null => editor default), prompts: all_if_headline | rotate}
@@ -124,7 +128,10 @@ eval:
       - {splits: [test], methods: [clean, v1, v2_main, v2_final], purifiers: *pf, cells: [*c_fid]}
       - {splits: [test], methods: [v1, v2_final], purifiers: *pi, cells: [*c_ip2p]}
       - {splits: [test], methods: [v2_antipure], purifiers: [none], cells: [*c_fid]}      # E6 "FaceID none"
-    SCREEN:                                             # S24 / S25: method screening on the VAL split (20 photos); never test
+    HELD:                                               # held-out SD-independent cleanup (DiffPure-style pixel DDPM) + resize control; test split
+      - {splits: [test], methods: [clean, v1, v2_main, v2_final], purifiers: [downup_256, diffpure_ddpm256_t100, diffpure_ddpm256_t200],
+         cells: [*c_sd15r]}
+    SCREEN:                                         # S24 / S25: method screening on the VAL split (20 photos); never test
       - {splits: [val], methods: [clean, v1, v2_cheap, v2_main, photoguard, mist, v2_tgt_zero, v2_tgt_zero_hi, v2_tgt_gray],
          purifiers: [none, jpeg_q75, diffpure_0.1], cells: [*c_sd15r]}
     TGT:                                                # S26-S28: target-steered family on the TEST split (clean / v1 / v2_main / v2_cheap already have these cells)

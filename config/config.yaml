@@ -60,7 +60,7 @@ purifier_train_params:
   downup:        {scale: [0.5, 0.9], modes: [bilinear, bicubic], antialias: true}
   vae_roundtrip: {model: sd15, latent: mean}
   sd_onestep:    {model: sd15, t_min: 50, t_max: 300, prompt: ""}
-purifiers_heldout: [jpeg_q_other, downup_other, diffpure_t0.1, diffpure_t0.2, diffpure_t0.3, gridpure]
+purifiers_heldout: [jpeg_q_other, downup_other, diffpure_t0.1, diffpure_t0.2, diffpure_t0.3, gridpure, downup_256, diffpure_ddpm256_t100, diffpure_ddpm256_t200]
 purifier_eval:                 # Half B only; real codecs (PIL), never the differentiable approximations
   none: {}
   jpeg_q90: {impl: pil, quality: 90}
@@ -75,6 +75,9 @@ purifier_eval:                 # Half B only; real codecs (PIL), never the diffe
   diffpure_t0.2:  {impl: sd_img2img_empty_prompt, strength: 0.2,  steps: 50, guidance: 1.0}
   diffpure_t0.3:  {impl: sd_img2img_empty_prompt, strength: 0.3,  steps: 50, guidance: 1.0}
   gridpure: {impl: official, feasible: unverified}
+  downup_256: {impl: pil, size: 256, resample: bicubic}                      # control for the pixel DDPM (resize only)
+  diffpure_ddpm256_t100: {impl: pixel_ddpm_diffpure_style, model: "google/ddpm-celebahq-256", t_star: 100, steps: null, feasible: unverified}   # DiffPure-STYLE, not the official ckpt
+  diffpure_ddpm256_t200: {impl: pixel_ddpm_diffpure_style, model: "google/ddpm-celebahq-256", t_star: 200, steps: null, feasible: unverified}
   restore_swin2sr: {impl: downup_then_sr, scale: 0.5, model: "caidas/swin2SR-classical-sr-x2-64"}
 
 editors: [sd15_img2img, sdxl_img2img, ip2p, sd_inpaint, ipadapter_faceid]   # identity editor: IP-Adapter FaceID (see Section 6)
