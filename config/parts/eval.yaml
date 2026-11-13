@@ -129,7 +129,7 @@ eval:
       - {splits: [test], methods: [v1, v2_final], purifiers: *pi, cells: [*c_ip2p]}
       - {splits: [test], methods: [v2_antipure], purifiers: [none], cells: [*c_fid]}      # E6 "FaceID none"
     HELD:                                               # held-out SD-independent cleanup (DiffPure-style pixel DDPM) + resize control; test split
-      - {splits: [test], methods: [clean, v1, v2_main, v2_final], purifiers: [downup_256, diffpure_ddpm256_t100, diffpure_ddpm256_t200],
+      - {splits: [test], methods: [clean, v2_tgt_zero_mid, v2_next_tuned], purifiers: [downup_256, diffpure_ddpm256_t100, diffpure_ddpm256_t200],
          cells: [*c_sd15r]}
     SCREEN:                                         # S24 / S25: method screening on the VAL split (20 photos); never test
       - {splits: [val], methods: [clean, v1, v2_cheap, v2_main, photoguard, mist, v2_tgt_zero, v2_tgt_zero_hi, v2_tgt_gray],
@@ -137,6 +137,10 @@ eval:
     TGT:                                                # S26-S28: target-steered family on the TEST split (clean / v1 / v2_main / v2_cheap already have these cells)
       - {splits: [test], methods: [v2_tgt_zero, v2_tgt_zero_mid, v2_tgt_zero_hi], purifiers: [none], cells: [*c_sd15, *c_fid]}
       - {splits: [test], methods: [v2_tgt_zero, v2_tgt_zero_mid, v2_tgt_zero_hi],
+         purifiers: [jpeg_q75, jpeg_q50, downup_0.5, vae_rt, diffpure_0.1, diffpure_0.2, diffpure_0.3], cells: [*c_sd15r]}
+    NEXT:                                               # T04: tuned v2_next_tuned on the TEST split, same rows as TGT
+      - {splits: [test], methods: [v2_next_tuned], purifiers: [none], cells: [*c_sd15, *c_fid]}
+      - {splits: [test], methods: [v2_next_tuned],
          purifiers: [jpeg_q75, jpeg_q50, downup_0.5, vae_rt, diffpure_0.1, diffpure_0.2, diffpure_0.3], cells: [*c_sd15r]}
     AP:                                                 # S07 / S20: single-term antipure ablation on the VAL split (selection of the antipure terms; never test)
       - {splits: [val], methods: [clean, v2_antipure], purifiers: [jpeg_q75, vae_rt, diffpure_0.1], cells: [*c_sd15r]}

@@ -103,7 +103,7 @@ def test_not_available_when_weights_missing():
 def test_held_tier_expands_with_new_names():
     from src.eval import edit_runner as er
     ev = er.load_eval_config()["eval"]
-    jobs = er.expand_tier(ev, "HELD", "v2_final", "test", ["a", "b"], ["diffpure_ddpm256_t100"], None)
+    jobs = er.expand_tier(ev, "HELD", "v2_tgt_zero_mid", "test", ["a", "b"], ["diffpure_ddpm256_t100"], None)
     assert jobs and {j.purifier for j in jobs} == {"diffpure_ddpm256_t100"}
     allp = {j.purifier for j in er.expand_tier(ev, "HELD", "clean", "test", ["a"], None, None)}
     assert allp == {"downup_256", "diffpure_ddpm256_t100", "diffpure_ddpm256_t200"}

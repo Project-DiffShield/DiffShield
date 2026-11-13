@@ -685,6 +685,41 @@ jobs:
           jobs:
             - {name: eval_v2_tgt_zero_mid_TGT, tier: TGT, purifier: all, method: v2_tgt_zero_mid, split: test}
 
+  T04:
+    title: T04 final run of the tuned v2_next_tuned on the 100 test photos (guard, protect, tier NEXT = the TGT rows, tier HELD). Needs config/parts/next_tuned.yaml in the bundle.
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    smoke_params: {n_images: 5, iters: 5}     # the guard still applies in smoke mode (needs next_tuned.yaml in the bundle)
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - name: guard_next_tuned      # fails loudly (before any GPU work) if methods.v2_next_tuned is missing, which would silently run plain v2_next (= the OLD final method)
+        run: ["{py}", -c, "import sys, yaml; from src.utils.config import load_config; c = load_config('{cfg}', method='v2_next_tuned'); m = (c.get('methods') or dict()).get('v2_next_tuned'); sys.exit('GUARD FAILED: methods.v2_next_tuned missing; copy final_candidate.yaml (T03 output) to config/parts/next_tuned.yaml and rebuild the bundle') if not isinstance(m, dict) or not m else print('guard ok: methods.v2_next_tuned keys', sorted(m))"]
+      - {macro: prep, with: {splits: [test]}}
+      - {macro: protect, with: {method: v2_next_tuned, split: test}}
+      - macro: evaluate
+        with:
+          name: next_v2_next_tuned
+          jobs:
+            - {name: eval_v2_next_tuned_NEXT, tier: NEXT, purifier: all, method: v2_next_tuned, split: test}
+            - {name: eval_v2_next_tuned_HELD, tier: HELD, purifier: all, method: v2_next_tuned, split: test}
+
+  T05:
+    title: T05 held-out rows (tier HELD) for the OLD final v2_tgt_zero_mid and clean on the 100 test photos; restores the S28 protected PNGs, no protection run
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", old_prot: "", n_expect: 100}
+    smoke_params: {n_images: 5, n_expect: 5}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - name: restore_old_protected   # copies <old_prot>/**/prot_v2_tgt_zero_mid_test (images + metrics + config) into {results}; old_prot = path of the S28 output (Kaggle dataset)
+        run: ["{py}", -c, "import os, shutil, sys; root = '{old_prot}'; hits = [r for r, d, f in os.walk(root) if os.path.basename(r) == 'prot_v2_tgt_zero_mid_test'] if root else []; sys.exit('old_prot is empty or has no prot_v2_tgt_zero_mid_test folder: ' + repr(root)) if not hits else None; dst = '{results}/prot_v2_tgt_zero_mid_test'; shutil.copytree(hits[0], dst, dirs_exist_ok=True); n = len([x for x in os.listdir(dst + '/images') if x.endswith('.png')]); print('restored', n, 'protected PNGs from', hits[0]); sys.exit('expected 100 PNGs, got ' + str(n)) if n < {n_expect} else None"]
+      - macro: evaluate
+        with:
+          name: held_v2_tgt_zero_mid
+          jobs:
+            - {name: eval_v2_tgt_zero_mid_HELD, tier: HELD, purifier: all, method: v2_tgt_zero_mid, split: test}
+            - {name: eval_clean_HELD, tier: HELD, purifier: all, method: clean, split: test}
+
   # ---------------------------------------------------------------------------------------------- S17 / S18
   S17:
     title: S17 E9 eps=2 (100 photos, protect then edits); the tuned config/parts/final.yaml is in the bundle   [eps=6 is S23]
