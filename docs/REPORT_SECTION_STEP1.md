@@ -1,7 +1,7 @@
 # Report text: systematic re-tuning and what else we tried (draft, 2026-11-14)
 
 Draft text for docs/REPORT_DRAFT.md: new subsections 5.12-5.15 plus additions to sections 6, 7 and 8. Every number below
-is measured unless marked PENDING (T04/T05/X6-X8 still running) or UNVERIFIED. Sources of the numbers: `reports/step1_selection/`,
+is measured unless marked PENDING (F1/W1/W2/X9 not yet run) or UNVERIFIED. T04, T05 and X6-X8 are filled in. Sources of the numbers: `reports/step1_selection/`,
 `reports/step1_confirm/`, `reports/exploration/` (explore_compare.md, similarity.md). Wording rule: our evaluation
 "DiffPure" is **DiffPure-style (SD1.5 img2img, empty prompt)**; the pixel-space cleaner of T05 is **DiffPure-style,
 pixel-space face DDPM** (`google/ddpm-celebahq-256`), not the official DiffPure checkpoint (its download returned 403).
@@ -43,7 +43,20 @@ about as good as the search could find. (In hindsight the rule should have requi
 **Final candidate.** Trial 14 (alpha 0.188, beta 0.546, gamma 21.6, denoiser eta 0.012 on timesteps 50-300, one-step
 DiffPure-style cleaner in 30% of training draws) is evaluated on the 100 test photos against the previous method with a paired
 bootstrap (`scripts/paired_compare.py`, adopt only if the 95% interval of the PSR difference is above 0):
-{{num:t04.paired|PENDING (T04/T05)}}. If the interval contains 0, the claim is "on par with the previous method", not "better".
+**verdict KEEP**. Headline cell (SD1.5 img2img, no cleanup, strength 0.55): PSR 0.497 (previous) vs 0.512 (trial 14),
+difference +0.016 [-0.009, +0.040] (10,000 paired draws over the 100 photos, seed 2026). Mean ArcFace similarity on the same
+cell moved slightly in the right direction, -0.006 [-0.009, -0.003] (secondary measure, not part of the rule): a real but very
+small effect. Other cells: no cell improved with an interval above 0; down-up resizing got worse (PSR 0.190 -> 0.137,
+-0.053 [-0.083, -0.027]); IP-Adapter FaceID stays near 0 (0.020 -> 0.013). Both methods are equally invisible on the test
+photos (mean PSNR 40.9 vs 41.0 dB, lowest SSIM 0.962 vs 0.959, no photo below the limit). The claim is therefore **"on par
+with the previous method"**, not "better" (`reports/step1_final/T04_paired_main.md`).
+
+**Does training with the cleaner help against cleaners?** The previous method did not see a cleaner in training, trial 14
+saw the one-step SD1.5 DiffPure-style cleaner in 30% of draws. On the DiffPure-style (SD1.5 img2img, empty prompt) evaluation
+cleanups trial 14 is ahead at t = 0.1 and 0.3 (+0.033 and +0.030) but neither interval excludes 0; similarity is slightly lower at
+t = 0.1 and 0.2 (-0.005, -0.008). On the held-out DiffPure-style, pixel-space face DDPM cleaner it was never trained on, it is
+slightly worse (t = 200: PSR -0.013 [-0.027, -0.003]; `reports/step1_final/T04_paired_held.md`). Training against one cleaner
+did not transfer to a different one.
 
 ## 5.13 What else we tried for a larger gain (exploration, 28 search photos)
 
@@ -58,11 +71,15 @@ Each variant changes one thing relative to the previous method; all were protect
 | X3 | identity loss on the photo (FaceNet), weight 2 | 0.168 | -0.018 [-0.032, -0.004] | 0.000 | 0 of 28 |
 | X4 | same, weight 10 | 0.156 | -0.030 [-0.045, -0.015] | 0.000 | 1 of 28 |
 | X5 | identity loss after the VAE round trip, weight 2 | 0.181 | -0.005 [-0.027, +0.015] | 0.000 | 0 of 28 |
-| X8 / X7 / X6 | final candidate at 4 / 6 / 8 /255 | {{num:x678|PENDING}} | | | |
+| X8 | final candidate (trial 14), 4/255 | 0.189 | +0.004 [-0.018, +0.023] | 0.000 | 0 of 28 |
+| X7 | final candidate, 6/255 | 0.213 | +0.027 [+0.001, +0.051] | 0.000 | 1 of 28 |
+| X6 | final candidate, 8/255 | 0.213 | +0.027 [+0.002, +0.050] | 0.002 | 12 of 28 |
 
 Findings: (i) more iterations do not help, the 40-iteration attack has converged; (ii) a larger budget helps, but only by
 becoming visible (mean PSNR 40.9 -> 38.1 dB, 12 of 28 photos below the limit), so it is a trade-off, not a better method;
-(iii) the identity loss lowers PSR on SD1.5 and leaves IP-Adapter FaceID PSR at 0 (explained in 5.14).
+(iii) the identity loss lowers PSR on SD1.5 and leaves IP-Adapter FaceID PSR at 0 (explained in 5.14); (iv) at 4/255 the final
+candidate equals the baseline (X8 vs X0, +0.004), as on the test photos; raising its budget to 6/255 gains +0.027, and 8/255
+gains nothing more (the same +0.027) while making 12 of 28 photos visibly worse.
 
 ## 5.14 Why the identity loss did not raise PSR
 
@@ -108,14 +125,31 @@ There is no accepted universal invisibility bound; image-protection work mostly 
 | MetaCloak-JPEG (2026) | L-inf 8/255 | paper |
 
 We keep 4/255 (fixed before results) as the headline and report the trade-off as a curve, PSR and PSNR at 4, 6 and 8/255 for the
-final candidate on the same photos: {{num:budget_curve|PENDING (X6-X8)}}. At 8/255 with the previous weights PSR rose by 0.039
-while 12 of 28 photos fell below the invisibility limit.
+final candidate on the same 28 search photos (`reports/exploration/explore_compare.md`):
+
+| Budget | PSR all cells | PSR SD1.5 | Diff to X0 [95% CI] | Mean / min PSNR (dB) | Min SSIM | Photos below limit |
+|---|---|---|---|---|---|---|
+| 4/255 (X8) | 0.189 | 0.379 | +0.004 [-0.018, +0.023] | 40.88 / 39.63 | 0.960 | 0 of 28 |
+| 6/255 (X7) | 0.213 | 0.426 | +0.027 [+0.001, +0.051] | 39.00 / 36.85 | 0.954 | 1 of 28 |
+| 8/255 (X6) | 0.213 | 0.424 | +0.027 [+0.002, +0.050] | 38.12 / 35.19 | 0.951 | 12 of 28 |
+
+The curve flattens after 6/255: 8/255 costs almost a further 1 dB of PSNR and 11 more photos below the limit for no extra PSR.
+6/255 is the only point with a gain whose interval excludes 0 at near-acceptable visibility (one photo below the limit), and the
+interval's lower end is close to 0. With the previous weights, 8/255 gave +0.039 (X1) with the same 12 of 28 photos below the
+limit. These are tuning photos; none of the larger budgets was run on the test photos.
 
 ---
 
 ## Additions to section 6 (failure cases)
 - IP-Adapter FaceID: PSR 0 for every method and variant; edits keep ArcFace similarity about 0.55-0.60 (threshold 0.1005).
   Protection that targets the SD1.5 VAE and UNet does not reach an editor that takes identity from a face-recognition embedding.
+  On the 100 test photos the previous method reaches 0.020 and trial 14 0.013.
+- A held-out DiffPure-style, pixel-space face DDPM cleaner (`google/ddpm-celebahq-256`, applied at 256 px) removes most of the
+  protection (T05, previous method, 100 test photos). PSR difference protected minus unprotected, paired by photo: after resizing
+  to 256 px and back alone (the control), +0.090 [+0.050, +0.130], so protection survives the resize; after the cleaner at
+  t = 100, -0.003 [-0.027, +0.020], i.e. nothing left; at t = 200, +0.023 [+0.007, +0.043]. The resize does not explain the loss;
+  the diffusion step does. The cleaner also changes unprotected faces on its own (PSR about 0.17 on clean photos). Trial 14, trained with a different (SD1.5, latent) cleaner, is no better here
+  (5.12).
 
 ## Additions to section 7 (limitations)
 14. Tuning and exploration used 28 + 12 photos; one cell of the confirm PSR moves in steps of about 0.03, so gains below that
@@ -137,4 +171,7 @@ while 12 of 28 photos fell below the invisibility limit.
 
 ## Addition to section 8 (claims)
 Do not claim: protection against IP-Adapter FaceID or any editor that conditions on a face-recognition embedding; that the
-re-tuned weights improve on the previous ones unless T04's paired interval is above 0.
+re-tuned weights improve on the previous ones (T04: KEEP, +0.016 [-0.009, +0.040]); that training with the one-step cleaner
+improves robustness to cleaners (no interval above 0 on any cleaner cell); that a larger budget is a better method (it is a
+visibility trade-off, measured on 28 tuning photos only). May claim: the re-tuned method with the cleaner and the denoiser term
+is on par with the previous final method on the 100 test photos at the same invisibility.
