@@ -1,7 +1,7 @@
 # Report text: systematic re-tuning and what else we tried (draft, 2026-11-14)
 
 Draft text for docs/REPORT_DRAFT.md: new subsections 5.12-5.15 plus additions to sections 6, 7 and 8. Every number below
-is measured unless marked PENDING (F1/W1/W2/X9 not yet run) or UNVERIFIED. T04, T05 and X6-X8 are filled in. Sources of the numbers: `reports/step1_selection/`,
+is measured unless marked PENDING (F1/W1/W2 not yet run) or UNVERIFIED. T04, T05, X6-X8 and X9 are filled in. Sources of the numbers: `reports/step1_selection/`,
 `reports/step1_confirm/`, `reports/exploration/` (explore_compare.md, similarity.md). Wording rule: our evaluation
 "DiffPure" is **DiffPure-style (SD1.5 img2img, empty prompt)**; the pixel-space cleaner of T05 is **DiffPure-style,
 pixel-space face DDPM** (`google/ddpm-celebahq-256`), not the official DiffPure checkpoint (its download returned 403).
@@ -65,6 +65,7 @@ Each variant changes one thing relative to the previous method; all were protect
 
 | Variant | Change | PSR all cells | Diff to baseline [95% CI] | PSR IP-Adapter | Photos violating PSNR/SSIM limit |
 |---|---|---|---|---|---|
+| C (X9) | no protection (clean control) | 0.045 | -0.140 [-0.177, -0.106] | 0.000 | n/a |
 | X0 | none (baseline) | 0.186 | - | 0.000 | 0 of 28 |
 | X1 | budget 8/255 | 0.225 | +0.039 [+0.020, +0.057] | 0.002 | 12 of 28 |
 | X2 | 100 PGD iterations | 0.190 | +0.005 [-0.013, +0.020] | 0.000 | 0 of 28 |
@@ -74,6 +75,13 @@ Each variant changes one thing relative to the previous method; all were protect
 | X8 | final candidate (trial 14), 4/255 | 0.189 | +0.004 [-0.018, +0.023] | 0.000 | 0 of 28 |
 | X7 | final candidate, 6/255 | 0.213 | +0.027 [+0.001, +0.051] | 0.000 | 1 of 28 |
 | X6 | final candidate, 8/255 | 0.213 | +0.027 [+0.002, +0.050] | 0.002 | 12 of 28 |
+
+Clean control (job X9): the same edits on the unprotected photos give PSR 0.045 (SD1.5 0.090, IP-Adapter 0.000). Protection
+therefore adds +0.140 [+0.106, +0.177] PSR over no protection (SD1.5 alone +0.281 [+0.212, +0.355]; 24 of 28 photos better,
+none worse; paired by photo, 2000 draws, seed 2026). The final candidate adds +0.144 [+0.111, +0.181] at 4/255 (26 of 28
+better) and +0.168 [+0.132, +0.205] at 6/255. All variants differ from each other by much less than they differ from no
+protection. Some cleanups make even unprotected edits fall below the threshold (SD1.5 with the DiffPure-style cleanup:
+clean PSR 0.119), so a part of every cell's PSR is caused by the cleanup, not by the protection; the differences to C remove it.
 
 Findings: (i) more iterations do not help, the 40-iteration attack has converged; (ii) a larger budget helps, but only by
 becoming visible (mean PSNR 40.9 -> 38.1 dB, 12 of 28 photos below the limit), so it is a trade-off, not a better method;
@@ -143,7 +151,9 @@ limit. These are tuning photos; none of the larger budgets was run on the test p
 ## Additions to section 6 (failure cases)
 - IP-Adapter FaceID: PSR 0 for every method and variant; edits keep ArcFace similarity about 0.55-0.60 (threshold 0.1005).
   Protection that targets the SD1.5 VAE and UNet does not reach an editor that takes identity from a face-recognition embedding.
-  On the 100 test photos the previous method reaches 0.020 and trial 14 0.013.
+  On the 100 test photos the previous method reaches 0.020 and trial 14 0.013. The protection is not without effect there:
+  on the 28 search photos it lowers the mean IP-Adapter edit similarity from 0.670 (clean, X9) to 0.595 (X0), a paired
+  difference of -0.075 [-0.090, -0.062], but every edit stays far above the threshold.
 - A held-out DiffPure-style, pixel-space face DDPM cleaner (`google/ddpm-celebahq-256`, applied at 256 px) removes most of the
   protection (T05, previous method, 100 test photos). PSR difference protected minus unprotected, paired by photo: after resizing
   to 256 px and back alone (the control), +0.090 [+0.050, +0.130], so protection survives the resize; after the cleaner at
@@ -167,7 +177,7 @@ limit. These are tuning photos; none of the larger budgets was run on the test p
     and per editor x cleanup.
 17. The exploration runs have no unprotected (clean) control on the 28 search photos; the clean rows exist for the test photos only.
     Addressed by: job X9 (tier EXPL, method `clean`, same cells and cleanups as X0-X8 on the same 28 photos); `explore_compare.py` and
-    `explore_similarity.py` list it as label C (never as a base and not in the difference to X0).
+    `explore_similarity.py` list it as label C (never as a base and not in the difference to X0). Ran: results in 5.13.
 
 ## Addition to section 8 (claims)
 Do not claim: protection against IP-Adapter FaceID or any editor that conditions on a face-recognition embedding; that the
