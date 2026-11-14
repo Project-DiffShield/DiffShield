@@ -163,3 +163,7 @@ methods:
     face: {id_mode: recon}
   v2_x_eps8_tuned:                       # X6: v2_next_tuned (trial 14: one-step cleaner + denoiser, config/parts/next_tuned.yaml) with eps 8/255
     budget: {eps_255: 8}
+  v2_x_eps6_tuned:                       # X7: same as X6 with eps 6/255 (middle point of the 4/6/8 budget curve)
+    budget: {eps_255: 6}
+  v2_x_eps4_tuned:                       # X8: v2_next_tuned unchanged (eps 4/255); a separate name so it is evaluated in tier EXPL on tune_search
+    budget: {eps_255: 4}

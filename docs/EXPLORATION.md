@@ -17,6 +17,8 @@ Job id = variant id (one job per variant; the brief said "X1..X6", we number X0.
 | X4 id_direct_b | `v2_x_id_direct_b` | `loss.lambda_id = 10.0` (**UNVERIFIED guess**), direct | same, 5x stronger |
 | X5 id_recon | `v2_x_id_recon` | `loss.lambda_id = 2.0` (**UNVERIFIED guess**), `face.id_mode: recon` | the existing identity loss (embedding of the VAE reconstruction of x+delta); separates "an identity term at all" from "direct vs through the VAE" |
 | X6 eps8_tuned | `v2_x_eps8_tuned` | `v2_next_tuned` (T03 trial 14: cleaner + denoiser) with `budget.eps_255 = 8` (added 2026-11-14 after X0-X5) | does the tuned cleaner+denoiser version gain more from a larger budget than the old weights (X1)? Same visibility caveat as X1 |
+| X7 eps6_tuned | `v2_x_eps6_tuned` | `v2_next_tuned` with `budget.eps_255 = 6` | middle point of the tuned budget curve |
+| X8 eps4_tuned | `v2_x_eps4_tuned` | `v2_next_tuned` at eps 4 | 4/255 point of the tuned budget curve on the same 28 photos (X0 uses the old weights) |
 
 X3-X5 target the FaceID editor, whose identity path bypasses the VAE. `id_mode: direct` minimises cos(FaceNet(source face crop), FaceNet(crop of x+delta)) by PGD; the source embedding is computed without gradient, so the gradient flows only through the protected image. Default `id_mode` is `recon` (the old behaviour; existing presets have `lambda_id` 0, so nothing is loaded and nothing changes).
 

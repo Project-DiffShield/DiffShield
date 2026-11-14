@@ -926,3 +926,25 @@ jobs:
       - name: guard_next_tuned      # X6 builds on methods.v2_next_tuned; without it the job would silently be X1
         run: ["{py}", -c, "import sys; from src.utils.config import load_config; c = load_config('{cfg}', method='v2_next_tuned'); m = (c.get('methods') or dict()).get('v2_next_tuned'); sys.exit('GUARD FAILED: methods.v2_next_tuned missing (config/parts/next_tuned.yaml)') if not isinstance(m, dict) or not m else print('guard ok: methods.v2_next_tuned keys', sorted(m))"]
       - {macro: explore, with: {method: v2_x_eps8_tuned}}
+
+  X7:
+    title: X7 exploration eps6_tuned = v2_next_tuned (trial 14, cleaner + denoiser) with eps 6/255, tier EXPL. Middle point of the 4/6/8 budget curve (X0/X6).
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - name: guard_next_tuned      # X7 builds on methods.v2_next_tuned
+        run: ["{py}", -c, "import sys; from src.utils.config import load_config; c = load_config('{cfg}', method='v2_next_tuned'); m = (c.get('methods') or dict()).get('v2_next_tuned'); sys.exit('GUARD FAILED: methods.v2_next_tuned missing (config/parts/next_tuned.yaml)') if not isinstance(m, dict) or not m else print('guard ok: methods.v2_next_tuned keys', sorted(m))"]
+      - {macro: explore, with: {method: v2_x_eps6_tuned}}
+
+  X8:
+    title: X8 exploration eps4_tuned = v2_next_tuned (trial 14, cleaner + denoiser) at the normal eps 4/255 on tune_search, tier EXPL. 4/255 point of the tuned budget curve (X8/X7/X6), same photos.
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", iters_cap: 0}
+    smoke_params: {n_images: 2, iters: 3, iters_cap: 3}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - name: guard_next_tuned
+        run: ["{py}", -c, "import sys; from src.utils.config import load_config; c = load_config('{cfg}', method='v2_next_tuned'); m = (c.get('methods') or dict()).get('v2_next_tuned'); sys.exit('GUARD FAILED: methods.v2_next_tuned missing (config/parts/next_tuned.yaml)') if not isinstance(m, dict) or not m else print('guard ok: methods.v2_next_tuned keys', sorted(m))"]
+      - {macro: explore, with: {method: v2_x_eps4_tuned}}

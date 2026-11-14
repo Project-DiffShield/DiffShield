@@ -29,9 +29,9 @@ import numpy as np
 import pandas as pd
 
 LABELS = {"v2_next": "X0", "v2_x_eps8": "X1", "v2_x_it100": "X2", "v2_x_id_direct_a": "X3",
-          "v2_x_id_direct_b": "X4", "v2_x_id_recon": "X5", "v2_x_eps8_tuned": "X6"}
+          "v2_x_id_direct_b": "X4", "v2_x_id_recon": "X5", "v2_x_eps8_tuned": "X6", "v2_x_eps6_tuned": "X7", "v2_x_eps4_tuned": "X8"}
 NAMES = {"X0": "base (v2_next)", "X1": "eps8", "X2": "it100", "X3": "id_direct_a", "X4": "id_direct_b", "X5": "id_recon",
-         "X6": "eps8_tuned"}
+         "X6": "eps8_tuned", "X7": "eps6_tuned", "X8": "eps4_tuned"}
 PSNR_MIN, SSIM_MIN = 38.0, 0.95
 SD15, FID = "sd15_img2img", "ipadapter_faceid"
 DEDUP = ["image_id", "purifier", "editor", "strength", "prompt_id", "seed"]
