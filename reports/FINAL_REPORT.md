@@ -1,6 +1,6 @@
 # DiffShield v2: protecting face photos from diffusion-model editing
 
-**Project report** · written 2026-10-22 · all numbers are measured and copied from the generated result tables (`results/tables/`, `results/tables/final_readout.md`) or from the run logs; nothing is estimated. Experiments that were planned but not run are marked "not run". CelebA-HQ face images were used for research only; no face image appears in this report (the before/after panels stay local).
+**Project report** · written 2026-10-22, follow-up study added 2026-11-15 (section 7.11) · all numbers are measured and copied from the generated result tables (`results/tables/`, `results/tables/final_readout.md`) or from the run logs; nothing is estimated. Experiments that were planned but not run are marked "not run". CelebA-HQ face images were used for research only; no face image appears in this report (the before/after panels stay local).
 
 ---
 
@@ -90,7 +90,7 @@ Maximise over ‖δ‖∞ ≤ ε the expectation over cleanups P and randomness 
 `α·L_vis(x, P(x+δ)) + η·L_den(P(x+δ)) − β·L_sem(P(x+δ)) − γ·L_str(x, x+δ)`
 - **Training cleanups (all differentiable):** JPEG (random quality), down-up (random scale), SD VAE round trip, one-step SD purifier (noise at a random timestep, one UNet step, decode). One down-up setting is held out for an early check.
 - **`L_str`** is computed on the published photo `x+δ`, not on the cleaned one, so the visibility penalty is on what is actually posted.
-- **Optional terms** (all switchable): denoiser error `L_den`; anti-purification (patch-DCT high-frequency and error-grows-with-timestep, after AntiPure); SDXL-VAE ensemble; identity loss `L_id` (implemented, **switched off in every preset**, never evaluated).
+- **Optional terms** (all switchable): denoiser error `L_den`; anti-purification (patch-DCT high-frequency and error-grows-with-timestep, after AntiPure); SDXL-VAE ensemble; identity loss `L_id` (switched off in every final preset; evaluated in the November follow-up, where it lowered PSR, see 7.11).
 - **Target-steered terms (added 2026-10-20, the main new idea):** `L_vis` only pushes the latent *away from the clean latent* and has no direction. The new term instead pulls the latent of the cleaned photo **toward a fixed destructive target**, the idea behind PhotoGuard and Mist, but inside the cleanup loop: `value = −w·MSE(enc(P(x+δ)), z_target)` with `z_target = 0` ("zero latent") or the latent of a gray image. Variants: `v2_tgt_zero` (α = 0.27), `v2_tgt_zero_mid` (α = 0.55), `v2_tgt_zero_hi` (α = 1.0), `v2_tgt_gray`.
 - **Method presets in the code:** `v1`, `v2_cheap` (cleanups in the loop, no UNet term), `v2_main` (+ one-step purifier + denoiser term), `v2_antipure`, `v2_final` (Optuna-tuned, antipure on, SDXL ensemble), ablations `abl_vis_only / den_only / no_sem / no_pur`, `eps2/6/8`, and the `v2_tgt_*` family. Baselines: `noise_uniform`, `noise_gauss_psnr`, `photoguard` (official 1000 iterations), `mist` (official 100 iterations, official target image fetched at run time); both are our re-implementations checked against the official code.
 - **Efficiency choices:** fp16 autocast for the VAE in the loop (≈2× faster, loss trajectories matched fp32 on a check), gradient checkpointing, per-image seeds derived from a hash so runs are repeatable and resumable.
@@ -130,6 +130,7 @@ The original brief prescribed phases 0–8 over about ten weeks of sequential wo
 | **6. Tuning** | Optuna: 16 trials on 10 validation photos (proxy objective), top 3 confirmed on 20 validation photos | tuned `v2_final` |
 | **7. Final experiments** | E0–E10 as far as time allowed; ablations; ε sweep; adaptive attacker | section 7 |
 | **New (2026-10-20) target-steered variants** | diagnosed why v2_main ≈ v1 (no direction in `L_vis`); added the target term; **screened on the 20 validation photos only**; then ran the three declared variants on the 100 test photos | section 7.9 |
+| **Follow-up (2026-11)** | re-chose α, β, γ with the denoiser term and a DiffPure-style cleaner in training (photos chosen by MMD-critic, per-photo invisibility constraint, Optuna 25 trials, confirm on 12 photos, paired test on 100); exploration of budget, iterations, identity loss; held-out pixel-space cleaner; clean control | on par with `v2_tgt_zero_mid`; section 7.11 |
 | **8. Write-up and demo** | tables, figures, this report, `scripts/demo.py` (protect one photo, show edits), README | this document |
 
 **Discipline we kept.** One config; per-image seeds; every run writes its resolved config, git hash, library versions; fixed photo lists, never tuning on test; smoke tests on 5 photos before any long run; negative results kept; no number invented.
@@ -285,6 +286,57 @@ The control does not gain, so the gain comes from the target term.
 
 Figures (no faces): `results/figures/pareto_psr_vs_psnr.png` (headline: protection against invisibility for every method), `psr_vs_psnr.png` (ε sweep), `psr_by_purifier.png`, `per_editor.png`, `ablation.png`, `sim_distributions.png`, `optuna_history.png`.
 
+### 7.11 Follow-up (November 2026): re-tuning with a cleaner and a denoiser attack in training, and what else we tried
+
+Three goals for the final version: (1) re-choose the loss weights α, β, γ properly instead of inheriting them; (2) put a DiffPure-style cleaner into the training mixture; (3) attack the editor's denoiser (UNet) as well as its encoder. The starting point is `v2_tgt_zero_mid` from 7.9 (called "the previous method" below). Sources: `reports/step1_selection/`, `reports/step1_confirm/`, `reports/step1_final/`, `reports/exploration/`.
+
+**Tuning photos, chosen by a fixed rule.** 28 search and 12 confirm photos, chosen by MMD-critic (Kim, Khanna & Koyejo, NeurIPS 2016) on CLIP embeddings of the whole usable pool (28,974 photos; test and messy photos excluded). Against 1,000 random subsets of the same size the search set is more representative than chance (p = 0.001 in CLIP space, p = 0.008 in an independent attribute-and-pose space); the confirm set is representative in CLIP space (p = 0.003) but only weakly in attribute-and-pose space (p = 0.20). No two chosen photos are the same person (largest pairwise ArcFace similarity 0.451). The selection reproduces from the saved embeddings with one command.
+
+**Search.** Optuna TPE (seed 2026, 2 parallel workers), 25 trials on a cheap proxy (20 PGD iterations, K = 2, 1 edit seed) over α, β, γ, the denoiser weight η and its timestep range, and the share `p_onestep` of the one-step DiffPure-style cleaner in the training mixture. Objective: mean PSR over 2 editors (SD1.5 img2img s0.55, IP-Adapter FaceID) × 5 cleanups. Constraint **per photo** (the lesson from `v2_final` in 7.1): PSNR ≥ 38 dB and SSIM ≥ 0.95. Trial 0 was the previous method. 18 of 25 trials met the constraint; the best feasible one reached proxy PSR 0.232 against 0.204 for the previous method. Four pairs of trials had identical settings (both workers drew the same start-up points, a seeding flaw on our side) and differed by up to 0.021, which is the size of the search noise. Large denoiser weights (η 1.8 and 89) gave the worst trials (PSR 0.075–0.121).
+
+**Confirmation** (top 3 feasible trials and the previous method, full settings, 12 confirm photos × 3 seeds): previous method 0.211, trial 14 0.211, trial 17 0.203, trial 10 0.169, all without invisibility violations. The rule fixed in advance ("no violations and PSR ≥ the previous method") accepted trial 14 on an exact tie; in hindsight it should have required a strict improvement. Trial 14: α 0.188, β 0.546, γ 21.6, denoiser η 0.012 on timesteps 50–300, one-step DiffPure-style cleaner in 30% of training draws.
+
+**Test result: on par, not better** (`reports/step1_final/T04_paired_main.md`; 100 test photos, paired bootstrap, 10,000 draws, seed 2026; rule fixed in advance: adopt only if the lower bound of the PSR difference is above 0):
+
+| SD1.5 img2img, s0.55 | previous method | trial 14 | difference [95% CI] |
+|---|---|---|---|
+| PSR, no cleanup (headline) | 0.497 | 0.512 | +0.016 [−0.009, +0.040] → **keep** |
+| mean ArcFace similarity, no cleanup (secondary) | 0.108 | 0.102 | −0.006 [−0.009, −0.003] |
+| PSR, DiffPure-style 0.1 / 0.2 / 0.3 | 0.517 / 0.570 / 0.600 | 0.550 / 0.567 / 0.630 | +0.033 / −0.003 / +0.030 (no interval excludes 0) |
+| PSR, JPEG 75 / JPEG 50 | 0.233 / 0.203 | 0.227 / 0.190 | −0.007 / −0.013 (no interval excludes 0) |
+| PSR, down-up 0.5 | 0.190 | 0.137 | **−0.053 [−0.083, −0.027]** |
+| PSR, IP-Adapter FaceID | 0.020 | 0.013 | −0.007 [−0.020, +0.007] |
+| invisibility: PSNR mean (min), SSIM min, photos failing | 40.9 (39.7), 0.962, 0 | 41.0 (39.8), 0.959, 0 | |
+
+The re-tuned method with the cleaner and the denoiser term in training is **on par with the previous method** at the same invisibility: identity similarity is very slightly lower, PSR is not measurably higher, and it is worse under down-up resizing. Training with the SD1.5 one-step cleaner did not make protection measurably more robust to the SD1.5 DiffPure-style cleanups.
+
+**A held-out pixel-space cleaner removes the protection** (job T05; DiffPure-style, pixel-space face DDPM `google/ddpm-celebahq-256`, applied at 256 px; previous method; the official DiffPure checkpoint could not be downloaded). Paired PSR difference protected minus unprotected: after resizing to 256 px and back alone (the control, part of the cleaner) **+0.090 [+0.050, +0.130]**; after the cleaner at t = 100 **−0.003 [−0.027, +0.020]**; at t = 200 +0.023 [+0.007, +0.043]. The resize does not explain the loss; the diffusion step does. Trial 14 is no better against it (t = 200: −0.013 [−0.027, −0.003] vs the previous method; `T04_paired_held.md`). Unlike the SD-based DiffPure-style cleanup of 7.3, which the protection survives, a pixel-space diffusion purifier wipes it out.
+
+**What else we tried for a larger gain** (exploration on the 28 search photos, 2 editors × 5 cleanups × 3 seeds = 840 edits per variant; not a test-set claim; `reports/exploration/explore_compare.md`):
+
+| variant | change from the previous method | PSR all cells | difference to X0 [95% CI] | PSNR mean (min) | photos failing the invisibility rule |
+|---|---|---|---|---|---|
+| C | no protection (clean control) | 0.045 | −0.140 [−0.177, −0.106] | n/a | n/a |
+| X0 | none (previous method) | 0.186 | – | 40.86 (39.62) | 0 of 28 |
+| X1 | budget 8/255 | 0.225 | +0.039 [+0.020, +0.057] | 38.11 (35.23) | 12 of 28 |
+| X2 | 100 PGD iterations instead of 40 | 0.190 | +0.005 [−0.013, +0.020] | 40.69 (39.86) | 0 of 28 |
+| X3 | identity loss (FaceNet), weight 2 | 0.168 | −0.018 [−0.032, −0.004] | 40.14 (39.20) | 0 of 28 |
+| X4 | identity loss, weight 10 | 0.156 | −0.030 [−0.045, −0.015] | 39.66 (38.89) | 1 of 28 |
+| X5 | identity loss after the VAE round trip, weight 2 | 0.181 | −0.005 [−0.027, +0.015] | 40.48 (39.51) | 0 of 28 |
+| X8 | trial 14 at 4/255 | 0.189 | +0.004 [−0.018, +0.023] | 40.88 (39.63) | 0 of 28 |
+| X7 | trial 14 at 6/255 | 0.213 | +0.027 [+0.001, +0.051] | 39.00 (36.85) | 1 of 28 |
+| X6 | trial 14 at 8/255 | 0.213 | +0.027 [+0.002, +0.050] | 38.12 (35.19) | 12 of 28 |
+
+- **Protection is real and large compared with everything we varied.** Over no protection, X0 adds +0.140 [+0.106, +0.177] (SD1.5 alone +0.281; 24 of 28 photos better, none worse); trial 14 adds +0.144 at 4/255 and +0.168 at 6/255. All variants differ from each other by at most 0.04.
+- **More iterations do nothing:** the 40-iteration attack has converged.
+- **Budget is a trade-off, not a better method.** The gain stops at 6/255: 8/255 gives the same PSR and makes 12 of 28 photos fail the invisibility rule. 4/255 stays the headline because it was fixed before any result.
+- **The identity loss lowers PSR.** It does what it is asked: the surrogate FaceNet's cosine between protected and original face falls from 1.00 to −0.28 (X3), −0.42 (X4) and −0.65 (X5). But ArcFace, the network the IP-Adapter editor and our scorer use, barely moves: IP-Adapter edit similarity 0.595 → 0.556 (X3, −0.039 [−0.051, −0.028]), the same −0.039 at weight 10, and the lowest similarity of any X3–X5 edit (0.168) stays far above the threshold (0.1005), so PSR stays 0. The weight made no difference, so the limit is **transfer between face networks**, not optimisation strength; the identity term also takes budget from the latent attack (SD1.5 PSR −0.018 to −0.030). A crop mismatch (fixed central crop at 160 px vs ArcFace's detected, aligned 112 px face) may add to this (UNVERIFIED). Published face-cloaking tools use ensembles of face models for this reason; we used one surrogate. An identity loss on ArcFace itself was not tried: it would be the right white-box attack on IP-Adapter, but ArcFace is also our judge, so it needs a second, independent recogniser to score it.
+- **IP-Adapter FaceID is weakened but never beaten.** Protection lowers its edit similarity from 0.670 (clean) to 0.595 (X0), −0.075 [−0.090, −0.062], but every edit stays far above the threshold.
+
+**Budget in the literature** (there is no accepted universal invisibility bound; most image-protection work uses larger budgets than our 4/255): Mist L∞ 16/255 (default in the released code); Glaze, a perceptual bound of LPIPS about 0.05–0.07; Anti-DreamBooth about 0.03–0.05 on the [0, 1] scale (from a secondary summary, to be checked against the paper); MetaCloak-JPEG 8/255; PhotoGuard's value UNVERIFIED.
+
+**Evaluation added at the end (results not included at the time of writing):** an independent second face recogniser (FaceNet after MTCNN detection, its own calibrated threshold; job F1) re-scoring every saved edit, and the comparison of the previous method and trial 14 on SDXL img2img (W1), InstructPix2Pix and SD inpainting (W2). Where these results are missing, the corresponding claims stay as in 7.7 and section 10.
+
 ---
 
 ## 8. Analysis
@@ -305,7 +357,9 @@ Figures (no faces): `results/figures/pareto_psr_vs_psnr.png` (headline: protecti
 
 **8. How to read "protected".** PSR is an operational, ArcFace-based definition. The audit shows it is not driven by missing faces and that the similarity itself falls, but the protected edits are often *degraded or stylised* rather than changed into a different believable person, and some stay recognisable to a person. No human study was run, so no claim about human perception is made.
 
-**9. Method lessons.** Averages hide per-photo violations (invisibility); raw PSR under a cleanup can mislead, so protection should be reported net of the clean baseline; a control run isolates a cause; and screening on validation photos before spending test-set compute kept the final comparison honest.
+**9. The follow-up added the requested ingredients but no measurable gain.** Re-tuning with a cleaner and a denoiser term in training gave a method on par with `v2_tgt_zero_mid` (+0.016 [−0.009, +0.040]); the hand-set weights were already near the best the search could find, and the denoiser term only helps at a very small weight. Training against one cleaner did not transfer to a different one: a pixel-space diffusion purifier removes the protection completely. More iterations do not help; more budget helps only up to 6/255 and only by becoming more visible; an identity loss on one surrogate face network does not transfer to ArcFace. Against a clean control the protection itself remains large (+0.14 PSR on the search photos), so the method works, but the extra ingredients did not move it.
+
+**10. Method lessons.** Averages hide per-photo violations (invisibility); raw PSR under a cleanup can mislead, so protection should be reported net of the clean baseline; a control run isolates a cause; and screening on validation photos before spending test-set compute kept the final comparison honest.
 
 ---
 
@@ -314,28 +368,28 @@ Figures (no faces): `results/figures/pareto_psr_vs_psnr.png` (headline: protecti
 |---|---|---|
 | **G1 invisibility** | v1, v2_main, v2_cheap, `tgt_zero` and `tgt_zero_mid` pass the per-photo rule on all 100 photos; `v2_final`, antipure, ε = 8, PhotoGuard, Mist do not | **achieved** for the recommended variants |
 | **G2 protection** | clearly above clean and noise; v1 +10 points, **`tgt_zero_mid` +36 points (about 2× v1)**, all with intervals excluding 0, for SD1.5 image-to-image at moderate strength | **achieved in one regime; modest elsewhere** |
-| **G3 robustness to cleanup** | survives DiffPure and the VAE round trip; reduced by JPEG and resizing; removed by an adaptive attacker (tested on v1 and `v2_final`) | **partial** |
+| **G3 robustness to cleanup** | survives the SD-based DiffPure-style cleanup and the VAE round trip; reduced by JPEG and resizing; removed by an adaptive attacker (tested on v1 and `v2_final`) and by a pixel-space diffusion purifier (7.11); training with a cleaner did not change this | **partial** |
 | **G4 generality** | does not protect FaceID, inpainting, SDXL or strength 0.3 | **not achieved** |
 | **G5 fair evaluation** | controls, pairing, fixed splits, held-out cleanups, adaptive test, existing-tool comparison, intervals everywhere | **achieved** |
 | **G6 reproducibility** | one config, per-image seeds, logged environments, 377 tests, hash-stamped bundles, one command per analysis step | **achieved** |
 
-**One-sentence verdict:** v2 as originally designed (cleanups and extra terms) added little over v1; adding a **target-steered term** produced a measurable, supported improvement (about twice v1's protection at invisible levels for SD1.5 image-to-image editing), with clear limits (JPEG, adaptive attackers, FaceID/inpainting/SDXL, human perception untested).
+**One-sentence verdict:** v2 as originally designed (cleanups and extra terms) added little over v1; adding a **target-steered term** produced a measurable, supported improvement (about twice v1's protection at invisible levels for SD1.5 image-to-image editing), with clear limits (JPEG, adaptive attackers, FaceID/inpainting/SDXL, human perception untested). The follow-up re-tuning with a cleaner and a denoiser attack in training is on par with it, not better.
 
 ---
 
 ## 10. Limitations (all real)
-DPM-Solver++ sampler for every editor (not v1's); the DiffPure-style cleanup is SD1.5-based, not the original DiffPure; GrIDPure unavailable, IMPRESS and InstantID not run; 40 PGD iterations, K = 4; Optuna on 10 photos with a proxy objective, where the proxy's best trial (0.10) fell to 0.05 on the 20-photo confirm and tuned vs hand-set is not separable (0.067 vs 0.042); identity loss implemented but never evaluated; one CLIP model; de-duplication of identities used an unverified similarity threshold and the splitter's face detector missed 38 of 100 test faces (evaluation now pads the image; the test list was not re-de-duplicated); adaptive attacker weak and not run on the target-steered variants; choice of "best" target variant is post hoc among three declared variants; PhotoGuard and Mist are our re-implementations run at our budget; edit-LPIPS not reported; **no human study**; the `no_sem` and `no_pur` ablations and ε = 6 not run; v1's Phase 2 outputs were lost (its LPIPS 0.46 can only be quoted); many comparisons without multiplicity correction; results are for CelebA-HQ portraits only.
+DPM-Solver++ sampler for every editor (not v1's); the DiffPure-style cleanup is SD1.5-based, not the original DiffPure; GrIDPure unavailable, IMPRESS and InstantID not run; 40 PGD iterations, K = 4 (100 iterations checked in 7.11: no gain); Optuna on 10 photos with a proxy objective, where the proxy's best trial (0.10) fell to 0.05 on the 20-photo confirm and tuned vs hand-set is not separable (0.067 vs 0.042); the November re-tuning used 28 + 12 photos, where one confirm cell moves in steps of about 0.03, its search noise was about 0.02, and its acceptance rule accepted a tie; the identity loss was tried with one surrogate (FaceNet) only; the larger budgets (6 and 8/255) of the tuned method were measured on the 28 tuning photos only; a pixel-space diffusion purifier removes the protection; one face recogniser (ArcFace) scores all edits and is also the IP-Adapter editor's encoder (a second recogniser was added at the end, results pending); one CLIP model; de-duplication of identities used an unverified similarity threshold and the splitter's face detector missed 38 of 100 test faces (evaluation now pads the image; the test list was not re-de-duplicated); adaptive attacker weak and not run on the target-steered variants; choice of "best" target variant is post hoc among three declared variants; PhotoGuard and Mist are our re-implementations run at our budget; edit-LPIPS not reported; **no human study**; the `no_sem` and `no_pur` ablations not run; v1's Phase 2 outputs were lost (its LPIPS 0.46 can only be quoted); many comparisons without multiplicity correction; results are for CelebA-HQ portraits only.
 
 ---
 
 ## 11. Conclusions and what to do next
-**Conclusions.** (i) v1's claims were weaker than stated and its budget was mis-labelled (4/255, not 8/255). (ii) A fair evaluation shows the protection effect is real, bounded by budget and edit strength, and vulnerable to JPEG, resizing and adaptive attackers. (iii) Training against cleanups alone did not beat v1 much. (iv) A target-steered term inside the cleanup loop about doubles protection while keeping every test photo invisible, and keeps more of its protection than visible tools under JPEG and resizing.
+**Conclusions.** (i) v1's claims were weaker than stated and its budget was mis-labelled (4/255, not 8/255). (ii) A fair evaluation shows the protection effect is real, bounded by budget and edit strength, and vulnerable to JPEG, resizing and adaptive attackers. (iii) Training against cleanups alone did not beat v1 much. (iv) A target-steered term inside the cleanup loop about doubles protection while keeping every test photo invisible, and keeps more of its protection than visible tools under JPEG and resizing. (v) Re-tuning the weights with a DiffPure-style cleaner and a denoiser attack in training, under a per-photo invisibility constraint and a rule fixed in advance, gives a method **on par** with the target-steered one, not better; more iterations, more budget beyond 6/255 and a single-surrogate identity loss do not help, and a pixel-space diffusion purifier removes the protection.
 
 **Next steps, in order of value.**
-1. Run the **adaptive attacker** against `v2_tgt_zero_mid` (the most important unknown).
+1. Run the **adaptive attacker** against `v2_tgt_zero_mid` (the most important unknown), and train against a **pixel-space diffusion purifier** (the cleaner that removes the protection in 7.11).
 2. A **human study** (is the noise visible; is the person still recognisable in the degraded edits).
-3. Fix the weak spots: JPEG robustness (stronger cleanup mixture), SDXL/ensemble targets, and a face-embedding term for FaceID (the implemented identity loss, evaluated with a second recogniser to avoid grading on the training network).
-4. Re-tune with **per-photo** invisibility constraints and more iterations/draws; run `no_sem`, `no_pur` and ε = 6.
+3. Fix the weak spots: JPEG robustness (stronger cleanup mixture), SDXL/ensemble targets, and for FaceID an identity loss on an **ensemble of face networks including ArcFace**, scored with an independent recogniser.
+4. Run `no_sem`, `no_pur`, and the 6/255 tuned method on the test photos (the only larger budget with a gain at near-acceptable visibility).
 5. Replace the post-hoc choice of `mid` by a rule fixed on validation photos.
 
 ---
@@ -346,6 +400,7 @@ DPM-Solver++ sampler for every editor (not v1's); the DiffPure-style cleanup is 
 - Analysis chain: `python scripts/finalize_all.py` (unpack new zips → `ingest_results.py` → `make_tables.py` → `readout_final.py` → `make_figures.py`), then `python scripts/make_pareto_figure.py`.
 - Tests: `python -m pytest -q tests` (377 pass, 8 skipped; CPU only, stand-in models).
 - Demo: `python scripts/demo.py --image <photo> --out demo_out` (needs a GPU for the real models; `--cpu-dry-run` checks the wiring only).
+- Follow-up (7.11): protocol `docs/TUNING_PROTOCOL.md`, exploration plan `docs/EXPLORATION.md`; results `reports/step1_selection/`, `reports/step1_confirm/`, `reports/step1_final/`, `reports/exploration/`; analysis `scripts/paired_compare.py`, `scripts/explore_compare.py`, `scripts/explore_similarity.py`; Kaggle jobs T02–T05, X0–X9 (bundles `75277f7` for T04, T05, X6–X8; `78ca757` for X9, W1, W2, F1).
 - Detailed plans and earlier reports: `docs/EVAL_PLAN_FINAL.md`, `docs/COST_MEASURED.md`, `reports/PHASE_0.md`, `reports/REPORT_v2_draft.md`.
 - Data hygiene: results CSV/JSON/logs are committed; protected and edited images (face-derived) are never committed, but 84 early smoke-test JPEGs remain inside older git commits (nothing has been pushed; they must be removed from history before any push).
 
