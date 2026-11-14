@@ -122,9 +122,18 @@ while 12 of 28 photos fell below the invisibility limit.
     size are not detectable there. The final claim uses the 100 test photos.
 15. A single face recogniser (insightface `buffalo_l`) scores all edits, and it is also the identity encoder of the IP-Adapter
     editor. The second recogniser planned in the design (`fr2_sim`) was not computed in any run (the column is empty).
+    Addressed by: job F1 (`scripts/score_fr2.py`), which scores every saved edit post hoc with FaceNet (vggface2) after MTCNN
+    detection, a recogniser and detector independent of insightface, with its own calibrated threshold and an fr2-PSR table. It is
+    not independent for X3-X5, which were trained against that FaceNet. Jobs W1/W2 additionally evaluate the final comparison on
+    SDXL img2img, InstructPix2Pix and SD inpainting. Results of F1/W1/W2 are not in this section until the jobs have run.
 16. PSR is a yes/no count at a strict threshold; it hides graded changes in identity (5.14). We therefore also report mean
     ArcFace similarity with paired intervals.
+    Addressed by: `scripts/paired_compare.py` now also reports, as secondary numbers next to the PSR rule (which is unchanged), the
+    paired bootstrap of the difference in mean ArcFace similarity (and mean fr2 similarity when F1 has filled it), per headline cell
+    and per editor x cleanup.
 17. The exploration runs have no unprotected (clean) control on the 28 search photos; the clean rows exist for the test photos only.
+    Addressed by: job X9 (tier EXPL, method `clean`, same cells and cleanups as X0-X8 on the same 28 photos); `explore_compare.py` and
+    `explore_similarity.py` list it as label C (never as a base and not in the difference to X0).
 
 ## Addition to section 8 (claims)
 Do not claim: protection against IP-Adapter FaceID or any editor that conditions on a face-recognition embedding; that the

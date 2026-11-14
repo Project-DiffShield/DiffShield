@@ -948,3 +948,111 @@ jobs:
       - name: guard_next_tuned
         run: ["{py}", -c, "import sys; from src.utils.config import load_config; c = load_config('{cfg}', method='v2_next_tuned'); m = (c.get('methods') or dict()).get('v2_next_tuned'); sys.exit('GUARD FAILED: methods.v2_next_tuned missing (config/parts/next_tuned.yaml)') if not isinstance(m, dict) or not m else print('guard ok: methods.v2_next_tuned keys', sorted(m))"]
       - {macro: explore, with: {method: v2_x_eps4_tuned}}
+
+  # ================================================================================================
+  # X9 (clean control for the exploration photos), W1/W2 (more editors for the FINAL comparison), F1 (second face recogniser).
+  # docs/KAGGLE_LAUNCH.md section "X9, W1, W2, F1". All timings in the titles are planner estimates (UNVERIFIED).
+  # ================================================================================================
+  X9:
+    title: X9 clean control = unprotected edits of the 28 tune_search photos, tier EXPL (same cells and cleanups as X0..X8; no protection step). Gives the "no protection" row for explore_compare / explore_similarity (label C).
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: ""}
+    smoke_params: {n_images: 2}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [tune_search]}}
+      - macro: evaluate
+        with:
+          name: expl_clean
+          jobs:
+            - {name: eval_clean_EXPL, tier: EXPL, purifier: all, method: clean, split: tune_search}
+
+  W1:
+    title: W1 WIDE tier, SDXL img2img (1024 px, strength 0.55, rotated prompt) on the 100 test photos for clean, v2_tgt_zero_mid (old final) and v2_next_tuned; restores both methods' protected PNGs (no protection run). ~3 to 4 h on 2 T4 (UNVERIFIED).
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", old_prot: "", new_prot: "", n_expect: 100, do_clean: true, do_old: true, do_new: true, sdxl_offload: false}
+    smoke_params: {n_images: 5, n_expect: 5}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - name: restore_old_protected   # v2_tgt_zero_mid: the S28 protected PNGs (old_prot = S28 output dataset; empty => searched under /kaggle/input)
+        when: do_old
+        run: ["{py}", scripts/restore_prot.py, --src, "{old_prot}", --name, prot_v2_tgt_zero_mid_test, --dst, "{results}/prot_v2_tgt_zero_mid_test", --n_expect, "{n_expect}"]
+      - name: restore_new_protected   # v2_next_tuned: the T04 protected PNGs (new_prot = T04 output; empty => searched under /kaggle/input)
+        when: do_new
+        run: ["{py}", scripts/restore_prot.py, --src, "{new_prot}", --name, prot_v2_next_tuned_test, --dst, "{results}/prot_v2_next_tuned_test", --n_expect, "{n_expect}"]
+      - macro: evaluate
+        when: do_clean
+        with:
+          name: wide_sdxl_clean
+          defs: {editor: sdxl_img2img, set: ["eval.editors.sdxl_img2img.cpu_offload={sdxl_offload}"]}
+          jobs:
+            - {name: eval_clean_WIDE_sdxl, tier: WIDE, purifier: none, method: clean, split: test}
+      - macro: evaluate
+        when: do_old
+        with:
+          name: wide_sdxl_v2_tgt_zero_mid
+          defs: {editor: sdxl_img2img, set: ["eval.editors.sdxl_img2img.cpu_offload={sdxl_offload}"]}
+          jobs:
+            - {name: eval_v2_tgt_zero_mid_WIDE_sdxl, tier: WIDE, purifier: none, method: v2_tgt_zero_mid, split: test}
+      - macro: evaluate
+        when: do_new
+        with:
+          name: wide_sdxl_v2_next_tuned
+          defs: {editor: sdxl_img2img, set: ["eval.editors.sdxl_img2img.cpu_offload={sdxl_offload}"]}
+          jobs:
+            - {name: eval_v2_next_tuned_WIDE_sdxl, tier: WIDE, purifier: none, method: v2_next_tuned, split: test}
+
+  W2:
+    title: W2 WIDE tier, InstructPix2Pix and SD inpainting (keep-face masks, rotated prompt) on the 100 test photos for clean, v2_tgt_zero_mid (old final) and v2_next_tuned; restores both methods' protected PNGs (no protection run). ~2 to 3 h on 2 T4 (UNVERIFIED).
+    accelerator: gpu_t4x2
+    params: {smoke: false, final_yaml: "", old_prot: "", new_prot: "", n_expect: 100, do_clean: true, do_old: true, do_new: true}
+    smoke_params: {n_images: 5, n_expect: 5}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: prep, with: {splits: [test]}}
+      - name: check_masks             # inpainting masks: CelebAMask-HQ parsing annotations if the celebamaskhq input has them, else a face-bbox ellipse fallback (src/eval/masks.py); only reports which
+        run: ["{py}", -c, "import sys; a = sys.argv[1:]; print('keep-face masks from CelebAMask-HQ parsing annotations:', a[1]) if a else print('WARNING: no CelebAMask-HQ-mask-anno folder found; inpainting masks fall back to the face-bbox ellipse (valid but a different mask family than the parsing masks)')", "{parsing_args}"]
+        soft: true
+      - name: restore_old_protected
+        when: do_old
+        run: ["{py}", scripts/restore_prot.py, --src, "{old_prot}", --name, prot_v2_tgt_zero_mid_test, --dst, "{results}/prot_v2_tgt_zero_mid_test", --n_expect, "{n_expect}"]
+      - name: restore_new_protected
+        when: do_new
+        run: ["{py}", scripts/restore_prot.py, --src, "{new_prot}", --name, prot_v2_next_tuned_test, --dst, "{results}/prot_v2_next_tuned_test", --n_expect, "{n_expect}"]
+      - macro: evaluate
+        when: do_clean
+        with:
+          name: wide_ip2p_inpaint_clean
+          defs: {editor: [ip2p, sd_inpaint]}
+          jobs:
+            - {name: eval_clean_WIDE_ip2p_inpaint, tier: WIDE, purifier: none, method: clean, split: test}
+      - macro: evaluate
+        when: do_old
+        with:
+          name: wide_ip2p_inpaint_v2_tgt_zero_mid
+          defs: {editor: [ip2p, sd_inpaint]}
+          jobs:
+            - {name: eval_v2_tgt_zero_mid_WIDE_ip2p_inpaint, tier: WIDE, purifier: none, method: v2_tgt_zero_mid, split: test}
+      - macro: evaluate
+        when: do_new
+        with:
+          name: wide_ip2p_inpaint_v2_next_tuned
+          defs: {editor: [ip2p, sd_inpaint]}
+          jobs:
+            - {name: eval_v2_next_tuned_WIDE_ip2p_inpaint, tier: WIDE, purifier: none, method: v2_next_tuned, split: test}
+
+  F1:
+    title: F1 second face recogniser (FaceNet vggface2 + MTCNN) scored post hoc on every result folder under /kaggle/input (T04, T05, W1, W2, ...), calibrated threshold, fr2-PSR table. Internet ON. Run LAST. About 0.5 to 1 h (UNVERIFIED).
+    accelerator: gpu_t4x2      # one process on one GPU; gpu_t4 is enough, CPU also works but is slow
+    params: {smoke: false, final_yaml: "", fr2_roots: "/kaggle/input", max_rows: 0}
+    smoke_params: {n_images: 5, max_rows: 20}
+    steps:
+      - {macro: setup, with: {extras: [eval]}}
+      - {macro: facenet_setup}
+      - name: mtcnn_check             # MTCNN weights ship inside the facenet-pytorch wheel; MTCNN imports cv2 at module level. Fails before any scoring if either is missing.
+        run: ["{py}", -c, "from facenet_pytorch import MTCNN; from PIL import Image; m = MTCNN(image_size=160, margin=0, device='cpu'); print('mtcnn ok, no-face result on a blank image:', m(Image.new('RGB', (160, 160))))"]
+      - {macro: prep, with: {splits: [test]}}
+      - name: score_fr2
+        run: ["{py}", scripts/score_fr2.py, --input_roots, "{fr2_roots}", --data_dir, "{out}/data", --out_dir, "{results}/fr2",
+              --max_rows, "{max_rows}"]

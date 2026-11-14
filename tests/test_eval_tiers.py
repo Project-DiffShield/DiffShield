@@ -130,3 +130,31 @@ def test_derive_seed_deterministic_and_distinct():
     assert a == er.derive_seed(2026, "edit", "img1", 1)
     assert a != er.derive_seed(2026, "edit", "img1", 2) != er.derive_seed(2026, "edit", "img2", 1)
     assert 0 <= a < 2 ** 31
+
+
+# ------------------------------------------------------------------------------------------------ WIDE and EXPL clean (jobs W1/W2/X9)
+def test_tier_wide_cells_methods_and_counts():
+    for m in ("clean", "v2_tgt_zero_mid", "v2_next_tuned"):
+        c = rows(er.expand_tier(EV, "WIDE", m, "test", IDS100))
+        assert c["sdxl_img2img"] == c["ip2p"] == c["sd_inpaint"] == 100 * 3 and c["total"] == 900
+        assert not any(k in c for k in ("sd15_img2img", "ipadapter_faceid"))
+    assert er.expand_tier(EV, "WIDE", "v1", "test", IDS100) == []
+    assert er.expand_tier(EV, "WIDE", "clean", "val", IDS100) == []
+    jobs = er.expand_tier(EV, "WIDE", "v2_next_tuned", "test", IDS100, ["none"], ["sdxl_img2img"])
+    assert len(jobs) == 100 and {j.strength for j in jobs} == {"0.55"} and {j.purifier for j in jobs} == {"none"}
+    assert all(j.prompt_idx == j.image_index % 3 for j in jobs)
+    w2 = er.expand_tier(EV, "WIDE", "clean", "test", IDS100, ["none"], ["ip2p", "sd_inpaint"])
+    assert {j.editor for j in w2} == {"ip2p", "sd_inpaint"} and len(w2) == 200
+
+
+def test_tier_expl_clean_rule_does_not_change_other_methods():
+    ids = [f"t{i:02d}" for i in range(28)]
+    clean = er.expand_tier(EV, "EXPL", "clean", "tune_search", ids)
+    assert rows(clean)["total"] == 28 * 5 * 2 * 3           # 5 cleanups x (sd15 + faceid) x 3 seeds
+    assert {j.purifier for j in clean} == {"none", "jpeg_q75", "downup_0.5", "vae_rt", "diffpure_0.2"}
+    assert {j.editor for j in clean} == {"sd15_img2img", "ipadapter_faceid"}
+    for m in ("v2_next", "v2_x_eps8", "v2_x_eps8_tuned"):
+        j = er.expand_tier(EV, "EXPL", m, "tune_search", ids)
+        assert rows(j)["total"] == 28 * 5 * 2 * 3 and {x.method for x in j} == {m}
+    assert er.expand_tier(EV, "EXPL", "clean", "test", ids) == []        # never the test split
+    assert er.expand_tier(EV, "EXPL", "v2_tgt_zero_mid", "tune_search", ids) == []

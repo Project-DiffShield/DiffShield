@@ -128,6 +128,8 @@ eval:
       - {splits: [test], methods: [clean, v1, v2_main, v2_final], purifiers: *pf, cells: [*c_fid]}
       - {splits: [test], methods: [v1, v2_final], purifiers: *pi, cells: [*c_ip2p]}
       - {splits: [test], methods: [v2_antipure], purifiers: [none], cells: [*c_fid]}      # E6 "FaceID none"
+    WIDE:                                               # jobs W1/W2: the FINAL comparison on more editors (test split, no cleanup): SDXL img2img (0.55), InstructPix2Pix, SD inpainting (keep-face masks)
+      - {splits: [test], methods: [clean, v2_tgt_zero_mid, v2_next_tuned], purifiers: [none], cells: [*c_sdxl, *c_ip2p, *c_inp]}
     HELD:                                               # held-out SD-independent cleanup (DiffPure-style pixel DDPM) + resize control; test split
       - {splits: [test], methods: [clean, v2_tgt_zero_mid, v2_next_tuned], purifiers: [downup_256, diffpure_ddpm256_t100, diffpure_ddpm256_t200],
          cells: [*c_sd15r]}
@@ -145,6 +147,8 @@ eval:
     EXPL:                                               # docs/EXPLORATION.md (Kaggle jobs X0..X5): exploration variants on the tune_search photos (never test, never tune_confirm)
       - {splits: [tune_search], methods: ["v2_next", "v2_x_*"], purifiers: [none, jpeg_q75, downup_0.5, vae_rt, diffpure_0.2],
          cells: [*c_sd15r, *c_fid]}                     # sd15_img2img strength 0.55 + ipadapter_faceid; edit seeds = eval.seeds (1 2 3)
+      - {splits: [tune_search], methods: [clean], purifiers: [none, jpeg_q75, downup_0.5, vae_rt, diffpure_0.2],
+         cells: [*c_sd15r, *c_fid]}                     # job X9: unprotected control on the same photos / cells (own rule: the rule above is unchanged)
     AP:                                                 # S07 / S20: single-term antipure ablation on the VAL split (selection of the antipure terms; never test)
       - {splits: [val], methods: [clean, v2_antipure], purifiers: [jpeg_q75, vae_rt, diffpure_0.1], cells: [*c_sd15r]}
     A:                                                  # phase ablation (v2_main is the "both" arm)

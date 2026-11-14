@@ -14,6 +14,11 @@ no face = hit, else sim < per-editor impostor threshold; seeds and prompts avera
 bootstrap is ``analysis.paired_stats`` / ``analysis.boot_ci`` (same resampling as ``src.eval.stats.bootstrap_ci``;
 n_boot / ci / seed from config ``stats``). The paired difference is taken per photo, then the photos are resampled
 once and the same resample is used for both methods.
+
+SECONDARY (reported alongside, never part of the ADOPT/KEEP rule): the paired bootstrap (same photo resampling, same seed) of
+the difference in per-photo mean ``arcface_sim`` (new minus old; negative = better protection), for every cell, for the
+headline cell, and pooled over strengths per (editor, cleanup); the same for ``fr2_sim`` when that column has values
+(``scripts/score_fr2.py`` / job F1). Edits without a face have no similarity and are ignored in those means.
 """
 from __future__ import annotations
 
@@ -116,6 +121,35 @@ def per_photo_psr(edits: pd.DataFrame, thresholds: dict, n_boot: int, ci: float,
     return out
 
 
+SIM_METRICS = ("arcface_sim", "fr2_sim")
+
+
+def per_photo_sim(edits: pd.DataFrame, col: str, by: Sequence[str]) -> Dict[tuple, pd.Series]:
+    """{cell: per-photo mean of ``col`` over that photo's edits (seeds, prompts, and any strengths/rows pooled by ``by``)}.
+    Edits without a face have NaN similarity and are ignored in the mean (the PSR counts them as hits; the similarity
+    cannot). A photo with no finite value in the cell is NaN and dropped from the pairing (``n_pairs`` says how many)."""
+    out: Dict[tuple, pd.Series] = {}
+    if col not in edits or not edits[col].notna().any():
+        return out
+    g = edits.groupby(list(by) + ["image_id"], sort=False)[col].mean().reset_index()
+    for k, gg in g.groupby(list(by), sort=False):
+        out[k if isinstance(k, tuple) else (k,)] = gg.set_index("image_id")[col].sort_index()
+    return out
+
+
+def sim_diffs(old: pd.DataFrame, new: pd.DataFrame, by: Sequence[str], kw: dict) -> Dict[tuple, dict]:
+    """{cell: {metric: paired stats of mean sim new - old}}; SECONDARY continuous identity metric (negative = better
+    protection). Same paired bootstrap as the PSR (``analysis.paired_stats``: same photo resampling, same seed)."""
+    res: Dict[tuple, dict] = {}
+    for m in SIM_METRICS:
+        so, sn = per_photo_sim(old, m, by), per_photo_sim(new, m, by)
+        for c in sorted(set(so) & set(sn)):
+            ps = A.paired_stats(sn[c], so[c], **kw)
+            if ps is not None:
+                res.setdefault(c, {})[m] = _stat(ps)
+    return res
+
+
 def _stat(s: Optional[dict]) -> Optional[dict]:
     if s is None:
         return None
@@ -136,6 +170,8 @@ def compare(old: pd.DataFrame, new: pd.DataFrame, clean: Optional[pd.DataFrame],
         if ed not in thresholds.get("per_editor", {}):
             issues.append(f"no per-editor PSR threshold for editor {ed!r}; pooled threshold used")
     cells = sorted(set(psr["old"]) | set(psr["new"]))
+    sim_cell = sim_diffs(old, new, CELL, kw)
+    sim_ep = sim_diffs(old, new, ["editor", "purifier"], kw)
     res_cells = []
     for c in cells:
         r: dict = {"editor": c[0], "cleanup": c[1], "strength": c[2], "is_headline": tuple(c) == tuple(headline)}
@@ -184,6 +220,7 @@ def compare(old: pd.DataFrame, new: pd.DataFrame, clean: Optional[pd.DataFrame],
                 nd = (a.loc[cm] - cl) - (b.loc[cm] - cl)
                 r["net_gain_diff"] = _stat(dict(zip(("mean", "lo", "hi"), A.boot_ci(nd.to_numpy(), **kw))))
                 r["net_gain_n"] = len(cm)
+        r["sim_secondary"] = sim_cell.get(tuple(c), {})
         r["issues"] = cissues
         r["status"] = "ok" if not cissues else "mismatch"
         res_cells.append(r)
@@ -201,11 +238,18 @@ def compare(old: pd.DataFrame, new: pd.DataFrame, clean: Optional[pd.DataFrame],
         verdict, reason = "ADOPT", f"lower bound {head['diff']['ci_lo']:+.4f} > 0"
     else:
         verdict, reason = "KEEP", f"lower bound {head['diff']['ci_lo']:+.4f} <= 0"
+    sim_note = ("SECONDARY (does not enter the ADOPT/KEEP rule): paired bootstrap of the difference in mean similarity "
+                "new - old (negative = better protection); per-photo means over seeds/prompts, no-face edits ignored; "
+                "fr2_sim only where the column has values")
     return {"rule": "ADOPT iff paired-bootstrap lower bound of PSR_new - PSR_old on the headline cell > 0",
             "headline_cell": {"editor": headline[0], "cleanup": headline[1], "strength": headline[2]},
             "bootstrap": {"n_boot": n_boot, "ci": ci, "seed": seed, "unit": "photo, paired"},
             "thresholds": {"per_editor": thresholds.get("per_editor"), "pooled": thresholds.get("pooled")},
             "verdict": verdict, "reason": reason, "global_issues": issues, "cells": res_cells,
+            "similarity_secondary_note": sim_note,
+            "similarity_headline": (head or {}).get("sim_secondary", {}),
+            "similarity_by_editor_purifier": [
+                {"editor": k[0], "purifier": k[1], **v} for k, v in sorted(sim_ep.items())],
             "per_cleanup_verdicts_informational": {
                 f"{r['editor']}|{r['cleanup']}|{r['strength']}":
                     ("n/a" if r["status"] == "missing" or not r.get("diff") or r["diff"]["ci_lo"] is None
@@ -251,6 +295,23 @@ def to_markdown(rep: dict, notes: Sequence[str] = ()) -> str:
             _f(r["net_old"], "mean_diff") if r.get("net_old") else "n/a",
             _f(r["net_new"], "mean_diff") if r.get("net_new") else "n/a",
             _ci(r.get("net_gain_diff"), signed=True), "; ".join(r["issues"]) or "-"))
+    L += ["", "## Secondary: mean identity similarity, paired difference new - old (negative = better)", "",
+          rep.get("similarity_secondary_note", ""), ""]
+    hs = rep.get("similarity_headline") or {}
+    L.append("Headline cell: " + (", ".join(f"{m}: {_ci(v, signed=True)} (n={v['n_pairs']})" for m, v in hs.items())
+                                  or "n/a"))
+    L += ["", "| editor | cleanup | strength | arcface_sim old | arcface_sim new | diff [95% CI] | fr2_sim diff [95% CI] |",
+          "|---|---|---|---|---|---|---|"]
+    for r in rep["cells"]:
+        ss = r.get("sim_secondary") or {}
+        a, f = ss.get("arcface_sim"), ss.get("fr2_sim")
+        L.append("| {} | {} | {} | {} | {} | {} | {} |".format(
+            r["editor"], r["cleanup"], r["strength"], _f(a, "mean_b"), _f(a, "mean_a"),
+            _ci(a, signed=True), _ci(f, signed=True)))
+    L += ["", "Pooled over strengths, per (editor, purifier):", "",
+          "| editor | purifier | arcface_sim diff [95% CI] | fr2_sim diff [95% CI] |", "|---|---|---|---|"]
+    for r in rep.get("similarity_by_editor_purifier", []):
+        L.append(f"| {r['editor']} | {r['purifier']} | {_ci(r.get('arcface_sim'), signed=True)} | {_ci(r.get('fr2_sim'), signed=True)} |")
     return "\n".join(L) + "\n"
 
 

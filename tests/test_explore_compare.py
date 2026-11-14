@@ -94,3 +94,22 @@ def test_cli_writes_csv_and_markdown_and_invis_mode(tmp_path, capsys):
     assert ec.main(["--invis_from", str(run), "--invis_out", str(tmp_path / "x" / "psnr_ssim.csv")]) == 0
     got = pd.read_csv(tmp_path / "x" / "psnr_ssim.csv")
     assert list(got.columns) == ["image_id", "psnr", "ssim"] and len(got) == 8
+
+
+def test_clean_control_is_labelled_C_and_does_not_touch_the_diff_to_x0(tmp_path):
+    rng = np.random.default_rng(5)
+    write_variant(tmp_path, "X0", "v2_next", 0.1, rng, [40.0] * 8, [0.97] * 8)
+    write_variant(tmp_path, "X1", "v2_x_eps8", 0.9, rng, [40.0] * 8, [0.97] * 8)
+    d = tmp_path / "X9" / "results" / "eval_clean_EXPL"
+    d.mkdir(parents=True)
+    make_edits("clean", 0.0, rng).to_csv(d / "metrics.csv", index=False)       # no psnr_ssim.csv for the control
+    v_all = ec.load_variants([tmp_path / "X0", tmp_path / "X1", tmp_path / "X9"])
+    assert sorted(v_all) == ["C", "X0", "X1"] and v_all["C"]["invis"] is None
+    v_two = ec.load_variants([tmp_path / "X0", tmp_path / "X1"])
+    _, s_all = ec.compare(v_all, 0.1005, "X0", 2000, 2026)
+    _, s_two = ec.compare(v_two, 0.1005, "X0", 2000, 2026)
+    a, b = s_all.set_index("variant"), s_two.set_index("variant")
+    for col in ("psr_all", "diff_mean", "diff_lo", "diff_hi"):
+        assert a.loc["X1", col] == b.loc["X1", col]
+    assert a.loc["C", "psr_all"] == 0.0 and np.isnan(a.loc["C", "diff_mean"])
+    assert a.loc["C", "name"].startswith("clean")

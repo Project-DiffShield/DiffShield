@@ -29,9 +29,11 @@ import numpy as np
 import pandas as pd
 
 LABELS = {"v2_next": "X0", "v2_x_eps8": "X1", "v2_x_it100": "X2", "v2_x_id_direct_a": "X3",
-          "v2_x_id_direct_b": "X4", "v2_x_id_recon": "X5", "v2_x_eps8_tuned": "X6", "v2_x_eps6_tuned": "X7", "v2_x_eps4_tuned": "X8"}
+          "v2_x_id_direct_b": "X4", "v2_x_id_recon": "X5", "v2_x_eps8_tuned": "X6", "v2_x_eps6_tuned": "X7", "v2_x_eps4_tuned": "X8",
+          "clean": "C"}      # C = unprotected control (job X9); never a base and never compared to X0 in the diff column
 NAMES = {"X0": "base (v2_next)", "X1": "eps8", "X2": "it100", "X3": "id_direct_a", "X4": "id_direct_b", "X5": "id_recon",
-         "X6": "eps8_tuned", "X7": "eps6_tuned", "X8": "eps4_tuned"}
+         "X6": "eps8_tuned", "X7": "eps6_tuned", "X8": "eps4_tuned", "C": "clean (unprotected control)"}
+CONTROL = "C"
 PSNR_MIN, SSIM_MIN = 38.0, 0.95
 SD15, FID = "sd15_img2img", "ipadapter_faceid"
 DEDUP = ["image_id", "purifier", "editor", "strength", "prompt_id", "seed"]
@@ -137,7 +139,7 @@ def compare(variants: Dict[str, dict], thr: float = 0.1005, base: str = "X0", n_
         summary[c] = np.nan
     if base in photo_scores:
         for i, r in summary.iterrows():
-            if r["variant"] == base:
+            if r["variant"] == base or r["variant"] == CONTROL:
                 continue
             a, b = photo_scores[r["variant"]], photo_scores[base]
             common = a.index.intersection(b.index)
@@ -166,7 +168,7 @@ def to_markdown(cells: pd.DataFrame, summary: pd.DataFrame, thr: float, base: st
           "| variant | name | photos | PSR all-cell | PSR sd15 | PSR ipadapter | diff to " + base + " [95% CI] | mean PSNR | mean SSIM | min PSNR | min SSIM | photos violating PSNR>=38 and SSIM>=0.95 |",
           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for _, r in summary.iterrows():
-        diff = "-" if r["variant"] == base or np.isnan(r["diff_mean"]) else \
+        diff = "-" if r["variant"] == base or r["variant"] == CONTROL or np.isnan(r["diff_mean"]) else \
             f"{r['diff_mean']:+.3f} [{r['diff_lo']:+.3f}, {r['diff_hi']:+.3f}] (n={int(r['diff_n_photos'])})"
         viol = "n/a" if r["n_violations"] is None or (isinstance(r["n_violations"], float) and np.isnan(r["n_violations"])) \
             else f"{int(r['n_violations'])} of {int(r['n_invis'])}"

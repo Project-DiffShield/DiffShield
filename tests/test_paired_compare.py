@@ -140,3 +140,47 @@ def test_cli_dir_and_glob(tmp_path):
     assert rc == 0
     rep = json.loads(out.read_text())
     assert rep["verdict"] == "KEEP" and headline(rep)["n_common"] == N
+
+
+# ------------------------------------------------------------------------------------------------ secondary similarity
+def test_similarity_secondary_diff_and_rule_unchanged():
+    old = make("a", np.full(N, 0.5))
+    new = make("b", np.full(N, 0.2))              # both PSR 0 (all above 0.1): verdict KEEP, similarity lower
+    rep = run(old, new)
+    h = headline(rep)
+    s = h["sim_secondary"]["arcface_sim"]
+    assert rep["verdict"] == "KEEP"
+    assert s["mean_diff"] == pytest.approx(-0.3) and s["ci_hi"] < 0 and s["n_pairs"] == N
+    assert "fr2_sim" not in h["sim_secondary"]    # column empty -> not reported
+    assert rep["similarity_headline"]["arcface_sim"]["mean_diff"] == pytest.approx(-0.3)
+    ep = rep["similarity_by_editor_purifier"]
+    assert ep[0]["editor"] == "sd15_img2img" and ep[0]["purifier"] == "none"
+    assert ep[0]["arcface_sim"]["mean_diff"] == pytest.approx(-0.3)
+    md = pc.to_markdown(rep)
+    assert "Secondary" in md and "-0.300" in md
+
+
+def test_similarity_same_resampling_as_psr():
+    rng = np.random.default_rng(3)
+    old, new = make("a", rng.uniform(0, 0.4, N)), make("b", rng.uniform(0, 0.4, N))
+    rep = run(old, new)
+    h = headline(rep)
+    po = typed(old).groupby("image_id")["arcface_sim"].mean().sort_index()
+    pn = typed(new).groupby("image_id")["arcface_sim"].mean().sort_index()
+    ref = pc.A.paired_stats(pn, po, n_boot=500, ci=0.95, seed=7)
+    assert h["sim_secondary"]["arcface_sim"]["ci_lo"] == pytest.approx(ref["ci_lo"])
+    assert h["sim_secondary"]["arcface_sim"]["ci_hi"] == pytest.approx(ref["ci_hi"])
+
+
+def test_fr2_reported_when_present_and_pooled_over_strengths():
+    sims = np.full(N, 0.5)
+    old, new = make("a", sims), make("b", sims)
+    old["fr2_sim"] = repr(0.6)
+    new["fr2_sim"] = repr(0.4)
+    new2 = new.assign(strength="0.75")
+    old2 = old.assign(strength="0.75")
+    rep = run(pd.concat([old, old2], ignore_index=True), pd.concat([new, new2], ignore_index=True))
+    h = headline(rep)
+    assert h["sim_secondary"]["fr2_sim"]["mean_diff"] == pytest.approx(-0.2)
+    ep = rep["similarity_by_editor_purifier"]
+    assert len(ep) == 1 and ep[0]["fr2_sim"]["mean_diff"] == pytest.approx(-0.2)
