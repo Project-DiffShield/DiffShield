@@ -1,0 +1,75 @@
+{
+ "rule": "winner replaces the current final iff zero per-photo violations (PSNR<38 or SSIM<0.95) and confirm PSR >= anchor confirm PSR",
+ "anchor_key": "hand_set",
+ "anchor_psr": 0.2111111111111111,
+ "candidates": {
+  "trial_17": {
+   "psr": 0.20277777777777775,
+   "n_violations": 0,
+   "params": {
+    "alpha": 0.28167937332413645,
+    "beta": 1.2473117642708762,
+    "gamma": 26.01044403216873,
+    "den_on": true,
+    "p_onestep": 0.3,
+    "eta": 0.014875979785277473,
+    "den_t": "50-300",
+    "antipure": false,
+    "ap_w": 0.5,
+    "lambda_id": 0.0
+   }
+  },
+  "trial_14": {
+   "psr": 0.2111111111111111,
+   "n_violations": 0,
+   "params": {
+    "alpha": 0.1883018018441812,
+    "beta": 0.5456415093761382,
+    "gamma": 21.60202305946774,
+    "den_on": true,
+    "p_onestep": 0.3,
+    "eta": 0.011763440196281472,
+    "den_t": "50-300",
+    "antipure": false,
+    "ap_w": 0.5,
+    "lambda_id": 0.0
+   }
+  },
+  "trial_10": {
+   "psr": 0.16944444444444443,
+   "n_violations": 0,
+   "params": {
+    "alpha": 0.3893243081050713,
+    "beta": 1.387022505384242,
+    "gamma": 72.48851761479763,
+    "den_on": false,
+    "p_onestep": 0.3,
+    "eta": 0.0,
+    "den_t": null,
+    "antipure": false,
+    "ap_w": 0.5,
+    "lambda_id": 0.0
+   }
+  },
+  "hand_set": {
+   "psr": 0.2111111111111111,
+   "n_violations": 0,
+   "params": {
+    "alpha": 0.55,
+    "beta": 0.9023875567667267,
+    "gamma": 60.52658429696642,
+    "den_on": false,
+    "p_onestep": 0.0,
+    "eta": 0.0,
+    "den_t": null,
+    "antipure": false,
+    "ap_w": 0.5,
+    "lambda_id": 0.0
+   }
+  }
+ },
+ "accepted": true,
+ "winner": "trial_14",
+ "winner_psr": 0.2111111111111111,
+ "reason": "trial_14 has zero violations and psr >= anchor psr"
+}

@@ -1,0 +1,17 @@
+# candidate (methods.v2_next_tuned): trial_14, confirmed on 12 photos; psr=0.2111111111111111 vs anchor psr=0.2111111111111111
+methods:
+  v2_next_tuned:
+    p_onestep: 0.3
+    loss:
+      alpha: 0.1883018018441812
+      eta: 0.011763440196281472
+      beta: 0.5456415093761382
+      gamma: 21.60202305946774
+      lambda_id: 0.0
+      den_t_range:
+      - 50
+      - 300
+      anti_purify:
+        enabled: false
+        w_hf: 0.5
+        w_mono: 0.5
