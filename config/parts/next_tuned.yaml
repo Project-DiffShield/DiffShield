@@ -1,0 +1,21 @@
+# Tuned final candidate (Step 1): T03 output final_candidate.yaml, copied verbatim (trial 14 of the T02 study v2_next).
+# T03 accepted it only by a tie with the hand-set anchor (confirm PSR 0.2111 vs 0.2111 on 12 photos, 0 violations):
+# reports/step1_confirm/decision.json. It is the version WITH the DiffPure-style one-step cleaner in training
+# (p_onestep 0.3) and the denoiser term (eta ~0.012, t 50-300). Whether it beats v2_tgt_zero_mid is decided only by
+# T04/T05 + scripts/paired_compare.py on the 100 test photos.
+methods:
+  v2_next_tuned:
+    p_onestep: 0.3
+    loss:
+      alpha: 0.1883018018441812
+      eta: 0.011763440196281472
+      beta: 0.5456415093761382
+      gamma: 21.60202305946774
+      lambda_id: 0.0
+      den_t_range:
+      - 50
+      - 300
+      anti_purify:
+        enabled: false
+        w_hf: 0.5
+        w_mono: 0.5

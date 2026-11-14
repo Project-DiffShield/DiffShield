@@ -161,3 +161,5 @@ methods:
   v2_x_id_recon:                         # X5: existing VAE-reconstruction identity loss, lambda_id = 2.0 (guess: UNVERIFIED)
     loss: {lambda_id: 2.0}
     face: {id_mode: recon}
+  v2_x_eps8_tuned:                       # X6: v2_next_tuned (trial 14: one-step cleaner + denoiser, config/parts/next_tuned.yaml) with eps 8/255
+    budget: {eps_255: 8}

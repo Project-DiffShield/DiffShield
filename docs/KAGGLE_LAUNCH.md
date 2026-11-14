@@ -97,6 +97,7 @@ Six independent jobs, one per variant (job id = variant id). Each can run on its
 | X3 | id_direct_a: `v2_x_id_direct_a` (direct FaceNet identity loss, lambda_id 2.0, UNVERIFIED guess) | same | `["X3"]`; installs `facenet-pytorch --no-deps`, downloads vggface2 weights | `prot_v2_x_id_direct_a_tune_search/`, `eval_v2_x_id_direct_a_EXPL/` |
 | X4 | id_direct_b: `v2_x_id_direct_b` (direct, lambda_id 10.0, UNVERIFIED guess) | same | `["X4"]`; as X3 | `prot_v2_x_id_direct_b_tune_search/`, `eval_v2_x_id_direct_b_EXPL/` |
 | X5 | id_recon: `v2_x_id_recon` (VAE-reconstruction identity loss, lambda_id 2.0, UNVERIFIED guess) | same | `["X5"]`; as X3 | `prot_v2_x_id_recon_tune_search/`, `eval_v2_x_id_recon_EXPL/` |
+| X6 | eps8_tuned: `v2_x_eps8_tuned` = `v2_next_tuned` (trial 14: one-step DiffPure-style cleaner p 0.3 + denoiser eta 0.012, t 50-300; `config/parts/next_tuned.yaml`) with eps 8/255; a guard step fails before GPU work if `methods.v2_next_tuned` is missing | same | `["X6"]` | `prot_v2_x_eps8_tuned_tune_search/`, `eval_v2_x_eps8_tuned_EXPL/` |
 
 - Each job: setup, (X3-X5: `install_facenet`, then `facenet_check`, which fails before GPU work if the package or weights are unavailable), `prepare_data` for `tune_search`, protect (sharded) + merge, evaluate (sharded, tier `EXPL`), then `psnr_ssim_<preset>`, which writes per-photo PSNR/SSIM of the protected PNGs vs the clean photos to `eval_<preset>_EXPL/psnr_ssim.csv`.
 - `data/splits/tune_search.txt` must be in the bundle (as for T02).

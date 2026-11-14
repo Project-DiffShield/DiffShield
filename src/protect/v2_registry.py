@@ -30,8 +30,9 @@ from .pgd import params_from_cfg, pgd_protect
 
 PRESETS = ("v2_cheap", "v2_main", "v2_antipure", "v2_final", "abl_vis_only", "abl_den_only",
            "abl_no_sem", "abl_no_pur", "eps2", "eps6", "eps8", "v2_tgt_zero", "v2_tgt_zero_mid", "v2_tgt_zero_hi", "v2_tgt_gray", "v2_next",
-           "v2_x_eps8", "v2_x_it100", "v2_x_id_direct_a", "v2_x_id_direct_b", "v2_x_id_recon")
+           "v2_x_eps8", "v2_x_it100", "v2_x_id_direct_a", "v2_x_id_direct_b", "v2_x_id_recon", "v2_x_eps8_tuned")
 _CHAIN = {
+    "v2_x_eps8_tuned": ["v2_next", "v2_next_tuned", "v2_x_eps8_tuned"],   # X6: tuned (next_tuned.yaml) + eps 8
     "v2_final": ["v2_final_default", "v2_final"],
     "v2_next_tuned": ["v2_next", "v2_next_tuned"],   # methods.v2_next_tuned = tune_optuna final_candidate.yaml
     **{k: ["v2_next", k] for k in ("v2_x_eps8", "v2_x_it100", "v2_x_id_direct_a", "v2_x_id_direct_b", "v2_x_id_recon")},
