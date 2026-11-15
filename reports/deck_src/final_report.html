@@ -111,7 +111,7 @@
     <rect x="214" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
     <text x="298" y="66">Apply 4 random cleanups</text><text x="298" y="85">JPEG, resize, VAE,</text><text x="298" y="104">one-step DiffPure-style</text>
     <rect x="410" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
-    <text x="494" y="66">Score cleaned copies</text><text x="494" y="85">target pull, push-away,</text><text x="494" y="104">denoiser, decoy, visibility</text>
+    <text x="494" y="66">Score cleaned copies</text><text x="494" y="85">target pull, denoiser,</text><text x="494" y="104">decoy, visibility</text>
     <rect x="606" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
     <text x="690" y="70">Step 1/255 uphill,</text><text x="690" y="89">clip to &#177;4/255,</text><text x="690" y="108">round to 8-bit</text>
     <rect x="802" y="42" width="180" height="84" rx="6" fill="#A4123F" stroke="#A4123F"/>
@@ -141,15 +141,14 @@
 
 <h3><span class="n">3.2</span>Mathematical Formulation &amp; Algorithmic Design</h3>
 <ul>
-  <li><b>Theoretical / Mathematical Formulation:</b> let <i>x</i> be the photo, <i>&delta;</i> the noise, <i>P</i> a randomly drawn cleanup, and <i>E</i> the Stable Diffusion 1.5 VAE encoder, which turns an image into the latent an editor starts from. For each cleaned copy <i>P</i>(<i>x</i>+<i>&delta;</i>) the optimiser computes one score made of five parts, and averages it over 4 cleanups:
+  <li><b>Theoretical / Mathematical Formulation:</b> let <i>x</i> be the photo, <i>&delta;</i> the noise, <i>P</i> a randomly drawn cleanup, and <i>E</i> the Stable Diffusion 1.5 VAE encoder, which turns an image into the latent an editor starts from. For each cleaned copy <i>P</i>(<i>x</i>+<i>&delta;</i>) the optimiser computes one score made of four parts, and averages it over 4 cleanups:
   <ol style="margin-top:3pt">
-    <li><b>Target pull</b> (weight 1): how close the latent of the cleaned copy is to an all-zeros latent, a fixed &ldquo;useless&rdquo; target. Closer is better.</li>
-    <li><b>Push-away</b> (&alpha; = 0.188): how far that latent is from the original photo&rsquo;s latent (mean squared difference). Further is better.</li>
+    <li><b>Target pull</b> (&alpha; = 0.188): the mean squared distance between the latent of the cleaned copy and an all-zeros latent, a fixed &ldquo;useless&rdquo; target. Smaller is better.</li>
     <li><b>Denoiser error</b> (&eta; = 0.012): how badly the editor&rsquo;s UNet denoiser predicts the noise added to that latent at a random timestep between 50 and 300. Larger is better.</li>
-    <li><b>Decoy</b> (&beta; = 0.546): how close the photo&rsquo;s CLIP image embedding is to the text &ldquo;a potted plant&rdquo;. Closer is better.</li>
+    <li><b>Decoy</b> (&beta; = 0.546): the decoy distance, 1 &minus; cosine similarity between the photo&rsquo;s CLIP image embedding and the text &ldquo;a potted plant&rdquo;. Smaller is better.</li>
     <li><b>Visibility penalty</b> (&gamma; = 21.6): 1 &minus; SSIM between the original and the published (uncleaned) protected photo. Smaller is better.</li>
   </ol>
-  <div class="eq">Score = target pull + &alpha;&middot;push-away + &eta;&middot;denoiser error + &beta;&middot;decoy closeness &minus; &gamma;&middot;(1 &minus; SSIM)</div>
+  <div class="eq">Score = &minus;&alpha;&middot;(target distance) + &eta;&middot;(denoiser error) &minus; &beta;&middot;(decoy distance) &minus; &gamma;&middot;(1 &minus; SSIM)</div>
   The optimiser maximises this score subject to every pixel of &delta; staying within &plusmn;4/255.</li>
   <li><b>Core Algorithmic Steps:</b> (1) start &delta; with uniform random values within &plusmn;4/255; (2) for each of 40 steps, draw 4 cleanups from the training mixture: JPEG with random quality 50&ndash;95 (24.5% of draws), down-up resizing to 50&ndash;90% (24.5%), the SD VAE round trip (21%), and a one-step DiffPure-style purifier that adds diffusion noise at a random timestep 50&ndash;300 and removes it with one UNet step (30%); all four are differentiable; (3) compute the score on each cleaned copy and average the gradients; (4) move every pixel of &delta; by 1/255 in the direction that raises the score, clip to &plusmn;4/255 and round the protected photo to 8-bit; (5) after 40 steps, save the PNG with its PSNR and SSIM.</li>
   <li><b>How the weights were chosen:</b> by a procedure fixed in advance. 28 search and 12 confirmation photos were selected with MMD-critic [11], a method that picks a small set whose spread of CLIP embeddings matches the whole pool of 28,974 usable photos (test photos excluded); it was more representative than 1,000 random sets of the same size (p = 0.001). Optuna [12] then tried 25 weight settings on the search photos, scoring each by its average PSR over two editors and five cleanups and rejecting any setting that made even one photo visible. The best three were re-run at full quality on the confirmation photos, and the chosen setting was finally checked on the 100 test photos.</li>
@@ -179,7 +178,7 @@
   <tr><th style="width:24%">Module / Stage</th><th>Implemented Technical Details &amp; Integration Scope</th><th class="c" style="width:16%">Status</th></tr>
   <tr><td>Module 1: Data Pipeline</td><td>CelebA-HQ ingestion and cropping, fixed split lists, identity de-duplication, MMD-critic selection of tuning photos (reproducible from saved embeddings), Kaggle code bundles</td><td class="c">100% (Integrated)</td></tr>
   <tr><td>Module 2: Baseline Models</td><td>Our first prototype, random-noise controls, and re-implementations of PhotoGuard (1,000 steps) and Mist (100 steps) at the same 4/255 budget, checked against the official code</td><td class="c">100% (Integrated)</td></tr>
-  <tr><td>Module 3: Proposed Method</td><td>Protection loop with the differentiable cleanup mixture (including the one-step DiffPure-style purifier), target pull, push-away, denoiser and decoy terms, visibility penalty on the published photo; Optuna weight search with a per-photo invisibility rule</td><td class="c">100% (Integrated)</td></tr>
+  <tr><td>Module 3: Proposed Method</td><td>Protection loop with the differentiable cleanup mixture (including the one-step DiffPure-style purifier), target pull, denoiser and decoy terms, visibility penalty on the published photo; Optuna weight search with a per-photo invisibility rule</td><td class="c">100% (Integrated)</td></tr>
   <tr><td>Module 4: Evaluation &amp; Demo</td><td>Resumable edit runner (5 editors, cleanups, 3 seeds), ArcFace and FaceNet scoring, calibrated thresholds, paired bootstrap analysis and tables; <code>demo.py</code> protects one photo and shows both edits</td><td class="c">100% (Functional)</td></tr>
 </table>
 <div class="cap">Table 2: Module-Wise Implementation Completion Status</div>
@@ -205,7 +204,7 @@
   <tr><td>Gaussian noise</td><td>Random Gaussian noise scaled to the same visibility as our first prototype (PSNR 41.9 dB); no optimisation.</td><td>Control at matched visibility</td></tr>
   <tr><td>First prototype</td><td>40 optimisation steps that push the SD1.5 latent away from the original, plus the CLIP decoy and an SSIM penalty, with random JPEG and cropping each step. No cleanup mixture, no target pull, no denoiser term.</td><td>Our starting point; shows what the final design adds</td></tr>
   <tr><td>No-target ablation</td><td>Same cleanup mixture as DiffShield (including the one-step DiffPure-style purifier) and a denoiser term, but only pushes the latent away from the original: no target pull.</td><td>Isolates the effect of the target pull</td></tr>
-  <tr><td>Hand-set weights</td><td>Same design as DiffShield (target pull and push-away) with hand-chosen weights (&alpha; 0.55, &beta; 0.90, &gamma; 60.5), trained against JPEG, resizing and the VAE round trip only: no DiffPure-style purifier, no denoiser term.</td><td>Checks whether the weight search and the two extra components changed the result</td></tr>
+  <tr><td>Hand-set weights</td><td>Same design as DiffShield (target pull) with hand-chosen weights (&alpha; 0.55, &beta; 0.90, &gamma; 60.5), trained against JPEG, resizing and the VAE round trip only: no DiffPure-style purifier, no denoiser term.</td><td>Checks whether the weight search and the two extra components changed the result</td></tr>
   <tr><td>PhotoGuard [1] (our re-implementation)</td><td>1,000 steps that pull the SD encoder&rsquo;s latent to a zero target; no cleanups during optimisation and no visibility penalty, so it uses the full budget on almost every pixel.</td><td>Published protection with a similar target idea</td></tr>
   <tr><td>Mist [2] (our re-implementation)</td><td>100 steps that raise the diffusion model&rsquo;s training loss and pull the image toward a fixed texture image; designed for artworks.</td><td>Published protection tool</td></tr>
 </table>
