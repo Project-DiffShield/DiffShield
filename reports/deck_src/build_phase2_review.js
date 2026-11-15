@@ -245,7 +245,7 @@ pres.addSection({ title: "Implementation Details" });
   booktab(s, "modules", MX + 0.2, 1.25, [3.4, 6.85, 2.0],
     ["Module / Stage", "Implemented Functionality", "Status"],
     [["Module 1: Data / Input Pipeline", "CelebA-HQ ingestion, fixed splits, MMD-critic tuning selection (reproducible), Kaggle code bundles", "100% (Integrated)"],
-     ["Module 2: Baselines / Reference", "Unprotected and random-noise controls, our first prototype, PhotoGuard and Mist re-implemented at 4/255", "100% (Integrated)"],
+     ["Module 2: Baselines / Reference", "Unprotected and random-noise controls; PhotoGuard and Mist re-implemented at the same 4/255 budget; ablation without the target pull", "100% (Integrated)"],
      ["Module 3: Core Proposed Method", "Protection loop with cleanup mixture (incl. one-step DiffPure-style purifier), target pull, denoiser attack; Optuna weight search", "100% (Integrated)"],
      ["Module 4: Evaluation & Prototype", "Edit runner (5 editors, cleanups, 3 seeds), ArcFace scoring, paired bootstrap analysis, demo script", "100% (Functional)"]],
     { pt: 12, rowH: 0.72, alignCols: [null, "left", "center"] });
@@ -295,47 +295,30 @@ pres.addSection({ title: "Implementation Details" });
 // =========================================================================================
 pres.addSection({ title: "Verification & Demonstration" });
 {
-  const s = frame("Verification & Demonstration", "6. Preliminary Verification – Methods Compared", "What Each Comparison Method Contains (all at the same 4/255 budget)");
-  booktab(s, "compared", MX + 0.1, 1.2, [3.0, 9.1],
-    ["Compared method", "What it contains and what it does"],
-    [["Clean photo", "No protection; the original photo is edited directly. Reference for all other methods."],
-     ["Uniform noise", "Random values within ±4/255 on every pixel, no optimisation: does any noise of this size help?"],
-     ["First prototype", "Pushes the SD1.5 latent away from the original, with random JPEG/crop; no cleanup mixture, no target pull, no denoiser."],
-     ["No-target ablation", "Same cleanup mixture and a denoiser term as DiffShield, but no target pull: isolates the target pull."],
-     ["Hand-set weights", "Same design as DiffShield with hand-chosen weights; no DiffPure-style purifier, no denoiser term."],
-     ["PhotoGuard [1] (re-impl.)", "1,000 steps pulling the SD latent to a zero target; no cleanups, no visibility penalty (full budget everywhere)."],
-     ["Mist [2] (re-impl.)", "100 steps raising the diffusion training loss and pulling toward a fixed texture image; built for artworks."],
-     ["DiffShield (final)", "Target pull + push-away + denoiser attack, trained against JPEG, resize, VAE and one-step DiffPure-style cleanups."]],
-    { pt: 12, rowH: 0.6, boldLast: true, alignCols: [null, "left"] });
-  s.addNotes("Comparisons are paired: same 100 test photos, prompts and seeds for every method.");
-}
-{
-  const s = frame("Verification & Demonstration", "7. Preliminary Verification & Quantitative Results", "Experimental Benchmarking & Comparative Evaluation");
-  booktab(s, "results", MX + 0.6, 1.15, [5.0, 2.2, 2.2, 2.6],
-    ["Method (SD1.5 img2img, 100 test photos)", "PSR, no cleanup", "PSR, JPEG 75", "Photos failing invisibility"],
-    [["Clean photo (no protection)", "13.9%", "10.3%", "–"],
-     ["Uniform noise", "14.9%", "not run", "43 of 100"],
-     ["First prototype", "24.0%", "15.0%", "0 of 100"],
-     ["No-target ablation", "24.3%", "18.3%", "0 of 100"],
-     ["Hand-set weights", "49.7%", "23.3%", "0 of 100"],
-     ["PhotoGuard [1] (re-impl.)", "81.0%", "18.3%", "100 of 100"],
-     ["Mist [2] (re-impl.)", "63.1%", "21.0%", "100 of 100"],
-     ["DiffShield (final)", "51.2%", "22.7%", "0 of 100"]],
-    { pt: 12, rowH: 0.34, boldLast: true });
-  block(s, "verify", MX, 4.35, W - 2 * MX, 2.45, "Experimental Verification Summary", [
-    ["Quantitative Findings", `DiffShield beats unprotected photos by +37.3 points [+32.7, +42.2] and the first prototype by +27.2 [+23.0, +31.7], with no visible photo; under JPEG 75 it is ahead of PhotoGuard (+4.3 [+0.7, +8.0]). It is on par with the hand-set weights (+1.6 [${M}0.9, +4.0]).`],
-    ["Verification of Expected Behavior", "random noise does nothing (+1.0 over clean), and the no-target ablation stays at 24.3%, so the target pull causes the gain (+26.9 [+23.0, +30.9]). Only 1.8% of edits lose the face; similarity to the person falls from 0.222 to 0.103."],
+  const s = frame("Verification & Demonstration", "6. Preliminary Verification & Quantitative Results", "Experimental Benchmarking & Comparative Evaluation");
+  booktab(s, "results", MX + 0.6, 1.2, [5.0, 2.2, 2.2, 2.6],
+    ["Method / Configuration (SD1.5 img2img, 100 test photos)", "PSR, no cleanup", "PSR, JPEG 75", "Photos failing invisibility"],
+    [["Baseline: clean photo (no protection)", "13.9%", "10.3%", "–"],
+     ["Baseline: random noise, same 4/255 budget", "14.9%", "not run", "43 of 100"],
+     ["Baseline: PhotoGuard [1] at 4/255 (re-impl.)", "81.0%", "18.3%", "100 of 100"],
+     ["Baseline: Mist [2] at 4/255 (re-impl.)", "63.1%", "21.0%", "100 of 100"],
+     ["Ablation: DiffShield without the target pull", "24.3%", "18.3%", "0 of 100"],
+     ["Proposed: DiffShield", "51.2%", "22.7%", "0 of 100"]],
+    { pt: 12, rowH: 0.4, boldLast: true });
+  block(s, "verify", MX, 4.25, W - 2 * MX, 2.55, "Experimental Verification Summary", [
+    ["Quantitative Findings", `DiffShield beats unprotected photos by +37.3 points [+32.7, +42.2] and same-size random noise by +36.3 [+31.9, +40.9], with no visible photo. PhotoGuard and Mist score higher without cleanup only by visibly altering every photo; under JPEG 75 DiffShield is ahead of PhotoGuard (+4.3 [+0.7, +8.0]).`],
+    ["Verification of Expected Behavior", "removing the target pull drops PSR to 24.3% (−26.9 points [−30.9, −23.0]), confirming it drives the protection. Only 1.8% of edits lose the face, and similarity to the person falls from 0.222 to 0.103."],
   ]);
-  s.addNotes("Intervals: paired bootstrap over the 100 photos. PhotoGuard and Mist score higher without cleanup only by visibly altering every photo.");
+  s.addNotes("All methods use the same 100 test photos, prompts and seeds; intervals are paired bootstrap over photos. The ablation keeps the cleanup mixture and denoiser term but removes the target pull.");
 }
 {
-  const s = frame("Verification & Demonstration", "8. Experimental Visualizations & Prototype Demonstration", "Result Visualizations, Robustness to Cleanups & Live Demo");
+  const s = frame("Verification & Demonstration", "7. Experimental Visualizations & Prototype Demonstration", "Result Visualizations, Convergence / Performance Curves & Live Demo");
   const cw = (W - 2 * MX - 0.3) / 2, ch = 4.1, cy = 1.2;
   s.addShape(pres.shapes.RECTANGLE, { x: MX, y: cy, w: cw, h: ch, fill: { color: WHITE }, line: { color: INK, width: 1 }, objectName: "chart1 frame" });
-  s.addChart(pres.charts.BAR, [{ name: "PSR (%)", labels: ["Clean", "Noise", "Prototype", "No target", "Hand-set", "DiffShield", "Mist*", "PhotoGuard*"],
-    values: [13.9, 14.9, 24.0, 24.3, 49.7, 51.2, 63.1, 81.0] }], {
+  s.addChart(pres.charts.BAR, [{ name: "PSR (%)", labels: ["Clean", "Random noise", "No target pull", "DiffShield", "Mist*", "PhotoGuard*"],
+    values: [13.9, 14.9, 24.3, 51.2, 63.1, 81.0] }], {
     x: MX + 0.1, y: cy + 0.05, w: cw - 0.2, h: ch - 0.45, barDir: "col",
-    chartColors: [SILVER, SILVER, SILVER, SILVER, PINK, MAROON, GOLD, GOLD],
+    chartColors: [SILVER, SILVER, PINK, MAROON, GOLD, GOLD],
     showTitle: true, title: "PSR (%), SD1.5 img2img, no cleanup, n = 100", ...chartText,
     showValue: true, dataLabelPosition: "outEnd", valAxisMaxVal: 100, valAxisMinVal: 0, valGridLine: { color: "E3E3E3", size: 0.5 },
     catGridLine: { style: "none" }, showLegend: false, objectName: "psr chart" });
@@ -359,54 +342,25 @@ pres.addSection({ title: "Verification & Demonstration" });
 // =========================================================================================
 pres.addSection({ title: "Technical Knowledge" });
 {
-  const s = frame("Technical Knowledge", "9. Technical Justification, Design Trade-offs & Insights", "Methodological Rationale, Trade-offs & Boundary Conditions");
+  const s = frame("Technical Knowledge", "8. Technical Justification, Design Trade-offs & Insights", "Methodological Rationale, Trade-offs & Boundary Conditions");
   const cw = (W - 2 * MX - 0.3) / 2, x2 = MX + cw + 0.3, h1 = 2.75, y1 = 1.2, y2 = 4.05;
   block(s, "just", MX, y1, cw, h1, "1. Methodological Justification", [
-    "Image-to-image editors start from the photo’s VAE latent; pulling it toward a fixed target gives one consistent direction and derails the edit (no-target ablation: 24.3% vs 51.2%).",
+    "Image-to-image editors start from the photo’s VAE latent; pulling it toward a fixed target gives one consistent direction and derails the edit (without it: 24.3% vs 51.2%).",
     "Scoring randomly cleaned copies makes the noise survive cleanup; the DiffPure-style purifier in training and the denoiser term target diffusion-based cleanup.",
   ]);
   block(s, "trade", MX, y2, cw, h1, "2. Design & Parameter Trade-offs", [
     "Budget (28 tuning photos): 6/255 lifts PSR from 18.9% to 21.3% with 1 photo visible; 8/255 gives the same with 12 visible, so 4/255 is kept.",
-    "Large denoiser weights gave the worst search trials, so η is 0.012; 100 steps instead of 40 added only +0.5 points.",
+    "Large denoiser weights gave the worst search trials, so η is 0.012; cost is 274 GPU-seconds per photo (40 steps × 4 cleanups).",
   ]);
   block(s, "bound", x2, y1, cw, h1, "3. Boundary Conditions & Edge Cases", [
     "Invisibility is enforced on every photo, not on averages; edits with no face count as protected, so the no-face share (1.8%) is always reported.",
     "No protection for SDXL, inpainting or IP-Adapter FaceID; a pixel-space DDPM purifier removes it; JPEG and resizing reduce it.",
   ]);
   block(s, "limits", x2, y2, cw, h1, "4. Limitations & Future Scope", [
-    "Adaptive attacker not run on the final method; one face recogniser (ArcFace) scores the results; no human study; CelebA-HQ only.",
+    "Not yet evaluated against an adaptive attacker; one face recogniser (ArcFace) scores the results; no human study; CelebA-HQ only.",
     "Future: train against pixel-space purifiers and adaptive attackers; identity loss on several face models incl. ArcFace; SDXL targets.",
   ]);
   s.addNotes("Every number is measured: budget curve on the 28 tuning photos, everything else on the 100 test photos.");
-}
-
-// =========================================================================================
-// DELIVERABLES
-// =========================================================================================
-pres.addSection({ title: "Deliverables" });
-{
-  const s = frame("Deliverables", "10. Project Deliverables & Technical Enrichment", "Repository, Certifications and Group TEA Deliverables");
-  const thick = { type: "solid", pt: 1.5, color: INK }, thin = { type: "solid", pt: 0.75, color: INK }, none = { type: "none" };
-  const base = (o = {}) => ({ fontFace: FONT, fontSize: 12, color: INK, valign: "middle", margin: [3, 6, 3, 6], ...o });
-  const head = (t) => ({ text: t, options: base({ bold: true, border: [thick, none, thin, none] }) });
-  const cell = (t, last, o = {}) => ({ text: t, options: base({ border: [none, none, last ? thick : none, none], ...o }) });
-  const link = (u) => [{ text: u, options: { hyperlink: { url: u }, color: MAROON, underline: { style: "sng" } } }];
-  const certs = [
-    { text: "Narain B K: Computer Vision Fundamentals: Image Formation, Filtering and Machine Learning", options: { breakLine: true } },
-    { text: "Varun Raj V: Deep Learning with TensorFlow and PyTorch", options: { breakLine: true } },
-    { text: "Pranav Kishan T Y: CS207: Fundamentals of Machine Learning", options: { breakLine: true } },
-    { text: "Karthikeyan P G: Master Stable Diffusion with Python: AI Images and Video", options: { breakLine: true } },
-    { text: "Venkatesh K: Vision Language Models Bootcamp" }];
-  const rows = [
-    [head("Deliverable Category"), head("Details / Title / Link"), { text: "Status", options: base({ bold: true, align: "center", border: [thick, none, thin, none] }) }],
-    [cell("Source Code Repository"), cell(link(REPO)), cell("Completed", false, { align: "center" })],
-    [cell("Individual Online Certifications"), cell(certs), cell("Completed", false, { align: "center" })],
-    [cell("Group TEA Deliverable 1"), cell([{ text: "Project website: " }, ...link(SITE)]), cell("Completed", false, { align: "center" })],
-    [cell("Group TEA Deliverable 2"), cell("Research paper: DiffShield: A Tri-Modal Adversarial Framework for Robust Immunization Against Deepfake Generation"), cell("Completed", false, { align: "center" })],
-    [cell("Group TEA Deliverable 3", true), cell([{ text: "Project repository: " }, ...link(REPO)], true), cell("Completed", true, { align: "center" })],
-  ];
-  s.addTable(rows, { x: MX + 0.2, y: 1.3, w: W - 2 * MX - 0.4, colW: [3.3, 7.25, 1.5], rowH: [0.42, 0.5, 1.7, 0.5, 0.75, 0.5], autoPage: false, objectName: "deliverables" });
-  s.addNotes("All deliverables completed.");
 }
 
 // =========================================================================================
