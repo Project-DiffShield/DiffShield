@@ -19,13 +19,14 @@
 \graphicspath{{../}{./}}
 
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 % Image slot for the before/after slide: replace the \fbox with
 % \includegraphics[width=\linewidth,height=3.2cm,keepaspectratio]{<file>}
 \newcommand{\imgslot}[1]{%
     \begin{minipage}[c]{0.205\textwidth}
         \centering
-        {\scriptsize\textbf{#1}}\\[3pt]
+        \parbox[c][0.75cm][c]{\linewidth}{\centering\scriptsize\textbf{#1}}\\[2pt]
         \fbox{\begin{minipage}[c][3.2cm]{0.9\linewidth}
             \centering {\tiny [Insert image:\\#1]}
         \end{minipage}}
@@ -45,10 +46,11 @@
 \usecolortheme[named=amritaMaroon]{structure}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
+\setbeamertemplate{bibliography item}{\insertbiblabel}
 
 % --- Diagram styles ---
 \tikzset{
-  box/.style={rounded corners=3pt, align=center, font=\small, inner sep=4pt, minimum height=1.05cm},
+  box/.style={rounded corners=3pt, align=center, font=\footnotesize, inner sep=3pt, minimum height=0.9cm},
   dark/.style={box, fill=inkDark, text=white},
   maroon/.style={box, fill=amritaMaroon, text=white},
   deep/.style={box, fill=maroonDark, text=white},
@@ -125,26 +127,28 @@
 % --- 1. PROBLEM DEFINITION & RESEARCH MOTIVATION ---
 \begin{frame}{1. Problem Definition \& Research Motivation}
     \framesubtitle{Problem Statement, Identified Literature Gap \& Objectives}
-    \scriptsize
     \begin{block}{Problem Statement}
+        \scriptsize
         \begin{itemize}
-            \item \textbf{Core Research Problem:} diffusion editors can turn any posted face photo into a convincing fake of that person. Can an invisible perturbation ($\le 4/255$ per pixel), added before posting, stop edits from preserving the person's identity?
-            \item \textbf{Domain Context:} non-consensual deepfakes are cheap to make; a defence must run offline, stay invisible and survive cleanup (JPEG, resizing, diffusion denoising).
+            \item \textbf{Core Research Problem:} can an invisible perturbation ($\le 4/255$ per pixel), added to a face photo before posting, stop diffusion edits from keeping the person's identity?
+            \item \textbf{Domain Context:} deepfakes are cheap to make; a defence must run offline, stay invisible and survive cleanup.
         \end{itemize}
     \end{block}
 
     \begin{block}{Existing Limitations \& Research Gap}
+        \scriptsize
         \begin{itemize}
-            \item \textbf{Summary of Existing Approaches:} PhotoGuard and Mist attack the Stable Diffusion encoder / UNet; Glaze and Anti-DreamBooth target style mimicry and fine-tuning; most use 8--16/255 budgets and image-quality metrics.
-            \item \textbf{Identified Research Gap:} little evidence that protection removes \emph{identity} (measured by a face recogniser), survives purification such as DiffPure, and stays invisible on \emph{every} photo.
+            \item \textbf{Summary of Existing Approaches:} PhotoGuard and Mist attack the Stable Diffusion encoder / UNet; Glaze and Anti-DreamBooth target style and fine-tuning, mostly at 8--16/255.
+            \item \textbf{Identified Research Gap:} little evidence that protection removes \emph{identity}, survives purification (DiffPure) and stays invisible on \emph{every} photo.
         \end{itemize}
     \end{block}
 
     \begin{block}{Research Objectives}
+        \scriptsize
         \begin{itemize}
-            \item \textbf{Objective 1 -- Invisibility:} PSNR $\ge$ 38 dB and SSIM $\ge$ 0.95 on every one of the 100 test photos, no pixel changed by more than 4/255.
-            \item \textbf{Objective 2 -- Protection:} protection success rate (PSR, judged by ArcFace) clearly above unprotected photos and random noise, with paired 95\% CIs excluding zero; compared with PhotoGuard and Mist.
-            \item \textbf{Objective 3 -- Robustness:} protection after common cleanups and across several editors, incl.\ some never used while making the protection; reproducible protocol.
+            \item \textbf{Objective 1 -- Invisibility:} PSNR $\ge$ 38 dB and SSIM $\ge$ 0.95 on every one of the 100 test photos.
+            \item \textbf{Objective 2 -- Protection:} protection success rate (PSR, judged by ArcFace) clearly above unprotected photos and random noise (paired 95\% CIs); compared with PhotoGuard and Mist.
+            \item \textbf{Objective 3 -- Robustness:} protection after common cleanups and across several editors, incl.\ unseen ones.
         \end{itemize}
     \end{block}
 \end{frame}
@@ -153,29 +157,27 @@
 \begin{frame}{2. Proposed Methodology \& Overall Workflow}
     \framesubtitle{End-to-End Research Methodology / System Workflow Architecture}
     \centering
-    \begin{adjustbox}{max width=\linewidth, max height=5.55cm}
+    \begin{adjustbox}{max width=\linewidth, max height=5.75cm}
     \begin{tikzpicture}
         % top inputs
-        \node[deep, minimum width=7.4cm] (data) at (3.9,7.05) {Data: CelebA-HQ portraits, 512$\times$512\\100 fixed test photos, 28 + 12 tuning photos};
-        \node[deep, minimum width=7.4cm] (models) at (12.1,7.05) {Pretrained models: SD1.5 VAE \& UNet, CLIP,\\5 image editors, ArcFace face recogniser};
+        \node[deep, minimum width=7.6cm, text width=7.4cm] (data) at (3.95,6.05) {Data: CelebA-HQ portraits, 512$\times$512 -- 100 test photos, 28 + 12 tuning photos};
+        \node[deep, minimum width=6.7cm, text width=6.5cm] (models) at (12.5,6.05) {Pretrained models: SD1.5 VAE \& UNet, CLIP, 5 image editors, ArcFace};
 
         % panels
-        \draw[panel, amritaMaroon, fill=maroonTint!45] (0.2,0.2) rectangle (7.6,6.15);
-        \draw[panel, inkDark, fill=black!4] (8.4,0.2) rectangle (15.8,6.15);
-        \node[anchor=north west, font=\bfseries\large, text=amritaMaroon] at (0.4,6.05) {HALF A: protection (offline)};
-        \node[anchor=north west, font=\bfseries\large, text=inkDark] at (8.6,6.05) {HALF B: attack and score};
+        \draw[panel, amritaMaroon, fill=maroonTint!45] (0.15,0.25) rectangle (7.75,5.35);
+        \draw[panel, inkDark, fill=black!4] (9.15,0.25) rectangle (15.85,5.35);
+        \node[anchor=north west, font=\bfseries, text=amritaMaroon] at (0.3,5.28) {HALF A: protection (offline)};
+        \node[anchor=north west, font=\bfseries, text=inkDark] at (9.3,5.28) {HALF B: attack and score};
 
-        % Half A, row 1
-        \node[grey,  minimum width=2.1cm, text width=1.9cm] (x)   at (1.4,4.6) {Photo\\$x+\delta$};
-        \node[maroon,minimum width=2.4cm, text width=2.2cm] (cl)  at (3.95,4.6) {4 random cleanups $P$};
-        \node[maroon,minimum width=2.1cm, text width=1.9cm] (enc) at (6.4,4.6) {SD1.5 VAE $E$ + UNet};
-        % Half A, row 2 (loss terms)
-        \node[term, minimum width=2.1cm, text width=1.9cm] (str) at (1.4,2.85) {SSIM penalty\\on $x+\delta$ ($\gamma$)};
-        \node[term, minimum width=2.4cm, text width=2.2cm] (sem) at (3.95,2.85) {CLIP decoy\\``a potted plant'' ($\beta$)};
-        \node[term, minimum width=2.1cm, text width=1.9cm] (tgt) at (6.4,2.85) {Latent $\to\mathbf{0}$ ($\alpha$)\\denoiser ($\eta$)};
-        % Half A, row 3
-        \node[dark, minimum width=4.4cm, text width=4.2cm] (pgd) at (2.65,1.05) {PGD: sign step, clip $\pm4/255$,\\40 steps $\times$ 4 draws};
-        \node[dark, minimum width=2.1cm, text width=1.9cm] (q)   at (6.4,1.05) {Round to\\8-bit PNG};
+        % Half A
+        \node[grey,   minimum width=2.3cm, text width=2.15cm, minimum height=1.0cm] (x)   at (1.45,4.2) {Photo\\$x+\delta$};
+        \node[maroon, minimum width=2.3cm, text width=2.15cm, minimum height=1.0cm] (cl)  at (3.95,4.2) {4 random\\cleanups $P$};
+        \node[maroon, minimum width=2.3cm, text width=2.15cm, minimum height=1.0cm] (enc) at (6.45,4.2) {SD1.5 VAE $E$\\and UNet};
+        \node[term,   minimum width=2.3cm, text width=2.15cm, minimum height=1.0cm] (str) at (1.45,2.6) {SSIM\\penalty ($\gamma$)};
+        \node[term,   minimum width=2.3cm, text width=2.15cm, minimum height=1.0cm] (sem) at (3.95,2.6) {CLIP\\decoy ($\beta$)};
+        \node[term,   minimum width=2.3cm, text width=2.15cm, minimum height=1.0cm] (tgt) at (6.45,2.6) {Latent$\to\mathbf{0}$ ($\alpha$)\\denoiser ($\eta$)};
+        \node[dark,   minimum width=4.8cm, text width=4.65cm] (pgd) at (2.7,1.0) {PGD: sign step, clip $\pm4/255$\\40 steps $\times$ 4 cleanups};
+        \node[dark,   minimum width=2.3cm, text width=2.15cm] (q)   at (6.45,1.0) {8-bit\\PNG};
 
         \draw[flow] (x) -- (cl);
         \draw[flow] (cl) -- (enc);
@@ -184,33 +186,33 @@
         \draw[flow] (enc) -- (tgt);
         \draw[flow] (str.south) -- (str.south |- pgd.north);
         \draw[flow] (sem.south) -- (sem.south |- pgd.north);
-        \draw[flow] (tgt.south) -- ++(0,-0.35) -| ([xshift=1.85cm]pgd.north);
+        \draw[flow] (tgt.south) -- ++(0,-0.3) -| ([xshift=1.95cm]pgd.north);
         \draw[flow] (pgd) -- (q);
-        \draw[flow] (pgd.west) -- ++(-0.2,0) |- (x.west);
+        \draw[flow] (pgd.west) -- ++(-0.15,0) |- (x.west);
 
         % Half B
-        \node[dark,  minimum width=6.8cm, text width=6.6cm] (stat) at (12.1,4.6) {Statistics: paired per photo, bootstrap 95\% CIs};
-        \node[dark,  minimum width=3.1cm, text width=2.9cm] (psr)  at (10.25,2.85) {PSR: no face or\\similarity $<\tau$};
-        \node[maroon,minimum width=3.1cm, text width=2.9cm] (arc)  at (13.95,2.85) {ArcFace similarity to the source};
-        \node[maroon,minimum width=3.1cm, text width=2.9cm] (ev)   at (10.25,1.05) {Evaluation cleanups (or none)};
-        \node[maroon,minimum width=3.1cm, text width=2.9cm] (ed)   at (13.95,1.05) {5 editors $\times$ 3 seeds, fixed prompts};
+        \node[dark,   minimum width=6.3cm, text width=6.1cm] (stat) at (12.5,4.2) {Statistics: paired per photo, bootstrap 95\% CIs};
+        \node[dark,   minimum width=3.0cm, text width=2.85cm, minimum height=1.0cm] (psr)  at (10.85,2.6) {PSR: no face or\\similarity $<\tau$};
+        \node[maroon, minimum width=3.0cm, text width=2.85cm, minimum height=1.0cm] (arc)  at (14.15,2.6) {ArcFace similarity\\to the source};
+        \node[maroon, minimum width=3.0cm, text width=2.85cm, minimum height=1.0cm] (ev)   at (10.85,1.0) {Evaluation cleanups\\(or none)};
+        \node[maroon, minimum width=3.0cm, text width=2.85cm, minimum height=1.0cm] (ed)   at (14.15,1.0) {5 editors,\\3 seeds each};
 
         \draw[flow] (ev) -- (ed);
         \draw[flow] (ed) -- (arc);
         \draw[flow] (arc) -- (psr);
         \draw[flow] (psr.north) -- (psr.north |- stat.south);
 
-        % links between parts
-        \draw[flow] (data) -- (3.9,6.15);
-        \draw[flow] (models) -- (12.1,6.15);
+        % links
+        \draw[flow] (data) -- (3.95,5.35);
+        \draw[flow] (models) -- (12.5,5.35);
         \draw[-{Stealth[length=3mm]}, line width=1.6pt, color=amritaMaroon] (q.east) -- (ev.west)
-            node[midway, above=2pt, font=\bfseries\small, text=amritaMaroon, align=center] {protected\\PNG only};
+            node[midway, above=3pt, font=\bfseries\scriptsize, text=amritaMaroon, align=center] {protected\\PNG};
     \end{tikzpicture}
     \end{adjustbox}
 
-    \vspace{0.1cm}
+    \vspace{0.05cm}
     \begin{block}{Workflow Summary}
-        \scriptsize Half A refines a random $\pm4/255$ pattern for 40 steps, scoring four randomly cleaned copies each step so the noise survives cleanup; Half B edits only the published PNG with cleanups and editors (some never seen in Half A) and scores identity with ArcFace.
+        \scriptsize Half A refines a random $\pm4/255$ pattern for 40 steps, scoring four randomly cleaned copies each step; Half B edits only the published PNG and scores identity with ArcFace.
     \end{block}
 \end{frame}
 
@@ -223,7 +225,7 @@
             \scriptsize
             \begin{itemize}
                 \item \textbf{Cleanup simulation:} 4 random cleanups per step: JPEG (24.5\%), resize (24.5\%), VAE round trip (21\%), one-step DiffPure-style (30\%).
-                \item \textbf{Target pull + denoiser attack:} drive the SD1.5 latent of the cleaned copy to zero; raise the UNet's noise-prediction error.
+                \item \textbf{Target pull + denoiser attack:} drive the SD1.5 latent of the cleaned copy to zero; raise the UNet's error.
                 \item \textbf{Invisibility control:} SSIM penalty on the published photo, $\pm4/255$ clip, 8-bit rounding.
             \end{itemize}
         \end{block}
@@ -231,9 +233,9 @@
         \begin{block}{Mathematical / Algorithmic Formulation}
             \scriptsize
             \begin{itemize}
-                \item \textbf{Governing Formulation:}\\[2pt]
-                \adjustbox{max width=\linewidth}{$\displaystyle \max_{\|\delta\|_\infty\le\epsilon}\ \frac{1}{K}\sum_{k=1}^{K}\big[-\alpha\mathcal{L}_{tgt}+\eta\mathcal{L}_{den}-\beta\mathcal{L}_{sem}\big]_{P_k}-\gamma\mathcal{L}_{str}$}
-                \item \textbf{Key Variables:} $\epsilon=4/255$, $K=4$, 40 steps of $1/255$; $\alpha=0.188$, $\eta=0.012$, $\beta=0.546$, $\gamma=21.6$ (Optuna search).
+                \item \textbf{Governing Formulation:}\\
+                $\max_{\|\delta\|_\infty\le\epsilon}\ \tfrac{1}{K}\sum_{k}\big[-\alpha\mathcal{L}_{tgt}+\eta\mathcal{L}_{den}-\beta\mathcal{L}_{sem}\big]_{P_k}-\gamma\mathcal{L}_{str}$
+                \item \textbf{Key Variables:} $\epsilon=4/255$, $K=4$, 40 steps; $\alpha=0.188$, $\eta=0.012$, $\beta=0.546$, $\gamma=21.6$.
             \end{itemize}
         \end{block}
 
@@ -300,25 +302,25 @@
     \framesubtitle{Module-Wise Implementation \& Pipeline Integration Status}
     \begin{table}
         \centering
-        \footnotesize
+        \scriptsize
         \renewcommand{\arraystretch}{1.25}
-        \begin{tabular}{p{3.6cm} p{6.9cm} c}
+        \begin{tabular}{L{3.3cm} L{7.6cm} c}
             \toprule
             \textbf{Module / Stage} & \textbf{Implemented Functionality} & \textbf{Status} \\
             \midrule
-            Module 1: Data / Input Pipeline & CelebA-HQ ingestion, fixed splits, MMD-critic tuning-photo selection, reproducible code bundles & 100\% (Integrated) \\
-            Module 2: Baseline / Reference & Unprotected and random-noise controls; PhotoGuard and Mist re-implemented at 4/255 & 100\% (Integrated) \\
-            Module 3: Core Proposed Method & Protection engine: cleanup simulation, target pull, denoiser attack, SSIM penalty; Optuna weight search & 100\% (Integrated) \\
-            Module 4: Evaluation \& Prototype & Evaluation harness (5 editors, cleanups, 3 seeds, ArcFace, paired bootstrap); command-line demo & 100\% (Functional) \\
+            Module 1: Data Pipeline & CelebA-HQ ingestion, fixed splits, MMD-critic tuning-photo selection & 100\% (Integrated) \\
+            Module 2: Baselines & Unprotected and random-noise controls; PhotoGuard and Mist at 4/255 & 100\% (Integrated) \\
+            Module 3: Proposed Method & Protection engine: cleanup simulation, target pull, denoiser attack, SSIM penalty; Optuna weight search & 100\% (Integrated) \\
+            Module 4: Evaluation \& Demo & 5 editors, cleanups, 3 seeds, ArcFace scoring, paired bootstrap; command-line demo & 100\% (Functional) \\
             \bottomrule
         \end{tabular}
     \end{table}
 
     \begin{block}{Implementation Environment \& Repository}
-        \footnotesize
+        \scriptsize
         \begin{itemize}
-            \item \textbf{Software / Compute Environment:} Python, PyTorch, Hugging Face diffusers \& transformers, InsightFace (ArcFace), Optuna; Kaggle sessions on 2$\times$ NVIDIA T4 GPUs; 377 unit tests.
-            \item \textbf{Source Repository \& Execution Readiness:} \href{https://github.com/Project-DiffShield/DiffShield}{\textcolor{amritaMaroon}{\underline{github.com/Project-DiffShield/DiffShield}}} -- every run is hash-stamped, resumable and reproducible from one configuration.
+            \item \textbf{Software / Compute Environment:} Python, PyTorch, Hugging Face diffusers \& transformers, InsightFace (ArcFace), Optuna; 2$\times$ NVIDIA T4 GPUs (Kaggle); 377 unit tests.
+            \item \textbf{Source Repository \& Execution Readiness:} \href{https://github.com/Project-DiffShield/DiffShield}{\textcolor{amritaMaroon}{\underline{github.com/Project-DiffShield/DiffShield}}} -- hash-stamped, resumable, reproducible runs.
         \end{itemize}
     \end{block}
 \end{frame}
@@ -326,35 +328,34 @@
 \begin{frame}{5. Core Module Implementation Details}
     \framesubtitle{Internal Module Mechanics, Parameter Configurations \& Interfaces}
     \begin{columns}[T]
-        \column{0.52\textwidth}
+        \column{0.54\textwidth}
         \begin{block}{Core Module A: Protection Engine}
             \scriptsize
             \begin{itemize}
-                \item \textbf{Inputs \& Outputs:} 512$\times$512 face photo $\rightarrow$ protected 8-bit PNG + PSNR/SSIM report.
-                \item \textbf{Implementation Details:} 40 PGD steps, each averaging gradients over 4 random cleanups; half-precision VAE and gradient checkpointing fit a 16 GB T4; photos split across 2 GPUs; resumes after interruption.
-                \item \textbf{Key Parameters:} $\epsilon=4/255$, step $1/255$, $K=4$; $\alpha=0.188$, $\eta=0.012$ ($t\in[50,300]$), $\beta=0.546$, $\gamma=21.6$; one-step purifier share 30\%.
+                \item \textbf{Inputs \& Outputs:} 512$\times$512 face photo $\rightarrow$ protected 8-bit PNG + PSNR/SSIM.
+                \item \textbf{Implementation Details:} 40 PGD steps, gradients averaged over 4 random cleanups; half-precision VAE and gradient checkpointing on a 16 GB T4; 2 GPUs; resumable.
+                \item \textbf{Key Parameters:} $\epsilon=4/255$, step $1/255$, $K=4$; $\alpha=0.188$, $\eta=0.012$, $\beta=0.546$, $\gamma=21.6$.
             \end{itemize}
         \end{block}
 
         \begin{block}{Core Module B: Evaluation Harness}
             \scriptsize
             \begin{itemize}
-                \item \textbf{Inputs \& Outputs:} protected photos $\rightarrow$ one record per (photo, seed, editor, prompt, strength, cleanup) with ArcFace similarity and a face-found flag.
-                \item \textbf{Integration Interface:} reads only the published PNGs, never the protection internals; records feed the statistical analysis (PSR, paired CIs).
+                \item \textbf{Inputs \& Outputs:} protected photos $\rightarrow$ one record per edit with ArcFace similarity and a face-found flag.
+                \item \textbf{Integration Interface:} reads only the published PNGs; records feed the statistical analysis.
             \end{itemize}
         \end{block}
 
-        \column{0.44\textwidth}
+        \column{0.42\textwidth}
         \centering
-        \vspace{0.1cm}
-        \begin{adjustbox}{max width=\linewidth, max height=5.6cm}
-        \begin{tikzpicture}[node distance=0.55cm]
-            \node[grey,   minimum width=4.6cm, text width=4.4cm] (cfg)  {Configuration + fixed photo lists};
-            \node[maroon, minimum width=4.6cm, text width=4.4cm, below=of cfg] (pe) {\textbf{Protection engine}\\2 GPUs, sharded, resumable};
-            \node[term,   minimum width=4.6cm, text width=4.4cm, below=of pe] (png) {Protected PNGs + invisibility report};
-            \node[maroon, minimum width=4.6cm, text width=4.4cm, below=of png] (eh) {\textbf{Evaluation harness}\\cleanup $\rightarrow$ editor $\rightarrow$ ArcFace};
-            \node[term,   minimum width=4.6cm, text width=4.4cm, below=of eh] (rec) {Per-edit records};
-            \node[dark,   minimum width=4.6cm, text width=4.4cm, below=of rec] (an) {Statistical analysis\\PSR, paired 95\% CIs};
+        \begin{adjustbox}{max width=\linewidth, max height=5.9cm}
+        \begin{tikzpicture}[node distance=0.42cm]
+            \node[grey,   minimum width=5cm, text width=4.8cm] (cfg)  {Configuration + fixed photo lists};
+            \node[maroon, minimum width=5cm, text width=4.8cm, below=of cfg] (pe) {\textbf{Protection engine}\\2 GPUs, sharded, resumable};
+            \node[term,   minimum width=5cm, text width=4.8cm, below=of pe] (png) {Protected PNGs + invisibility report};
+            \node[maroon, minimum width=5cm, text width=4.8cm, below=of png] (eh) {\textbf{Evaluation harness}\\cleanup $\rightarrow$ editor $\rightarrow$ ArcFace};
+            \node[term,   minimum width=5cm, text width=4.8cm, below=of eh] (rec) {Per-edit records};
+            \node[dark,   minimum width=5cm, text width=4.8cm, below=of rec] (an) {Statistical analysis\\PSR, paired 95\% CIs};
             \draw[flow] (cfg) -- (pe);
             \draw[flow] (pe) -- (png);
             \draw[flow] (png) -- (eh);
@@ -374,29 +375,28 @@
     \framesubtitle{Experimental Benchmarking \& Comparative Evaluation}
     \begin{table}
         \centering
-        \footnotesize
-        \renewcommand{\arraystretch}{1.2}
-        \begin{tabular}{p{5.6cm} C{2.3cm} C{2.3cm} C{2.6cm}}
+        \scriptsize
+        \renewcommand{\arraystretch}{1.15}
+        \begin{tabular}{L{5.4cm} C{2.2cm} C{2.2cm} C{2.6cm}}
             \toprule
             \textbf{Method / Configuration} & \textbf{PSR, no cleanup} & \textbf{PSR, JPEG 75} & \textbf{Photos failing invisibility} \\
             \midrule
             Baseline: unprotected photo & 13.9\% & 10.3\% & -- \\
-            Baseline: random noise, same 4/255 budget & 14.9\% & -- & 43 of 100 \\
-            Baseline: PhotoGuard at 4/255 (re-implemented) & 81.0\% & 18.3\% & 100 of 100 \\
-            Baseline: Mist at 4/255 (re-implemented) & 63.1\% & 21.0\% & 100 of 100 \\
-            Ablation: target pull replaced by push-away & 24.3\% & 18.3\% & 0 of 100 \\
+            Baseline: random noise (4/255) & 14.9\% & -- & 43 of 100 \\
+            Baseline: PhotoGuard (4/255, re-impl.) & 81.0\% & 18.3\% & 100 of 100 \\
+            Baseline: Mist (4/255, re-impl.) & 63.1\% & 21.0\% & 100 of 100 \\
+            Ablation: push-away instead of target pull & 24.3\% & 18.3\% & 0 of 100 \\
             \textbf{Proposed: DiffShield} & \textbf{51.2\%} & \textbf{22.7\%} & \textbf{0 of 100} \\
             \bottomrule
         \end{tabular}
     \end{table}
-    \vspace{-0.25cm}
-    {\tiny Ablation: same cleanup simulation and denoiser term, but the latent is pushed away from the original instead of toward the target. SD1.5 image-to-image, strength 0.55, 100 test photos, 3 seeds.}
+    {\tiny SD1.5 image-to-image, strength 0.55, 100 test photos, 3 seeds. Ablation: same cleanups and denoiser term, latent pushed away from the original instead of toward the target.}
 
     \begin{block}{Experimental Verification Summary}
         \scriptsize
         \begin{itemize}
-            \item \textbf{Quantitative Findings:} DiffShield beats unprotected photos by +37.3 points [+32.7, +42.2] and random noise by +36.3 [+31.9, +40.9] with no visible photo; PhotoGuard and Mist score higher only by visibly altering every photo, and under JPEG 75 DiffShield is ahead of PhotoGuard (+4.3 [+0.7, +8.0]).
-            \item \textbf{Verification of Expected Behavior:} without the target pull PSR falls to 24.3\%, confirming it drives the protection; only 1.8\% of edits lose the face, and ArcFace similarity to the person falls from 0.222 to 0.103.
+            \item \textbf{Quantitative Findings:} +37.3 points [+32.7, +42.2] over unprotected photos and +36.3 [+31.9, +40.9] over random noise, with no visible photo; PhotoGuard and Mist score higher only by visibly altering every photo, and under JPEG 75 DiffShield is ahead of PhotoGuard (+4.3 [+0.7, +8.0]).
+            \item \textbf{Verification of Expected Behavior:} without the target pull PSR falls to 24.3\%; only 1.8\% of edits lose the face, and ArcFace similarity to the person falls from 0.222 to 0.103.
         \end{itemize}
     \end{block}
 \end{frame}
@@ -408,13 +408,13 @@
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                width=\linewidth, height=4.4cm, ybar, bar width=9pt, bar shift=0pt,
+                width=0.98\linewidth, height=4.4cm, ybar, bar width=9pt, bar shift=0pt,
                 ymin=0, ymax=100, xmin=0.4, xmax=6.6,
                 xtick={1,...,6}, xticklabels={Clean, Noise, No target, DiffShield, Mist$^{*}$, PhotoGuard$^{*}$},
                 x tick label style={font=\tiny, rotate=30, anchor=east},
                 y tick label style={font=\tiny}, ylabel={PSR (\%)}, ylabel style={font=\scriptsize},
                 title={PSR, SD1.5 img2img, no cleanup}, title style={font=\scriptsize\bfseries},
-                nodes near coords, every node near coord/.append style={font=\tiny},
+                nodes near coords, every node near coord/.append style={font=\tiny, /pgf/number format/.cd, fixed, fixed zerofill, precision=1},
                 ymajorgrids, grid style={black!12}, axis lines*=left,
             ]
                 \addplot[fill=slateGrey, draw=none] coordinates {(1,13.9) (2,14.9)};
@@ -422,31 +422,31 @@
                 \addplot[fill=amritaMaroon, draw=none] coordinates {(4,51.2)};
                 \addplot[fill=goldAccent, draw=none] coordinates {(5,63.1) (6,81.0)};
             \end{axis}
-        \end{tikzpicture}
+        \end{tikzpicture}\par
         {\tiny $^{*}$visibly alter all 100 photos}
 
         \column{0.48\textwidth}
         \centering
         \begin{tikzpicture}
             \begin{axis}[
-                width=\linewidth, height=4.4cm, ybar, bar width=7pt, bar shift=0pt,
+                width=0.98\linewidth, height=4.4cm, ybar, bar width=7pt, bar shift=0pt,
                 ymin=-10, ymax=50, xmin=0.4, xmax=10.6,
                 xtick={1,...,10}, xticklabels={None, JPEG 75, JPEG 50, Resize, VAE, DP 0.1, DP 0.2, DP 0.3, Pixel 100, Pixel 200},
                 x tick label style={font=\tiny, rotate=30, anchor=east},
                 y tick label style={font=\tiny}, ylabel={Net PSR (points)}, ylabel style={font=\scriptsize},
                 title={Protection over unprotected, by cleanup}, title style={font=\scriptsize\bfseries},
-                nodes near coords, every node near coord/.append style={font=\tiny},
+                nodes near coords, every node near coord/.append style={font=\tiny, /pgf/number format/.cd, fixed, fixed zerofill, precision=1},
                 ymajorgrids, grid style={black!12}, axis lines*=left,
             ]
                 \addplot[fill=amritaMaroon, draw=none] coordinates {(1,37.3) (2,12.3) (3,6.0) (4,4.0) (5,40.3) (6,41.7) (7,35.0) (8,37.0)};
                 \addplot[fill=slateGrey, draw=none] coordinates {(9,-1.7) (10,1.0)};
             \end{axis}
-        \end{tikzpicture}
+        \end{tikzpicture}\par
         {\tiny DP = DiffPure-style (SD1.5); Pixel = pixel-space face DDPM purifier}
     \end{columns}
 
     \begin{block}{Demonstration Overview}
-        \scriptsize Live demo: protect one photo on a GPU (about 4.5 minutes on a T4), edit the original and the protected copy with the same prompt and seed, and show both edits with PSNR/SSIM and each edit's ArcFace similarity to the person (lower = no longer the person).
+        \scriptsize Live demo: protect one photo (about 4.5 minutes on a T4 GPU), edit the original and the protected copy with the same prompt and seed, and show both edits with each edit's ArcFace similarity to the person.
     \end{block}
 \end{frame}
 
@@ -515,7 +515,7 @@
 \section{References}
 \nocite{*}
 \begin{frame}[allowframebreaks]{References}
-    \scriptsize
+    \fontsize{7.5pt}{8.6pt}\selectfont
     \bibliographystyle{ieeetr}
     \bibliography{ref}
 \end{frame}
