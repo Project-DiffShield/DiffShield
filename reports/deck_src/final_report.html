@@ -36,6 +36,7 @@
   .ph b { font-size: 11pt; } .ph small { font-size: 9.5pt; color: #444; margin-top: 5pt; }
   .eq { text-align: center; margin: 6pt 0; font-size: 10.5pt; }
   .ref { display: grid; grid-template-columns: 26pt 1fr; gap: 0 2pt; font-size: 10pt; margin-bottom: 3pt; text-align: left; }
+  a { color: #A4123F; text-decoration: underline; }
   code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; }
   svg text { font-family: "Times New Roman", Times, serif; }
 </style>
@@ -45,19 +46,20 @@
 <div class="head">
   <div class="uni">AMRITA VISHWA VIDYAPEETHAM<br>SCHOOL OF COMPUTING<br>DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</div>
   <div class="title">DiffShield: Protecting Face Photos from Diffusion-Model Editing</div>
-  <div class="line">23CSE498 &ndash; Project Phase II (External Review) &nbsp;&nbsp;|&nbsp;&nbsp; Team Number: [GXXX]</div>
+  <div class="line">23CSE498 &ndash; Project Phase II (External Review) &nbsp;&nbsp;|&nbsp;&nbsp; Team Number: 15</div>
   <div>15 November 2026</div>
 </div>
 <hr>
 
 <table class="team" style="margin: 0 auto 4pt;">
   <tr><th colspan="2" style="text-align:center">Team Members</th><th>Project Guide</th><th>Project Type</th></tr>
-  <tr><td>[CB.SC.U4CSE23XXX]</td><td style="width:4.4cm">[Student Name 1]</td>
-      <td rowspan="4" style="width:4.3cm"><b>[Dr/Mr/Ms. Guide Name]</b><br><i>[Designation],<br>Dept. of CSE</i></td>
-      <td rowspan="4" style="width:3.0cm"><b>Type 1</b><br>Research-Based Project</td></tr>
-  <tr><td>[CB.SC.U4CSE23XXX]</td><td>[Student Name 2]</td></tr>
-  <tr><td>[CB.SC.U4CSE23XXX]</td><td>[Student Name 3]</td></tr>
-  <tr><td>[CB.SC.U4CSE23XXX]</td><td>[Student Name 4]</td></tr>
+  <tr><td>CB.SC.U4CSE23437</td><td style="width:4.4cm">Pranav Kishan T Y</td>
+      <td rowspan="5" style="width:4.3cm"><b>Dr. Shanmuga Priya S</b><br><i>Assistant Professor,<br>Dept. of CSE</i></td>
+      <td rowspan="5" style="width:3.0cm"><b>Type 1</b><br>Research-Based Project</td></tr>
+  <tr><td>CB.SC.U4CSE23519</td><td>Venkatesh K</td></tr>
+  <tr><td>CB.SC.U4CSE23536</td><td>Narain B K</td></tr>
+  <tr><td>CB.SC.U4CSE23539</td><td>Karthikeyan P G</td></tr>
+  <tr><td>CB.SC.U4CSE23556</td><td>Varun Raj V</td></tr>
 </table>
 
 <!-- ===================================================================================== -->
@@ -72,9 +74,9 @@
   <li><b>Research Motivation:</b> Non-consensual deepfakes of real people can now be made cheaply from a single public photo. A protection that individuals can apply themselves, offline and invisibly, raises the cost of such misuse. To be useful it must survive the simple cleanups an attacker applies first, and it must be judged on whether the <i>person</i> is still recognisable, not only on how much the pixels changed.</li>
   <li><b>Research Objectives:</b>
     <ol>
-      <li><b>Invisibility:</b> PSNR &ge; 38 dB and SSIM &ge; 0.95 on <i>every</i> one of the 100 test photos at a 4/255 budget.</li>
-      <li><b>Protection:</b> a protection success rate (PSR) higher than unprotected photos, random noise of the same size, and our first prototype, with paired 95% confidence intervals that exclude 0.</li>
-      <li><b>Robustness and generality:</b> measure protection under cleanups and editors, including ones never used while making the protection, with a paired, reproducible protocol.</li>
+      <li><b>Invisibility:</b> the protected photo must look identical to the original: PSNR &ge; 38 dB and SSIM &ge; 0.95 on <i>every</i> one of the 100 test photos, with no pixel changed by more than 4/255.</li>
+      <li><b>Protection:</b> edits of a protected photo must stop matching the person. We measure this with the protection success rate (PSR): the share of edits that the ArcFace face-recognition model no longer matches to the original person. PSR must be clearly higher than for unprotected photos and for random noise of the same size, with paired 95% confidence intervals that exclude zero, and it is compared with published tools (PhotoGuard and Mist).</li>
+      <li><b>Robustness and generality:</b> measure protection after common cleanups (JPEG, resizing, diffusion-based denoising) and across several image editors, including some never used while making the protection, with a reproducible protocol.</li>
     </ol></li>
 </ul>
 
@@ -168,7 +170,7 @@
 <ul>
   <li><b>Hardware &amp; Compute Specifications:</b> Kaggle notebook sessions with 2&times; NVIDIA T4 GPUs (16 GB each); a local CPU machine for analysis, tables and tests. Measured cost: 274 GPU-seconds to protect one photo; per edit about 2.6 s (SD1.5), 18 s (SDXL at 1024 px) and 7 s (InstructPix2Pix and inpainting) on one T4.</li>
   <li><b>Software &amp; Libraries:</b> Python 3, PyTorch, diffusers 0.40.0, transformers 5.16.1, accelerate 1.14.0, insightface 0.7.3 (ArcFace <i>buffalo_l</i>) with onnxruntime-gpu 1.22.0, facenet-pytorch (FaceNet [8] and MTCNN), Optuna 5.0.0, scikit-image 0.25.2, pandas 2.3.3, OpenCV.</li>
-  <li><b>Source Code Repository:</b> [Insert repository URL]. Every run is produced from a hash-stamped code bundle whose commit is printed in its log (final evaluation bundle 78ca757); one YAML configuration, logged seeds and library versions, and 377 CPU unit tests.</li>
+  <li><b>Source Code Repository:</b> <a href="https://github.com/Project-DiffShield/DiffShield">https://github.com/Project-DiffShield/DiffShield</a>. Every run is produced from a hash-stamped code bundle whose commit is printed in its log (final evaluation bundle 78ca757); one YAML configuration, logged seeds and library versions, and 377 CPU unit tests.</li>
 </ul>
 
 <h3><span class="n">4.2</span>Module-Wise Implementation &amp; Integration Summary</h3>
@@ -336,11 +338,11 @@
 <div class="tbl">
 <table class="grid" style="width:100%">
   <tr><th style="width:28%">Deliverable Category</th><th>Details / Title / Repository Link</th><th class="c" style="width:14%">Status</th></tr>
-  <tr><td>Source Code Repository</td><td>[Insert repository URL]; README, configuration, 377 unit tests, one command per analysis step, report and presentation</td><td class="c">Completed</td></tr>
-  <tr><td>Individual Online Certifications</td><td>[List completed 10&ndash;20 hr courses for each team member]</td><td class="c">[Completed]</td></tr>
-  <tr><td>Group TEA Deliverable 1</td><td>[Title and details of completed Group Activity 1]</td><td class="c">[Completed]</td></tr>
-  <tr><td>Group TEA Deliverable 2</td><td>[Title and details of completed Group Activity 2]</td><td class="c">[Completed]</td></tr>
-  <tr><td>Group TEA Deliverable 3</td><td>[Title and details of completed Group Activity 3]</td><td class="c">[Completed]</td></tr>
+  <tr><td>Source Code Repository</td><td><a href="https://github.com/Project-DiffShield/DiffShield">https://github.com/Project-DiffShield/DiffShield</a>; README, configuration, 377 unit tests, one command per analysis step, report and presentation</td><td class="c">Completed</td></tr>
+  <tr><td>Individual Online Certifications</td><td>Narain B K: <i>Computer Vision Fundamentals: Image Formation, Filtering and Machine Learning</i>; Varun Raj V: <i>Deep Learning with TensorFlow and PyTorch</i>; Pranav Kishan T Y: <i>CS207: Fundamentals of Machine Learning</i>; Karthikeyan P G: <i>Master Stable Diffusion with Python: AI Images and Video</i>; Venkatesh K: <i>Vision Language Models Bootcamp</i></td><td class="c">Completed</td></tr>
+  <tr><td>Group TEA Deliverable 1</td><td>Project website: <a href="https://diffshield-site.vercel.app/">https://diffshield-site.vercel.app/</a></td><td class="c">Completed</td></tr>
+  <tr><td>Group TEA Deliverable 2</td><td>Research paper: <i>DiffShield: A Tri-Modal Adversarial Framework for Robust Immunization Against Deepfake Generation</i></td><td class="c">Completed</td></tr>
+  <tr><td>Group TEA Deliverable 3</td><td>Project repository: <a href="https://github.com/Project-DiffShield/DiffShield">https://github.com/Project-DiffShield/DiffShield</a></td><td class="c">Completed</td></tr>
 </table>
 <div class="cap">Table 9: Summary of Completed Project and Technical Enrichment Deliverables</div>
 </div>
