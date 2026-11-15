@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>DiffShield Final Report</title>
+<style>
+  @page { size: A4; margin: 0.8in 0.8in 0.9in 0.8in;
+    @bottom-center { content: counter(page); font-family: "Times New Roman", Times, serif; font-size: 10.5pt; } }
+  :root { --maroon: #A4123F; }
+  html, body { background: #fff; }
+  body { font-family: "Times New Roman", Times, serif; font-size: 11pt; line-height: 1.32; color: #000; margin: 0; text-align: justify; hyphens: auto; }
+  .head { text-align: center; }
+  .head .uni { color: var(--maroon); font-weight: bold; font-size: 15pt; line-height: 1.25; }
+  .head .title { font-weight: bold; font-size: 13.5pt; margin-top: 7pt; }
+  .head .line { font-weight: bold; margin-top: 3pt; }
+  hr { border: 0; border-top: 0.6pt solid #000; margin: 9pt 0; }
+  h2 { color: var(--maroon); font-size: 13pt; font-weight: bold; margin: 13pt 0 4pt; text-align: left; break-after: avoid; }
+  h3 { color: var(--maroon); font-size: 11pt; font-weight: bold; margin: 8pt 0 3pt; text-align: left; break-after: avoid; }
+  h2 .n { margin-right: 0.8em; } h3 .n { margin-right: 0.6em; }
+  p { margin: 0 0 5pt; }
+  ul, ol { margin: 2pt 0 5pt; padding-left: 20pt; } li { margin: 0 0 2pt; }
+  ol { padding-left: 22pt; }
+  table { border-collapse: collapse; margin: 0 auto; }
+  table.grid td, table.grid th { border: 0.6pt solid #000; padding: 3pt 5pt; vertical-align: top; text-align: left; font-size: 9.5pt; line-height: 1.25; }
+  table.grid th { font-weight: bold; }
+  table.grid td.c, table.grid th.c { text-align: center; }
+  table.grid tr.final td { font-weight: bold; }
+  table.team td, table.team th { border: 0.6pt solid #000; padding: 4pt 6pt; font-size: 10.5pt; vertical-align: middle; text-align: left; }
+  .cap { text-align: center; font-size: 10pt; margin: 5pt 0 9pt; }
+  figure { margin: 8pt 0; break-inside: avoid; }
+  .tbl { margin: 8pt 0; }
+  tr { break-inside: avoid; } .cap { break-before: avoid; break-inside: avoid; }
+  table.nw td.c { white-space: nowrap; }
+  thead { display: table-header-group; }
+  .ph { border: 0.8pt solid #000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 8pt; box-sizing: border-box; }
+  .ph b { font-size: 11pt; } .ph small { font-size: 9.5pt; color: #444; margin-top: 5pt; }
+  .eq { text-align: center; margin: 6pt 0; font-size: 10.5pt; }
+  .ref { display: grid; grid-template-columns: 26pt 1fr; gap: 0 2pt; font-size: 10pt; margin-bottom: 3pt; text-align: left; }
+  code { font-family: Consolas, "Courier New", monospace; font-size: 9.5pt; }
+  svg text { font-family: "Times New Roman", Times, serif; }
+</style>
+</head>
+<body>
+
+<div class="head">
+  <div class="uni">AMRITA VISHWA VIDYAPEETHAM<br>SCHOOL OF COMPUTING<br>DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING</div>
+  <div class="title">DiffShield: Protecting Face Photos from Diffusion-Model Editing</div>
+  <div class="line">23CSE498 &ndash; Project Phase II (External Review) &nbsp;&nbsp;|&nbsp;&nbsp; Team Number: [GXXX]</div>
+  <div>15 November 2026</div>
+</div>
+<hr>
+
+<table class="team" style="margin: 0 auto 4pt;">
+  <tr><th colspan="2" style="text-align:center">Team Members</th><th>Project Guide</th><th>Project Type</th></tr>
+  <tr><td>[CB.SC.U4CSE23XXX]</td><td style="width:4.4cm">[Student Name 1]</td>
+      <td rowspan="4" style="width:4.3cm"><b>[Dr/Mr/Ms. Guide Name]</b><br><i>[Designation],<br>Dept. of CSE</i></td>
+      <td rowspan="4" style="width:3.0cm"><b>Type 1</b><br>Research-Based Project</td></tr>
+  <tr><td>[CB.SC.U4CSE23XXX]</td><td>[Student Name 2]</td></tr>
+  <tr><td>[CB.SC.U4CSE23XXX]</td><td>[Student Name 3]</td></tr>
+  <tr><td>[CB.SC.U4CSE23XXX]</td><td>[Student Name 4]</td></tr>
+</table>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">1</span>Abstract</h2>
+<p>Diffusion-based image editors can turn any face photo posted online into a convincing fake of that person. DiffShield is a defensive tool that the owner of a photo runs before posting it: it adds an almost invisible pattern of noise (no pixel changes by more than 4 of 255 brightness levels) chosen so that edits made from the photo no longer preserve the person&rsquo;s identity. The noise is found by an optimiser that, at every step, simulates a cleanup an attacker might apply (JPEG compression, resizing, a VAE round trip, or a DiffPure-style diffusion purifier) and then pulls the editor&rsquo;s internal representation of the cleaned photo toward a fixed, useless target, while also disturbing the editor&rsquo;s denoiser and penalising any visible change. Its weights were chosen by a systematic search on separately selected tuning photos. An independent evaluation harness attacks the protected photos with standard cleanups and editors, including ones the optimiser never saw, and measures identity with the ArcFace face recogniser. On 100 CelebA-HQ test photos, every protected photo stays invisible (PSNR &ge; 38 dB, SSIM &ge; 0.95), and 51.2% of Stable Diffusion edits no longer match the person, against 13.9% for unprotected photos (+37.3 points, 95% CI [+32.7, +42.2]) and 24.0% for our first prototype (+27.2 [+23.0, +31.7]). The protection survives SD-based DiffPure-style cleanup and the VAE round trip and is ahead of PhotoGuard under JPEG, but it does not extend to SDXL, inpainting or IP-Adapter FaceID, and a pixel-space diffusion purifier removes it.</p>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">2</span>Problem Definition, Research Motivation &amp; Literature Review</h2>
+<h3><span class="n">2.1</span>Problem Statement &amp; Research Motivation</h3>
+<ul>
+  <li><b>Problem Statement:</b> Given a face photo, find a small perturbation (at most 4/255 per pixel) such that (i) the protected photo looks identical to the original, and (ii) when someone edits the protected photo with a diffusion editor, possibly after cleaning it, the edit is no longer recognised as the same person. Scope: an attacker who does not know the protection and uses Stable Diffusion 1.5 or SDXL image-to-image, InstructPix2Pix, SD inpainting or IP-Adapter FaceID, optionally after a cleanup (JPEG, resizing, VAE round trip, DiffPure-style denoising); CelebA-HQ portraits at 512&times;512.</li>
+  <li><b>Research Motivation:</b> Non-consensual deepfakes of real people can now be made cheaply from a single public photo. A protection that individuals can apply themselves, offline and invisibly, raises the cost of such misuse. To be useful it must survive the simple cleanups an attacker applies first, and it must be judged on whether the <i>person</i> is still recognisable, not only on how much the pixels changed.</li>
+  <li><b>Research Objectives:</b>
+    <ol>
+      <li><b>Invisibility:</b> PSNR &ge; 38 dB and SSIM &ge; 0.95 on <i>every</i> one of the 100 test photos at a 4/255 budget.</li>
+      <li><b>Protection:</b> a protection success rate (PSR) higher than unprotected photos, random noise of the same size, and our first prototype, with paired 95% confidence intervals that exclude 0.</li>
+      <li><b>Robustness and generality:</b> measure protection under cleanups and editors, including ones never used while making the protection, with a paired, reproducible protocol.</li>
+    </ol></li>
+</ul>
+
+<h3><span class="n">2.2</span>Literature Review &amp; Research Gap</h3>
+<p>Adversarial protections for images target the parts of latent diffusion models [6]: the VAE encoder, which turns a photo into the compressed &ldquo;latent&rdquo; an editor starts from, or the UNet denoiser that performs the edit. Most published work protects artworks or fine-tuning data, uses budgets of 8&ndash;16/255 and reports image-quality changes; purification methods such as DiffPure [5] were designed to strip exactly this kind of perturbation.</p>
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:17%">Author / Year / Citation</th><th style="width:29%">Core Methodology Used</th><th style="width:29%">Key Findings / Strengths</th><th style="width:25%">Identified Limitations</th></tr>
+  <tr><td>Salman et al., 2023 [1] (PhotoGuard)</td><td>Optimises the image so the SD encoder maps it to a chosen target latent; a second variant attacks the full diffusion process</td><td>Strongly disrupts image-to-image edits</td><td>No visibility penalty or cleanup handling; at our 4/255 budget it visibly alters every test photo</td></tr>
+  <tr><td>Liang et al., 2023 [2] (AdvDM / Mist)</td><td>Perturbations that raise the diffusion model&rsquo;s training loss, released as the Mist tool with a pull toward a fixed texture image</td><td>Prevents diffusion models from imitating artworks</td><td>Designed for artwork; visibly alters photos at 4/255; JPEG removes most of the effect</td></tr>
+  <tr><td>Shan et al., 2023 [3] (Glaze)</td><td>Style cloaks optimised in a feature space under a perceptual (LPIPS) bound</td><td>Prevents style mimicry by fine-tuned models; validated with artists</td><td>Targets artistic style, not a person&rsquo;s identity in direct edits</td></tr>
+  <tr><td>Van Le et al., 2023 [4] (Anti-DreamBooth)</td><td>Perturbations that disrupt DreamBooth fine-tuning on a person&rsquo;s photos</td><td>Degrades personalised generation of faces</td><td>Protects against fine-tuning, not against editing a single photo</td></tr>
+  <tr><td>Nie et al., 2022 [5] (DiffPure)</td><td>Adds diffusion noise to an image and denoises it back to purify adversarial inputs</td><td>Removes adversarial perturbations against classifiers</td><td>A threat for protections: any defence must be tested against it</td></tr>
+</table>
+<div class="cap">Table 1: Summary of Key Literature Surveyed and Identified Limitations</div>
+</div>
+<p><b>Summary of Research Gap:</b> There is little evidence on whether such perturbations remove a <i>person&rsquo;s identity</i> from edits (measured with a face recogniser rather than pixel distances), whether they survive purification and everyday cleanups, and whether they do so while staying invisible on <i>every</i> photo at a small budget. DiffShield addresses this with a cleanup-aware, target-steered protection that also attacks the denoiser, and an identity-based evaluation with controls and paired statistics.</p>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">3</span>Proposed Methodology &amp; Solution Design</h2>
+<h3><span class="n">3.1</span>End-to-End Methodological Workflow</h3>
+<p>The system has two halves that never share components. <b>Half A (protection, offline)</b> starts from a small random pattern and refines it for 40 steps. At each step it applies four randomly chosen cleanups to the current protected photo, scores the cleaned copies, and moves the pattern in the direction that raises the score, keeping every pixel within &plusmn;4/255. The result is the 8-bit PNG that the owner posts. <b>Half B (attack and score)</b> plays the attacker: it optionally cleans the posted photo with a cleanup Half A never used, edits it with one of five editors, compares the face in each edit with the original person using ArcFace [7], and reports the protection success rate with paired confidence intervals. Half B uses standard library implementations rather than the differentiable versions inside Half A, and adds cleanups and editors Half A never used (multi-step DiffPure-style cleanup, a pixel-space diffusion purifier, and four of the five editors), so robustness is not only measured on the training conditions.</p>
+<figure>
+<svg viewBox="0 0 1000 330" width="100%" role="img" aria-label="DiffShield workflow: protection loop and attack-and-score harness">
+  <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#A4123F"/></marker></defs>
+  <rect x="2" y="2" width="996" height="326" fill="none" stroke="#000" stroke-width="1.2"/>
+  <text x="18" y="28" font-size="17" font-weight="bold" fill="#A4123F">HALF A &ndash; Protection (offline)</text>
+  <text x="982" y="194" font-size="17" font-weight="bold" fill="#A4123F" text-anchor="end">HALF B &ndash; Attack &amp; score (held-out)</text>
+  <g font-size="14" text-anchor="middle">
+    <rect x="18" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="102" y="70">Face photo x</text><text x="102" y="89">+ random start</text><text x="102" y="108">within &#177;4/255</text>
+    <rect x="214" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="298" y="66">Apply 4 random cleanups</text><text x="298" y="85">JPEG, resize, VAE,</text><text x="298" y="104">one-step DiffPure-style</text>
+    <rect x="410" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="494" y="66">Score cleaned copies</text><text x="494" y="85">target pull, push-away,</text><text x="494" y="104">denoiser, decoy, visibility</text>
+    <rect x="606" y="42" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="690" y="70">Step 1/255 uphill,</text><text x="690" y="89">clip to &#177;4/255,</text><text x="690" y="108">round to 8-bit</text>
+    <rect x="802" y="42" width="180" height="84" rx="6" fill="#A4123F" stroke="#A4123F"/>
+    <text x="892" y="80" fill="#fff" font-weight="bold">Protected photo</text><text x="892" y="99" fill="#fff">(the one posted)</text>
+    <path d="M690,126 L690,150 L298,150 L298,130" fill="none" stroke="#A4123F" stroke-width="1.6" marker-end="url(#ar)"/>
+    <text x="494" y="145" font-style="italic" fill="#A4123F">repeat 40 steps</text>
+    <rect x="18" y="204" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="102" y="250">Protected photo</text>
+    <rect x="214" y="204" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="298" y="240">Held-out cleanup</text><text x="298" y="259">(optional, unseen)</text>
+    <rect x="410" y="204" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="494" y="232">Editor (5)</text><text x="494" y="251">SD1.5, SDXL, IP2P,</text><text x="494" y="270">inpainting, FaceID</text>
+    <rect x="606" y="204" width="168" height="84" rx="6" fill="#F6E8EC" stroke="#A4123F"/>
+    <text x="690" y="240">ArcFace similarity</text><text x="690" y="259">edit vs source person</text>
+    <rect x="802" y="204" width="180" height="84" rx="6" fill="#A4123F" stroke="#A4123F"/>
+    <text x="892" y="240" fill="#fff" font-weight="bold">PSR + paired 95% CI</text><text x="892" y="259" fill="#fff">vs clean and baselines</text>
+  </g>
+  <g stroke="#A4123F" stroke-width="1.6" marker-end="url(#ar)">
+    <line x1="186" y1="84" x2="210" y2="84"/><line x1="382" y1="84" x2="406" y2="84"/><line x1="578" y1="84" x2="602" y2="84"/><line x1="774" y1="84" x2="798" y2="84"/>
+    <line x1="186" y1="246" x2="210" y2="246"/><line x1="382" y1="246" x2="406" y2="246"/><line x1="578" y1="246" x2="602" y2="246"/><line x1="774" y1="246" x2="798" y2="246"/>
+  </g>
+  <path d="M892,126 L892,170 L102,170 L102,200" fill="none" stroke="#A4123F" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+  <text x="560" y="166" font-size="13" text-anchor="middle" fill="#A4123F">published photo</text>
+</svg>
+<div class="cap">Figure 1: Proposed End-to-End Methodological Architecture</div>
+</figure>
+
+<h3><span class="n">3.2</span>Mathematical Formulation &amp; Algorithmic Design</h3>
+<ul>
+  <li><b>Theoretical / Mathematical Formulation:</b> let <i>x</i> be the photo, <i>&delta;</i> the noise, <i>P</i> a randomly drawn cleanup, and <i>E</i> the Stable Diffusion 1.5 VAE encoder, which turns an image into the latent an editor starts from. For each cleaned copy <i>P</i>(<i>x</i>+<i>&delta;</i>) the optimiser computes one score made of five parts, and averages it over 4 cleanups:
+  <ol style="margin-top:3pt">
+    <li><b>Target pull</b> (weight 1): how close the latent of the cleaned copy is to an all-zeros latent, a fixed &ldquo;useless&rdquo; target. Closer is better.</li>
+    <li><b>Push-away</b> (&alpha; = 0.188): how far that latent is from the original photo&rsquo;s latent (mean squared difference). Further is better.</li>
+    <li><b>Denoiser error</b> (&eta; = 0.012): how badly the editor&rsquo;s UNet denoiser predicts the noise added to that latent at a random timestep between 50 and 300. Larger is better.</li>
+    <li><b>Decoy</b> (&beta; = 0.546): how close the photo&rsquo;s CLIP image embedding is to the text &ldquo;a potted plant&rdquo;. Closer is better.</li>
+    <li><b>Visibility penalty</b> (&gamma; = 21.6): 1 &minus; SSIM between the original and the published (uncleaned) protected photo. Smaller is better.</li>
+  </ol>
+  <div class="eq">Score = target pull + &alpha;&middot;push-away + &eta;&middot;denoiser error + &beta;&middot;decoy closeness &minus; &gamma;&middot;(1 &minus; SSIM)</div>
+  The optimiser maximises this score subject to every pixel of &delta; staying within &plusmn;4/255.</li>
+  <li><b>Core Algorithmic Steps:</b> (1) start &delta; with uniform random values within &plusmn;4/255; (2) for each of 40 steps, draw 4 cleanups from the training mixture: JPEG with random quality 50&ndash;95 (24.5% of draws), down-up resizing to 50&ndash;90% (24.5%), the SD VAE round trip (21%), and a one-step DiffPure-style purifier that adds diffusion noise at a random timestep 50&ndash;300 and removes it with one UNet step (30%); all four are differentiable; (3) compute the score on each cleaned copy and average the gradients; (4) move every pixel of &delta; by 1/255 in the direction that raises the score, clip to &plusmn;4/255 and round the protected photo to 8-bit; (5) after 40 steps, save the PNG with its PSNR and SSIM.</li>
+  <li><b>How the weights were chosen:</b> by a procedure fixed in advance. 28 search and 12 confirmation photos were selected with MMD-critic [11], a method that picks a small set whose spread of CLIP embeddings matches the whole pool of 28,974 usable photos (test photos excluded); it was more representative than 1,000 random sets of the same size (p = 0.001). Optuna [12] then tried 25 weight settings on the search photos, scoring each by its average PSR over two editors and five cleanups and rejecting any setting that made even one photo visible. The best three were re-run at full quality on the confirmation photos, and the chosen setting was finally checked on the 100 test photos.</li>
+  <li><b>Dataset &amp; Preprocessing Specifications:</b> CelebA-HQ [16] portraits at 512&times;512 RGB, with CelebAMask-HQ [17] parsing masks for the inpainting editor. Fixed lists: 100 test photos (used only for the results in Section 5) and separate tuning photos as above. Preprocessing: centre crop and resize to 512 px PNG, a per-photo random seed derived from a hash, and image padding before face detection.</li>
+  <li><b>Evaluation Metrics:</b>
+    <ul>
+      <li><i>PSR (protection success rate)</i> = share of edits in which no face is detected or the ArcFace similarity to the original person is below the threshold &tau;. &tau; is the 95th percentile of the similarity between edits and photos of <i>different</i> people, so below &tau; the recogniser treats the edit as a stranger (&tau; = 0.1005 for Stable Diffusion 1.5). Higher is better.</li>
+      <li><i>Net protection</i> = PSR with protection &minus; PSR without protection under the same cleanup, because cleanups also change unprotected photos.</li>
+      <li><i>Invisibility</i>: PSNR (pixel error, in dB) and SSIM (structural similarity) between the original and the protected photo, required on every photo.</li>
+      <li><i>Uncertainty</i>: results are averaged per photo over seeds and prompts; 95% intervals come from a paired bootstrap that resamples photos (10,000 draws).</li>
+      <li><i>Audit</i>: the share of edits with no detectable face and the mean similarity are reported next to PSR.</li>
+    </ul></li>
+</ul>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">4</span>Implementation Details</h2>
+<h3><span class="n">4.1</span>Implementation Environment &amp; Execution Setup</h3>
+<ul>
+  <li><b>Hardware &amp; Compute Specifications:</b> Kaggle notebook sessions with 2&times; NVIDIA T4 GPUs (16 GB each); a local CPU machine for analysis, tables and tests. Measured cost: 274 GPU-seconds to protect one photo; per edit about 2.6 s (SD1.5), 18 s (SDXL at 1024 px) and 7 s (InstructPix2Pix and inpainting) on one T4.</li>
+  <li><b>Software &amp; Libraries:</b> Python 3, PyTorch, diffusers 0.40.0, transformers 5.16.1, accelerate 1.14.0, insightface 0.7.3 (ArcFace <i>buffalo_l</i>) with onnxruntime-gpu 1.22.0, facenet-pytorch (FaceNet [8] and MTCNN), Optuna 5.0.0, scikit-image 0.25.2, pandas 2.3.3, OpenCV.</li>
+  <li><b>Source Code Repository:</b> [Insert repository URL]. Every run is produced from a hash-stamped code bundle whose commit is printed in its log (final evaluation bundle 78ca757); one YAML configuration, logged seeds and library versions, and 377 CPU unit tests.</li>
+</ul>
+
+<h3><span class="n">4.2</span>Module-Wise Implementation &amp; Integration Summary</h3>
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:24%">Module / Stage</th><th>Implemented Technical Details &amp; Integration Scope</th><th class="c" style="width:16%">Status</th></tr>
+  <tr><td>Module 1: Data Pipeline</td><td>CelebA-HQ ingestion and cropping, fixed split lists, identity de-duplication, MMD-critic selection of tuning photos (reproducible from saved embeddings), Kaggle code bundles</td><td class="c">100% (Integrated)</td></tr>
+  <tr><td>Module 2: Baseline Models</td><td>Our first prototype, random-noise controls, and re-implementations of PhotoGuard (1,000 steps) and Mist (100 steps) at the same 4/255 budget, checked against the official code</td><td class="c">100% (Integrated)</td></tr>
+  <tr><td>Module 3: Proposed Method</td><td>Protection loop with the differentiable cleanup mixture (including the one-step DiffPure-style purifier), target pull, push-away, denoiser and decoy terms, visibility penalty on the published photo; Optuna weight search with a per-photo invisibility rule</td><td class="c">100% (Integrated)</td></tr>
+  <tr><td>Module 4: Evaluation &amp; Demo</td><td>Resumable edit runner (5 editors, cleanups, 3 seeds), ArcFace and FaceNet scoring, calibrated thresholds, paired bootstrap analysis and tables; <code>demo.py</code> protects one photo and shows both edits</td><td class="c">100% (Functional)</td></tr>
+</table>
+<div class="cap">Table 2: Module-Wise Implementation Completion Status</div>
+</div>
+
+<h3><span class="n">4.3</span>Detailed Module Descriptions</h3>
+<ul>
+  <li><b>Data Pipeline (<code>scripts/prepare_data.py</code>, <code>data/splits/</code>):</b> reads CelebA-HQ, writes 512 px PNGs per split from frozen ID lists and records a manifest; the tuning-photo selector computes CLIP embeddings of the pool and picks the MMD-critic set, and one command reproduces the selection exactly.</li>
+  <li><b>Baselines (<code>src/baselines/</code>):</b> every comparison method is registered as a method of the same pipeline, so it is protected, edited and scored exactly like DiffShield, on the same photos and seeds.</li>
+  <li><b>Protection Loop (<code>src/protect/</code>, <code>scripts/run_protect.py</code>):</b> one configuration defines the weights and cleanup mixture; the loop runs the VAE in half precision with gradient checkpointing to fit a T4, averages gradients over the 4 cleanup draws, shards photos over both GPUs, checkpoints every few photos and writes the protected PNG, PSNR, SSIM and a loss trace.</li>
+  <li><b>End-to-End Integration:</b> every Kaggle session is declared as a list of steps in <code>kaggle/jobs.yaml</code> and run by <code>run_job.py</code> (install, data, protect, evaluate, merge); protection and evaluation only exchange files, so each can be rerun alone; the evaluation writes one CSV row per (photo, seed, editor, prompt, strength, cleanup, method), and <code>paired_compare.py</code> produces every comparison in this report.</li>
+</ul>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">5</span>Preliminary Verification, Experimental Results &amp; Demonstration</h2>
+<h3><span class="n">5.1</span>Quantitative Evaluation &amp; Baseline Comparison</h3>
+<p><b>Protocol.</b> All results use the 100 test photos. The main setting is Stable Diffusion 1.5 image-to-image at strength 0.55, 30 DPM-Solver++ sampling steps, three prompts (&ldquo;a person in a suit&rdquo;, &ldquo;at a beach&rdquo;, &ldquo;an oil painting of a person&rdquo;), 3 seeds, edits saved as JPEG q90. Every method uses the same 4/255 budget and is compared with DiffShield on the same photos, prompts and seeds. Table 3 explains what each compared method contains, so the comparison can be read without knowing how DiffShield was developed.</p>
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:22%">Compared method</th><th>What it contains and what it does</th><th style="width:24%">Why it is included</th></tr>
+  <tr><td>Clean photo</td><td>No protection; the original photo is edited directly.</td><td>Reference for all other methods</td></tr>
+  <tr><td>Uniform noise</td><td>Random values within &plusmn;4/255 added to every pixel; no optimisation.</td><td>Control: does any noise of this size help?</td></tr>
+  <tr><td>Gaussian noise</td><td>Random Gaussian noise scaled to the same visibility as our first prototype (PSNR 41.9 dB); no optimisation.</td><td>Control at matched visibility</td></tr>
+  <tr><td>First prototype</td><td>40 optimisation steps that push the SD1.5 latent away from the original, plus the CLIP decoy and an SSIM penalty, with random JPEG and cropping each step. No cleanup mixture, no target pull, no denoiser term.</td><td>Our starting point; shows what the final design adds</td></tr>
+  <tr><td>No-target ablation</td><td>Same cleanup mixture as DiffShield (including the one-step DiffPure-style purifier) and a denoiser term, but only pushes the latent away from the original: no target pull.</td><td>Isolates the effect of the target pull</td></tr>
+  <tr><td>Hand-set weights</td><td>Same design as DiffShield (target pull and push-away) with hand-chosen weights (&alpha; 0.55, &beta; 0.90, &gamma; 60.5), trained against JPEG, resizing and the VAE round trip only: no DiffPure-style purifier, no denoiser term.</td><td>Checks whether the weight search and the two extra components changed the result</td></tr>
+  <tr><td>PhotoGuard [1] (our re-implementation)</td><td>1,000 steps that pull the SD encoder&rsquo;s latent to a zero target; no cleanups during optimisation and no visibility penalty, so it uses the full budget on almost every pixel.</td><td>Published protection with a similar target idea</td></tr>
+  <tr><td>Mist [2] (our re-implementation)</td><td>100 steps that raise the diffusion model&rsquo;s training loss and pull the image toward a fixed texture image; designed for artworks.</td><td>Published protection tool</td></tr>
+</table>
+<div class="cap">Table 3: Methods Compared with DiffShield</div>
+</div>
+
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:24%">Method / Configuration</th><th class="c">PSR, no cleanup</th><th class="c">PSR, JPEG 75</th><th class="c">Photos failing invisibility</th><th class="c" style="width:26%">DiffShield minus method, no cleanup [95% CI]</th></tr>
+  <tr><td>Clean photo</td><td class="c">13.9%</td><td class="c">10.3%</td><td class="c">&ndash;</td><td class="c">+37.3 points [+32.7, +42.2]</td></tr>
+  <tr><td>Uniform noise</td><td class="c">14.9%</td><td class="c">not run</td><td class="c">43 of 100</td><td class="c">+36.3 [+31.9, +40.9]</td></tr>
+  <tr><td>Gaussian noise</td><td class="c">14.7%</td><td class="c">not run</td><td class="c">3 of 100</td><td class="c">+36.6 [+32.0, +41.2]</td></tr>
+  <tr><td>First prototype</td><td class="c">24.0%</td><td class="c">15.0%</td><td class="c">0 of 100</td><td class="c">+27.2 [+23.0, +31.7]</td></tr>
+  <tr><td>No-target ablation</td><td class="c">24.3%</td><td class="c">18.3%</td><td class="c">0 of 100</td><td class="c">+26.9 [+23.0, +30.9]</td></tr>
+  <tr><td>Hand-set weights</td><td class="c">49.7%</td><td class="c">23.3%</td><td class="c">0 of 100</td><td class="c">+1.6 [&minus;0.9, +4.0]</td></tr>
+  <tr><td>PhotoGuard (re-impl.)</td><td class="c">81.0%</td><td class="c">18.3%</td><td class="c">100 of 100</td><td class="c">&minus;29.8 [&minus;34.2, &minus;25.2]</td></tr>
+  <tr><td>Mist (re-impl.)</td><td class="c">63.1%</td><td class="c">21.0%</td><td class="c">100 of 100</td><td class="c">&minus;11.9 [&minus;15.3, &minus;8.4]</td></tr>
+  <tr class="final"><td>DiffShield (final)</td><td class="c">51.2%</td><td class="c">22.7%</td><td class="c">0 of 100</td><td class="c">&ndash;</td></tr>
+</table>
+<div class="cap">Table 4: Comparative Experimental Evaluation Results (SD1.5 image-to-image, strength 0.55, 100 test photos, 3 seeds). &ldquo;Failing invisibility&rdquo; = PSNR &lt; 38 dB or SSIM &lt; 0.95.</div>
+</div>
+
+<div class="tbl">
+<table class="grid nw" style="width:100%">
+  <tr><th style="width:27%">Cleanup applied before editing</th><th class="c">Clean photo</th><th class="c">First prototype</th><th class="c">DiffShield</th><th class="c">DiffShield minus clean [95% CI]</th><th class="c">DiffShield minus prototype [95% CI]</th></tr>
+  <tr><td>None</td><td class="c">13.9%</td><td class="c">24.0%</td><td class="c">51.2%</td><td class="c">+37.3 [+32.7, +42.2]</td><td class="c">+27.2 [+23.0, +31.7]</td></tr>
+  <tr><td>JPEG quality 75</td><td class="c">10.3%</td><td class="c">15.0%</td><td class="c">22.7%</td><td class="c">+12.3 [+7.7, +17.0]</td><td class="c">+7.7 [+3.3, +12.0]</td></tr>
+  <tr><td>JPEG quality 50</td><td class="c">13.0%</td><td class="c">16.7%</td><td class="c">19.0%</td><td class="c">+6.0 [+2.7, +9.3]</td><td class="c">+2.3 [&minus;0.7, +5.7]</td></tr>
+  <tr><td>Down-up resize to 50%</td><td class="c">9.7%</td><td class="c">9.7%</td><td class="c">13.7%</td><td class="c">+4.0 [+1.0, +7.0]</td><td class="c">+4.0 [+0.7, +7.3]</td></tr>
+  <tr><td>SD VAE round trip</td><td class="c">12.3%</td><td class="c">22.0%</td><td class="c">52.7%</td><td class="c">+40.3 [+34.0, +47.0]</td><td class="c">+30.7 [+24.7, +37.0]</td></tr>
+  <tr><td>DiffPure-style (SD1.5), 0.1</td><td class="c">13.3%</td><td class="c">26.3%</td><td class="c">55.0%</td><td class="c">+41.7 [+35.0, +48.3]</td><td class="c">+28.7 [+22.7, +34.7]</td></tr>
+  <tr><td>DiffPure-style (SD1.5), 0.2</td><td class="c">21.7%</td><td class="c">31.7%</td><td class="c">56.7%</td><td class="c">+35.0 [+28.0, +42.0]</td><td class="c">+25.0 [+18.7, +31.3]</td></tr>
+  <tr><td>DiffPure-style (SD1.5), 0.3</td><td class="c">26.0%</td><td class="c">36.0%</td><td class="c">63.0%</td><td class="c">+37.0 [+30.0, +44.0]</td><td class="c">+27.0 [+21.0, +33.0]</td></tr>
+  <tr><td>Pixel-space DDPM purifier, t = 100</td><td class="c">16.7%</td><td class="c">not run</td><td class="c">15.0%</td><td class="c">&minus;1.7 [&minus;4.0, +0.3]</td><td class="c">&ndash;</td></tr>
+  <tr><td>Pixel-space DDPM purifier, t = 200</td><td class="c">17.3%</td><td class="c">not run</td><td class="c">18.3%</td><td class="c">+1.0 [&minus;0.3, +2.7]</td><td class="c">&ndash;</td></tr>
+</table>
+<div class="cap">Table 5: Protection Success Rate under Cleanups (SD1.5 image-to-image, strength 0.55, 100 test photos). DiffPure-style (SD1.5) = Stable Diffusion image-to-image with an empty prompt at strength 0.1, 0.2 or 0.3; the pixel-space purifier is a separate face diffusion model (<code>google/ddpm-celebahq-256</code>) applied at 256 px. JPEG, resizing and the VAE round trip are also in the training mixture (in differentiable form); the multi-step DiffPure-style cleanups and the pixel-space purifier were never used while making the protection.</div>
+</div>
+
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:36%">Editor</th><th class="c">Clean photo</th><th class="c">DiffShield</th><th class="c">DiffShield minus clean [95% CI]</th><th class="c">Mean ArcFace similarity, clean &rarr; DiffShield</th></tr>
+  <tr><td>SD1.5 image-to-image, strength 0.30</td><td class="c">0.0%</td><td class="c">0.0%</td><td class="c">0.0</td><td class="c">&ndash;</td></tr>
+  <tr><td>SD1.5 image-to-image, strength 0.55 (main)</td><td class="c">13.9%</td><td class="c">51.2%</td><td class="c">+37.3 [+32.7, +42.2]</td><td class="c">0.222 &rarr; 0.103</td></tr>
+  <tr><td>SD1.5 image-to-image, strength 0.75</td><td class="c">84.0%</td><td class="c">91.0%</td><td class="c">+7.0 [+2.0, +12.0]</td><td class="c">&ndash;</td></tr>
+  <tr><td>SDXL image-to-image (1024 px)</td><td class="c">1.3%</td><td class="c">2.3%</td><td class="c">+1.0 [0.0, +2.3]</td><td class="c">0.338 &rarr; 0.321</td></tr>
+  <tr><td>IP-Adapter FaceID</td><td class="c">0.0%</td><td class="c">1.3%</td><td class="c">+1.3 [0.0, +3.0]</td><td class="c">&ndash;</td></tr>
+  <tr><td>SD inpainting (face kept)</td><td class="c">0.0%</td><td class="c">0.0%</td><td class="c">0.0</td><td class="c">0.959 &rarr; 0.931</td></tr>
+  <tr><td>InstructPix2Pix</td><td class="c">18.0%</td><td class="c">1.7%</td><td class="c">&minus;16.3 [&minus;23.3, &minus;9.7]*</td><td class="c">0.831 &rarr; 0.858</td></tr>
+</table>
+<div class="cap">Table 6: Protection across Editors and Edit Strengths (100 test photos, no cleanup). * Not harm caused by the protection: 17% of the clean InstructPix2Pix edits contain no detectable face, which PSR counts as protected, against 2% of the protected ones.</div>
+</div>
+
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:26%">Method</th><th class="c">PSNR mean (min), dB</th><th class="c">SSIM mean (min)</th><th class="c">Photos &lt; 38 dB</th><th class="c">Photos SSIM &lt; 0.95</th></tr>
+  <tr><td>First prototype</td><td class="c">42.42 (41.17)</td><td class="c">0.976 (0.959)</td><td class="c">0</td><td class="c">0</td></tr>
+  <tr><td>No-target ablation</td><td class="c">41.72 (40.34)</td><td class="c">0.978 (0.971)</td><td class="c">0</td><td class="c">0</td></tr>
+  <tr><td>Hand-set weights</td><td class="c">40.91 (39.75)</td><td class="c">0.973 (0.962)</td><td class="c">0</td><td class="c">0</td></tr>
+  <tr><td>Uniform noise</td><td class="c">40.80 (40.72)</td><td class="c">0.952 (0.926)</td><td class="c">0</td><td class="c">43</td></tr>
+  <tr><td>Gaussian noise</td><td class="c">41.91 (41.89)</td><td class="c">0.962 (0.934)</td><td class="c">0</td><td class="c">3</td></tr>
+  <tr><td>PhotoGuard (re-impl.)</td><td class="c">37.15 (36.83)</td><td class="c">0.906 (0.812)</td><td class="c">100</td><td class="c">100</td></tr>
+  <tr><td>Mist (re-impl.)</td><td class="c">38.00 (37.47)</td><td class="c">0.923 (0.828)</td><td class="c">50</td><td class="c">100</td></tr>
+  <tr class="final"><td>DiffShield (final)</td><td class="c">41.03 (39.78)</td><td class="c">0.973 (0.959)</td><td class="c">0</td><td class="c">0</td></tr>
+</table>
+<div class="cap">Table 7: Invisibility of the Protected Photos (100 test photos, all at 4/255)</div>
+</div>
+
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:26%">Method</th><th class="c">Edits with no face</th><th class="c">Mean ArcFace similarity (edits with a face)</th><th class="c">PSR counting only edits with a face</th><th class="c">Photos protected in every edit</th></tr>
+  <tr><td>Clean photo</td><td class="c">0.3%</td><td class="c">0.222</td><td class="c">13.6%</td><td class="c">0%</td></tr>
+  <tr><td>First prototype</td><td class="c">0.3%</td><td class="c">0.177</td><td class="c">23.7%</td><td class="c">2%</td></tr>
+  <tr><td>Hand-set weights</td><td class="c">2.1%</td><td class="c">0.109</td><td class="c">48.6%</td><td class="c">5%</td></tr>
+  <tr><td>PhotoGuard (re-impl.)</td><td class="c">8.4%</td><td class="c">0.045</td><td class="c">79.2%</td><td class="c">35%</td></tr>
+  <tr><td>Mist (re-impl.)</td><td class="c">8.2%</td><td class="c">0.085</td><td class="c">59.8%</td><td class="c">&ndash;</td></tr>
+  <tr class="final"><td>DiffShield (final)</td><td class="c">1.8%</td><td class="c">0.103</td><td class="c">50.3%</td><td class="c">4%</td></tr>
+</table>
+<div class="cap">Table 8: Audit of the Main Result (SD1.5 image-to-image, strength 0.55, no cleanup)</div>
+</div>
+
+<h3><span class="n">5.2</span>Visual Results &amp; Prototype Demonstration</h3>
+<figure>
+<div style="display:flex; gap:10pt; align-items:stretch;">
+<svg viewBox="0 0 520 330" style="width:55%; border:0.8pt solid #000" role="img" aria-label="Bar chart of PSR without cleanup by method">
+  <text x="260" y="22" font-size="15" font-weight="bold" text-anchor="middle">PSR (%), SD1.5 image-to-image, no cleanup, n = 100</text>
+  <g font-size="12" fill="#555" text-anchor="end">
+    <text x="44" y="279">0</text><text x="44" y="229">20</text><text x="44" y="179">40</text><text x="44" y="129">60</text><text x="44" y="79">80</text></g>
+  <g stroke="#e2e2e2" stroke-width="1"><line x1="50" y1="225" x2="510" y2="225"/><line x1="50" y1="175" x2="510" y2="175"/><line x1="50" y1="125" x2="510" y2="125"/><line x1="50" y1="75" x2="510" y2="75"/></g>
+  <line x1="50" y1="275" x2="510" y2="275" stroke="#000"/>
+  <g font-size="12" text-anchor="middle">
+    <rect x="58" y="240.3" width="42" height="34.7" fill="#9b9b9b"/><text x="79" y="235">13.9</text>
+    <rect x="115" y="237.8" width="42" height="37.2" fill="#9b9b9b"/><text x="136" y="232">14.9</text>
+    <rect x="172" y="215" width="42" height="60" fill="#9b9b9b"/><text x="193" y="209">24.0</text>
+    <rect x="229" y="214.3" width="42" height="60.7" fill="#9b9b9b"/><text x="250" y="209">24.3</text>
+    <rect x="286" y="150.8" width="42" height="124.2" fill="#d9a3b4"/><text x="307" y="145">49.7</text>
+    <rect x="343" y="147" width="42" height="128" fill="#A4123F"/><text x="364" y="141" font-weight="bold">51.2</text>
+    <rect x="400" y="117.3" width="42" height="157.7" fill="#c98a1e"/><text x="421" y="112">63.1</text>
+    <rect x="457" y="72.5" width="42" height="202.5" fill="#c98a1e"/><text x="478" y="67">81.0</text>
+  </g>
+  <g font-size="11.5" text-anchor="middle" fill="#222">
+    <text x="79" y="292">Clean</text><text x="136" y="292">Noise</text><text x="193" y="292">Prototype</text><text x="250" y="292">No target</text>
+    <text x="307" y="292">Hand-set</text><text x="364" y="292" font-weight="bold">DiffShield</text><text x="421" y="292">Mist*</text><text x="478" y="292">PhotoGuard*</text></g>
+  <text x="260" y="318" font-size="11.5" text-anchor="middle" fill="#444">* visibly alter all 100 photos (fail the PSNR/SSIM rule)</text>
+</svg>
+<div class="ph" style="width:45%; min-height:4.8cm;"><b>[Insert Prototype Execution Snapshot]</b><small>[Placeholder: <code>panel.png</code> from <code>scripts/demo.py --method v2_next_tuned</code>: source | protected | edit of original | edit of protected, with ArcFace similarity. Use only a photo you have consent to show; CelebA-HQ faces must not be redistributed.]</small></div>
+</div>
+<div class="cap">Figure 2: Experimental Verification Plots and Working Prototype Outputs</div>
+</figure>
+<p><b>Discussion of Results:</b> Random noise of the same size gives 14.9% against 13.9% for unprotected photos, so DiffShield&rsquo;s +37.3 points do not come from adding noise as such. The no-target ablation, which has the same cleanups and a denoiser term but only pushes the latent away, stays at 24.3%: adding the target pull is what lifts protection to 51.2% (+26.9 points [+23.0, +30.9]), because a fixed target gives the optimiser one consistent direction and drives the editor toward degraded output. The weight search confirmed the design rather than improving it: a hand-set version of the same design is statistically on par (+1.6 points [&minus;0.9, +4.0]). Protection survives the SD-based DiffPure-style cleanup and the VAE round trip almost completely (net +35 to +42 points), is reduced but still positive under JPEG and resizing, and is removed by the pixel-space face purifier. PhotoGuard and Mist reach higher PSR without cleanup only by visibly altering every photo; under JPEG 75 DiffShield is ahead of PhotoGuard (+4.3 points [+0.7, +8.0]) and level with Mist, while under the VAE round trip and DiffPure-style cleanup the visible tools stay ahead. The audit shows the gain is not caused by faces disappearing (1.8% of edits have no face; counting only edits with a face, PSR is still 50.3%), and the mean similarity of edits to the person falls from 0.222 to 0.103. Protection is probabilistic per edit: only 4% of photos are protected in every seed and prompt, and the protected edits tend to look degraded or restyled rather than like a believable different person. Beyond SD1.5 image-to-image at moderate strength, protection is negligible: SDXL uses a different encoder, inpainting keeps the face region untouched, IP-Adapter FaceID takes identity from a face-recognition embedding, and at strength 0.3 the edit keeps almost everything while at 0.75 even unprotected edits lose the identity.</p>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">6</span>Technical Justification, Design Trade-offs &amp; Insights</h2>
+<ul>
+  <li><b>Algorithmic &amp; Theoretical Justification:</b> image-to-image editors start from the VAE latent of the input photo, so controlling that latent controls the edit, and a fixed target gives the optimiser a consistent direction (the no-target ablation shows how much this matters). Optimising the average score over random cleanups (expectation over transformation [10], with sign-gradient steps as in projected gradient descent [9]) makes the noise survive the cleanups an attacker applies before editing; including a one-step DiffPure-style purifier in that mix targets diffusion-based cleanup directly, and the denoiser term additionally disturbs the editor&rsquo;s UNet. The visibility penalty is placed on the published photo, the one people actually see. PSR operationalises &ldquo;no longer the same person&rdquo; with a face recogniser and an impostor threshold, which is a stricter and more relevant criterion than pixel distance.</li>
+  <li><b>Computational Complexity &amp; Trade-offs:</b> protecting one photo needs 40 &times; 4 = 160 forward and backward passes through the VAE encoder, plus a UNet pass whenever the one-step purifier or the denoiser term is used; memory stays within one T4 thanks to half precision and gradient checkpointing (measured 274 GPU-seconds per photo). In the weight search, large denoiser weights gave the worst protection of all settings (proxy PSR 7.5&ndash;12.1%) and the best settings kept it near 0.01, which is why its weight is small. On the 28 tuning photos, raising the budget from 4/255 to 6/255 raised PSR from 18.9% to 21.3% with 1 of 28 photos becoming visible, and 8/255 gave the same 21.3% with 12 of 28 visible; 4/255, fixed before any result, is therefore kept. In development tests on the tuning photos with the hand-set weights, running 100 optimisation steps instead of 40 changed PSR by only +0.5 points, so 40 steps are enough, and an extra identity loss on a FaceNet surrogate reduced PSR (&minus;1.8 to &minus;3.0 points) because it did not transfer to ArcFace and took budget from the main terms; it is therefore not part of the method.</li>
+  <li><b>Handling Edge Cases &amp; Boundary Conditions:</b> invisibility is enforced on every photo, not on averages, both in the weight search and in the final check; edits with no detectable face count as protected, so the no-face share is always reported next to PSR; face detection initially missed tight test crops, so images are padded before detection; a failing editor or missing model is isolated and logged instead of aborting a job; every job resumes from checkpoints; cleanups that change unprotected photos are handled by reporting net protection.</li>
+</ul>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">7</span>Conclusion, Limitations &amp; Future Scope</h2>
+<ul>
+  <li><b>Conclusion:</b> DiffShield protects face photos against Stable Diffusion 1.5 image-to-image editing while keeping every test photo invisible: 51.2% of edits no longer match the person, against 13.9% without protection and 24.0% for our first prototype, with paired intervals far from zero. Its protection survives SD-based DiffPure-style cleanup and the VAE round trip, and under JPEG it keeps more of its protection than PhotoGuard at far lower visibility. The target pull is the component that makes the difference; the weight search, the DiffPure-style purifier in training and the denoiser term were validated by a pre-registered procedure and keep the method on par with a hand-set version of the same design.</li>
+  <li><b>Current Limitations:</b> no protection for SDXL, inpainting or IP-Adapter FaceID; JPEG and resizing remove most of the effect; a pixel-space diffusion purifier removes it completely; an adaptive attacker (a small network trained to undo the noise) removed our first prototype&rsquo;s protection and was not run against the final method; protection is per edit, not per photo; one face recogniser scores the main results (second-recogniser check: [insert F1 result]); PhotoGuard and Mist are our re-implementations at our budget; no human perception study; CelebA-HQ portraits only.</li>
+  <li><b>Future Scope:</b> train against pixel-space diffusion purifiers and an adaptive attacker; an identity term on several face models including ArcFace, scored by an independent recogniser, to reach identity-conditioned editors; targets for the SDXL encoder; a human study of visibility and recognisability; everyday photos beyond CelebA-HQ.</li>
+</ul>
+
+<!-- ===================================================================================== -->
+<h2><span class="n">8</span>Project Deliverables &amp; Technical Enrichment Summary</h2>
+<div class="tbl">
+<table class="grid" style="width:100%">
+  <tr><th style="width:28%">Deliverable Category</th><th>Details / Title / Repository Link</th><th class="c" style="width:14%">Status</th></tr>
+  <tr><td>Source Code Repository</td><td>[Insert repository URL]; README, configuration, 377 unit tests, one command per analysis step, report and presentation</td><td class="c">Completed</td></tr>
+  <tr><td>Individual Online Certifications</td><td>[List completed 10&ndash;20 hr courses for each team member]</td><td class="c">[Completed]</td></tr>
+  <tr><td>Group TEA Deliverable 1</td><td>[Title and details of completed Group Activity 1]</td><td class="c">[Completed]</td></tr>
+  <tr><td>Group TEA Deliverable 2</td><td>[Title and details of completed Group Activity 2]</td><td class="c">[Completed]</td></tr>
+  <tr><td>Group TEA Deliverable 3</td><td>[Title and details of completed Group Activity 3]</td><td class="c">[Completed]</td></tr>
+</table>
+<div class="cap">Table 9: Summary of Completed Project and Technical Enrichment Deliverables</div>
+</div>
+
+<h2>References</h2>
+<div class="ref"><span>[1]</span><span>H. Salman, A. Khaddaj, G. Leclerc, A. Ilyas and A. Madry, &ldquo;Raising the cost of malicious AI-powered image editing,&rdquo; in <i>Proc. ICML</i>, 2023.</span></div>
+<div class="ref"><span>[2]</span><span>C. Liang et al., &ldquo;Adversarial example does good: Preventing painting imitation from diffusion models via adversarial examples,&rdquo; in <i>Proc. ICML</i>, 2023.</span></div>
+<div class="ref"><span>[3]</span><span>S. Shan, J. Cryan, E. Wenger, H. Zheng, R. Hanocka and B. Y. Zhao, &ldquo;Glaze: Protecting artists from style mimicry by text-to-image models,&rdquo; in <i>Proc. USENIX Security</i>, 2023.</span></div>
+<div class="ref"><span>[4]</span><span>T. Van Le et al., &ldquo;Anti-DreamBooth: Protecting users from personalized text-to-image synthesis,&rdquo; in <i>Proc. ICCV</i>, 2023.</span></div>
+<div class="ref"><span>[5]</span><span>W. Nie, B. Guo, Y. Huang, C. Xiao, A. Vahdat and A. Anandkumar, &ldquo;Diffusion models for adversarial purification,&rdquo; in <i>Proc. ICML</i>, 2022.</span></div>
+<div class="ref"><span>[6]</span><span>R. Rombach, A. Blattmann, D. Lorenz, P. Esser and B. Ommer, &ldquo;High-resolution image synthesis with latent diffusion models,&rdquo; in <i>Proc. CVPR</i>, 2022.</span></div>
+<div class="ref"><span>[7]</span><span>J. Deng, J. Guo, N. Xue and S. Zafeiriou, &ldquo;ArcFace: Additive angular margin loss for deep face recognition,&rdquo; in <i>Proc. CVPR</i>, 2019.</span></div>
+<div class="ref"><span>[8]</span><span>F. Schroff, D. Kalenichenko and J. Philbin, &ldquo;FaceNet: A unified embedding for face recognition and clustering,&rdquo; in <i>Proc. CVPR</i>, 2015.</span></div>
+<div class="ref"><span>[9]</span><span>A. Madry, A. Makelov, L. Schmidt, D. Tsipras and A. Vladu, &ldquo;Towards deep learning models resistant to adversarial attacks,&rdquo; in <i>Proc. ICLR</i>, 2018.</span></div>
+<div class="ref"><span>[10]</span><span>A. Athalye, L. Engstrom, A. Ilyas and K. Kwok, &ldquo;Synthesizing robust adversarial examples,&rdquo; in <i>Proc. ICML</i>, 2018.</span></div>
+<div class="ref"><span>[11]</span><span>B. Kim, R. Khanna and O. Koyejo, &ldquo;Examples are not enough, learn to criticize! Criticism for interpretability,&rdquo; in <i>Proc. NeurIPS</i>, 2016.</span></div>
+<div class="ref"><span>[12]</span><span>T. Akiba et al., &ldquo;Optuna: A next-generation hyperparameter optimization framework,&rdquo; in <i>Proc. ACM KDD</i>, 2019.</span></div>
+<div class="ref"><span>[13]</span><span>T. Brooks, A. Holynski and A. A. Efros, &ldquo;InstructPix2Pix: Learning to follow image editing instructions,&rdquo; in <i>Proc. CVPR</i>, 2023.</span></div>
+<div class="ref"><span>[14]</span><span>H. Ye, J. Zhang, S. Liu, X. Han and W. Yang, &ldquo;IP-Adapter: Text compatible image prompt adapter for text-to-image diffusion models,&rdquo; arXiv:2308.06721, 2023.</span></div>
+<div class="ref"><span>[15]</span><span>D. Podell et al., &ldquo;SDXL: Improving latent diffusion models for high-resolution image synthesis,&rdquo; in <i>Proc. ICLR</i>, 2024.</span></div>
+<div class="ref"><span>[16]</span><span>T. Karras, T. Aila, S. Laine and J. Lehtinen, &ldquo;Progressive growing of GANs for improved quality, stability, and variation,&rdquo; in <i>Proc. ICLR</i>, 2018.</span></div>
+<div class="ref"><span>[17]</span><span>C.-H. Lee, Z. Liu, L. Wu and P. Luo, &ldquo;MaskGAN: Towards diverse and interactive facial image manipulation,&rdquo; in <i>Proc. CVPR</i>, 2020.</span></div>
+
+</body>
+</html>
