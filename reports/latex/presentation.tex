@@ -134,21 +134,21 @@
             \item \textbf{Domain Context:} deepfakes are cheap to make; a defence must run offline, stay invisible and survive cleanup.
         \end{itemize}
     \end{block}
-
+    \vspace{-4pt}
     \begin{block}{Existing Limitations \& Research Gap}
         \scriptsize
         \begin{itemize}
-            \item \textbf{Summary of Existing Approaches:} PhotoGuard and Mist attack the Stable Diffusion encoder / UNet; Glaze and Anti-DreamBooth target style and fine-tuning, mostly at 8--16/255.
+            \item \textbf{Summary of Existing Approaches:} PhotoGuard and Mist attack the Stable Diffusion encoder / UNet; Glaze and Anti-DreamBooth target style and fine-tuning, mostly at 8--16/255 (poison is visible).
             \item \textbf{Identified Research Gap:} little evidence that protection removes \emph{identity}, survives purification (DiffPure) and stays invisible on \emph{every} photo.
         \end{itemize}
     \end{block}
-
+    \vspace{-4pt}
     \begin{block}{Research Objectives}
         \scriptsize
         \begin{itemize}
             \item \textbf{Objective 1 -- Invisibility:} PSNR $\ge$ 38 dB and SSIM $\ge$ 0.95 on every one of the 100 test photos.
-            \item \textbf{Objective 2 -- Protection:} protection success rate (PSR, judged by ArcFace) clearly above unprotected photos and random noise (paired 95\% CIs); compared with PhotoGuard and Mist.
-            \item \textbf{Objective 3 -- Robustness:} protection after common cleanups and across several editors, incl.\ unseen ones.
+            \item \textbf{Objective 2 -- Protection:} PSR (judged by ArcFace) clearly above unprotected photos and random noise; compared with PhotoGuard and Mist.
+            \item \textbf{Objective 3 -- Robustness:} survive common cleanups (JPEG, resizing, VAE, DiffPure-style).
         \end{itemize}
     \end{block}
 \end{frame}
@@ -157,7 +157,7 @@
 \begin{frame}{2. Proposed Methodology \& Overall Workflow}
     \framesubtitle{End-to-End Research Methodology / System Workflow Architecture}
     \centering
-    \begin{adjustbox}{max width=\linewidth, max height=5.75cm}
+    \begin{adjustbox}{max width=\linewidth, max height=5.2cm}
     \begin{tikzpicture}
         % top inputs
         \node[deep, minimum width=7.6cm, text width=7.4cm] (data) at (3.95,6.05) {Data: CelebA-HQ portraits, 512$\times$512 -- 100 test photos, 28 + 12 tuning photos};
@@ -220,40 +220,24 @@
 \begin{frame}{3. Methodological Components \& Formulation}
     \framesubtitle{Sub-Module Breakdown, Governing Mathematical Model \& Datasets}
     \begin{columns}[T]
-        \column{0.50\textwidth}
-        \begin{block}{Methodological Breakdown}
-            \scriptsize
-            \begin{itemize}
-                \item \textbf{Cleanup simulation:} 4 random cleanups per step: JPEG (24.5\%), resize (24.5\%), VAE round trip (21\%), one-step DiffPure-style (30\%).
-                \item \textbf{Target pull + denoiser attack:} drive the SD1.5 latent of the cleaned copy to zero; raise the UNet's error.
-                \item \textbf{Invisibility control:} SSIM penalty on the published photo, $\pm4/255$ clip, 8-bit rounding.
-            \end{itemize}
-        \end{block}
-
-        \begin{block}{Mathematical / Algorithmic Formulation}
-            \scriptsize
-            \begin{itemize}
-                \item \textbf{Governing Formulation:}\\
-                $\max_{\|\delta\|_\infty\le\epsilon}\ \tfrac{1}{K}\sum_{k}\big[-\alpha\mathcal{L}_{tgt}+\eta\mathcal{L}_{den}-\beta\mathcal{L}_{sem}\big]_{P_k}-\gamma\mathcal{L}_{str}$
-                \item \textbf{Key Variables:} $\epsilon=4/255$, $K=4$, 40 steps; $\alpha=0.188$, $\eta=0.012$, $\beta=0.546$, $\gamma=21.6$.
-            \end{itemize}
-        \end{block}
-
-        \column{0.46\textwidth}
+        \column{0.43\textwidth}
         \begin{block}{Dataset \& Input Specifications}
             \scriptsize
             \begin{itemize}
                 \item \textbf{Source \& Size:} CelebA-HQ portraits, 512$\times$512 RGB; CelebAMask-HQ masks for inpainting.
-                \item \textbf{Data Partitioning:} 100 fixed test photos for all results; 28 search + 12 confirmation tuning photos chosen by MMD-critic from 28,974; no overlap.
+                \item \textbf{Data Partitioning:} 100 fixed test photos for all results; 28 search + 12 confirmation tuning photos chosen by MMD-critic from 28,974 usable photos; no overlap between sets.
                 \item \textbf{Preprocessing:} centre crop, resize to 512 px PNG; per-photo seeds; padding before face detection.
             \end{itemize}
         \end{block}
 
-        \begin{block}{Evaluation Metrics}
+        \column{0.53\textwidth}
+        \begin{block}{Methodological Breakdown}
             \scriptsize
             \begin{itemize}
-                \item \textbf{PSR:} share of edits with no face or ArcFace similarity to the source below $\tau=0.1005$.
-                \item \textbf{PSNR / SSIM:} invisibility on every photo; paired bootstrap 95\% CIs over photos.
+                \item \textbf{Choosing $\alpha,\beta,\gamma,\eta$:} MMD-critic picks 28 search and 12 confirmation photos whose CLIP-embedding spread matches the whole pool. Optuna tries 25 weight settings on the search photos, each scored by its average PSR over 2 editors and 5 cleanups; any setting that makes even one photo visible is rejected. The best 3 are re-run on the confirmation photos and the winner is checked on the 100 test photos: $\alpha=0.188$, $\beta=0.546$, $\gamma=21.6$, $\eta=0.012$.
+                \item \textbf{Cleanup simulation:} 4 random cleanups per step: JPEG (24.5\%), resize (24.5\%), VAE round trip (21\%), one-step DiffPure-style (30\%).
+                \item \textbf{Target pull + denoiser attack:} drive the SD1.5 latent of the cleaned copy to zero; raise the UNet's denoising error.
+                \item \textbf{Invisibility control:} SSIM penalty on the published photo, $\pm4/255$ clip, 8-bit rounding.
             \end{itemize}
         \end{block}
     \end{columns}
@@ -261,34 +245,36 @@
 
 % --- 3 (cont.). FORMULATION DETAILS ---
 \begin{frame}{3. Methodological Components \& Formulation (cont.)}
-    \framesubtitle{Loss Terms, Update Rule \& Evaluation Formulas}
+    \framesubtitle{Governing Model, Loss Terms, Update Rule \& Evaluation Metrics}
     \begin{columns}[T]
-        \column{0.53\textwidth}
-        \begin{block}{Loss Terms on a Cleaned Copy $\tilde{x}=P(x+\delta)$}
-            \footnotesize
+        \column{0.555\textwidth}
+        \begin{block}{Mathematical / Algorithmic Formulation}
+            \scriptsize
             \begin{itemize}
+                \item \textbf{Governing Formulation} (each cleaned copy $\tilde{x}=P_k(x+\delta)$):\\[1pt]
+                \mbox{$\max\limits_{\|\delta\|_\infty\le\epsilon} J=\tfrac{1}{K}\sum_{k}\big[-\alpha\mathcal{L}_{tgt}+\eta\mathcal{L}_{den}-\beta\mathcal{L}_{sem}\big]_{P_k}-\gamma\mathcal{L}_{str}$}
+                \item \textbf{Key Variables:} $\epsilon=4/255$, $K=4$ cleanups, 40 steps; $\alpha=0.188$, $\eta=0.012$, $\beta=0.546$, $\gamma=21.6$.
                 \item \textbf{Target pull:} $\mathcal{L}_{tgt}=\frac{1}{n}\big\|E(\tilde{x})-\mathbf{0}\big\|_2^2$
                 \item \textbf{Denoiser error:} $\mathcal{L}_{den}=\frac{1}{n}\big\|\epsilon_\theta(z_t,t)-\nu\big\|_2^2$, \\
                       $z_t=\sqrt{\bar{a}_t}\,E(\tilde{x})+\sqrt{1-\bar{a}_t}\,\nu$, \ $t\sim\mathcal{U}[50,300]$, $\nu\sim\mathcal{N}(0,I)$
                 \item \textbf{CLIP decoy:} $\mathcal{L}_{sem}=1-\cos\big(\mathrm{CLIP}(\tilde{x}),\,\mathrm{CLIP}(\text{``a potted plant''})\big)$
                 \item \textbf{Visibility:} $\mathcal{L}_{str}=1-\mathrm{SSIM}(x,\,x+\delta)$ on the published photo
+                \item \textbf{Update rule (PGD):} $\delta_0\sim\mathcal{U}[-\epsilon,\epsilon]$; \
+                      $\delta\leftarrow\mathrm{clip}_{[-\epsilon,\epsilon]}\big(\delta+\tfrac{1}{255}\,\mathrm{sign}(\nabla_\delta J)\big)$; $x+\delta$ rounded to 8-bit.
             \end{itemize}
         \end{block}
 
-        \column{0.43\textwidth}
-        \begin{block}{Update Rule (PGD)}
-            \footnotesize
-            $\delta_0\sim\mathcal{U}[-\epsilon,\epsilon]$ \\[2pt]
-            $\delta\leftarrow\mathrm{clip}_{[-\epsilon,\epsilon]}\big(\delta+\tfrac{1}{255}\,\mathrm{sign}(\nabla_\delta J)\big)$ \\[2pt]
-            then $x+\delta$ is rounded to 8-bit; 40 steps.
-        \end{block}
-
-        \begin{block}{Evaluation Formulas}
-            \footnotesize
-            $\mathrm{PSR}=\frac{1}{N}\sum_{i}\mathbf{1}\big[\text{no face in } e_i \;\lor\; s(e_i,x)<\tau\big]$ \\[2pt]
-            $\tau$ = 95th percentile of ArcFace similarity between different people (0.1005) \\[2pt]
-            $\mathrm{Net}=\mathrm{PSR}_{\text{protected}}-\mathrm{PSR}_{\text{unprotected}}$ \\[2pt]
-            $\mathrm{PSNR}=10\log_{10}\big(1/\mathrm{MSE}(x,x+\delta)\big)$
+        \column{0.425\textwidth}
+        \begin{block}{Evaluation Metrics}
+            \scriptsize
+            \begin{itemize}
+                \item \textbf{Protection success rate:}\\
+                \mbox{$\mathrm{PSR}=\frac{1}{N}\sum_{i}\mathbf{1}\big[\text{no face in } e_i \lor s(e_i,x)<\tau\big]$}\\
+                $s$ = ArcFace similarity of edit $e_i$ to the source; $\tau=0.1005$, the 95th percentile of similarity between different people.
+                \item \textbf{Net protection:} $\mathrm{Net}=\mathrm{PSR}_{\text{protected}}-\mathrm{PSR}_{\text{unprotected}}$
+                \item \textbf{Invisibility:} $\mathrm{PSNR}=10\log_{10}\big(1/\mathrm{MSE}(x,x+\delta)\big)\ge 38$ dB and $\mathrm{SSIM}\ge0.95$ on every photo.
+                \item \textbf{Statistics:} paired bootstrap 95\% CIs over photos.
+            \end{itemize}
         \end{block}
     \end{columns}
 \end{frame}
@@ -390,7 +376,7 @@
             \bottomrule
         \end{tabular}
     \end{table}
-    {\tiny SD1.5 image-to-image, strength 0.55, 100 test photos, 3 seeds. Ablation: same cleanups and denoiser term, latent pushed away from the original instead of toward the target.}
+    {\tiny SD1.5 image-to-image, strength 0.55, 100 test photos, 3 seeds.}
 
     \begin{block}{Experimental Verification Summary}
         \scriptsize
@@ -452,7 +438,7 @@
 
 % --- 7 (cont.). BEFORE / AFTER PROTECTION ---
 \begin{frame}{7. Experimental Visualizations \& Prototype Demonstration (cont.)}
-    \framesubtitle{Edits Before and After Applying DiffShield (same prompt, same seed)}
+    \framesubtitle{Demonstration Overview}
     \centering
     \imgslot{Unprotected photo}\hfill{\Large\textcolor{amritaMaroon}{$\Rightarrow$}}\hfill
     \imgslot{Edit of unprotected photo}\hspace{0.7cm}
@@ -461,7 +447,7 @@
 
     \vspace{0.3cm}
     \begin{block}{Reading the Comparison}
-        \scriptsize Prompt: ``a person in a suit'' (SD1.5 image-to-image, strength 0.55, same seed for both edits; $\Rightarrow$ = edit with the prompt). The unprotected and protected photos look identical (PSNR $\ge$ 38 dB); DiffShield aims to make the edit of the protected photo stop matching the person, while the edit of the unprotected photo keeps the identity.
+        \scriptsize Prompt: ``a person in a suit'' (SD1.5 image-to-image, strength 0.55, same seed for both edits). The unprotected and protected photos look identical (PSNR $\ge$ 38 dB); DiffShield aims to make the edit of the protected photo stop matching the person, while the edit of the unprotected photo keeps the identity.
     \end{block}
 \end{frame}
 
@@ -502,8 +488,8 @@
         \begin{block}{4. Limitations \& Future Scope}
             \scriptsize
             \begin{itemize}
-                \item No protection for SDXL, inpainting or IP-Adapter FaceID; not yet tested against an adaptive attacker; one face recogniser; no human study.
-                \item Future: train against pixel-space purifiers and adaptive attackers; identity loss on several face models; SDXL targets.
+                \item Tuned on SD1.5 only: no protection against other Stable Diffusion models (SDXL), inpainting or IP-Adapter FaceID; no adaptive-attacker test.
+                \item Future: protection across multiple editors (other Stable Diffusion versions); training against pixel-space purifiers.
             \end{itemize}
         \end{block}
     \end{columns}
@@ -513,11 +499,27 @@
 % REFERENCES & THANK YOU
 % =========================================================================
 \section{References}
-\nocite{*}
 \begin{frame}[allowframebreaks]{References}
     \fontsize{7.5pt}{8.6pt}\selectfont
-    \bibliographystyle{ieeetr}
-    \bibliography{ref}
+    \begin{thebibliography}{99}
+        \bibitem{salman} H. Salman, A. Khaddaj, G. Leclerc, A. Ilyas and A. Madry, ``Raising the cost of malicious AI-powered image editing,'' in \emph{Proc. ICML}, 2023.
+        \bibitem{liang} C. Liang et al., ``Adversarial example does good: Preventing painting imitation from diffusion models via adversarial examples,'' in \emph{Proc. ICML}, 2023.
+        \bibitem{shan} S. Shan, J. Cryan, E. Wenger, H. Zheng, R. Hanocka and B. Y. Zhao, ``Glaze: Protecting artists from style mimicry by text-to-image models,'' in \emph{Proc. USENIX Security}, 2023.
+        \bibitem{vanle} T. Van Le et al., ``Anti-DreamBooth: Protecting users from personalized text-to-image synthesis,'' in \emph{Proc. ICCV}, 2023.
+        \bibitem{nie} W. Nie, B. Guo, Y. Huang, C. Xiao, A. Vahdat and A. Anandkumar, ``Diffusion models for adversarial purification,'' in \emph{Proc. ICML}, 2022.
+        \bibitem{rombach} R. Rombach, A. Blattmann, D. Lorenz, P. Esser and B. Ommer, ``High-resolution image synthesis with latent diffusion models,'' in \emph{Proc. CVPR}, 2022.
+        \bibitem{deng} J. Deng, J. Guo, N. Xue and S. Zafeiriou, ``ArcFace: Additive angular margin loss for deep face recognition,'' in \emph{Proc. CVPR}, 2019.
+        \bibitem{schroff} F. Schroff, D. Kalenichenko and J. Philbin, ``FaceNet: A unified embedding for face recognition and clustering,'' in \emph{Proc. CVPR}, 2015.
+        \bibitem{madry} A. Madry, A. Makelov, L. Schmidt, D. Tsipras and A. Vladu, ``Towards deep learning models resistant to adversarial attacks,'' in \emph{Proc. ICLR}, 2018.
+        \bibitem{athalye} A. Athalye, L. Engstrom, A. Ilyas and K. Kwok, ``Synthesizing robust adversarial examples,'' in \emph{Proc. ICML}, 2018.
+        \bibitem{kim} B. Kim, R. Khanna and O. Koyejo, ``Examples are not enough, learn to criticize! Criticism for interpretability,'' in \emph{Proc. NeurIPS}, 2016.
+        \bibitem{akiba} T. Akiba et al., ``Optuna: A next-generation hyperparameter optimization framework,'' in \emph{Proc. ACM KDD}, 2019.
+        \bibitem{brooks} T. Brooks, A. Holynski and A. A. Efros, ``InstructPix2Pix: Learning to follow image editing instructions,'' in \emph{Proc. CVPR}, 2023.
+        \bibitem{ye} H. Ye, J. Zhang, S. Liu, X. Han and W. Yang, ``IP-Adapter: Text compatible image prompt adapter for text-to-image diffusion models,'' arXiv:2308.06721, 2023.
+        \bibitem{podell} D. Podell et al., ``SDXL: Improving latent diffusion models for high-resolution image synthesis,'' in \emph{Proc. ICLR}, 2024.
+        \bibitem{karras} T. Karras, T. Aila, S. Laine and J. Lehtinen, ``Progressive growing of GANs for improved quality, stability, and variation,'' in \emph{Proc. ICLR}, 2018.
+        \bibitem{lee} C.-H. Lee, Z. Liu, L. Wu and P. Luo, ``MaskGAN: Towards diverse and interactive facial image manipulation,'' in \emph{Proc. CVPR}, 2020.
+    \end{thebibliography}
 \end{frame}
 
 \begin{frame}
