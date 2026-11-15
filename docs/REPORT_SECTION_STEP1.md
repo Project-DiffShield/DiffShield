@@ -1,7 +1,7 @@
 # Report text: systematic re-tuning and what else we tried (draft, 2026-11-14)
 
 Draft text for docs/REPORT_DRAFT.md: new subsections 5.12-5.15 plus additions to sections 6, 7 and 8. Every number below
-is measured unless marked PENDING (F1/W1/W2 not yet run) or UNVERIFIED. T04, T05, X6-X8 and X9 are filled in. Sources of the numbers: `reports/step1_selection/`,
+is measured unless marked PENDING (F1 not yet run) or UNVERIFIED. T04, T05, X6-X8, X9, W1 and W2 are filled in (W1/W2 in FINAL_REPORT.md 7.11). Sources of the numbers: `reports/step1_selection/`,
 `reports/step1_confirm/`, `reports/exploration/` (explore_compare.md, similarity.md). Wording rule: our evaluation
 "DiffPure" is **DiffPure-style (SD1.5 img2img, empty prompt)**; the pixel-space cleaner of T05 is **DiffPure-style,
 pixel-space face DDPM** (`google/ddpm-celebahq-256`), not the official DiffPure checkpoint (its download returned 403).

@@ -335,7 +335,17 @@ The re-tuned method with the cleaner and the denoiser term in training is **on p
 
 **Budget in the literature** (there is no accepted universal invisibility bound; most image-protection work uses larger budgets than our 4/255): Mist L∞ 16/255 (default in the released code); Glaze, a perceptual bound of LPIPS about 0.05–0.07; Anti-DreamBooth about 0.03–0.05 on the [0, 1] scale (from a secondary summary, to be checked against the paper); MetaCloak-JPEG 8/255; PhotoGuard's value UNVERIFIED.
 
-**Evaluation added at the end (results not included at the time of writing):** an independent second face recogniser (FaceNet after MTCNN detection, its own calibrated threshold; job F1) re-scoring every saved edit, and the comparison of the previous method and trial 14 on SDXL img2img (W1), InstructPix2Pix and SD inpainting (W2). Where these results are missing, the corresponding claims stay as in 7.7 and section 10.
+**Other editors, previous method vs re-tuned method vs no protection** (jobs W1 and W2; 100 test photos, 3 seeds, no cleanup; each editor's own impostor threshold; `reports/step1_final/W1_paired.md`, `W2_paired.md`):
+
+| Editor | PSR clean | PSR previous (mid) | PSR re-tuned | Re-tuned minus previous [95% CI] | Mean ArcFace similarity: clean / previous / re-tuned |
+|---|---|---|---|---|---|
+| SDXL img2img (1024 px, s0.55) | 0.013 | 0.020 | 0.023 | +0.003 [−0.007, +0.013] | 0.338 / 0.320 / 0.321 |
+| SD inpainting (face kept) | 0.000 | 0.000 | 0.000 | 0.000 | 0.959 / 0.934 / 0.931 |
+| InstructPix2Pix | 0.180 | 0.020 | 0.017 | −0.003 [−0.010, +0.000] | 0.848 / 0.869 / 0.863 |
+
+Neither method protects against these editors, and the two are indistinguishable. On SDXL the gain over clean is +0.007 and +0.010 PSR, well inside noise, while mean similarity falls slightly (about 0.02) but stays far above the threshold (0.104). Inpainting keeps the face by design, so the noise there is replaced by the untouched original region (similarity 0.93 to 0.96). InstructPix2Pix: the apparent drop in PSR from 0.180 (clean) to 0.02 is not harm done by the protection; 17% of the clean InstructPix2Pix edits contain no detectable face, which PSR counts as protected, and only 2% of the protected ones do. Mean similarity of the edits with a face is actually higher with protection (0.869, 0.863) than without (0.848). The existing statement in 7.7 and section 8 (no protection beyond SD1.5 image-to-image, and FaceID) therefore stands, now with the final method included.
+
+**Evaluation still pending at the time of writing:** an independent second face recogniser (FaceNet after MTCNN detection, its own calibrated threshold; job F1) re-scoring every saved edit. Until it has run, all identity numbers come from one recogniser (ArcFace), and section 10 says so.
 
 ---
 
